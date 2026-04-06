@@ -140,6 +140,17 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .tooltip .tip-text { visibility: hidden; width: 260px; background: var(--primary); color: white; text-align: left; border-radius: 8px; padding: 10px 14px; position: absolute; z-index: 10; bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 12px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .tooltip:hover .tip-text { visibility: visible; }
 
+/* Multi-select dropdown */
+.ms-tag { display: inline-flex; align-items: center; gap: 4px; background: #ebf8ff; border: 1px solid #bee3f8; color: var(--primary); padding: 4px 10px; border-radius: 16px; font-size: 12px; }
+.ms-tag .ms-remove { cursor: pointer; font-size: 14px; color: var(--danger); margin-left: 2px; font-weight: bold; }
+.ms-tag .ms-remove:hover { color: #c53030; }
+.ms-option { padding: 10px 16px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-size: 13px; border-bottom: 1px solid #f7fafc; }
+.ms-option:hover { background: #ebf8ff; }
+.ms-option.selected { background: #e6fffa; }
+.ms-option input[type="checkbox"] { flex-shrink: 0; }
+.ms-group-label { padding: 8px 16px; font-size: 12px; font-weight: 700; color: var(--primary); background: #f7fafc; border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
+.ms-search { width: 100%; padding: 10px 14px; border: none; border-bottom: 1px solid var(--border); font-size: 13px; outline: none; position: sticky; top: 0; z-index: 1; }
+
 /* Print */
 @media print {
   .sidebar, .header-actions, .nav-buttons, .add-field-btn, .remove-btn { display: none !important; }
@@ -241,8 +252,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     <!-- ============= STEP 1: Overview ============= -->
     <div class="step-section active" id="step0">
       <div class="card">
-        <div class="card-title">PIPIA Cover Page 封面页</div>
-        <div class="card-title-cn">Document the data processing activities 记录数据处理活动</div>
+        <div class="card-title">PIPIA RoPA 封面页</div>
+        <div class="card-title-cn">Record of Processing Activities 记录数据处理活动</div>
 
         <div class="form-group">
           <label class="form-label">PIPIA Reference No. / PIPIA参考编号</label>
@@ -407,26 +418,46 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div class="card-title-cn">Data creation, ingestion, or capture / 数据创造、吸收、获取</div>
 
         <div class="alert alert-info">
-          ℹ️ Select data fields from the dropdown below. Each field is <strong>auto-classified</strong> based on GB/T 35273 as <strong>personal information</strong> or <strong>sensitive personal information</strong>, with the corresponding security level assigned automatically.<br>
-          <span style="font-size:12px; color: var(--text-muted);">从下拉列表中选择数据字段。每个字段根据GB/T 35273自动分类为个人信息或敏感个人信息，并自动分配相应的安全等级。</span>
+          ℹ️ Select all relevant data fields from the multi-select dropdown below. Fields are <strong>auto-classified</strong> based on GB/T 35273 as <strong>personal information</strong> or <strong>sensitive personal information</strong>, with the corresponding security level assigned automatically. You only need to specify <strong>one shared processing purpose</strong> for all selected fields.<br>
+          <span style="font-size:12px; color: var(--text-muted);">从下方多选下拉菜单中选择所有相关数据字段。每个字段根据GB/T 35273自动分类。所有选中字段共享一个处理目的。</span>
         </div>
 
-        <div style="overflow-x:auto;">
-          <table class="data-table" id="dataFieldTable">
-            <thead>
-              <tr>
-                <th style="width:180px">Data Field 数据类型</th>
-                <th style="width:100px">Auto Classification<br>自动分类</th>
-                <th style="width:100px">Security Level<br>安全等级</th>
-                <th style="width:160px">Processing Purpose<br>处理目的</th>
-                <th style="width:80px">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="dataFieldBody">
-            </tbody>
-          </table>
+        <div class="form-group">
+          <label class="form-label">Select Data Fields / 选择数据字段</label>
+          <label class="form-label-cn">Click to open dropdown, select multiple fields 点击打开下拉菜单，可多选</label>
+          <div id="multiSelectContainer" style="position:relative;">
+            <div id="multiSelectDisplay" onclick="toggleMultiSelect()" style="width:100%; min-height:44px; padding:10px 14px; border:1px solid var(--border); border-radius:8px; background:white; cursor:pointer; display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+              <span id="multiSelectPlaceholder" style="color:var(--text-muted); font-size:14px;">-- Click to select data fields 点击选择数据字段 --</span>
+            </div>
+            <div id="multiSelectDropdown" style="display:none; position:absolute; top:100%; left:0; right:0; max-height:350px; overflow-y:auto; background:white; border:1px solid var(--border); border-top:none; border-radius:0 0 8px 8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:50;">
+              <!-- populated by JS -->
+            </div>
+          </div>
         </div>
-        <button class="add-field-btn" onclick="addDataField()">+ Add Data Field 添加数据字段</button>
+
+        <div id="selectedFieldsSummary" style="display:none; margin-top:16px;">
+          <label class="form-label">Selected Fields Summary / 已选字段概览</label>
+          <div style="overflow-x:auto;">
+            <table class="data-table" id="selectedFieldsTable">
+              <thead>
+                <tr>
+                  <th>Data Field 数据类型</th>
+                  <th>Auto Classification 自动分类</th>
+                  <th>Security Level 安全等级</th>
+                  <th style="width:50px">Remove</th>
+                </tr>
+              </thead>
+              <tbody id="selectedFieldsBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:18px;">
+          <label class="form-label">Shared Processing Purpose for All Selected Fields / 所有选中字段的共同处理目的</label>
+          <label class="form-label-cn">Since these fields are collected for the same purpose, specify it once here 这些字段基于同一目的收集，在此统一填写</label>
+          <textarea class="form-textarea" id="sharedPurpose" placeholder="e.g. Employee onboarding and HR management / 例如：员工入职及人力资源管理" style="min-height:60px;"></textarea>
+        </div>
       </div>
 
       <div class="card">
@@ -583,7 +614,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div class="card-title-cn">Based on your inputs, the following modules are triggered / 基于您的输入，以下模块被触发</div>
 
         <div class="alert alert-info">
-          The system has automatically determined which PIPIA modules are required based on your answers in the Cover Page. <strong>Module 1 + Module 8 are always required.</strong><br>
+          The system has automatically determined which PIPIA modules are required based on your answers in the RoPA. <strong>Module 1 + Module 8 are always required.</strong><br>
           <span style="font-size:12px;">系统已根据封面页的回答自动判断需要完成的PIPIA模块。<strong>模块1+模块8始终必须完成。</strong></span>
         </div>
 
@@ -985,66 +1016,160 @@ function buildSelectOptionsHTML() {
   return html;
 }
 
-function addDataField() {
-  fieldCounter++;
-  const id = 'field_' + fieldCounter;
-  dataFields.push({ id, name: '', classification: null, purpose: '' });
-  renderDataFields();
+// ==========================================
+// MULTI-SELECT DROPDOWN
+// ==========================================
+let selectedFields = []; // array of { label, type, level, isSensitive }
+let multiSelectOpen = false;
+
+function initMultiSelect() {
+  const dropdown = document.getElementById('multiSelectDropdown');
+  // Add search box
+  let html = '<input class="ms-search" type="text" placeholder="🔍 Search fields... 搜索字段..." oninput="filterMultiOptions(this.value)">';
+  let currentGroup = '';
+  FIELD_OPTIONS.forEach((opt, idx) => {
+    if (opt.group !== currentGroup) {
+      currentGroup = opt.group;
+      html += `<div class="ms-group-label">${opt.group}</div>`;
+    }
+    const checked = selectedFields.some(f => f.label === opt.label) ? 'checked' : '';
+    const selClass = checked ? ' selected' : '';
+    html += `<div class="ms-option${selClass}" data-idx="${idx}" data-label="${escHTML(opt.label)}" onclick="toggleFieldOption(${idx})">
+      <input type="checkbox" ${checked} tabindex="-1">
+      <div>
+        <span style="font-size:13px;">${opt.label}</span>
+        <span class="badge ${getTypeBadgeClass(opt.type)}" style="margin-left:8px; font-size:10px;">${opt.type}</span>
+      </div>
+    </div>`;
+  });
+  dropdown.innerHTML = html;
 }
 
-function removeDataField(id) {
-  dataFields = dataFields.filter(f => f.id !== id);
-  renderDataFields();
-}
-
-function onFieldSelectChange(id, value) {
-  const field = dataFields.find(f => f.id === id);
-  if (field) {
-    field.name = value;
-    const opt = getFieldOptionByLabel(value);
-    if (opt) {
-      field.classification = { type: opt.type, category: opt.label, level: opt.level, isSensitive: opt.type.includes('Sensitive') };
-    } else {
-      field.classification = null;
-    }
-    // Only re-render the classification cells, not the whole table (to preserve dropdown state)
-    const typeCell = document.getElementById('cls_' + id);
-    const levelCell = document.getElementById('lvl_' + id);
-    if (typeCell && levelCell) {
-      const cls = field.classification;
-      typeCell.innerHTML = cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>';
-      levelCell.innerHTML = cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-';
-    }
+function toggleMultiSelect() {
+  multiSelectOpen = !multiSelectOpen;
+  const dropdown = document.getElementById('multiSelectDropdown');
+  dropdown.style.display = multiSelectOpen ? 'block' : 'none';
+  if (multiSelectOpen) {
+    const searchInput = dropdown.querySelector('.ms-search');
+    if (searchInput) searchInput.focus();
   }
 }
 
-function onFieldPurposeChange(id, value) {
-  const field = dataFields.find(f => f.id === id);
-  if (field) field.purpose = value;
-}
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  const container = document.getElementById('multiSelectContainer');
+  if (container && !container.contains(e.target)) {
+    multiSelectOpen = false;
+    const dropdown = document.getElementById('multiSelectDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+  }
+});
 
-function renderDataFields() {
-  const tbody = document.getElementById('dataFieldBody');
-  tbody.innerHTML = '';
-  const selectHTML = buildSelectOptionsHTML();
-  dataFields.forEach(f => {
-    const cls = f.classification;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><select class="form-select" onchange="onFieldSelectChange('${f.id}', this.value)" style="font-size:13px;">${selectHTML}</select></td>
-      <td id="cls_${f.id}">${cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>'}</td>
-      <td id="lvl_${f.id}">${cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-'}</td>
-      <td><input class="form-input" value="${escHTML(f.purpose)}" onchange="onFieldPurposeChange('${f.id}', this.value)" placeholder="Purpose 处理目的" style="font-size:13px;"></td>
-      <td><button class="remove-btn" onclick="removeDataField('${f.id}')">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-    // Restore selected value if field already has a name
-    if (f.name) {
-      const sel = tr.querySelector('select');
-      if (sel) sel.value = f.name;
-    }
+function filterMultiOptions(query) {
+  const lower = query.toLowerCase();
+  document.querySelectorAll('#multiSelectDropdown .ms-option').forEach(el => {
+    const label = el.getAttribute('data-label').toLowerCase();
+    el.style.display = label.includes(lower) ? 'flex' : 'none';
   });
 }
+
+function toggleFieldOption(idx) {
+  const opt = FIELD_OPTIONS[idx];
+  const existIdx = selectedFields.findIndex(f => f.label === opt.label);
+  if (existIdx >= 0) {
+    selectedFields.splice(existIdx, 1);
+  } else {
+    selectedFields.push({
+      label: opt.label,
+      type: opt.type,
+      level: opt.level,
+      isSensitive: opt.type.includes('Sensitive')
+    });
+  }
+  // Update the option visual
+  const optionEl = document.querySelector(`.ms-option[data-idx="${idx}"]`);
+  if (optionEl) {
+    const cb = optionEl.querySelector('input[type="checkbox"]');
+    const isSelected = selectedFields.some(f => f.label === opt.label);
+    cb.checked = isSelected;
+    optionEl.classList.toggle('selected', isSelected);
+  }
+  renderMultiSelectDisplay();
+  renderSelectedFieldsTable();
+  // Sync to legacy dataFields for compatibility with rest of the app
+  syncDataFieldsFromSelection();
+}
+
+function removeSelectedField(label) {
+  selectedFields = selectedFields.filter(f => f.label !== label);
+  initMultiSelect(); // refresh checkboxes
+  renderMultiSelectDisplay();
+  renderSelectedFieldsTable();
+  syncDataFieldsFromSelection();
+}
+
+function renderMultiSelectDisplay() {
+  const display = document.getElementById('multiSelectDisplay');
+  const placeholder = document.getElementById('multiSelectPlaceholder');
+  // Remove existing tags
+  display.querySelectorAll('.ms-tag').forEach(t => t.remove());
+  if (selectedFields.length === 0) {
+    placeholder.style.display = 'inline';
+  } else {
+    placeholder.style.display = 'none';
+    selectedFields.forEach(f => {
+      const tag = document.createElement('span');
+      tag.className = 'ms-tag';
+      tag.innerHTML = `${escHTML(f.label)} <span class="ms-remove" onclick="event.stopPropagation(); removeSelectedField('${escHTML(f.label).replace(/'/g, "\\'")}')">&times;</span>`;
+      display.insertBefore(tag, null);
+    });
+  }
+}
+
+function renderSelectedFieldsTable() {
+  const summary = document.getElementById('selectedFieldsSummary');
+  const tbody = document.getElementById('selectedFieldsBody');
+  if (selectedFields.length === 0) {
+    summary.style.display = 'none';
+    return;
+  }
+  summary.style.display = 'block';
+  tbody.innerHTML = '';
+  selectedFields.forEach(f => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escHTML(f.label)}</td>
+      <td><span class="badge ${getTypeBadgeClass(f.type)}">${f.type}</span></td>
+      <td><span class="badge ${getLevelBadgeClass(f.level)}">${f.level}</span></td>
+      <td><button class="remove-btn" onclick="removeSelectedField('${escHTML(f.label).replace(/'/g, "\\'")}')">&times;</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function syncDataFieldsFromSelection() {
+  const purpose = document.getElementById('sharedPurpose') ? document.getElementById('sharedPurpose').value : '';
+  dataFields = selectedFields.map((f, i) => ({
+    id: 'field_' + (i + 1),
+    name: f.label,
+    classification: { type: f.type, category: f.label, level: f.level, isSensitive: f.isSensitive },
+    purpose: purpose
+  }));
+  fieldCounter = selectedFields.length;
+}
+
+// Keep purpose in sync
+document.addEventListener('DOMContentLoaded', () => {
+  const purposeEl = document.getElementById('sharedPurpose');
+  if (purposeEl) {
+    purposeEl.addEventListener('input', () => { syncDataFieldsFromSelection(); });
+  }
+});
+
+// Legacy compatibility stubs
+function addDataField() { /* no-op, replaced by multi-select */ }
+function removeDataField(id) { /* no-op */ }
+function renderDataFields() { /* no-op */ }
 
 function escHTML(str) {
   const div = document.createElement('div');
@@ -1558,6 +1683,14 @@ function buildModule4() {
 // ==========================================
 // MODULE 5: Data Security Measures
 // ==========================================
+function hasSensitivePI() {
+  return dataFields.some(f => f.classification && f.classification.isSensitive);
+}
+
+function hasMinorData() {
+  return dataFields.some(f => f.classification && f.classification.category && f.classification.category.includes('Minor'));
+}
+
 function buildModule5() {
   let measuresHTML = '';
   const highestLevel = getHighestSecurityLevel();
@@ -1567,6 +1700,62 @@ function buildModule5() {
     const levelClass = highestLevel.includes('Secret') || highestLevel.includes('Strictly') ? 'high' : highestLevel.includes('Confidential') ? 'medium' : 'low';
     measuresHTML += `<div class="security-card ${levelClass}"><strong>${phaseNames[phase] || phase}</strong><ul style="margin:8px 0 0 16px; font-size:13px;">${items.map(item => `<li>${item}</li>`).join('')}</ul></div>`;
   });
+
+  // Build conditional sensitive PI questions
+  let sensitiveHTML = '';
+  if (hasSensitivePI()) {
+    sensitiveHTML = `
+    <div class="card" style="margin-top:20px; border-left: 4px solid var(--danger);">
+      <div class="card-title" style="color:var(--danger);">⚠ Sensitive Personal Information Risk Assessment 敏感个人信息风险评估</div>
+      <div class="card-title-cn">The following questions are triggered because sensitive personal information was selected 以下问题因选择了敏感个人信息而触发</div>
+
+      <div class="form-group">
+        <label class="form-label">1. Are these sensitive PI fields stored separately from other data? / 这些敏感个人信息字段是否单独保存？</label>
+        <div class="radio-pills" id="m5_sensitiveStorage">
+          <span class="radio-pill" onclick="selectPill(this,'m5_sensitiveStorage'); document.getElementById('m5_sensitiveStorageResult').innerHTML='<div class=\\'alert alert-info\\' style=\\'margin-top:10px;\\'>✅ <strong>Low Risk 低风险</strong> — Sensitive PI is stored separately. 敏感个人信息已单独保存。</div>'">Yes 是</span>
+          <span class="radio-pill" onclick="selectPill(this,'m5_sensitiveStorage'); document.getElementById('m5_sensitiveStorageResult').innerHTML='<div class=\\'alert alert-danger\\' style=\\'margin-top:10px;\\'>🚨 <strong>High Risk 高风险 — Remediation Required 需要整改</strong><br>Remediation: Sensitive PI must be stored separately from other data.<br>整改方案：敏感个人信息需要单独保存，与其他数据隔离存储。</div>'; addTask(5,'IT','Implement separate storage for sensitive PI 实施敏感个人信息单独存储','实施敏感个人信息单独存储','high')">No 否</span>
+        </div>
+        <div id="m5_sensitiveStorageResult"></div>
+      </div>
+
+      <div class="form-group" style="margin-top:16px;">
+        <label class="form-label">2. Is separate consent obtained for collecting sensitive PI? / 敏感个人信息收集是否取得单独同意？</label>
+        <div class="radio-pills" id="m5_sensitiveConsent">
+          <span class="radio-pill" onclick="selectPill(this,'m5_sensitiveConsent'); document.getElementById('m5_sensitiveConsentResult').innerHTML='<div class=\\'alert alert-info\\' style=\\'margin-top:10px;\\'>✅ <strong>Low Risk 低风险</strong> — Separate consent is obtained for sensitive PI collection. 已取得敏感个人信息收集的单独同意。</div>'">Yes 是</span>
+          <span class="radio-pill" onclick="selectPill(this,'m5_sensitiveConsent'); document.getElementById('m5_sensitiveConsentResult').innerHTML='<div class=\\'alert alert-danger\\' style=\\'margin-top:10px;\\'>🚨 <strong>High Risk 高风险 — Remediation Required 需要整改</strong><br>Remediation: A separate consent mechanism must be set up specifically for sensitive PI collection.<br>整改方案：需要设置单独同意栏目，专门针对敏感个人信息的收集取得用户单独同意。</div>'; addTask(5,'Legal','Set up separate consent mechanism for sensitive PI collection 设置敏感个人信息收集的单独同意机制','设置敏感个人信息收集的单独同意机制','high')">No 否</span>
+        </div>
+        <div id="m5_sensitiveConsentResult"></div>
+      </div>
+    </div>`;
+  }
+
+  // Build conditional minor data questions
+  let minorHTML = '';
+  if (hasMinorData()) {
+    minorHTML = `
+    <div class="card" style="margin-top:20px; border-left: 4px solid #e9d8fd;">
+      <div class="card-title" style="color:#553c9a;">👶 Minor (Under 14) Data Protection 未成年人（14岁以下）数据保护</div>
+      <div class="card-title-cn">The following questions are triggered because minor's data was selected 以下问题因选择了未成年人数据而触发</div>
+
+      <div class="form-group">
+        <label class="form-label">1. Are there measures in place to prevent personalized profiling/analysis of minors? / 是否有措施确保不对未成年人进行个性化的画像分析？</label>
+        <div class="radio-pills" id="m5_minorProfiling">
+          <span class="radio-pill" onclick="selectPill(this,'m5_minorProfiling'); document.getElementById('m5_minorProfilingResult').innerHTML='<div class=\\'alert alert-info\\' style=\\'margin-top:10px;\\'>✅ <strong>Low Risk 低风险</strong> — Measures are in place to prevent personalized profiling of minors. 已有措施防止对未成年人进行个性化画像分析。</div>'">Yes 是</span>
+          <span class="radio-pill" onclick="selectPill(this,'m5_minorProfiling'); document.getElementById('m5_minorProfilingResult').innerHTML='<div class=\\'alert alert-danger\\' style=\\'margin-top:10px;\\'>🚨 <strong>High Risk 高风险 — Remediation Required 需要整改</strong><br>Remediation: Personalized profiling/analysis of minors is prohibited. Technical measures must be implemented to prevent any personalized profiling of minors\\' data.<br>整改方案：禁止对未成年人进行个性化分析，必须实施技术措施确保不对未成年人数据进行个性化画像分析。</div>'; addTask(5,'IT','Implement technical measures to block personalized profiling of minors 实施技术措施阻止对未成年人的个性化画像分析','实施技术措施阻止对未成年人的个性化画像分析','high')">No 否</span>
+        </div>
+        <div id="m5_minorProfilingResult"></div>
+      </div>
+
+      <div class="form-group" style="margin-top:16px;">
+        <label class="form-label">2. In case of a data breach, is there a method to notify the minor's parents/guardians? / 如果发生数据泄漏，是否有方法通知到其家长/监护人？</label>
+        <div class="radio-pills" id="m5_minorNotify">
+          <span class="radio-pill" onclick="selectPill(this,'m5_minorNotify'); document.getElementById('m5_minorNotifyResult').innerHTML='<div class=\\'alert alert-info\\' style=\\'margin-top:10px;\\'>✅ <strong>Low Risk 低风险</strong> — A notification mechanism for parents/guardians is in place. 已建立通知家长/监护人的机制。</div>'">Yes 是</span>
+          <span class="radio-pill" onclick="selectPill(this,'m5_minorNotify'); document.getElementById('m5_minorNotifyResult').innerHTML='<div class=\\'alert alert-danger\\' style=\\'margin-top:10px;\\'>🚨 <strong>High Risk 高风险 — Remediation Required 需要整改</strong><br>Remediation: If there is no feasible way to notify parents/guardians in case of a data breach, the collection of minor\\'s personal information should be ceased.<br>整改方案：如果无法在数据泄漏时通知家长/监护人，则应停止收集未成年人的个人信息。</div>'; addTask(5,'Legal','Review and cease minor data collection if parent notification is infeasible 如无法通知家长则审查并停止收集未成年人信息','如无法通知家长则审查并停止收集未成年人信息','high')">No 否</span>
+        </div>
+        <div id="m5_minorNotifyResult"></div>
+      </div>
+    </div>`;
+  }
 
   return moduleWrap(5, `
     <div class="alert alert-info"><strong>Data Security Measures 数据安全措施</strong><br>
@@ -1584,6 +1773,8 @@ function buildModule5() {
         <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Prepare incident response plan','准备事件响应计划','medium')"><input type="checkbox"><div><div class="label-text">Incident response plan ready</div><div class="label-cn">事件响应计划已就绪</div></div></label>
       </div>
     </div>
+    ${sensitiveHTML}
+    ${minorHTML}
   `);
 }
 
@@ -1895,9 +2086,7 @@ ${actionTasks.map(t=>`<tr><td>M${t.module}</td><td>${t.assignee}</td><td><strong
 // INITIALIZATION
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-  addDataField();
-  addDataField();
-  addDataField();
+  initMultiSelect();
   renderTriggerSummary();
   // Listen for radio "other" to show input
   document.querySelectorAll('input[name="controller"]').forEach(r => {
