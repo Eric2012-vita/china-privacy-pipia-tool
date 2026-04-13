@@ -140,6 +140,31 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .tooltip .tip-text { visibility: hidden; width: 260px; background: var(--primary); color: white; text-align: left; border-radius: 8px; padding: 10px 14px; position: absolute; z-index: 10; bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 12px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .tooltip:hover .tip-text { visibility: visible; }
 
+/* Data Flow Diagram */
+.df-canvas-wrap { border: 2px dashed var(--border); border-radius: 12px; background: #fafbfc; position: relative; min-height: 500px; overflow: hidden; }
+.df-canvas-wrap.active { border-color: var(--accent); }
+.df-toolbar { display: flex; gap: 8px; padding: 10px 14px; background: var(--primary); border-radius: 10px 10px 0 0; flex-wrap: wrap; align-items: center; }
+.df-toolbar button { padding: 6px 14px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; border-radius: 6px; cursor: pointer; font-size: 12px; transition: all 0.2s; }
+.df-toolbar button:hover { background: rgba(255,255,255,0.25); }
+.df-toolbar button.active { background: var(--accent); border-color: var(--accent); }
+.df-toolbar .separator { width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 4px; }
+.df-node { position: absolute; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: move; user-select: none; min-width: 100px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 10; border: 2px solid transparent; }
+.df-node:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.df-node.selected { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,0.3); }
+.df-node .df-label-cn { font-size: 10px; font-weight: 400; opacity: 0.7; margin-top: 2px; }
+.df-node .df-delete { position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; background: var(--danger); color: white; border: none; border-radius: 50%; font-size: 12px; cursor: pointer; display: none; align-items: center; justify-content: center; line-height: 1; }
+.df-node:hover .df-delete { display: flex; }
+.df-node-source { background: #ebf8ff; color: #2a4365; border-color: #bee3f8; }
+.df-node-process { background: #fefcbf; color: #975a16; border-color: #faf089; }
+.df-node-storage { background: #c6f6d5; color: #276749; border-color: #9ae6b4; }
+.df-node-transfer { background: #fed7aa; color: #9c4221; border-color: #fbd38d; }
+.df-node-output { background: #e9d8fd; color: #553c9a; border-color: #d6bcfa; }
+.df-node-thirdparty { background: #feb2b2; color: #9b2c2c; border-color: #fc8181; }
+.df-connector { position: absolute; width: 12px; height: 12px; background: var(--accent); border: 2px solid white; border-radius: 50%; cursor: crosshair; z-index: 11; bottom: -6px; left: 50%; transform: translateX(-50%); }
+svg.df-arrows { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+svg.df-arrows line { stroke: var(--text-light); stroke-width: 2; marker-end: url(#arrowhead); }
+svg.df-arrows text { font-size: 10px; fill: var(--text-muted); }
+
 /* Multi-select dropdown */
 .ms-tag { display: inline-flex; align-items: center; gap: 4px; background: #ebf8ff; border: 1px solid #bee3f8; color: var(--primary); padding: 4px 10px; border-radius: 16px; font-size: 12px; }
 .ms-tag .ms-remove { cursor: pointer; font-size: 14px; color: var(--danger); margin-left: 2px; font-weight: bold; }
@@ -550,6 +575,35 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
               <span class="radio-pill" onclick="selectPill(this,'backupCap')">Yes 是</span>
               <span class="radio-pill" onclick="selectPill(this,'backupCap')">No 否</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Flow Diagram 数据流向图</div>
+        <div class="card-title-cn">Visually map how data flows through your systems 可视化数据在系统中的流向</div>
+
+        <div class="alert alert-info">
+          ℹ️ Click a node type in the toolbar, then click on the canvas to place it. <strong>Drag</strong> nodes to reposition. Click the <strong>dot at the bottom</strong> of a node, then click another node to draw an arrow. Double-click a node to edit its label.<br>
+          <span style="font-size:12px; color:var(--text-muted);">点击工具栏中的节点类型，然后在画布上点击放置。拖拽节点可移动位置。点击节点底部圆点再点击另一个节点可画箭头。双击节点可编辑标签。</span>
+        </div>
+
+        <div class="df-canvas-wrap" id="dfCanvasWrap">
+          <div class="df-toolbar" id="dfToolbar">
+            <button onclick="setDfTool('source')" id="dfTool_source">📥 Data Source 数据来源</button>
+            <button onclick="setDfTool('process')" id="dfTool_process">⚙️ Processing 处理</button>
+            <button onclick="setDfTool('storage')" id="dfTool_storage">💾 Storage 存储</button>
+            <button onclick="setDfTool('transfer')" id="dfTool_transfer">🔄 Transfer 传输</button>
+            <button onclick="setDfTool('output')" id="dfTool_output">📤 Output 输出</button>
+            <button onclick="setDfTool('thirdparty')" id="dfTool_thirdparty">🏢 Third Party 第三方</button>
+            <div class="separator"></div>
+            <button onclick="setDfTool('select')" id="dfTool_select">🖱 Select 选择</button>
+            <button onclick="clearDfCanvas()" style="background:rgba(229,62,62,0.3);">🗑 Clear 清除</button>
+          </div>
+          <div id="dfCanvas" style="position:relative; min-height:460px;" onclick="onDfCanvasClick(event)">
+            <svg class="df-arrows" id="dfArrowsSvg">
+              <defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#718096"/></marker></defs>
+            </svg>
           </div>
         </div>
       </div>
@@ -1014,6 +1068,183 @@ function buildSelectOptionsHTML() {
   });
   if (currentGroup) html += '</optgroup>';
   return html;
+}
+
+// ==========================================
+// DATA FLOW DIAGRAM
+// ==========================================
+let dfNodes = [];
+let dfArrows = [];
+let dfNodeCounter = 0;
+let dfCurrentTool = 'select';
+let dfConnectFrom = null;
+let dfDragging = null;
+let dfDragOffset = { x: 0, y: 0 };
+
+const DF_NODE_DEFAULTS = {
+  source: { label: 'Data Source', labelCn: '数据来源', cls: 'df-node-source' },
+  process: { label: 'Processing', labelCn: '处理', cls: 'df-node-process' },
+  storage: { label: 'Storage', labelCn: '存储', cls: 'df-node-storage' },
+  transfer: { label: 'Transfer', labelCn: '传输', cls: 'df-node-transfer' },
+  output: { label: 'Output', labelCn: '输出', cls: 'df-node-output' },
+  thirdparty: { label: 'Third Party', labelCn: '第三方', cls: 'df-node-thirdparty' }
+};
+
+function setDfTool(tool) {
+  dfCurrentTool = tool;
+  document.querySelectorAll('#dfToolbar button').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('dfTool_' + tool);
+  if (btn) btn.classList.add('active');
+  dfConnectFrom = null;
+}
+
+function onDfCanvasClick(e) {
+  const canvas = document.getElementById('dfCanvas');
+  if (e.target !== canvas && !e.target.classList.contains('df-arrows')) return;
+  if (dfCurrentTool === 'select' || !DF_NODE_DEFAULTS[dfCurrentTool]) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left - 50;
+  const y = e.clientY - rect.top - 20;
+  addDfNode(dfCurrentTool, x, y);
+}
+
+function addDfNode(type, x, y) {
+  dfNodeCounter++;
+  const id = 'dfn_' + dfNodeCounter;
+  const def = DF_NODE_DEFAULTS[type];
+  const node = { id, type, label: def.label, labelCn: def.labelCn, x, y };
+  dfNodes.push(node);
+  renderDfNode(node);
+}
+
+function renderDfNode(node) {
+  const canvas = document.getElementById('dfCanvas');
+  const def = DF_NODE_DEFAULTS[node.type];
+  const el = document.createElement('div');
+  el.id = node.id;
+  el.className = 'df-node ' + def.cls;
+  el.style.left = node.x + 'px';
+  el.style.top = node.y + 'px';
+  el.innerHTML = `
+    <span class="df-label">${escHTML(node.label)}</span>
+    <div class="df-label-cn">${escHTML(node.labelCn)}</div>
+    <button class="df-delete" onclick="removeDfNode('${node.id}')" title="Delete">&times;</button>
+    <div class="df-connector" onmousedown="startDfConnect(event, '${node.id}')"></div>
+  `;
+
+  // Drag
+  el.addEventListener('mousedown', function(e) {
+    if (e.target.classList.contains('df-connector') || e.target.classList.contains('df-delete')) return;
+    dfDragging = node.id;
+    const elRect = el.getBoundingClientRect();
+    dfDragOffset.x = e.clientX - elRect.left;
+    dfDragOffset.y = e.clientY - elRect.top;
+    el.classList.add('selected');
+    e.preventDefault();
+  });
+
+  // Double-click to edit
+  el.addEventListener('dblclick', function(e) {
+    e.stopPropagation();
+    const newLabel = prompt('Node label 节点标签:', node.label);
+    if (newLabel !== null && newLabel.trim()) {
+      node.label = newLabel.trim();
+      const newLabelCn = prompt('Chinese label 中文标签 (optional):', node.labelCn);
+      if (newLabelCn !== null) node.labelCn = newLabelCn.trim();
+      el.querySelector('.df-label').textContent = node.label;
+      el.querySelector('.df-label-cn').textContent = node.labelCn;
+    }
+  });
+
+  // Connect target
+  el.addEventListener('mouseup', function(e) {
+    if (dfConnectFrom && dfConnectFrom !== node.id) {
+      // Check if arrow already exists
+      if (!dfArrows.some(a => a.from === dfConnectFrom && a.to === node.id)) {
+        dfArrows.push({ from: dfConnectFrom, to: node.id });
+        renderDfArrows();
+      }
+      dfConnectFrom = null;
+      document.body.style.cursor = 'default';
+    }
+  });
+
+  canvas.appendChild(el);
+}
+
+function startDfConnect(e, nodeId) {
+  e.stopPropagation();
+  e.preventDefault();
+  dfConnectFrom = nodeId;
+  document.body.style.cursor = 'crosshair';
+}
+
+// Global mouse move/up for dragging
+document.addEventListener('mousemove', function(e) {
+  if (!dfDragging) return;
+  const canvas = document.getElementById('dfCanvas');
+  if (!canvas) return;
+  const rect = canvas.getBoundingClientRect();
+  const node = dfNodes.find(n => n.id === dfDragging);
+  const el = document.getElementById(dfDragging);
+  if (!node || !el) return;
+  node.x = Math.max(0, e.clientX - rect.left - dfDragOffset.x);
+  node.y = Math.max(0, e.clientY - rect.top - dfDragOffset.y);
+  el.style.left = node.x + 'px';
+  el.style.top = node.y + 'px';
+  renderDfArrows();
+});
+
+document.addEventListener('mouseup', function(e) {
+  if (dfDragging) {
+    const el = document.getElementById(dfDragging);
+    if (el) el.classList.remove('selected');
+    dfDragging = null;
+  }
+  if (dfConnectFrom) {
+    // If released not on a node, cancel
+    setTimeout(() => { dfConnectFrom = null; document.body.style.cursor = 'default'; }, 100);
+  }
+});
+
+function removeDfNode(id) {
+  dfNodes = dfNodes.filter(n => n.id !== id);
+  dfArrows = dfArrows.filter(a => a.from !== id && a.to !== id);
+  const el = document.getElementById(id);
+  if (el) el.remove();
+  renderDfArrows();
+}
+
+function renderDfArrows() {
+  const svg = document.getElementById('dfArrowsSvg');
+  // Remove old lines (keep defs)
+  svg.querySelectorAll('line, text.arrow-label').forEach(el => el.remove());
+  dfArrows.forEach(arrow => {
+    const fromEl = document.getElementById(arrow.from);
+    const toEl = document.getElementById(arrow.to);
+    if (!fromEl || !toEl) return;
+    const fromX = fromEl.offsetLeft + fromEl.offsetWidth / 2;
+    const fromY = fromEl.offsetTop + fromEl.offsetHeight;
+    const toX = toEl.offsetLeft + toEl.offsetWidth / 2;
+    const toY = toEl.offsetTop;
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', fromX);
+    line.setAttribute('y1', fromY);
+    line.setAttribute('x2', toX);
+    line.setAttribute('y2', toY);
+    svg.appendChild(line);
+  });
+}
+
+function clearDfCanvas() {
+  if (!confirm('Clear all nodes and arrows? 清除所有节点和箭头？')) return;
+  dfNodes = [];
+  dfArrows = [];
+  dfNodeCounter = 0;
+  const canvas = document.getElementById('dfCanvas');
+  canvas.querySelectorAll('.df-node').forEach(el => el.remove());
+  renderDfArrows();
 }
 
 // ==========================================
