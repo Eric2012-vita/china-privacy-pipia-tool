@@ -712,20 +712,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
           </div>
 
           <div class="form-group">
-            <label class="form-label">If separate consent is needed / 如需要单独同意：</label>
-            <div class="check-group">
-              <label class="check-item" onclick="toggleCheck(this)">
-                <input type="checkbox" name="consentImpl" value="installed">
-                <div><div class="label-text">Separate Consent installed into interface systems</div><div class="label-cn">单独同意已添加至相关界面系统</div></div>
-              </label>
-              <label class="check-item" onclick="toggleCheck(this)">
-                <input type="checkbox" name="consentImpl" value="systemReady">
-                <div><div class="label-text">Systems to differentiate refusing data subjects are ready</div><div class="label-cn">已准备系统以区分拒绝同意的数据主体</div></div>
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
             <label class="form-label">Cross-border Transfer Requirements / 跨境传输要求</label>
             <div class="check-group" id="crossBorderReq">
               <label class="check-item" onclick="toggleCheck(this)">
@@ -1249,15 +1235,7 @@ function dpoBlocK(moduleNum) {
       <div class="form-group">
         <label class="form-label">To be followed up on / 追踪审核日期</label>
         <input class="form-input" type="date" id="dpo_m${moduleNum}_followup">
-      </div>
-      <div id="dpo_m${moduleNum}_consentBlock" style="display:none; margin-top:12px; padding:12px; background:#fff5f5; border-radius:8px; border:1px solid #feb2b2;">
-        <label class="form-label" style="color:var(--danger);">If separate consent is needed / 如果根据评估需要单独同意：</label>
-        <div class="check-group" style="margin-top:8px;">
-          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Separate Consent has been installed into interface systems/place</div><div class="label-cn">单独同意已添加至相关界面系统/位置</div></div></label>
-          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Systems/procedures to differentiate data subjects who refuse to grant separate consent are ready</div><div class="label-cn">已准备并可运行系统/程序，以区分拒绝给予单独同意的数据主体</div></div></label>
-        </div>
-      </div>
-      <div class="form-group" style="margin-top:10px;">
+      </div>      <div class="form-group" style="margin-top:10px;">
         <label class="form-label">Other comments / 其他评价</label>
         <textarea class="form-textarea" id="dpo_m${moduleNum}_comments" placeholder="Other comments"></textarea>
       </div>
@@ -1276,7 +1254,6 @@ function triggerTaskFromDPO(moduleNum, taskType, el) {
     if (checked) {
       addTask(moduleNum, 'Legal', 'Draft separate consent language', '起草单独同意条款', 'high');
       addTask(moduleNum, 'IT', 'Implement separate consent mechanism in UI', '在界面系统中实施单独同意机制', 'high');
-      addTask(moduleNum, 'IT', 'Build system to differentiate refusing data subjects', '建立系统以区分拒绝同意的数据主体', 'medium');
     }
   }
 }
