@@ -1380,7 +1380,6 @@ function buildModule2() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data outsourced to Affiliated China entities / 委托给关联中国实体处理</h4>
     <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m2_affEntity" placeholder="Affiliated entity name"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory regarding Intercompany Data Transfer part has been filled out and completed</div><div class="label-cn">已在data inventory填写完成公司间数据传输部分</div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
     </div>
@@ -1390,8 +1389,6 @@ function buildModule2() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data outsourced to NON-Affiliated entities / 委托给非关联实体处理</h4>
     <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m2_nonAffEntity" placeholder="Non-affiliated entity names"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory for such data processing activities has been filled out and completed</div><div class="label-cn">在data inventory中对该等处理活动填写并完成</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data mapping has been uploaded to the data inventory</div><div class="label-cn">Data mapping已经更新至data inventory中</div></div></label>
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Business','Define ongoing supervision procedures for outsourced processing','定义委托处理的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Legal','Execute Data Processing Agreement (DPA)','签署数据处理协议(DPA)','high')"><input type="checkbox"><div><div class="label-text">Data Processing Agreement (DPA) signed</div><div class="label-cn">已签署Data Processing Agreement → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
@@ -1417,7 +1414,6 @@ function buildModule3() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data shared to Affiliated China entities / 共享给关联中国实体</h4>
     <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m3_affEntity" placeholder="Affiliated entity name"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory regarding Intercompany Data Transfer part has been filled out and completed</div><div class="label-cn">已在data inventory填写完成公司间数据传输部分</div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Obtain separate consent for data sharing with affiliated entity','就关联实体数据共享取得单独同意','high')"><input type="checkbox"><div><div class="label-text">The data sharing has obtained the separate consent from the data subject concerned</div><div class="label-cn">数据共享已取得数据主体的单独同意 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data sharing activities pass the minimum and necessity test</div><div class="label-cn">数据共享活动已完成最小必要测试</div></div></label>
@@ -1428,8 +1424,6 @@ function buildModule3() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data shared to NON-Affiliated entities / 共享给非关联实体</h4>
     <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m3_nonAffEntity" placeholder="Non-affiliated entity names"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory for such data sharing activities has been filled out and completed</div><div class="label-cn">在data inventory中对该等共享活动填写并完成</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data mapping has been uploaded to the data inventory</div><div class="label-cn">Data mapping已经更新至data inventory中</div></div></label>
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Business','Define ongoing supervision procedures for data sharing','定义数据共享的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Execute Data Sharing Agreement','签署数据共享协议','high')"><input type="checkbox"><div><div class="label-text">Data Sharing Agreement signed</div><div class="label-cn">已签署数据共享协议 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
       <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
