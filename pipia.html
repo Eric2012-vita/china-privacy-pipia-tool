@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIPIA - Personal Information Protection Impact Assessment</title>
+<style>
+:root {
+  --primary: #1a365d;
+  --primary-light: #2c5282;
+  --accent: #3182ce;
+  --accent-light: #63b3ed;
+  --success: #38a169;
+  --warning: #d69e2e;
+  --danger: #e53e3e;
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #2d3748;
+  --text-light: #718096;
+  --text-muted: #a0aec0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* Header */
+.header { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.15); position: sticky; top:0; z-index: 100; }
+.header h1 { font-size: 20px; font-weight: 600; }
+.header .subtitle { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+.header-actions { display: flex; gap: 10px; }
+.header-actions button { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.header-actions button:hover { background: rgba(255,255,255,0.25); }
+
+/* Layout */
+.container { display: flex; min-height: calc(100vh - 70px); }
+.sidebar { width: 280px; background: var(--card); border-right: 1px solid var(--border); padding: 20px 0; position: sticky; top: 70px; height: calc(100vh - 70px); overflow-y: auto; }
+.main { flex:1; padding: 30px 40px; max-width: 1000px; }
+
+/* Sidebar Steps */
+.step-nav { list-style: none; }
+.step-nav li { padding: 12px 24px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-light); transition: all 0.2s; border-left: 3px solid transparent; }
+.step-nav li:hover { background: #edf2f7; }
+.step-nav li.active { background: #ebf8ff; color: var(--accent); border-left-color: var(--accent); font-weight: 600; }
+.step-nav li.completed { color: var(--success); }
+.step-nav li .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text-light); flex-shrink: 0; }
+.step-nav li.active .step-num { background: var(--accent); color: white; }
+.step-nav li.completed .step-num { background: var(--success); color: white; }
+.step-label-cn { display: block; font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+/* Progress */
+.progress-bar { margin: 0 24px 20px; background: var(--border); height: 6px; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 3px; transition: width 0.4s ease; }
+.progress-text { text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 16px; padding: 0 24px; }
+
+/* Cards */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+.card-title { font-size: 16px; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
+.card-title-cn { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+
+/* Form Elements */
+.form-group { margin-bottom: 18px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.form-label-cn { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.form-input, .form-select, .form-textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); transition: border-color 0.2s; background: white; }
+.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
+.form-textarea { min-height: 80px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+/* Checkboxes & Radio */
+.check-group { display: flex; flex-direction: column; gap: 10px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+.check-item:hover { background: #f7fafc; border-color: var(--accent-light); }
+.check-item.selected { background: #ebf8ff; border-color: var(--accent); }
+.check-item input { margin-top: 3px; flex-shrink: 0; }
+.check-item .label-text { font-size: 13px; }
+.check-item .label-cn { font-size: 11px; color: var(--text-muted); }
+
+/* Radio pills */
+.radio-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.radio-pill { padding: 8px 16px; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+.radio-pill:hover { border-color: var(--accent-light); }
+.radio-pill.selected { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* Classification badges */
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+.badge-public { background: #c6f6d5; color: #276749; }
+.badge-nonpublic { background: #fefcbf; color: #975a16; }
+.badge-confidential { background: #fed7aa; color: #9c4221; }
+.badge-strict { background: #feb2b2; color: #9b2c2c; }
+.badge-secret { background: #e9d8fd; color: #553c9a; }
+.badge-sensitive { background: #fbb6ce; color: #97266d; }
+.badge-normal { background: #bee3f8; color: #2a4365; }
+
+/* Module trigger panel */
+.trigger-panel { background: #f0fff4; border: 1px solid #c6f6d5; border-radius: 12px; padding: 20px; margin: 20px 0; }
+.trigger-panel.warning { background: #fffbeb; border-color: #fefcbf; }
+.trigger-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.trigger-item:last-child { border-bottom: none; }
+.module-tag { padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+.module-tag.required { background: var(--danger); color: white; }
+.module-tag.optional { background: var(--warning); color: white; }
+.module-tag.na { background: var(--border); color: var(--text-muted); }
+
+/* Data field table */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th { background: var(--primary); color: white; padding: 10px 12px; text-align: left; font-weight: 600; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.data-table tr:hover { background: #f7fafc; }
+.data-table .remove-btn { color: var(--danger); cursor: pointer; border: none; background: none; font-size: 16px; }
+.add-field-btn { margin-top: 12px; padding: 8px 20px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+.add-field-btn:hover { background: var(--primary-light); }
+
+/* Navigation buttons */
+.nav-buttons { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); }
+.btn { padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; border: none; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--primary-light); }
+.btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { background: #f7fafc; }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #2f855a; }
+
+/* Step sections */
+.step-section { display: none; }
+.step-section.active { display: block; }
+
+/* Security measures */
+.security-card { border-left: 4px solid var(--accent); padding: 14px 18px; background: #f7fafc; border-radius: 0 8px 8px 0; margin-bottom: 10px; }
+.security-card.high { border-left-color: var(--danger); background: #fff5f5; }
+.security-card.medium { border-left-color: var(--warning); background: #fffff0; }
+.security-card.low { border-left-color: var(--success); background: #f0fff4; }
+
+/* DPO section */
+.dpo-box { background: #f0f5ff; border: 1px solid #c3dafe; border-radius: 12px; padding: 20px; margin-top: 16px; }
+.dpo-box h4 { color: var(--primary); margin-bottom: 12px; }
+
+/* Tooltip */
+.tooltip { position: relative; display: inline-block; margin-left: 6px; cursor: help; }
+.tooltip .tip-text { visibility: hidden; width: 260px; background: var(--primary); color: white; text-align: left; border-radius: 8px; padding: 10px 14px; position: absolute; z-index: 10; bottom: 125%; left: 50%; transform: translateX(-50%); font-size: 12px; line-height: 1.4; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.tooltip:hover .tip-text { visibility: visible; }
+
+/* Print */
+@media print {
+  .sidebar, .header-actions, .nav-buttons, .add-field-btn, .remove-btn { display: none !important; }
+  .header { position: static; }
+  .main { max-width: 100%; padding: 20px; }
+  .step-section { display: block !important; page-break-inside: avoid; }
+  .card { break-inside: avoid; }
+}
+
+/* Separator */
+.section-divider { border: none; border-top: 2px solid var(--border); margin: 30px 0; }
+
+/* Animated entrance */
+.step-section.active { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Summary */
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.summary-item { padding: 14px; background: #f7fafc; border-radius: 8px; border: 1px solid var(--border); }
+.summary-item label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.summary-item .value { font-size: 15px; font-weight: 600; margin-top: 4px; }
+
+/* Alert */
+.alert { padding: 14px 18px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; }
+.alert-info { background: #ebf8ff; border: 1px solid #bee3f8; color: #2a4365; }
+.alert-warning { background: #fffbeb; border: 1px solid #fefcbf; color: #975a16; }
+.alert-danger { background: #fff5f5; border: 1px solid #feb2b2; color: #9b2c2c; }
+
+/* Module accordion */
+.module-section { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+.module-header { padding: 16px 20px; background: #f7fafc; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 14px; }
+.module-header:hover { background: #edf2f7; }
+.module-header .arrow { transition: transform 0.3s; }
+.module-header.open .arrow { transform: rotate(180deg); }
+.module-body { padding: 20px; display: none; }
+.module-body.open { display: block; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { flex-direction: column; }
+  .sidebar { width: 100%; height: auto; position: static; }
+  .main { padding: 20px; }
+  .form-row, .form-row-3, .summary-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>PIPIA Assessment Tool</h1>
+    <div class="subtitle">个人信息保护影响评估工具 | Personal Information Protection Impact Assessment</div>
+  </div>
+  <div class="header-actions">
+    <button onclick="exportJSON()">💾 Save 保存</button>
+    <button onclick="loadJSON()">📂 Load 加载</button>
+    <button onclick="exportReport()">📄 Export Report 导出报告</button>
+    <button onclick="window.print()">🖨 Print 打印</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="sidebar">
+    <div class="progress-text" id="progressText">Step 1 of 7</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:14%"></div></div>
+    <ul class="step-nav" id="stepNav">
+      <li class="active" onclick="goToStep(0)">
+        <span class="step-num">1</span>
+        <div>Overview<span class="step-label-cn">概述</span></div>
+      </li>
+      <li onclick="goToStep(1)">
+        <span class="step-num">2</span>
+        <div>Data Collection<span class="step-label-cn">数据收集</span></div>
+      </li>
+      <li onclick="goToStep(2)">
+        <span class="step-num">3</span>
+        <div>Processing & Storage<span class="step-label-cn">处理与存储</span></div>
+      </li>
+      <li onclick="goToStep(3)">
+        <span class="step-num">4</span>
+        <div>Module Triggers<span class="step-label-cn">模块触发</span></div>
+      </li>
+      <li onclick="goToStep(4)">
+        <span class="step-num">5</span>
+        <div>Module Assessment<span class="step-label-cn">模块评估</span></div>
+      </li>
+      <li onclick="goToStep(5)">
+        <span class="step-num">6</span>
+        <div>DPO Evaluation<span class="step-label-cn">数据保护官评估</span></div>
+      </li>
+      <li onclick="goToStep(6)">
+        <span class="step-num">7</span>
+        <div>Summary & Export<span class="step-label-cn">总结与导出</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <!-- ============= STEP 1: Overview ============= -->
+    <div class="step-section active" id="step0">
+      <div class="card">
+        <div class="card-title">PIPIA Cover Page 封面页</div>
+        <div class="card-title-cn">Document the data processing activities 记录数据处理活动</div>
+
+        <div class="form-group">
+          <label class="form-label">PIPIA Reference No. / PIPIA参考编号</label>
+          <input class="form-input" id="refNo" placeholder="e.g. PIPIA-2026-001">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Data Controller / 数据处理者</label>
+            <div class="check-group">
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="radio" name="controller" value="company">
+                <div><div class="label-text">The Company</div><div class="label-cn">本公司</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="radio" name="controller" value="other">
+                <div><div class="label-text">Other</div><div class="label-cn">其他</div></div>
+              </label>
+            </div>
+            <input class="form-input" id="controllerOther" placeholder="Please specify 请说明" style="margin-top:8px; display:none;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Assessment / 评估日期</label>
+            <input class="form-input" type="date" id="assessDate">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Responsible Business Function / 负责的业务部门</label>
+            <input class="form-input" id="bizFunction" placeholder="e.g. Marketing, HR, IT">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Name / 项目名称</label>
+            <input class="form-input" id="projectName" placeholder="Enter project name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Information Protection Classification / 信息保护等级</label>
+          <div class="radio-pills" id="classLevel">
+            <span class="radio-pill" onclick="selectPill(this,'classLevel')">Secret 机密</span>
+            <span class="radio-pill" onclick="selectPill(this,'classLevel')">Strictly Confidential 严格保密</span>
+            <span class="radio-pill" onclick="selectPill(this,'classLevel')">Confidential 保密</span>
+            <span class="radio-pill" onclick="selectPill(this,'classLevel')">Non-public 非公开</span>
+            <span class="radio-pill" onclick="selectPill(this,'classLevel')">Public 公开</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Author & Reviewer 填写人与审阅人</div>
+        <div class="card-title-cn">Author from Business & DPO/Legal review</div>
+        <div class="form-group">
+          <label class="form-label">Author from Business / 业务部分填写人</label>
+          <div class="form-row-3">
+            <input class="form-input" id="authorName" placeholder="Full Name 姓名">
+            <input class="form-input" id="authorDept" placeholder="Dept. Code 部门简称">
+            <input class="form-input" id="authorPos" placeholder="Position 职位">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">DPO/Legal Reviewer / 数据合规审阅人</label>
+          <div class="form-row-3">
+            <input class="form-input" id="dpoName" placeholder="Full Name 姓名">
+            <input class="form-input" id="dpoDept" placeholder="Dept. Code 部门简称">
+            <input class="form-input" id="dpoPos" placeholder="Position 职位">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Assessment Type / 评估类型</div>
+        <div class="card-title-cn">Prior PIPIA and content scope</div>
+        <div class="form-group">
+          <label class="form-label">Any PIPIA has been conducted for this case? / 以前是否就该事项做过PIPIA？</label>
+          <div class="radio-pills" id="priorPipia">
+            <span class="radio-pill" onclick="selectPill(this,'priorPipia'); togglePriorRef(false)">No 否</span>
+            <span class="radio-pill" onclick="selectPill(this,'priorPipia'); togglePriorRef(true)">Yes 是</span>
+          </div>
+          <input class="form-input" id="priorRef" placeholder="Prior PIPIA No. 先前PIPIA编号" style="margin-top:8px; display:none;">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Content of PIPIA / PIPIA的内容</label>
+          <div class="radio-pills" id="contentType">
+            <span class="radio-pill" onclick="selectPill(this,'contentType')">Full version PIPIA 完整版本</span>
+            <span class="radio-pill" onclick="selectPill(this,'contentType'); document.getElementById('moduleSelect').style.display='block'">Specific module review 仅就部分模块</span>
+          </div>
+          <input class="form-input" id="moduleSelect" placeholder="Module No. 模块编号" style="margin-top:8px; display:none;">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Trigger Events / 触发事件</div>
+        <div class="card-title-cn">This PIPIA is needed upon the following events / 本PIPIA是基于以下事件</div>
+        <div class="check-group" id="triggerEvents">
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="regular">
+            <div><div class="label-text">Regular Assessment (at least once per year)</div><div class="label-cn">定期个人信息影响评估（至少每年一次）</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="newProduct">
+            <div><div class="label-text">New Product/Service requires PI collection</div><div class="label-cn">设计新产品或新服务需要收集个人信息或重要数据</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="expandScope">
+            <div><div class="label-text">Expansion of Data Collection Scope</div><div class="label-cn">扩大数据收集范围</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="changePurpose">
+            <div><div class="label-text">Change of data processing purpose</div><div class="label-cn">改变数据处理目的</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="legalChange">
+            <div><div class="label-text">Change of legal environment</div><div class="label-cn">法律环境改变（新法律法规、政府审批）</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="envChange">
+            <div><div class="label-text">Change of data processing environment</div><div class="label-cn">数据处理环境改变（云存储、供应商变更）</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="sensitive">
+            <div><div class="label-text">Involving Sensitive Personal Information</div><div class="label-cn">涉及敏感个人信息</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="outsource">
+            <div><div class="label-text">Outsourcing Data to third party for processing</div><div class="label-cn">委托第三方处理数据</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="sharing">
+            <div><div class="label-text">Sharing Data to a third party</div><div class="label-cn">向能够决定数据处理目的、方式的第三方共享数据</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="crossBorder">
+            <div><div class="label-text">Cross-border transfer (incl. remote access)</div><div class="label-cn">数据跨境传输(包括远程访问和直接传输)</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="merging">
+            <div><div class="label-text">Data merging</div><div class="label-cn">数据融合（数据库合并、系统打通、数据入池）</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="automated">
+            <div><div class="label-text">Automated decision-making procedure</div><div class="label-cn">自动化决策</div></div>
+          </label>
+          <label class="check-item" onclick="toggleCheck(this)">
+            <input type="checkbox" name="trigger" value="incident">
+            <div><div class="label-text">Significant PI security events</div><div class="label-cn">发生重大个人信息安全事件</div></div>
+          </label>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <div></div>
+        <button class="btn btn-primary" onclick="goToStep(1)">Next: Data Collection →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 2: Data Collection ============= -->
+    <div class="step-section" id="step1">
+      <div class="card">
+        <div class="card-title">Step 1. Data Collection 数据收集</div>
+        <div class="card-title-cn">Data creation, ingestion, or capture / 数据创造、吸收、获取</div>
+
+        <div class="alert alert-info">
+          ℹ️ Select data fields from the dropdown below. Each field is <strong>auto-classified</strong> based on GB/T 35273 as <strong>personal information</strong> or <strong>sensitive personal information</strong>, with the corresponding security level assigned automatically.<br>
+          <span style="font-size:12px; color: var(--text-muted);">从下拉列表中选择数据字段。每个字段根据GB/T 35273自动分类为个人信息或敏感个人信息，并自动分配相应的安全等级。</span>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="data-table" id="dataFieldTable">
+            <thead>
+              <tr>
+                <th style="width:180px">Data Field 数据类型</th>
+                <th style="width:100px">Auto Classification<br>自动分类</th>
+                <th style="width:100px">Security Level<br>安全等级</th>
+                <th style="width:160px">Processing Purpose<br>处理目的</th>
+                <th style="width:80px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dataFieldBody">
+            </tbody>
+          </table>
+        </div>
+        <button class="add-field-btn" onclick="addDataField()">+ Add Data Field 添加数据字段</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data Details 数据详情</div>
+        <div class="form-group">
+          <label class="form-label">Data Quantities / 数据数量</label>
+          <label class="form-label-cn">Volume, frequency of collection, or amount of users involved</label>
+          <textarea class="form-textarea" id="dataQuantity" placeholder="e.g. ~10,000 records per month, 500 daily active users"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Business Dependency / 业务对数据处理的依赖性</label>
+            <div class="radio-pills" id="bizDependency">
+              <span class="radio-pill" onclick="selectPill(this,'bizDependency')">High 高</span>
+              <span class="radio-pill" onclick="selectPill(this,'bizDependency')">Medium 中</span>
+              <span class="radio-pill" onclick="selectPill(this,'bizDependency')">Low 低</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Network Type / 网络类型</label>
+            <div class="radio-pills" id="networkType">
+              <span class="radio-pill" onclick="selectPill(this,'networkType')">Intranet 内部网络</span>
+              <span class="radio-pill" onclick="selectPill(this,'networkType')">External Internet 外部互联网</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">User Interface / 与用户的交互界面</label>
+          <input class="form-input" id="userInterface" placeholder="e.g. Mobile App, Web Portal, WeChat Mini Program">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Feature Description / 功能描述</label>
+          <textarea class="form-textarea" id="featureDesc" placeholder="Describe the features of the data processing system/product"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data Using Department / 数据使用部门</label>
+          <input class="form-input" id="dataUsingDept" placeholder="e.g. Marketing, CRM Team">
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(0)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(2)">Next: Processing & Storage →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 3: Processing & Storage ============= -->
+    <div class="step-section" id="step2">
+      <div class="card">
+        <div class="card-title">Step II. Processing 数据处理</div>
+        <div class="card-title-cn">Storage and processing details</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Storage System / 存储系统</label>
+            <input class="form-input" id="storageSystem" placeholder="e.g. Salesforce, AWS S3, On-premise server">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location/Mode of Storage / 存储位置/方式</label>
+            <input class="form-input" id="storageLocation" placeholder="e.g. Shanghai Data Center, Cloud (AWS China)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Offline Processing / 线下处理</label>
+          <div class="check-group">
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="offlineProc" value="offline">
+              <div><div class="label-text">Data will be processed offline</div><div class="label-cn">数据将通过线下方式处理 → Module 5 Required</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="offlineProc" value="onlineUnapproved">
+              <div><div class="label-text">Online system NOT reviewed by IT security</div><div class="label-cn">非经IT安全评估的线上系统处理 → Module 5 Required</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="offlineProc" value="onlineApproved">
+              <div><div class="label-text">Online system reviewed and approved by IT security</div><div class="label-cn">经IT安全评估通过的线上系统处理 → N/A</div></div>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Responsible Dept & Personnel / 负责部门和负责人</label>
+            <input class="form-input" id="storageDept" placeholder="e.g. IT Department - Zhang Wei">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Backup & Restore Capability / 备份恢复能力</label>
+            <div class="radio-pills" id="backupCap">
+              <span class="radio-pill" onclick="selectPill(this,'backupCap')">Yes 是</span>
+              <span class="radio-pill" onclick="selectPill(this,'backupCap')">No 否</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Step III & IV. Archiving & Deletion 备份与销毁</div>
+
+        <div class="form-group">
+          <label class="form-label">Data Disposal Method / 数据处置方式</label>
+          <div class="check-group">
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="disposal" value="destroy">
+              <div><div class="label-text">Physical destroy</div><div class="label-cn">物理销毁</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="disposal" value="anonymize">
+              <div><div class="label-text">Anonymization</div><div class="label-cn">匿名化处理</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="disposal" value="store">
+              <div><div class="label-text">Not further processed, stored</div><div class="label-cn">不再进一步处理，存储</div></div>
+            </label>
+          </div>
+          <input class="form-input" id="disposalDetail" placeholder="Technical measures or storage location 技术措施或存储位置" style="margin-top:8px;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Retention Period & Reason / 存储期限及原因</label>
+          <textarea class="form-textarea" id="retentionPeriod" placeholder="e.g. 3 years from date of collection, as required by tax law"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Retention in Privacy Policy / 隐私政策中的表述</label>
+          <div class="check-group">
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="retentionPolicy" value="stated">
+              <div><div class="label-text">Clearly stated with specific period</div><div class="label-cn">已明确表述，有明确期限</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="retentionPolicy" value="general">
+              <div><div class="label-text">Mentioned without specific period</div><div class="label-cn">有表述但没有明确期限</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this)">
+              <input type="radio" name="retentionPolicy" value="notMentioned">
+              <div><div class="label-text">Not mentioned</div><div class="label-cn">未提及</div></div>
+            </label>
+          </div>
+          <input class="form-input" id="retentionPolicyDetail" placeholder="Details 详情" style="margin-top:8px;">
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(1)">← Back</button>
+        <button class="btn btn-primary" onclick="calculateTriggers(); goToStep(3)">Next: Module Triggers →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 4: Module Triggers ============= -->
+    <div class="step-section" id="step3">
+      <div class="card">
+        <div class="card-title">Module Trigger Analysis 模块触发分析</div>
+        <div class="card-title-cn">Based on your inputs, the following modules are triggered / 基于您的输入，以下模块被触发</div>
+
+        <div class="alert alert-info">
+          The system has automatically determined which PIPIA modules are required based on your answers in the Cover Page. <strong>Module 1 + Module 8 are always required.</strong><br>
+          <span style="font-size:12px;">系统已根据封面页的回答自动判断需要完成的PIPIA模块。<strong>模块1+模块8始终必须完成。</strong></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Third Party Processing / 第三方处理数据</label>
+          <div class="check-group">
+            <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+              <input type="radio" name="thirdParty" value="selfOnly">
+              <div><div class="label-text">Only processed by Data Processor itself, no outsourcing/sharing/cross-border</div><div class="label-cn">仅被数据处理者处理 → Module 5</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+              <input type="radio" name="thirdParty" value="thirdPartyYes">
+              <div><div class="label-text">Also processed by third parties</div><div class="label-cn">第三方也会处理数据 → See below</div></div>
+            </label>
+          </div>
+        </div>
+
+        <div id="thirdPartyDetails" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Cross-border Transfer / 跨境传输</label>
+            <div class="check-group">
+              <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+                <input type="radio" name="crossBorderQ" value="yes">
+                <div><div class="label-text">Data transferred outside Mainland China or remotely accessed from outside</div><div class="label-cn">数据被传输至/远程访问于中国大陆以外 → Module 4</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+                <input type="radio" name="crossBorderQ" value="no">
+                <div><div class="label-text">Data will NOT be transferred outside Mainland China</div><div class="label-cn">数据不会被传输至中国大陆外</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Outsourcing & Data Sharing / 委托处理及数据共享</label>
+            <div class="check-group">
+              <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+                <input type="checkbox" name="outsourceQ" value="outsource">
+                <div><div class="label-text">Data outsourced to third party for processing</div><div class="label-cn">数据委托第三方处理 → Module 2 + Module 5</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+                <input type="checkbox" name="outsourceQ" value="share">
+                <div><div class="label-text">Data shared/transferred to third party with control</div><div class="label-cn">数据共享给第三方 → Module 3 + Module 5</div></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Special Circumstances / 特殊情况</label>
+          <div class="check-group">
+            <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+              <input type="checkbox" name="specialQ" value="merging">
+              <div><div class="label-text">Data merging</div><div class="label-cn">数据融合 → Module 7</div></div>
+            </label>
+            <label class="check-item" onclick="toggleCheck(this); recalcTriggers()">
+              <input type="checkbox" name="specialQ" value="automated">
+              <div><div class="label-text">Algorithms or automated decision-making</div><div class="label-cn">算法或自动化决策 → Module 6</div></div>
+            </label>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="card-title" style="margin-bottom:16px;">Triggered Modules Summary 触发模块总览</div>
+        <div id="triggerSummary"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
+        <button class="btn btn-primary" onclick="buildModuleForms(); goToStep(4)">Next: Module Assessment →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 5: Module Assessment ============= -->
+    <div class="step-section" id="step4">
+      <div class="card">
+        <div class="card-title">Module Assessment 模块评估</div>
+        <div class="card-title-cn">Complete the triggered modules below / 请完成以下被触发的模块</div>
+        <div id="moduleFormsContainer"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(3)">← Back</button>
+        <button class="btn btn-primary" onclick="goToStep(5)">Next: DPO Evaluation →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 6: DPO Evaluation ============= -->
+    <div class="step-section" id="step5">
+      <div class="card">
+        <div class="card-title">DPO Evaluation 数据保护官评估</div>
+        <div class="card-title-cn">To be filled out by DPO/Legal / 由数据合规审阅人填写</div>
+
+        <div class="dpo-box">
+          <h4>Overall Assessment 整体评估</h4>
+          <div class="form-group">
+            <label class="form-label">Double check the following items / 再次检查以下事项：</label>
+            <div class="check-group">
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="dpoCheck" value="retention">
+                <div><div class="label-text">The proposal regarding retention period is reasonable</div><div class="label-cn">数据存储期限是合理的</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="dpoCheck" value="consistent">
+                <div><div class="label-text">Understanding is consistent with law requirements</div><div class="label-cn">理解与法律要求相符</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="dpoCheck" value="consent">
+                <div><div class="label-text">Recommend consent into current privacy policy</div><div class="label-cn">建议当前隐私政策中增加同意</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="dpoCheck" value="separateConsent">
+                <div><div class="label-text">Recommend separate consent</div><div class="label-cn">建议单独同意</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Recommended Changes / 推荐变更</label>
+            <textarea class="form-textarea" id="dpoChanges" placeholder="Enter recommended changes"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Follow-up Date / 追踪审核日期</label>
+            <input class="form-input" type="date" id="dpoFollowUp">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">If separate consent is needed / 如需要单独同意：</label>
+            <div class="check-group">
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="consentImpl" value="installed">
+                <div><div class="label-text">Separate Consent installed into interface systems</div><div class="label-cn">单独同意已添加至相关界面系统</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="consentImpl" value="systemReady">
+                <div><div class="label-text">Systems to differentiate refusing data subjects are ready</div><div class="label-cn">已准备系统以区分拒绝同意的数据主体</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Cross-border Transfer Requirements / 跨境传输要求</label>
+            <div class="check-group" id="crossBorderReq">
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="cbReq" value="govReview">
+                <div><div class="label-text">Pass government security assessment review</div><div class="label-cn">通过网信部门安全评估审查</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="cbReq" value="certification">
+                <div><div class="label-text">Personal information protection accreditation</div><div class="label-cn">个人信息保护认证</div></div>
+              </label>
+              <label class="check-item" onclick="toggleCheck(this)">
+                <input type="checkbox" name="cbReq" value="scc">
+                <div><div class="label-text">Sign standard contract formulated by CAC</div><div class="label-cn">签订网信部门制定的标准合同</div></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Other Comments / 其他评价</label>
+            <textarea class="form-textarea" id="dpoComments" placeholder="Enter any additional comments"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(4)">← Back</button>
+        <button class="btn btn-primary" onclick="generateSummary(); goToStep(6)">Next: Summary →</button>
+      </div>
+    </div>
+
+    <!-- ============= STEP 7: Summary & Export ============= -->
+    <div class="step-section" id="step6">
+      <div class="card">
+        <div class="card-title">Assessment Summary 评估总结</div>
+        <div class="card-title-cn">Review and export your PIPIA assessment</div>
+
+        <div class="summary-grid" id="summaryGrid"></div>
+
+        <hr class="section-divider">
+
+        <div class="card-title" style="margin-bottom:16px;">Data Fields & Classification 数据字段与分类</div>
+        <div id="summaryDataFields"></div>
+
+        <hr class="section-divider">
+
+        <div class="card-title" style="margin-bottom:16px;">Triggered Modules 触发模块</div>
+        <div id="summaryModules"></div>
+
+        <hr class="section-divider">
+
+        <div class="card-title" style="margin-bottom:16px;">Security Measures Required 所需安全措施</div>
+        <div id="summarySecurityMeasures"></div>
+
+        <hr class="section-divider">
+
+        <div class="card-title" style="margin-bottom:16px;">⚡ Action Items 行动项目</div>
+        <div id="summaryActionItems"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="btn btn-secondary" onclick="goToStep(5)">← Back</button>
+        <button class="btn btn-success" onclick="exportReport()">📄 Export Full Report 导出完整报告</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+// DATA CLASSIFICATION ENGINE
+// Based on GB/T 35273 & GB/T XXXXX (Sensitive PI Security Requirements)
+// ==========================================
+
+const DATA_CLASSIFICATION = {
+  // Sensitive Personal Information 敏感个人信息
+  sensitive: {
+    fields: [
+      // Biometric 生物识别
+      { keywords: ['fingerprint','指纹','face recognition','人脸','facial','voiceprint','声纹','iris','虹膜','retina','视网膜','palm','掌纹','dna','基因','genetic','遗传','biometric','生物识别','生物特征'], category: 'Biometric Info 生物识别信息', level: 'Strictly Confidential 严格保密' },
+      // Religious belief 宗教信仰
+      { keywords: ['religion','宗教','faith','信仰','belief','buddhist','佛教','christian','基督','muslim','穆斯林','islam','伊斯兰'], category: 'Religious Belief 宗教信仰', level: 'Strictly Confidential 严格保密' },
+      // Specific identity 特定身份
+      { keywords: ['ethnicity','民族','race','种族','political','政治','party member','党员','union','工会'], category: 'Specific Identity 特定身份', level: 'Strictly Confidential 严格保密' },
+      // Medical health 医疗健康
+      { keywords: ['medical','医疗','health','健康','disease','疾病','diagnosis','诊断','hospital','医院','prescription','处方','medicine','药物','blood type','血型','disability','残疾','mental health','心理健康','physical exam','体检','vaccination','疫苗','insurance claim','保险理赔'], category: 'Medical & Health 医疗健康', level: 'Strictly Confidential 严格保密' },
+      // Financial account 金融账户
+      { keywords: ['bank account','银行账户','credit card','信用卡','debit card','借记卡','payment','支付','financial account','金融账户','securities','证券','fund','基金','insurance','保险','loan','贷款','mortgage','抵押','wealth','资产','income','收入','salary','工资','payroll','薪酬','tax','税务','social security number','社保号','provident fund','公积金'], category: 'Financial Account 金融账户', level: 'Strictly Confidential 严格保密' },
+      // Location tracking 行踪轨迹
+      { keywords: ['gps','location tracking','行踪轨迹','real-time location','实时位置','movement','移动轨迹','travel history','出行记录','geolocation','地理位置','tracking','追踪'], category: 'Location Tracking 行踪轨迹', level: 'Confidential 保密' },
+      // Minors under 14 未满14岁未成年人
+      { keywords: ['minor','未成年','child','儿童','kid','under 14','14岁以下','juvenile','少年','student under 14','14岁以下学生'], category: 'Minor (Under 14) 未成年人(14岁以下)', level: 'Secret 机密' },
+      // ID numbers
+      { keywords: ['id number','身份证号','passport number','护照号','social security','社会保障号','driver license','驾驶证号','military id','军官证'], category: 'ID Document Number 证件号码', level: 'Strictly Confidential 严格保密' },
+      // Sexual orientation
+      { keywords: ['sexual orientation','性取向','gender identity','性别认同','sex life','性生活'], category: 'Sexual Orientation 性取向', level: 'Strictly Confidential 严格保密' },
+      // Criminal record
+      { keywords: ['criminal','犯罪','conviction','定罪','offense','违法','arrest','逮捕','detention','拘留'], category: 'Criminal Record 犯罪记录', level: 'Strictly Confidential 严格保密' },
+    ]
+  },
+  // General Personal Information 一般个人信息
+  personal: {
+    fields: [
+      { keywords: ['name','姓名','full name','全名','real name','真实姓名'], category: 'Name 姓名', level: 'Confidential 保密' },
+      { keywords: ['phone','电话','mobile','手机','telephone','联系方式','contact number','联系电话'], category: 'Phone Number 电话号码', level: 'Confidential 保密' },
+      { keywords: ['email','邮箱','e-mail','电子邮件'], category: 'Email 电子邮箱', level: 'Confidential 保密' },
+      { keywords: ['address','地址','住址','home address','家庭地址','residence','居住地','mailing address','通讯地址'], category: 'Address 地址', level: 'Confidential 保密' },
+      { keywords: ['date of birth','出生日期','birthday','生日','age','年龄','dob'], category: 'Date of Birth 出生日期', level: 'Non-public 非公开' },
+      { keywords: ['gender','性别','sex','male','female'], category: 'Gender 性别', level: 'Non-public 非公开' },
+      { keywords: ['marital','婚姻','marriage','spouse','配偶','family','家庭'], category: 'Marital Status 婚姻状况', level: 'Non-public 非公开' },
+      { keywords: ['education','学历','degree','学位','school','学校','university','大学','graduation','毕业'], category: 'Education 学历', level: 'Non-public 非公开' },
+      { keywords: ['employment','就业','job','工作','occupation','职业','employer','雇主','work experience','工作经历','resume','简历','cv'], category: 'Employment 就业信息', level: 'Non-public 非公开' },
+      { keywords: ['ip address','ip地址','mac address','mac地址','device id','设备标识','imei','device info','设备信息','browser','浏览器','cookie','user agent'], category: 'Device/Network Info 设备网络信息', level: 'Non-public 非公开' },
+      { keywords: ['purchase','购买','order','订单','transaction','交易','shopping','购物','consumption','消费','browsing history','浏览记录','search history','搜索记录','click','点击'], category: 'Online Activity 网络活动', level: 'Non-public 非公开' },
+      { keywords: ['photo','照片','image','图片','picture','avatar','头像','video','视频'], category: 'Photo/Video 照片视频', level: 'Confidential 保密' },
+      { keywords: ['account','账号','username','用户名','user id','用户id','login','登录','password','密码','nickname','昵称'], category: 'Account Info 账号信息', level: 'Confidential 保密' },
+      { keywords: ['preference','偏好','interest','兴趣','hobby','爱好','taste','口味'], category: 'Preferences 偏好', level: 'Non-public 非公开' },
+      { keywords: ['vin','车辆识别号','vehicle','车辆','license plate','车牌','car','汽车','automobile'], category: 'Vehicle Info 车辆信息', level: 'Non-public 非公开' },
+      { keywords: ['property','房产','real estate','不动产','asset','资产'], category: 'Property Info 财产信息', level: 'Confidential 保密' },
+    ]
+  },
+  // Non-personal / Important Data
+  nonPersonal: {
+    fields: [
+      { keywords: ['aggregate','聚合','statistical','统计','anonymized','匿名','de-identified','去标识'], category: 'Aggregated/Anonymized Data 聚合匿名数据', level: 'Non-public 非公开' },
+      { keywords: ['business data','业务数据','sales data','销售数据','marketing data','营销数据','operational','运营'], category: 'Business Data 业务数据', level: 'Non-public 非公开' },
+      { keywords: ['public','公开','published','已发布','open','开放'], category: 'Public Data 公开数据', level: 'Public 公开' },
+    ]
+  }
+};
+
+// Security measures mapping by level
+const SECURITY_MEASURES = {
+  'Secret 机密': {
+    collection: ['Obtain guardian consent 取得监护人同意', 'Strict identity verification 严格身份验证', 'Minimum data collection principle 最小数据收集原则', 'Dedicated collection channel 专用收集通道'],
+    storage: ['Encryption at rest (AES-256) 静态加密', 'Isolated storage environment 隔离存储环境', 'Access logging with real-time alert 访问日志实时告警', 'Regular security audit 定期安全审计'],
+    processing: ['De-identification before processing 处理前去标识化', 'Strict access control (need-to-know basis) 严格访问控制', 'Processing audit trail 处理审计追踪', 'Data masking in non-production 非生产环境数据脱敏'],
+    transfer: ['End-to-end encryption 端到端加密', 'Separate consent required 需要单独同意', 'Security assessment required 需要安全评估', 'Data transfer agreement required 需要数据传输协议'],
+    deletion: ['Certified data destruction 认证数据销毁', 'Destruction certificate required 需要销毁证明', 'Multi-party verification 多方验证']
+  },
+  'Strictly Confidential 严格保密': {
+    collection: ['Separate consent for sensitive PI 敏感个人信息单独同意', 'Purpose limitation strictly enforced 严格目的限制', 'Clear privacy notice 明确隐私告知', 'Minimum necessary verification 最小必要验证'],
+    storage: ['Encryption at rest 静态加密', 'Access control with role-based permissions 基于角色的访问控制', 'Audit logging 审计日志', 'Backup encryption 备份加密'],
+    processing: ['De-identification where possible 尽可能去标识化', 'Access restricted to authorized personnel 仅授权人员访问', 'Processing purpose limitation 处理目的限制', 'Regular compliance review 定期合规审查'],
+    transfer: ['TLS 1.2+ for transmission 传输加密', 'DPA/SCC required 需要DPA/SCC', 'Recipient security assessment 接收方安全评估', 'Separate consent for cross-border 跨境单独同意'],
+    deletion: ['Secure deletion method 安全删除方法', 'Deletion record keeping 删除记录保留', 'Verification of deletion 删除验证']
+  },
+  'Confidential 保密': {
+    collection: ['Informed consent 知情同意', 'Privacy notice provided 提供隐私告知', 'Purpose specified 明确目的', 'Lawful basis documented 法律依据记录'],
+    storage: ['Encryption recommended 建议加密', 'Access control 访问控制', 'Regular backup 定期备份', 'Retention policy enforced 执行存储期限策略'],
+    processing: ['Access control 访问控制', 'Purpose limitation 目的限制', 'Data minimization 数据最小化'],
+    transfer: ['Encryption in transit 传输加密', 'Data processing agreement 数据处理协议', 'Recipient verification 接收方验证'],
+    deletion: ['Standard secure deletion 标准安全删除', 'Deletion confirmation 删除确认']
+  },
+  'Non-public 非公开': {
+    collection: ['Consent obtained 获得同意', 'Privacy notice 隐私告知', 'Purpose stated 目的说明'],
+    storage: ['Standard access control 标准访问控制', 'Regular backup 定期备份'],
+    processing: ['Standard access control 标准访问控制', 'Purpose limitation 目的限制'],
+    transfer: ['Standard encryption 标准加密', 'Recipient identified 接收方确认'],
+    deletion: ['Standard deletion 标准删除']
+  },
+  'Public 公开': {
+    collection: ['Lawful source verification 合法来源验证'],
+    storage: ['Standard access control 标准访问控制'],
+    processing: ['Standard processing controls 标准处理控制'],
+    transfer: ['No special requirements 无特殊要求'],
+    deletion: ['Standard deletion 标准删除']
+  }
+};
+
+function classifyDataField(fieldName) {
+  const lower = fieldName.toLowerCase();
+  // Check sensitive first
+  for (const field of DATA_CLASSIFICATION.sensitive.fields) {
+    for (const kw of field.keywords) {
+      if (lower.includes(kw.toLowerCase())) {
+        return { type: 'Sensitive PI 敏感个人信息', category: field.category, level: field.level, isSensitive: true };
+      }
+    }
+  }
+  // Check personal
+  for (const field of DATA_CLASSIFICATION.personal.fields) {
+    for (const kw of field.keywords) {
+      if (lower.includes(kw.toLowerCase())) {
+        return { type: 'Personal Info 个人信息', category: field.category, level: field.level, isSensitive: false };
+      }
+    }
+  }
+  // Check non-personal
+  for (const field of DATA_CLASSIFICATION.nonPersonal.fields) {
+    for (const kw of field.keywords) {
+      if (lower.includes(kw.toLowerCase())) {
+        return { type: 'Non-PI 非个人信息', category: field.category, level: field.level, isSensitive: false };
+      }
+    }
+  }
+  // Default
+  return { type: 'Unclassified 未分类', category: 'Please review manually 请手动审核', level: 'Non-public 非公开', isSensitive: false };
+}
+
+function getLevelBadgeClass(level) {
+  if (level.includes('Secret')) return 'badge-secret';
+  if (level.includes('Strictly')) return 'badge-strict';
+  if (level.includes('Confidential') && !level.includes('Strictly')) return 'badge-confidential';
+  if (level.includes('Non-public')) return 'badge-nonpublic';
+  if (level.includes('Public')) return 'badge-public';
+  return 'badge-nonpublic';
+}
+
+function getTypeBadgeClass(type) {
+  if (type.includes('Sensitive')) return 'badge-sensitive';
+  if (type.includes('Personal')) return 'badge-normal';
+  return 'badge-nonpublic';
+}
+
+// ==========================================
+// DATA FIELD MANAGEMENT
+// ==========================================
+let dataFields = [];
+let fieldCounter = 0;
+
+// Build the master dropdown options list from DATA_CLASSIFICATION
+function buildFieldOptions() {
+  const options = [];
+  // Sensitive fields
+  DATA_CLASSIFICATION.sensitive.fields.forEach(f => {
+    options.push({ label: f.category, type: 'Sensitive PI 敏感个人信息', level: f.level, group: 'Sensitive Personal Information 敏感个人信息' });
+  });
+  // Personal fields
+  DATA_CLASSIFICATION.personal.fields.forEach(f => {
+    options.push({ label: f.category, type: 'Personal Info 个人信息', level: f.level, group: 'General Personal Information 一般个人信息' });
+  });
+  // Non-personal fields
+  DATA_CLASSIFICATION.nonPersonal.fields.forEach(f => {
+    options.push({ label: f.category, type: 'Non-PI 非个人信息', level: f.level, group: 'Non-Personal / Other Data 非个人信息/其他数据' });
+  });
+  return options;
+}
+
+const FIELD_OPTIONS = buildFieldOptions();
+
+function getFieldOptionByLabel(label) {
+  return FIELD_OPTIONS.find(o => o.label === label) || null;
+}
+
+function buildSelectOptionsHTML() {
+  let html = '<option value="">-- Select Data Field 选择数据字段 --</option>';
+  let currentGroup = '';
+  FIELD_OPTIONS.forEach(opt => {
+    if (opt.group !== currentGroup) {
+      if (currentGroup) html += '</optgroup>';
+      html += `<optgroup label="${opt.group}">`;
+      currentGroup = opt.group;
+    }
+    html += `<option value="${escHTML(opt.label)}">${opt.label}</option>`;
+  });
+  if (currentGroup) html += '</optgroup>';
+  return html;
+}
+
+function addDataField() {
+  fieldCounter++;
+  const id = 'field_' + fieldCounter;
+  dataFields.push({ id, name: '', classification: null, purpose: '' });
+  renderDataFields();
+}
+
+function removeDataField(id) {
+  dataFields = dataFields.filter(f => f.id !== id);
+  renderDataFields();
+}
+
+function onFieldSelectChange(id, value) {
+  const field = dataFields.find(f => f.id === id);
+  if (field) {
+    field.name = value;
+    const opt = getFieldOptionByLabel(value);
+    if (opt) {
+      field.classification = { type: opt.type, category: opt.label, level: opt.level, isSensitive: opt.type.includes('Sensitive') };
+    } else {
+      field.classification = null;
+    }
+    // Only re-render the classification cells, not the whole table (to preserve dropdown state)
+    const typeCell = document.getElementById('cls_' + id);
+    const levelCell = document.getElementById('lvl_' + id);
+    if (typeCell && levelCell) {
+      const cls = field.classification;
+      typeCell.innerHTML = cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>';
+      levelCell.innerHTML = cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-';
+    }
+  }
+}
+
+function onFieldPurposeChange(id, value) {
+  const field = dataFields.find(f => f.id === id);
+  if (field) field.purpose = value;
+}
+
+function renderDataFields() {
+  const tbody = document.getElementById('dataFieldBody');
+  tbody.innerHTML = '';
+  const selectHTML = buildSelectOptionsHTML();
+  dataFields.forEach(f => {
+    const cls = f.classification;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><select class="form-select" onchange="onFieldSelectChange('${f.id}', this.value)" style="font-size:13px;">${selectHTML}</select></td>
+      <td id="cls_${f.id}">${cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>'}</td>
+      <td id="lvl_${f.id}">${cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-'}</td>
+      <td><input class="form-input" value="${escHTML(f.purpose)}" onchange="onFieldPurposeChange('${f.id}', this.value)" placeholder="Purpose 处理目的" style="font-size:13px;"></td>
+      <td><button class="remove-btn" onclick="removeDataField('${f.id}')">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+    // Restore selected value if field already has a name
+    if (f.name) {
+      const sel = tr.querySelector('select');
+      if (sel) sel.value = f.name;
+    }
+  });
+}
+
+function escHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ==========================================
+// STEP NAVIGATION
+// ==========================================
+let currentStep = 0;
+const totalSteps = 7;
+
+function goToStep(n) {
+  document.querySelectorAll('.step-section').forEach((s, i) => {
+    s.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.step-nav li').forEach((li, i) => {
+    li.classList.remove('active');
+    if (i < n) li.classList.add('completed');
+    if (i === n) li.classList.add('active');
+  });
+  currentStep = n;
+  document.getElementById('progressText').textContent = `Step ${n + 1} of ${totalSteps}`;
+  document.getElementById('progressFill').style.width = ((n + 1) / totalSteps * 100) + '%';
+  window.scrollTo(0, 0);
+}
+
+// ==========================================
+// UI HELPERS
+// ==========================================
+function selectPill(el, groupId) {
+  document.querySelectorAll(`#${groupId} .radio-pill`).forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleCheck(el) {
+  const input = el.querySelector('input');
+  if (input.type === 'radio') {
+    const name = input.name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(i => {
+      i.closest('.check-item').classList.remove('selected');
+    });
+    input.checked = true;
+    el.classList.add('selected');
+  } else {
+    input.checked = !input.checked;
+    el.classList.toggle('selected', input.checked);
+  }
+}
+
+function togglePriorRef(show) {
+  document.getElementById('priorRef').style.display = show ? 'block' : 'none';
+}
+
+// ==========================================
+// MODULE TRIGGER LOGIC
+// ==========================================
+let triggeredModules = new Set([1, 8]); // Always required
+
+function calculateTriggers() {
+  recalcTriggers();
+}
+
+function recalcTriggers() {
+  triggeredModules = new Set([1, 8]); // Always required
+
+  // From trigger events
+  const triggers = document.querySelectorAll('input[name="trigger"]:checked');
+  triggers.forEach(t => {
+    if (t.value === 'outsource') { triggeredModules.add(2); triggeredModules.add(5); }
+    if (t.value === 'sharing') { triggeredModules.add(3); triggeredModules.add(5); }
+    if (t.value === 'crossBorder') { triggeredModules.add(4); }
+    if (t.value === 'merging') { triggeredModules.add(7); }
+    if (t.value === 'automated') { triggeredModules.add(6); }
+    if (t.value === 'sensitive') { triggeredModules.add(5); }
+  });
+
+  // From third party processing
+  const tp = document.querySelector('input[name="thirdParty"]:checked');
+  if (tp) {
+    document.getElementById('thirdPartyDetails').style.display = tp.value === 'thirdPartyYes' ? 'block' : 'none';
+    if (tp.value === 'selfOnly') { triggeredModules.add(5); }
+  }
+
+  // Cross-border
+  const cb = document.querySelector('input[name="crossBorderQ"]:checked');
+  if (cb && cb.value === 'yes') { triggeredModules.add(4); }
+
+  // Outsource/share
+  document.querySelectorAll('input[name="outsourceQ"]:checked').forEach(o => {
+    if (o.value === 'outsource') { triggeredModules.add(2); triggeredModules.add(5); }
+    if (o.value === 'share') { triggeredModules.add(3); triggeredModules.add(5); }
+  });
+
+  // Special
+  document.querySelectorAll('input[name="specialQ"]:checked').forEach(s => {
+    if (s.value === 'merging') { triggeredModules.add(7); }
+    if (s.value === 'automated') { triggeredModules.add(6); }
+  });
+
+  // Offline processing
+  const op = document.querySelector('input[name="offlineProc"]:checked');
+  if (op && (op.value === 'offline' || op.value === 'onlineUnapproved')) {
+    triggeredModules.add(5);
+  }
+
+  // Has sensitive data
+  if (dataFields.some(f => f.classification && f.classification.isSensitive)) {
+    triggeredModules.add(5);
+  }
+
+  renderTriggerSummary();
+}
+
+const MODULE_NAMES = {
+  1: { en: 'Minimization and Necessity Test', cn: '最小必要测试' },
+  2: { en: 'Data Processing Activities', cn: '数据处理活动' },
+  3: { en: 'Data Sharing Activities', cn: '数据共享' },
+  4: { en: 'Cross-border Data Transfer Test', cn: '数据跨境传输' },
+  5: { en: 'Data Security Measures', cn: '数据安全措施' },
+  6: { en: 'Algorithms and Automated Decision', cn: '算法和自动化决策' },
+  7: { en: 'Data Merging', cn: '数据融合' },
+  8: { en: 'Rights and Interests of Data Subjects', cn: '数据主体的权益' }
+};
+
+function renderTriggerSummary() {
+  const container = document.getElementById('triggerSummary');
+  let html = '';
+  for (let i = 1; i <= 8; i++) {
+    const triggered = triggeredModules.has(i);
+    const isRequired = (i === 1 || i === 8);
+    html += `
+      <div class="trigger-item">
+        <div>
+          <strong>Module ${i}: ${MODULE_NAMES[i].en}</strong><br>
+          <span style="font-size:12px; color: var(--text-muted);">模块${i}: ${MODULE_NAMES[i].cn}</span>
+        </div>
+        <span class="module-tag ${triggered ? 'required' : 'na'}">${triggered ? (isRequired ? '✓ Always Required 始终必需' : '✓ Triggered 已触发') : '— Not Required 不需要'}</span>
+      </div>
+    `;
+  }
+  container.innerHTML = html;
+}
+
+// ==========================================
+// MODULE FORMS
+// ==========================================
+// ==========================================
+// TASK TRACKER
+// ==========================================
+let actionTasks = [];
+
+function addTask(module, assignee, description, descCn, priority) {
+  const id = 'task_' + Date.now() + '_' + Math.random().toString(36).substr(2,5);
+  // Avoid duplicates
+  if (!actionTasks.find(t => t.description === description && t.module === module)) {
+    actionTasks.push({ id, module, assignee, description, descCn, priority, status: 'open' });
+  }
+  renderTaskTracker();
+}
+
+function removeTask(id) {
+  actionTasks = actionTasks.filter(t => t.id !== id);
+  renderTaskTracker();
+}
+
+function renderTaskTracker() {
+  const container = document.getElementById('taskTrackerBody');
+  if (!container) return;
+  if (actionTasks.length === 0) {
+    container.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">No action items triggered yet. Complete module questions to generate tasks.<br>尚无触发的行动项目。完成模块问题后将自动生成。</td></tr>';
+    return;
+  }
+  container.innerHTML = actionTasks.map(t => `
+    <tr>
+      <td><span class="module-tag ${t.priority === 'high' ? 'required' : 'optional'}" style="font-size:11px;">M${t.module}</span></td>
+      <td><span class="badge ${t.assignee === 'Legal' ? 'badge-sensitive' : t.assignee === 'IT' ? 'badge-normal' : 'badge-nonpublic'}">${t.assignee}</span></td>
+      <td><strong>${t.description}</strong><br><span style="font-size:11px; color:var(--text-muted);">${t.descCn}</span></td>
+      <td><span style="color:${t.priority === 'high' ? 'var(--danger)' : 'var(--warning)'}; font-weight:600;">${t.priority === 'high' ? '🔴 High 高' : '🟡 Medium 中'}</span></td>
+      <td><button class="remove-btn" onclick="removeTask('${t.id}')" title="Dismiss">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+// DPO Evaluation helper — reusable across modules
+function dpoBlocK(moduleNum) {
+  return `
+    <div class="dpo-box" style="margin-top:20px;">
+      <h4>DPO's Evaluation 数据保护官评估 — Module ${moduleNum}</h4>
+      <div class="form-group">
+        <label class="form-label">Double check if the understanding is consistent with law requirements<br><span class="form-label-cn">再次检查以上内容是否与法律要求相符</span></label>
+      </div>
+      <div class="check-group">
+        <label class="check-item" onclick="toggleCheck(this); triggerTaskFromDPO(${moduleNum}, 'consent', this)"><input type="checkbox" data-task="consent"><div><div class="label-text">Recommend consent into current privacy policy</div><div class="label-cn">建议当前隐私政策中增加同意 → <strong style="color:var(--danger);">Task: Legal to update privacy policy</strong></div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); triggerTaskFromDPO(${moduleNum}, 'separateConsent', this)"><input type="checkbox" data-task="separateConsent"><div><div class="label-text">Recommend separate consent</div><div class="label-cn">建议单独同意 → <strong style="color:var(--danger);">Task: Legal to draft separate consent + IT to implement</strong></div></div></label>
+      </div>
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Recommend other changes / 推荐其他变更</label>
+        <textarea class="form-textarea" id="dpo_m${moduleNum}_changes" placeholder="Other recommended changes"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">To be followed up on / 追踪审核日期</label>
+        <input class="form-input" type="date" id="dpo_m${moduleNum}_followup">
+      </div>
+      <div id="dpo_m${moduleNum}_consentBlock" style="display:none; margin-top:12px; padding:12px; background:#fff5f5; border-radius:8px; border:1px solid #feb2b2;">
+        <label class="form-label" style="color:var(--danger);">If separate consent is needed / 如果根据评估需要单独同意：</label>
+        <div class="check-group" style="margin-top:8px;">
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Separate Consent has been installed into interface systems/place</div><div class="label-cn">单独同意已添加至相关界面系统/位置</div></div></label>
+          <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Systems/procedures to differentiate data subjects who refuse to grant separate consent are ready</div><div class="label-cn">已准备并可运行系统/程序，以区分拒绝给予单独同意的数据主体</div></div></label>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label">Other comments / 其他评价</label>
+        <textarea class="form-textarea" id="dpo_m${moduleNum}_comments" placeholder="Other comments"></textarea>
+      </div>
+    </div>
+  `;
+}
+
+function triggerTaskFromDPO(moduleNum, taskType, el) {
+  const checked = el.querySelector('input').checked;
+  const consentBlock = document.getElementById('dpo_m' + moduleNum + '_consentBlock');
+  if (taskType === 'consent' && checked) {
+    addTask(moduleNum, 'Legal', 'Update privacy policy to add consent clause', '更新隐私政策，增加同意条款', 'high');
+  }
+  if (taskType === 'separateConsent') {
+    if (consentBlock) consentBlock.style.display = checked ? 'block' : 'none';
+    if (checked) {
+      addTask(moduleNum, 'Legal', 'Draft separate consent language', '起草单独同意条款', 'high');
+      addTask(moduleNum, 'IT', 'Implement separate consent mechanism in UI', '在界面系统中实施单独同意机制', 'high');
+      addTask(moduleNum, 'IT', 'Build system to differentiate refusing data subjects', '建立系统以区分拒绝同意的数据主体', 'medium');
+    }
+  }
+}
+
+function buildModuleForms() {
+  const container = document.getElementById('moduleFormsContainer');
+  let html = '';
+
+  // Task Tracker Panel
+  html += `
+    <div class="card" style="background:linear-gradient(135deg, #fff5f5, #fffff0); border:1px solid #fed7aa; margin-bottom:20px;">
+      <div class="card-title" style="color:var(--danger);">⚡ Action Items Tracker 行动项目追踪</div>
+      <div class="card-title-cn">Tasks auto-generated from module responses / 基于模块回答自动生成的任务</div>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead><tr><th style="width:60px">Module</th><th style="width:80px">Assignee 负责方</th><th>Task Description 任务描述</th><th style="width:100px">Priority 优先级</th><th style="width:40px"></th></tr></thead>
+          <tbody id="taskTrackerBody">
+            <tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">No action items triggered yet.<br>尚无触发的行动项目。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  for (let i = 1; i <= 8; i++) {
+    if (triggeredModules.has(i)) {
+      html += window['buildModule' + i]();
+    }
+  }
+  container.innerHTML = html;
+}
+
+function toggleModule(id) {
+  const header = document.getElementById('mh_' + id);
+  const body = document.getElementById('mb_' + id);
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+function moduleWrap(num, content) {
+  return `
+    <div class="module-section">
+      <div class="module-header" id="mh_m${num}" onclick="toggleModule('m${num}')">
+        <div>Module ${num}: ${MODULE_NAMES[num].en}<br><span style="font-size:12px; color: var(--text-muted);">模块${num}: ${MODULE_NAMES[num].cn}</span></div>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="module-body" id="mb_m${num}">${content}</div>
+    </div>
+  `;
+}
+
+// ==========================================
+// MODULE 1: Minimization and Necessity Test
+// ==========================================
+function buildModule1() {
+  let rows = '';
+  dataFields.forEach((f, i) => {
+    if (f.name) {
+      rows += `<tr>
+        <td>${escHTML(f.name)}${f.classification ? '<br><span class="badge '+getTypeBadgeClass(f.classification.type)+'">'+f.classification.type+'</span>' : ''}</td>
+        <td><input class="form-input" style="font-size:12px;" placeholder="Purpose" value="${escHTML(f.purpose)}"></td>
+        <td><select class="form-select" style="font-size:12px;">
+          <option value="">Select 选择</option>
+          <option value="a">a. Legal grounds (no consent needed) 法律规定无需同意</option>
+          <option value="b">b. Contract performance 为订立、履行合同所必需</option>
+          <option value="c">c. HR management per labor rules 劳动规章制度人力资源管理所必需</option>
+          <option value="d">d. Statutory duties/obligations 履行法定职责或义务所必需</option>
+          <option value="e">e. Public health emergency 公共卫生应急/保护生命健康财产安全</option>
+          <option value="f">f. Public interest (news/media) 公共利益新闻报道舆论监督</option>
+          <option value="g">g. Publicly disclosed PI 已合法公开的个人信息</option>
+          <option value="h">h. Commercial need — essential for service 商业需求(用户不提供则无法获得完整服务)</option>
+          <option value="i">i. Commercial need — enhances experience 商业需求(影响用户体验提升及服务改进)</option>
+          <option value="j">j. Other 其他情况</option>
+        </select></td>
+        <td><select class="form-select" style="font-size:12px;" onchange="if(this.value !== 'none') { addTask(1, 'Legal', 'Review consent mechanism for: ${escHTML(f.name)}', '审查同意机制: ${escHTML(f.name)}', 'medium'); }">
+          <option value="none">Select 选择</option>
+          <option value="privacyPolicy">Via privacy policy acceptance 通过隐私政策同意</option>
+          <option value="separateConsent">Separate consent pop-up 单独同意弹窗</option>
+          <option value="checkbox">Checkbox at data entry 数据输入处的复选框</option>
+          <option value="contractual">Contractual agreement 合同约定</option>
+          <option value="noConsent">No consent required (legal basis) 无需同意(法定依据)</option>
+          <option value="other">Other 其他</option>
+        </select></td>
+        <td><input class="form-input" style="font-size:12px;" placeholder="Remarks 备注 (contract type etc.)"></td>
+      </tr>`;
+    }
+  });
+  if (!rows) {
+    rows = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">No data fields added. Go back to Step 2.<br>请返回步骤2添加数据字段。</td></tr>`;
+  }
+
+  return moduleWrap(1, `
+    <div class="alert alert-info">
+      <strong>Minimization and Necessity Test 最小必要测试</strong><br>
+      The collection of Data is limited to the minimum scope necessary for achieving the purpose of processing. It is not allowed to excessively collect or trace Data, nor to induce or force Data subjects to provide excessive Data.<br>
+      <span style="font-size:12px;">收集数据已限于实现处理目的的最小范围，不允许过度收集、追踪数据，或诱导、强迫数据主体提供过多数据。</span>
+    </div>
+    <p style="font-size:13px; margin-bottom:12px;">Please fill in the table below with the type of data, purpose of processing and select the minimum and necessary scenario:<br><span style="color:var(--text-muted); font-size:12px;">请在下表中填写数据类型、处理目的并选择最小必要情形：</span></p>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead><tr>
+          <th>Data Field 数据类型</th>
+          <th>Processing Purpose 处理目的</th>
+          <th>Min. & Necessary Scenario 最小必要类型</th>
+          <th>Consent Method 取得同意途径</th>
+          <th>Remarks 备注</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    ${dpoBlocK(1)}
+  `);
+}
+
+// ==========================================
+// MODULE 2: Data Processing Activities (Outsourcing)
+// ==========================================
+function buildModule2() {
+  return moduleWrap(2, `
+    <div class="alert alert-info"><strong>Data Processing Activities 数据处理活动</strong><br>
+    This Module only applies when Data is not to be transferred outside of Mainland China or remotely accessed from outside.<br>
+    <span style="font-size:12px;">本模块仅适用于数据不传输至中国大陆以外或不被中国大陆以外远程访问的数据处理活动。</span></div>
+
+    <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data outsourced to Affiliated China entities / 委托给关联中国实体处理</h4>
+    <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m2_affEntity" placeholder="Affiliated entity name"></div>
+    <div class="check-group">
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory regarding Intercompany Data Transfer part has been filled out and completed</div><div class="label-cn">已在data inventory填写完成公司间数据传输部分</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
+    </div>
+    <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface of providing PI / 对外传输个人信息的系统技术接口</label><input class="form-input" id="m2_affTechInt" placeholder="e.g. API, SFTP, Direct DB access"></div>
+
+    <hr class="section-divider">
+    <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data outsourced to NON-Affiliated entities / 委托给非关联实体处理</h4>
+    <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m2_nonAffEntity" placeholder="Non-affiliated entity names"></div>
+    <div class="check-group">
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory for such data processing activities has been filled out and completed</div><div class="label-cn">在data inventory中对该等处理活动填写并完成</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data mapping has been uploaded to the data inventory</div><div class="label-cn">Data mapping已经更新至data inventory中</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Business','Define ongoing supervision procedures for outsourced processing','定义委托处理的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Legal','Execute Data Processing Agreement (DPA)','签署数据处理协议(DPA)','high')"><input type="checkbox"><div><div class="label-text">Data Processing Agreement (DPA) signed</div><div class="label-cn">已签署Data Processing Agreement → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div></label>
+    </div>
+    <div class="form-group" style="margin-top:10px;"><label class="form-label">Further subcontracting to / 有转委托处理给</label><input class="form-input" id="m2_subcontract" placeholder="Subcontracted entity names (if any)"></div>
+    <div class="form-group"><label class="form-label">DPO of authorized party and subcontracted parties / 受托方和转受托方数据隐私保护负责人</label><input class="form-input" id="m2_subDPO" placeholder="DPO contact details"></div>
+    <div class="form-group"><label class="form-label">Technical interface / 系统技术接口</label><input class="form-input" id="m2_nonAffTechInt" placeholder="e.g. API, SFTP"></div>
+
+    ${dpoBlocK(2)}
+  `);
+}
+
+// ==========================================
+// MODULE 3: Data Sharing Activities
+// ==========================================
+function buildModule3() {
+  return moduleWrap(3, `
+    <div class="alert alert-info"><strong>Data Sharing Activities 数据共享</strong><br>
+    This Module only applies when Data is not to be transferred outside of Mainland China or remotely accessed from outside.<br>
+    <span style="font-size:12px;">本模块仅适用于数据不传输至中国大陆以外或不被中国大陆以外远程访问的数据共享活动。</span></div>
+
+    <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data shared to Affiliated China entities / 共享给关联中国实体</h4>
+    <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m3_affEntity" placeholder="Affiliated entity name"></div>
+    <div class="check-group">
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory regarding Intercompany Data Transfer part has been filled out and completed</div><div class="label-cn">已在data inventory填写完成公司间数据传输部分</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Obtain separate consent for data sharing with affiliated entity','就关联实体数据共享取得单独同意','high')"><input type="checkbox"><div><div class="label-text">The data sharing has obtained the separate consent from the data subject concerned</div><div class="label-cn">数据共享已取得数据主体的单独同意 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data sharing activities pass the minimum and necessity test</div><div class="label-cn">数据共享活动已完成最小必要测试</div></div></label>
+    </div>
+    <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface / 系统技术接口</label><input class="form-input" id="m3_affTechInt" placeholder="e.g. API, SFTP"></div>
+
+    <hr class="section-divider">
+    <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data shared to NON-Affiliated entities / 共享给非关联实体</h4>
+    <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m3_nonAffEntity" placeholder="Non-affiliated entity names"></div>
+    <div class="check-group">
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data inventory for such data sharing activities has been filled out and completed</div><div class="label-cn">在data inventory中对该等共享活动填写并完成</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data mapping has been uploaded to the data inventory</div><div class="label-cn">Data mapping已经更新至data inventory中</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Business','Define ongoing supervision procedures for data sharing','定义数据共享的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Execute Data Sharing Agreement','签署数据共享协议','high')"><input type="checkbox"><div><div class="label-text">Data Sharing Agreement signed</div><div class="label-cn">已签署数据共享协议 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div></label>
+    </div>
+    <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface / 系统技术接口</label><input class="form-input" id="m3_nonAffTechInt" placeholder="e.g. API, SFTP"></div>
+
+    ${dpoBlocK(3)}
+  `);
+}
+
+// ==========================================
+// MODULE 4: Cross-border Data Transfer
+// ==========================================
+function buildModule4() {
+  return moduleWrap(4, `
+    <div class="alert alert-danger">⚠️ <strong>Cross-border Data Transfer Test 数据跨境传输</strong> (including remote access outside of Mainland China 包括中国大陆以外的远程访问)<br>
+    <span style="font-size:12px;">Requires heightened scrutiny under PIPL / 根据《个保法》需要加强审查</span></div>
+
+    <h4 style="margin:16px 0 12px; color:var(--primary);">A. Transfer to/remotely accessed by Affiliated Group entities / 传输至境外关联实体或被其远程访问</h4>
+    <div class="form-group"><label class="form-label">Affiliated entities / 关联实体</label><input class="form-input" id="m4_affEntities" placeholder="Entity names"></div>
+    <div class="form-group"><label class="form-label">Purpose of cross-border transfer / 数据跨境传输的目的</label><input class="form-input" id="m4_affPurpose" placeholder="Purpose"></div>
+    <div class="form-group"><label class="form-label">Role of the Data Recipient / 数据接收方的角色</label>
+      <div class="radio-pills" id="m4_affRole"><span class="radio-pill" onclick="selectPill(this,'m4_affRole')">Data Controller 数据处理者</span><span class="radio-pill" onclick="selectPill(this,'m4_affRole')">Entrusted Data Processor 受委托数据处理者</span></div></div>
+    <div class="form-group"><label class="form-label">Whether data will be further processed or shared / 数据是否被进一步处理或共享</label><input class="form-input" id="m4_affFurther" placeholder="No / Yes, to [entity name]"></div>
+    <div class="form-group"><label class="form-label">Service explicitly mentioned in signed SCC or DPA? / 服务是否明确写在SCC或DPA中？</label>
+      <div class="radio-pills" id="m4_affSCC"><span class="radio-pill" onclick="selectPill(this,'m4_affSCC')">Yes 是</span><span class="radio-pill" onclick="selectPill(this,'m4_affSCC'); addTask(4,'Legal','Update SCC/DPA to include cross-border service scope','更新SCC/DPA以涵盖跨境服务范围','high')">No 否</span></div></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Estimated interaction frequency per day/year / 预计互动频率</label><input class="form-input" id="m4_affFreq" placeholder="e.g. Daily, 100 records/month"></div>
+      <div class="form-group"><label class="form-label">Estimated data subject volume per day/year / 预计数据主体数量</label><input class="form-input" id="m4_affVolume" placeholder="e.g. ~5,000/year"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Any plan to localize data processing in Mainland China? / 数据处理本地化计划？</label><input class="form-input" id="m4_affLocal" placeholder="Yes/No, timetable if yes"></div>
+    <div class="form-group">
+      <label class="form-label">Data fields transferred / 传输的数据类型</label>
+      <div class="check-group" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">HR data 人力资源数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Applicants data 求职数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Payroll data 工资数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Training data 培训数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">HR master data 人力资源管理数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Corporate security data 企业安全数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Health & Occupational Safety 健康和职业安全数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Performance data 工作表现数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Usage of IT application data 计算机应用程序使用数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Customer data (specify) 客户数据</div></label>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Separate consent obtained for cross-border transfer? / 跨境传输已取得单独同意？</label>
+      <div class="radio-pills" id="m4_affConsent"><span class="radio-pill" onclick="selectPill(this,'m4_affConsent')">Yes 是</span><span class="radio-pill" onclick="selectPill(this,'m4_affConsent'); addTask(4,'Legal','Obtain separate consent for cross-border data transfer','就数据跨境传输取得单独同意','high')">No 否</span></div>
+      <input class="form-input" id="m4_affConsentReason" placeholder="If no, state reason 如否请说明原因" style="margin-top:8px;"></div>
+    <div class="form-group"><label class="form-label">Necessity for cross-border transfer / 跨境传输的必要性</label><textarea class="form-textarea" id="m4_affNecessity" placeholder="Describe why cross-border transfer is necessary"></textarea></div>
+
+    <hr class="section-divider">
+    <h4 style="margin:16px 0 12px; color:var(--primary);">B. Transfer to/remotely accessed by NON-Affiliated entities / 传输至境外非关联实体或被其远程访问</h4>
+    <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m4_nonAffEntities" placeholder="Non-affiliated entity names"></div>
+    <div class="form-group"><label class="form-label">First Data recipient once Data leaves Mainland China / 数据出境后第一个接收方</label><input class="form-input" id="m4_nonAffFirst" placeholder="Entity name"></div>
+    <div class="form-group"><label class="form-label">Country/region of Data recipient / 接收方所在国家/地区</label><input class="form-input" id="m4_nonAffCountry" placeholder="Country/Region"></div>
+    <div class="form-group"><label class="form-label">Purpose of cross-border transfer / 跨境传输目的</label><input class="form-input" id="m4_nonAffPurpose" placeholder="Purpose"></div>
+    <div class="form-group"><label class="form-label">Role of the Data Recipient / 接收方角色</label>
+      <div class="radio-pills" id="m4_nonAffRole"><span class="radio-pill" onclick="selectPill(this,'m4_nonAffRole')">Data Controller 数据处理者</span><span class="radio-pill" onclick="selectPill(this,'m4_nonAffRole')">Entrusted Data Processor 受委托数据处理者</span></div></div>
+    <div class="form-group"><label class="form-label">Data further processed or shared? / 数据是否被进一步处理或共享？</label><input class="form-input" id="m4_nonAffFurther" placeholder="No / Yes, to [entity name]"></div>
+    <div class="form-group"><label class="form-label">Service mentioned in signed SCC or DPA? / 服务是否写在SCC或DPA中？</label>
+      <div class="radio-pills" id="m4_nonAffSCC"><span class="radio-pill" onclick="selectPill(this,'m4_nonAffSCC')">Yes 是</span><span class="radio-pill" onclick="selectPill(this,'m4_nonAffSCC'); addTask(4,'Legal','Execute SCC/DPA with non-affiliated cross-border recipient','与境外非关联接收方签署SCC/DPA','high')">No 否</span></div></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Estimated interaction frequency / 预计互动频率</label><input class="form-input" id="m4_nonAffFreq" placeholder="e.g. Daily"></div>
+      <div class="form-group"><label class="form-label">Estimated data subject volume / 预计数据主体数量</label><input class="form-input" id="m4_nonAffVolume" placeholder="e.g. ~5,000/year"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Localization plan? / 数据处理本地化计划？</label><input class="form-input" id="m4_nonAffLocal" placeholder="Yes/No, timetable"></div>
+    <div class="form-group"><label class="form-label">Data fields transferred / 传输的数据类型</label>
+      <div class="check-group" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">HR data 人力资源数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Applicants data 求职数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Payroll data 工资数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Training data 培训数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">HR master data 人力资源管理数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Corporate security data 企业安全数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Health & Occupational Safety 健康和职业安全数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Performance data 工作表现数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">IT application usage data 计算机应用程序使用数据</div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="label-text">Customer data (specify) 客户数据</div></label>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Separate consent obtained? / 已取得单独同意？</label>
+      <div class="radio-pills" id="m4_nonAffConsent"><span class="radio-pill" onclick="selectPill(this,'m4_nonAffConsent')">Yes 是</span><span class="radio-pill" onclick="selectPill(this,'m4_nonAffConsent'); addTask(4,'Legal','Obtain separate consent for non-affiliated cross-border transfer','就非关联方跨境传输取得单独同意','high')">No 否</span></div>
+      <input class="form-input" id="m4_nonAffConsentReason" placeholder="If no, state reason" style="margin-top:8px;"></div>
+    <div class="form-group"><label class="form-label">Necessity for cross-border transfer / 跨境传输必要性</label><textarea class="form-textarea" id="m4_nonAffNecessity" placeholder="Describe necessity"></textarea></div>
+
+    <div class="dpo-box" style="margin-top:20px;">
+      <h4>DPO's Evaluation 数据保护官评估 — Module 4</h4>
+      ${dpoBlocK(4).replace(/<div class="dpo-box"[^>]*>|<\/div>$/g, '')}
+      <div class="form-group" style="margin-top:16px;">
+        <label class="form-label" style="color:var(--danger);">Cross-border transfer compliance path / 跨境传输合规路径：</label>
+        <div class="check-group">
+          <label class="check-item" onclick="toggleCheck(this); if(this.querySelector('input').checked) addTask(4,'Legal','File for government security assessment review (CAC)','提交网信部门安全评估审查','high')"><input type="checkbox"><div><div class="label-text">Pass the government security assessment review</div><div class="label-cn">通过网信部门安全评估审查 → <strong style="color:var(--danger);">Task: Legal to file with CAC</strong></div></div></label>
+          <label class="check-item" onclick="toggleCheck(this); if(this.querySelector('input').checked) addTask(4,'Legal','Arrange PI protection accreditation','安排个人信息保护认证','high')"><input type="checkbox"><div><div class="label-text">Achieve personal information protection accreditation issued by authorized agencies</div><div class="label-cn">实现经授权机构进行的个人信息保护认证</div></div></label>
+          <label class="check-item" onclick="toggleCheck(this); if(this.querySelector('input').checked) addTask(4,'Legal','Execute CAC standard contract for cross-border transfer','签订网信部门制定的标准合同','high')"><input type="checkbox"><div><div class="label-text">Sign a standard contract formulated by CAC</div><div class="label-cn">签订网信部门制定的标准合同 → <strong style="color:var(--danger);">Task: Legal to execute SCC</strong></div></div></label>
+        </div>
+      </div>
+    </div>
+  `);
+}
+
+// ==========================================
+// MODULE 5: Data Security Measures
+// ==========================================
+function buildModule5() {
+  let measuresHTML = '';
+  const highestLevel = getHighestSecurityLevel();
+  const measures = SECURITY_MEASURES[highestLevel] || SECURITY_MEASURES['Non-public 非公开'];
+  const phaseNames = { collection: 'Collection 收集', storage: 'Storage 存储', processing: 'Processing 处理', transfer: 'Transfer 传输', deletion: 'Deletion 删除' };
+  Object.entries(measures).forEach(([phase, items]) => {
+    const levelClass = highestLevel.includes('Secret') || highestLevel.includes('Strictly') ? 'high' : highestLevel.includes('Confidential') ? 'medium' : 'low';
+    measuresHTML += `<div class="security-card ${levelClass}"><strong>${phaseNames[phase] || phase}</strong><ul style="margin:8px 0 0 16px; font-size:13px;">${items.map(item => `<li>${item}</li>`).join('')}</ul></div>`;
+  });
+
+  return moduleWrap(5, `
+    <div class="alert alert-info"><strong>Data Security Measures 数据安全措施</strong><br>
+    Auto-generated based on highest data classification level: <strong>${highestLevel}</strong><br>
+    <span style="font-size:12px;">基于最高数据分类等级自动生成的安全措施</span></div>
+    ${measuresHTML}
+    <div class="form-group" style="margin-top:16px;"><label class="form-label">Additional security measures / 其他安全措施</label><textarea class="form-textarea" id="m5_additional" placeholder="Describe any additional measures"></textarea></div>
+    <div class="form-group">
+      <label class="form-label">Security assessment checklist / 安全评估清单</label>
+      <div class="check-group">
+        <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Complete IT security assessment','完成IT安全评估','high')"><input type="checkbox"><div><div class="label-text">IT security assessment completed</div><div class="label-cn">IT安全评估已完成 → <strong style="color:var(--danger);">If not: Task to IT</strong></div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Perform penetration testing','执行渗透测试','medium')"><input type="checkbox"><div><div class="label-text">Penetration testing performed</div><div class="label-cn">已进行渗透测试</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Implement data encryption','实施数据加密','high')"><input type="checkbox"><div><div class="label-text">Data encryption implemented</div><div class="label-cn">已实施数据加密</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Establish access control policy','建立访问控制策略','high')"><input type="checkbox"><div><div class="label-text">Access control policy in place</div><div class="label-cn">已建立访问控制策略</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(5,'IT','Prepare incident response plan','准备事件响应计划','medium')"><input type="checkbox"><div><div class="label-text">Incident response plan ready</div><div class="label-cn">事件响应计划已就绪</div></div></label>
+      </div>
+    </div>
+  `);
+}
+
+// ==========================================
+// MODULE 6: Algorithms and Automated Decision
+// ==========================================
+function buildModule6() {
+  return moduleWrap(6, `
+    <div class="alert alert-warning"><strong>Algorithms and Automated Decision 算法和自动化决策</strong></div>
+    <div class="check-group">
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(6,'IT','Document algorithm traceability for transparency test','记录算法可追溯性以通过透明度测试','high')"><input type="checkbox"><div><div class="label-text">Transparency test: data gathering and labelling, algorithms, and decisions are documented to allow for traceability and an increase in transparency</div><div class="label-cn">透明度测试: 数据获取和标签、算法、决策记录在案，实现可追溯性，透明度提高 → <strong style="color:var(--danger);">If not: Task to IT</strong></div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(6,'Business','Implement significant notification of automated decision-making to individuals','实施向个人显著告知自动化决策','medium')"><input type="checkbox"><div><div class="label-text">Inform individuals of automated decision-making in a significant way</div><div class="label-cn">以显著方式告知个人自动化决策</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(6,'IT','Provide non-targeted options or rejection mechanism for push/marketing','提供非个人特征选项或拒绝机制','medium')"><input type="checkbox"><div><div class="label-text">Provide options that do not target the individual's personal characteristics, or convenient rejection ways when pushing information or conducting marketing</div><div class="label-cn">当向个人进行信息推送、商业营销时，提供不针对其个人特征的选项，或者向个人提供便捷的拒绝方式</div></div></label>
+      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(6,'IT','Ensure algorithm explainability and remedy mechanism','确保算法可解释性和救济机制','high')"><input type="checkbox"><div><div class="label-text">Algorithms can be explained, improved and remedied when the automated decision has a significant impact on an individual's rights and interests</div><div class="label-cn">通过自动化决策方式作出对个人权益有重大影响的决定时，算法可以被解释、改进或救济</div></div></label>
+    </div>
+    <div class="form-group" style="margin-top:16px;"><label class="form-label">How individuals are informed (specify method) / 告知方式（请说明）</label><input class="form-input" id="m6_inform" placeholder="e.g. Pop-up notice, In-app notification, Privacy Policy section"></div>
+
+    <div class="dpo-box" style="margin-top:20px;">
+      <h4>DPO's Evaluation 数据保护官评估 — Module 6</h4>
+      <div class="form-group"><label class="form-label">Algorithm/automated decision-making follow-up date / 算法或自动化决策追踪审核日期</label><input class="form-input" type="date" id="dpo_m6_followup"></div>
+      <div class="form-group"><label class="form-label">Other comments / 其他评价</label><textarea class="form-textarea" id="dpo_m6_comments" placeholder="Other comments"></textarea></div>
+    </div>
+  `);
+}
+
+// ==========================================
+// MODULE 7: Data Merging
+// ==========================================
+function buildModule7() {
+  return moduleWrap(7, `
+    <div class="alert alert-info"><strong>Data Merging 数据融合</strong><br>Database merge, system synergy, business synergy, data lake injection / 数据库合并、系统打通、业务合并、数据入池</div>
+    <div class="form-group"><label class="form-label">Purpose / 目的</label><input class="form-input" id="m7_purpose" placeholder="Purpose of data merging"></div>
+    <div class="form-group"><label class="form-label">Involved Database/Systems / 涉及到的数据库/系统</label><input class="form-input" id="m7_systems" placeholder="e.g. CRM + Data Lake, SAP + WeChat"></div>
+    <div class="form-group"><label class="form-label">The data will be desensitized, by which technical measures / 数据被采取脱敏措施，具体的措施为</label><input class="form-input" id="m7_desensitize" placeholder="e.g. Data masking, pseudonymization, k-anonymity"></div>
+    <div class="form-group"><label class="form-label">If not desensitized, other technical measures taken / 如未进行脱敏，填写所采取的其他技术措施</label><input class="form-input" id="m7_otherMeasures" placeholder="Other measures"></div>
+    <div class="form-group">
+      <label class="form-label">Whether data will be analyzed to create additional profile for a data subject / 是否将对数据进行分析并对数据主体创设新的画像</label>
+      <div class="radio-pills" id="m7_profile"><span class="radio-pill" onclick="selectPill(this,'m7_profile')">No 否</span><span class="radio-pill" onclick="selectPill(this,'m7_profile'); addTask(7,'Legal','Review legality of new profiling from merged data','审查数据融合后新画像的合法性','high'); addTask(7,'Business','Assess impact of new profiling on data subjects','评估新画像对数据主体的影响','medium')">Yes 是</span></div>
+    </div>
+
+    ${dpoBlocK(7)}
+  `);
+}
+
+// ==========================================
+// MODULE 8: Rights and Interests of Data Subjects
+// ==========================================
+function buildModule8() {
+  return moduleWrap(8, `
+    <div class="alert alert-info"><strong>Rights and Interests of Data Subjects 数据主体的权益</strong></div>
+    <div class="form-group">
+      <label class="form-label">Whether the data subject is provided with the convenient channel for receiving and handling applications to exercise rights / 是否向数据主体提供行使其权利的便捷的申请受理和处理渠道</label>
+      <div class="check-group">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="radio" name="m8_channel" value="yes"><div><div class="label-text">Yes, the channel is: / 是，渠道是：</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); addTask(8,'IT','Establish data subject rights exercise channel','建立数据主体权利行使渠道','high'); addTask(8,'Business','Define process for handling data subject requests','定义处理数据主体请求的流程','high')"><input type="radio" name="m8_channel" value="no"><div><div class="label-text">No, the reason is: / 否，原因是：</div><div class="label-cn"><strong style="color:var(--danger);">→ Task: IT to build channel + Business to define process</strong></div></div></label>
+      </div>
+      <input class="form-input" id="m8_channelDetail" placeholder="Channel details / reason 渠道详情/原因 (e.g. Email: privacy@company.com, In-app settings)" style="margin-top:8px;">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Which of the following rights can the user exercise through the above channels / 用户可通过上述渠道行使以下何种权利</label>
+      <div class="check-group">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Data subjects may access, copy, correct and supplement their PI</div><div class="label-cn">数据主体可以查阅、复制、更正、补充其个人信息</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Data subjects may request the transfer of their PI to their designated data processor</div><div class="label-cn">数据主体可以申请将其个人信息转移至其指定的数据处理者</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">Data subjects may delete their PI, withdraw their previous consent or cancel their accounts</div><div class="label-cn">数据主体可以删除其个人信息、撤回同意或注销账号</div></div></label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Rights that cannot be exercised / 无法行使的权利</label>
+      <textarea class="form-textarea" id="m8_restrictions" placeholder="Data subjects may not be able to exercise their [type of rights] due to [reasons] / 由于[某项原因]，数据主体不能行使其[某项权利]"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Whether the interests of the data subjects may be adversely affected / 数据主体的利益是否可能因数据处理活动而受到负面影响</label>
+      <div class="check-group">
+        <label class="check-item" onclick="toggleCheck(this)"><input type="radio" name="m8_adverse" value="no"><div><div class="label-text">No 否</div></div></label>
+        <label class="check-item" onclick="toggleCheck(this); addTask(8,'Legal','Assess and mitigate adverse impact on data subjects','评估并减轻对数据主体的不利影响','high')"><input type="radio" name="m8_adverse" value="yes"><div><div class="label-text">Yes 是 → <strong style="color:var(--danger);">Task: Legal to assess and mitigate</strong></div></div></label>
+      </div>
+      <select class="form-select" id="m8_adverseType" style="margin-top:8px;">
+        <option value="">Select adverse impact type 选择不利影响类型</option>
+        <option value="differential">Differential treatment 差别性待遇</option>
+        <option value="discrimination">Discrimination 歧视</option>
+        <option value="moral">Moral damage 精神损害</option>
+        <option value="property">Property damage 财产损害</option>
+        <option value="personal">Personal injury 人身损害</option>
+        <option value="other">Other 其他</option>
+      </select>
+      <textarea class="form-textarea" id="m8_adverseDetail" placeholder="Please specify the adverse impact details / 请进一步描述不利影响" style="margin-top:8px;"></textarea>
+    </div>
+
+    ${dpoBlocK(8)}
+  `);
+}
+
+function getHighestSecurityLevel() {
+  const levels = ['Public 公开', 'Non-public 非公开', 'Confidential 保密', 'Strictly Confidential 严格保密', 'Secret 机密'];
+  let highest = 0;
+  dataFields.forEach(f => {
+    if (f.classification) {
+      const idx = levels.indexOf(f.classification.level);
+      if (idx > highest) highest = idx;
+    }
+  });
+  const pills = document.querySelectorAll('#classLevel .radio-pill.selected');
+  if (pills.length > 0) {
+    const text = pills[0].textContent;
+    levels.forEach((l, i) => {
+      if (text.includes(l.split(' ')[0]) && i > highest) highest = i;
+    });
+  }
+  return levels[highest] || 'Non-public 非公开';
+}
+
+// ==========================================
+// SUMMARY GENERATION
+// ==========================================
+function generateSummary() {
+  const grid = document.getElementById('summaryGrid');
+  const getValue = id => document.getElementById(id)?.value || '-';
+  const getSelected = id => {
+    const sel = document.querySelector(`#${id} .radio-pill.selected`);
+    return sel ? sel.textContent : '-';
+  };
+
+  grid.innerHTML = `
+    <div class="summary-item"><label>PIPIA Reference</label><div class="value">${getValue('refNo') || 'Not assigned'}</div></div>
+    <div class="summary-item"><label>Date of Assessment</label><div class="value">${getValue('assessDate')}</div></div>
+    <div class="summary-item"><label>Project Name</label><div class="value">${getValue('projectName')}</div></div>
+    <div class="summary-item"><label>Business Function</label><div class="value">${getValue('bizFunction')}</div></div>
+    <div class="summary-item"><label>Classification Level</label><div class="value">${getSelected('classLevel')}</div></div>
+    <div class="summary-item"><label>Business Dependency</label><div class="value">${getSelected('bizDependency')}</div></div>
+    <div class="summary-item"><label>Network Type</label><div class="value">${getSelected('networkType')}</div></div>
+    <div class="summary-item"><label>Highest Data Level</label><div class="value"><span class="badge ${getLevelBadgeClass(getHighestSecurityLevel())}">${getHighestSecurityLevel()}</span></div></div>
+  `;
+
+  // Data fields summary
+  const dfContainer = document.getElementById('summaryDataFields');
+  if (dataFields.length === 0) {
+    dfContainer.innerHTML = '<p style="color:var(--text-muted);">No data fields added.</p>';
+  } else {
+    let html = '<table class="data-table"><thead><tr><th>Data Field</th><th>Classification</th><th>Level</th><th>Purpose</th></tr></thead><tbody>';
+    dataFields.forEach(f => {
+      if (f.name) {
+        const cls = f.classification || { type: '-', category: '-', level: '-' };
+        html += `<tr><td>${escHTML(f.name)}</td><td><span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><small>${cls.category}</small></td><td><span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span></td><td>${escHTML(f.purpose)}</td></tr>`;
+      }
+    });
+    html += '</tbody></table>';
+    dfContainer.innerHTML = html;
+  }
+
+  // Modules summary
+  const modContainer = document.getElementById('summaryModules');
+  let modHTML = '';
+  for (let i = 1; i <= 8; i++) {
+    const triggered = triggeredModules.has(i);
+    modHTML += `<div class="trigger-item"><div><strong>Module ${i}: ${MODULE_NAMES[i].en}</strong><br><small style="color:var(--text-muted);">${MODULE_NAMES[i].cn}</small></div><span class="module-tag ${triggered ? 'required' : 'na'}">${triggered ? '✓ Required' : '— N/A'}</span></div>`;
+  }
+  modContainer.innerHTML = modHTML;
+
+  // Security measures
+  const secContainer = document.getElementById('summarySecurityMeasures');
+  const level = getHighestSecurityLevel();
+  const measures = SECURITY_MEASURES[level] || {};
+  let secHTML = `<div class="alert alert-info">Security level determined: <strong>${level}</strong></div>`;
+  const phaseNames = { collection: 'Collection 收集', storage: 'Storage 存储', processing: 'Processing 处理', transfer: 'Transfer 传输', deletion: 'Deletion 删除' };
+  Object.entries(measures).forEach(([phase, items]) => {
+    const lc = level.includes('Secret') || level.includes('Strictly') ? 'high' : level.includes('Confidential') ? 'medium' : 'low';
+    secHTML += `<div class="security-card ${lc}"><strong>${phaseNames[phase]}</strong><ul style="margin:6px 0 0 16px; font-size:13px;">${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+  });
+  secContainer.innerHTML = secHTML;
+
+  // Action items summary
+  const taskContainer = document.getElementById('summaryActionItems');
+  if (actionTasks.length === 0) {
+    taskContainer.innerHTML = '<p style="color:var(--text-muted);">No action items triggered. 无触发的行动项目。</p>';
+  } else {
+    let taskHTML = '<table class="data-table"><thead><tr><th>Module</th><th>Assignee 负责方</th><th>Task Description 任务描述</th><th>Priority 优先级</th></tr></thead><tbody>';
+    actionTasks.forEach(t => {
+      const prColor = t.priority === 'high' ? 'var(--danger)' : t.priority === 'medium' ? 'var(--warning)' : 'var(--success)';
+      taskHTML += `<tr><td><span class="module-tag ${t.priority === 'high' ? 'required' : 'optional'}" style="font-size:11px;">M${t.module}</span></td><td><span class="badge ${t.assignee === 'Legal' ? 'badge-sensitive' : t.assignee === 'IT' ? 'badge-normal' : 'badge-nonpublic'}">${t.assignee}</span></td><td><strong>${t.description}</strong><br><small style="color:var(--text-muted);">${t.descCn}</small></td><td style="color:${prColor};font-weight:600;text-transform:capitalize;">${t.priority}</td></tr>`;
+    });
+    taskHTML += '</tbody></table>';
+    taskHTML += `<div class="alert alert-info" style="margin-top:12px;">Total action items: <strong>${actionTasks.length}</strong> | Legal: <strong>${actionTasks.filter(t=>t.assignee==='Legal').length}</strong> | IT: <strong>${actionTasks.filter(t=>t.assignee==='IT').length}</strong> | Business: <strong>${actionTasks.filter(t=>t.assignee==='Business').length}</strong></div>`;
+    taskContainer.innerHTML = taskHTML;
+  }
+}
+
+// ==========================================
+// SAVE / LOAD / EXPORT
+// ==========================================
+function exportJSON() {
+  const data = collectAllData();
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `PIPIA_${document.getElementById('refNo').value || 'draft'}_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function loadJSON() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        alert('Data loaded successfully. (Full restore will be available in next version.)');
+      } catch(err) {
+        alert('Invalid JSON file.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+function collectAllData() {
+  return {
+    refNo: document.getElementById('refNo').value,
+    assessDate: document.getElementById('assessDate').value,
+    projectName: document.getElementById('projectName').value,
+    bizFunction: document.getElementById('bizFunction').value,
+    dataFields: dataFields.map(f => ({ name: f.name, classification: f.classification, purpose: f.purpose })),
+    triggeredModules: Array.from(triggeredModules),
+    actionTasks: actionTasks.map(t => ({ module: t.module, assignee: t.assignee, description: t.description, descCn: t.descCn, priority: t.priority, status: t.status })),
+    timestamp: new Date().toISOString()
+  };
+}
+
+function exportReport() {
+  generateSummary();
+  const reportWindow = window.open('', '_blank');
+  const content = `
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>PIPIA Report - ${document.getElementById('refNo').value || 'Draft'}</title>
+<style>
+body{font-family:-apple-system,sans-serif;max-width:900px;margin:0 auto;padding:40px;color:#2d3748;line-height:1.6;}
+h1{color:#1a365d;border-bottom:3px solid #1a365d;padding-bottom:10px;}
+h2{color:#2c5282;margin-top:30px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;}
+table{width:100%;border-collapse:collapse;margin:16px 0;}
+th{background:#1a365d;color:white;padding:10px;text-align:left;}
+td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.badge-sensitive{background:#fbb6ce;color:#97266d;}
+.badge-normal{background:#bee3f8;color:#2a4365;}
+.badge-nonpublic{background:#fefcbf;color:#975a16;}
+.badge-confidential{background:#fed7aa;color:#9c4221;}
+.badge-strict{background:#feb2b2;color:#9b2c2c;}
+.badge-secret{background:#e9d8fd;color:#553c9a;}
+.sec-card{border-left:4px solid #3182ce;padding:10px 16px;background:#f7fafc;margin:8px 0;border-radius:0 6px 6px 0;}
+.sec-card.high{border-left-color:#e53e3e;background:#fff5f5;}
+.sec-card.medium{border-left-color:#d69e2e;background:#fffff0;}
+.required{color:#e53e3e;font-weight:600;}
+.na{color:#a0aec0;}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0;}
+.meta-item{padding:10px;background:#f7fafc;border:1px solid #e2e8f0;border-radius:6px;}
+.meta-item label{font-size:11px;color:#a0aec0;text-transform:uppercase;}
+.meta-item .val{font-size:14px;font-weight:600;margin-top:2px;}
+@media print{body{padding:20px;}}
+</style></head><body>
+<h1>PIPIA Assessment Report<br><small style="font-weight:400;font-size:14px;color:#718096;">个人信息保护影响评估报告</small></h1>
+<div class="meta">
+  <div class="meta-item"><label>Reference No.</label><div class="val">${document.getElementById('refNo').value || '-'}</div></div>
+  <div class="meta-item"><label>Date</label><div class="val">${document.getElementById('assessDate').value || '-'}</div></div>
+  <div class="meta-item"><label>Project</label><div class="val">${document.getElementById('projectName').value || '-'}</div></div>
+  <div class="meta-item"><label>Business Function</label><div class="val">${document.getElementById('bizFunction').value || '-'}</div></div>
+</div>
+
+<h2>Data Fields & Classification 数据字段与分类</h2>
+<table><thead><tr><th>Data Field</th><th>Type</th><th>Category</th><th>Level</th><th>Purpose</th></tr></thead><tbody>
+${dataFields.filter(f=>f.name).map(f=>{
+  const c=f.classification||{type:'-',category:'-',level:'-'};
+  return `<tr><td>${escHTML(f.name)}</td><td><span class="badge ${getTypeBadgeClass(c.type)}">${c.type}</span></td><td>${c.category}</td><td><span class="badge ${getLevelBadgeClass(c.level)}">${c.level}</span></td><td>${escHTML(f.purpose)}</td></tr>`;
+}).join('')}
+</tbody></table>
+
+<h2>Triggered Modules 触发模块</h2>
+<table><thead><tr><th>Module</th><th>Name</th><th>Status</th></tr></thead><tbody>
+${[1,2,3,4,5,6,7,8].map(i=>`<tr><td>Module ${i}</td><td>${MODULE_NAMES[i].en}<br><small>${MODULE_NAMES[i].cn}</small></td><td>${triggeredModules.has(i)?'<span class="required">✓ Required</span>':'<span class="na">— N/A</span>'}</td></tr>`).join('')}
+</tbody></table>
+
+<h2>Security Measures Required 所需安全措施</h2>
+<p>Highest security level: <strong>${getHighestSecurityLevel()}</strong></p>
+${Object.entries(SECURITY_MEASURES[getHighestSecurityLevel()]||{}).map(([phase, items])=>{
+  const pn={collection:'Collection',storage:'Storage',processing:'Processing',transfer:'Transfer',deletion:'Deletion'};
+  const lc=getHighestSecurityLevel().includes('Secret')||getHighestSecurityLevel().includes('Strictly')?'high':getHighestSecurityLevel().includes('Confidential')?'medium':'';
+  return `<div class="sec-card ${lc}"><strong>${pn[phase]||phase}</strong><ul>${items.map(i=>`<li>${i}</li>`).join('')}</ul></div>`;
+}).join('')}
+
+<h2>⚡ Action Items 行动项目</h2>
+${actionTasks.length === 0 ? '<p style="color:#a0aec0;">No action items triggered.</p>' : `
+<p>Total: <strong>${actionTasks.length}</strong> items | Legal: <strong>${actionTasks.filter(t=>t.assignee==='Legal').length}</strong> | IT: <strong>${actionTasks.filter(t=>t.assignee==='IT').length}</strong> | Business: <strong>${actionTasks.filter(t=>t.assignee==='Business').length}</strong></p>
+<table><thead><tr><th>Module</th><th>Assignee</th><th>Task Description</th><th>Priority</th></tr></thead><tbody>
+${actionTasks.map(t=>`<tr><td>M${t.module}</td><td>${t.assignee}</td><td><strong>${t.description}</strong><br><small style="color:#718096;">${t.descCn}</small></td><td style="color:${t.priority==='high'?'#e53e3e':t.priority==='medium'?'#d69e2e':'#38a169'};font-weight:600;text-transform:capitalize;">${t.priority}</td></tr>`).join('')}
+</tbody></table>`}
+
+<div style="margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0;color:#a0aec0;font-size:12px;">
+  Generated: ${new Date().toLocaleString()} | PIPIA Assessment Tool
+</div>
+</body></html>`;
+  reportWindow.document.write(content);
+  reportWindow.document.close();
+}
+
+// ==========================================
+// INITIALIZATION
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+  addDataField();
+  addDataField();
+  addDataField();
+  renderTriggerSummary();
+  // Listen for radio "other" to show input
+  document.querySelectorAll('input[name="controller"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('controllerOther').style.display = r.value === 'other' && r.checked ? 'block' : 'none';
+    });
+  });
+  // Third party toggle
+  document.querySelectorAll('input[name="thirdParty"]').forEach(r => {
+    r.addEventListener('change', () => {
+      document.getElementById('thirdPartyDetails').style.display = r.value === 'thirdPartyYes' ? 'block' : 'none';
+    });
+  });
+});
+</script>
+</body>
+</html>

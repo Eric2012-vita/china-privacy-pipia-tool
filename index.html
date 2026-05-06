@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LegalAIPay — AI-Powered Legal Compliance Platform</title>
+<meta name="description" content="LegalAIPay provides AI-powered legal tools for privacy compliance, contract review, data protection assessments, and more.">
+<style>
+:root {
+  --primary: #0f1e3d;
+  --primary-light: #1a365d;
+  --accent: #3182ce;
+  --accent-light: #63b3ed;
+  --gold: #d4a574;
+  --success: #38a169;
+  --warning: #d69e2e;
+  --danger: #e53e3e;
+  --bg: #fafbfc;
+  --bg-dark: #0f1e3d;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #2d3748;
+  --text-light: #718096;
+  --text-muted: #a0aec0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Header / Navigation ===== */
+.navbar {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0;
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(15,30,61,0.2);
+}
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  list-style: none;
+}
+.nav-links a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-cta {
+  background: var(--primary);
+  color: white !important;
+  padding: 9px 20px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.nav-cta:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(49,130,206,0.3);
+}
+.lang-switch {
+  background: none;
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-light);
+  transition: all 0.2s;
+}
+.lang-switch:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, #1a365d 100%);
+  color: white;
+  padding: 100px 24px 120px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -20%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(99,179,237,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(212,165,116,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent-light), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-subtitle {
+  font-size: 18px;
+  color: rgba(255,255,255,0.8);
+  max-width: 720px;
+  margin: 0 auto 16px;
+  line-height: 1.6;
+}
+.hero-subtitle-cn {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 36px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+}
+.btn-primary {
+  background: white;
+  color: var(--primary);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ===== Stats bar ===== */
+.stats-bar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px;
+  margin-top: -1px;
+}
+.stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+}
+.stat-item .stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  display: block;
+}
+.stat-item .stat-label {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-top: 4px;
+}
+
+/* ===== Sections ===== */
+.section {
+  padding: 80px 24px;
+}
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.section-eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.section-header h2 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.section-description {
+  font-size: 16px;
+  color: var(--text-light);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ===== Tools Grid ===== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.tool-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.tool-card.available:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15,30,61,0.1);
+  border-color: var(--accent-light);
+}
+.tool-card.available:hover::before { opacity: 1; }
+.tool-card.coming-soon {
+  background: #f7fafc;
+  opacity: 0.85;
+}
+.tool-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.tool-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+.icon-pipia { background: linear-gradient(135deg, #ebf8ff, #bee3f8); }
+.icon-contract { background: linear-gradient(135deg, #fff5f5, #fed7aa); }
+.icon-nda { background: linear-gradient(135deg, #f0fff4, #c6f6d5); }
+.icon-gdpr { background: linear-gradient(135deg, #faf5ff, #e9d8fd); }
+.icon-dpa { background: linear-gradient(135deg, #fffbeb, #fefcbf); }
+.icon-audit { background: linear-gradient(135deg, #fff5f5, #feb2b2); }
+.tool-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.status-live { background: #c6f6d5; color: #276749; }
+.status-soon { background: #fefcbf; color: #975a16; }
+.status-beta { background: #bee3f8; color: #2a4365; }
+.tool-card h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.tool-card .cn-name {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.tool-card p {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+.tool-features {
+  list-style: none;
+  margin-bottom: 20px;
+}
+.tool-features li {
+  font-size: 13px;
+  color: var(--text);
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tool-features li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: 700;
+  font-size: 13px;
+}
+.tool-card.coming-soon .tool-features li::before {
+  content: '○';
+  color: var(--text-muted);
+}
+.tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+  transition: gap 0.2s;
+  margin-top: auto;
+}
+.tool-link:hover { gap: 10px; }
+.tool-card.coming-soon .tool-link {
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ===== Features Section ===== */
+.features-section { background: white; }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+}
+.feature-item {
+  text-align: center;
+  padding: 20px;
+}
+.feature-icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, #ebf8ff, #bee3f8);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 20px;
+}
+.feature-item h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+.feature-item p {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* ===== CTA Section ===== */
+.cta-section {
+  background: linear-gradient(135deg, var(--bg-dark) 0%, #1a365d 100%);
+  color: white;
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 400px;
+  background: radial-gradient(ellipse, rgba(99,179,237,0.1) 0%, transparent 70%);
+}
+.cta-section h2 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+.cta-section p {
+  font-size: 17px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Footer ===== */
+footer {
+  background: var(--bg-dark);
+  color: rgba(255,255,255,0.7);
+  padding: 60px 24px 30px;
+}
+.footer-container { max-width: 1200px; margin: 0 auto; }
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-brand .logo { color: white; }
+.footer-brand p {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 320px;
+}
+.footer-col h5 {
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 10px; }
+.footer-col a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+.footer-col a:hover { color: white; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .nav-links { gap: 16px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .stats-container { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .hero { padding: 60px 24px 80px; }
+  .section { padding: 60px 24px; }
+}
+@media (max-width: 480px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+}
+
+/* Language toggle */
+[lang="cn"] .en-only { display: none; }
+[lang="en"] .cn-only { display: none; }
+</style>
+</head>
+<body lang="en">
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <div class="logo-mark">L</div>
+      <span>LegalAIPay</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><button class="lang-switch" onclick="toggleLang()">中文 / EN</button></li>
+      <li><a href="pipia.html" class="nav-cta">Launch App →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-container">
+    <span class="hero-badge">⚖️ AI-Powered Legal Compliance Platform</span>
+    <h1>
+      <span class="en-only">Smart <span class="highlight">Legal & Compliance</span><br>Tools for Modern Business</span>
+      <span class="cn-only">智能<span class="highlight">法律合规</span>工具<br>为现代企业而生</span>
+    </h1>
+    <p class="hero-subtitle">
+      <span class="en-only">From privacy impact assessments to contract review — automate your legal compliance workflows with AI-powered tools designed by legal experts.</span>
+      <span class="cn-only">从隐私影响评估到合同审查 — 通过法律专家设计的AI工具自动化您的合规工作流程。</span>
+    </p>
+    <p class="hero-subtitle-cn en-only">从隐私影响评估到合同审查，自动化您的合规工作</p>
+    <div class="hero-buttons">
+      <a href="pipia.html" class="btn btn-primary">
+        <span class="en-only">Try PIPIA Tool — Free</span>
+        <span class="cn-only">免费试用 PIPIA 工具</span>
+        <span>→</span>
+      </a>
+      <a href="#tools" class="btn btn-secondary">
+        <span class="en-only">Browse All Tools</span>
+        <span class="cn-only">浏览所有工具</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats-bar">
+  <div class="stats-container">
+    <div class="stat-item">
+      <span class="stat-number">1</span>
+      <span class="stat-label"><span class="en-only">Live Tool</span><span class="cn-only">已上线工具</span></span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">5+</span>
+      <span class="stat-label"><span class="en-only">Coming Soon</span><span class="cn-only">即将推出</span></span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-label"><span class="en-only">Client-Side Privacy</span><span class="cn-only">客户端隐私</span></span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">EN/中</span>
+      <span class="stat-label"><span class="en-only">Bilingual Support</span><span class="cn-only">双语支持</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- Tools Section -->
+<section class="section" id="tools">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-eyebrow"><span class="en-only">Our Toolkit</span><span class="cn-only">我们的工具集</span></span>
+      <h2><span class="en-only">Legal Tools That Work for You</span><span class="cn-only">为您而生的法律工具</span></h2>
+      <p class="section-description">
+        <span class="en-only">A growing suite of AI-powered tools to handle compliance assessments, contract analysis, and regulatory workflows.</span>
+        <span class="cn-only">不断扩展的AI工具集，处理合规评估、合同分析和监管工作流程。</span>
+      </p>
+    </div>
+
+    <div class="tools-grid">
+
+      <!-- PIPIA Tool (LIVE) -->
+      <div class="tool-card available">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-pipia">🛡️</div>
+          <span class="tool-status status-live">● Live</span>
+        </div>
+        <h3>PIPIA Assessment</h3>
+        <div class="cn-name">个人信息保护影响评估</div>
+        <p>
+          <span class="en-only">Conduct comprehensive Personal Information Protection Impact Assessments compliant with China's PIPL and GB/T 35273 standards.</span>
+          <span class="cn-only">进行符合PIPL和GB/T 35273标准的全面个人信息保护影响评估。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">8 modular assessment areas</span><span class="cn-only">8个模块化评估区域</span></li>
+          <li><span class="en-only">Auto data classification</span><span class="cn-only">自动数据分类</span></li>
+          <li><span class="en-only">Action items tracker</span><span class="cn-only">行动项目追踪</span></li>
+          <li><span class="en-only">Bilingual EN / 中文</span><span class="cn-only">双语支持</span></li>
+        </ul>
+        <a href="pipia.html" class="tool-link"><span class="en-only">Launch Tool</span><span class="cn-only">启动工具</span> →</a>
+      </div>
+
+      <!-- Contract Review (Coming Soon) -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-contract">📋</div>
+          <span class="tool-status status-soon">Coming Soon</span>
+        </div>
+        <h3>Contract Review AI</h3>
+        <div class="cn-name">合同审查AI</div>
+        <p>
+          <span class="en-only">Upload contracts and get instant AI-powered redline suggestions, risk flags, and clause-by-clause analysis against your playbook.</span>
+          <span class="cn-only">上传合同即可获得AI即时红线建议、风险标记和按条款分析。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">Playbook-based analysis</span><span class="cn-only">基于操作手册的分析</span></li>
+          <li><span class="en-only">Auto redline generation</span><span class="cn-only">自动生成红线</span></li>
+          <li><span class="en-only">Risk severity scoring</span><span class="cn-only">风险严重程度评分</span></li>
+        </ul>
+        <a href="#" class="tool-link" onclick="return false;"><span class="en-only">Notify Me</span><span class="cn-only">通知我</span> →</a>
+      </div>
+
+      <!-- NDA Triage (Coming Soon) -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-nda">🔒</div>
+          <span class="tool-status status-soon">Coming Soon</span>
+        </div>
+        <h3>NDA Triage</h3>
+        <div class="cn-name">保密协议分类</div>
+        <p>
+          <span class="en-only">Rapid NDA classification — Green (auto-approve), Yellow (review needed), or Red (significant issues) — with full risk analysis.</span>
+          <span class="cn-only">快速NDA分类——绿色（自动批准）、黄色（需审查）或红色（重大问题）——附完整风险分析。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">Traffic-light triage</span><span class="cn-only">红绿灯分类</span></li>
+          <li><span class="en-only">Standard clause detection</span><span class="cn-only">标准条款检测</span></li>
+          <li><span class="en-only">Counter-proposal drafts</span><span class="cn-only">反建议草拟</span></li>
+        </ul>
+        <a href="#" class="tool-link" onclick="return false;"><span class="en-only">Notify Me</span><span class="cn-only">通知我</span> →</a>
+      </div>
+
+      <!-- Cross-border (Coming Soon) -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-gdpr">🌐</div>
+          <span class="tool-status status-soon">Coming Soon</span>
+        </div>
+        <h3>Cross-Border Transfer</h3>
+        <div class="cn-name">数据跨境传输评估</div>
+        <p>
+          <span class="en-only">Evaluate cross-border data transfer compliance — CAC SCC, certification paths, and government security assessment guidance.</span>
+          <span class="cn-only">评估跨境数据传输合规性——CAC标准合同、认证路径和政府安全评估指导。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">CAC SCC generator</span><span class="cn-only">CAC标准合同生成器</span></li>
+          <li><span class="en-only">Compliance path advisor</span><span class="cn-only">合规路径顾问</span></li>
+          <li><span class="en-only">Multi-jurisdiction support</span><span class="cn-only">多司法管辖区支持</span></li>
+        </ul>
+        <a href="#" class="tool-link" onclick="return false;"><span class="en-only">Notify Me</span><span class="cn-only">通知我</span> →</a>
+      </div>
+
+      <!-- DPA Generator (Coming Soon) -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-dpa">📝</div>
+          <span class="tool-status status-soon">Coming Soon</span>
+        </div>
+        <h3>DPA Generator</h3>
+        <div class="cn-name">数据处理协议生成器</div>
+        <p>
+          <span class="en-only">Generate compliant Data Processing Agreements tailored to your jurisdiction, processing role, and risk profile.</span>
+          <span class="cn-only">生成符合您所在司法管辖区、处理角色和风险情况的合规数据处理协议。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">Smart templating</span><span class="cn-only">智能模板</span></li>
+          <li><span class="en-only">Multi-jurisdiction</span><span class="cn-only">多司法管辖区</span></li>
+          <li><span class="en-only">Export to Word/PDF</span><span class="cn-only">导出Word/PDF</span></li>
+        </ul>
+        <a href="#" class="tool-link" onclick="return false;"><span class="en-only">Notify Me</span><span class="cn-only">通知我</span> →</a>
+      </div>
+
+      <!-- Compliance Audit (Coming Soon) -->
+      <div class="tool-card coming-soon">
+        <div class="tool-card-header">
+          <div class="tool-icon icon-audit">🔍</div>
+          <span class="tool-status status-soon">Coming Soon</span>
+        </div>
+        <h3>Compliance Audit</h3>
+        <div class="cn-name">合规审计</div>
+        <p>
+          <span class="en-only">Conduct readiness audits across PIPL, GDPR, CCPA — with gap analysis and remediation roadmaps for your organization.</span>
+          <span class="cn-only">在PIPL、GDPR、CCPA框架下进行准备审计——附差距分析和补救路线图。</span>
+        </p>
+        <ul class="tool-features">
+          <li><span class="en-only">Multi-framework audits</span><span class="cn-only">多框架审计</span></li>
+          <li><span class="en-only">Gap analysis reports</span><span class="cn-only">差距分析报告</span></li>
+          <li><span class="en-only">Remediation roadmap</span><span class="cn-only">补救路线图</span></li>
+        </ul>
+        <a href="#" class="tool-link" onclick="return false;"><span class="en-only">Notify Me</span><span class="cn-only">通知我</span> →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="section features-section" id="features">
+  <div class="section-container">
+    <div class="section-header">
+      <span class="section-eyebrow"><span class="en-only">Why LegalAIPay</span><span class="cn-only">为何选择LegalAIPay</span></span>
+      <h2><span class="en-only">Built for Legal Professionals</span><span class="cn-only">为法律专业人士打造</span></h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🛡️</div>
+        <h4><span class="en-only">Privacy-First</span><span class="cn-only">隐私优先</span></h4>
+        <p><span class="en-only">All processing happens in your browser. No data ever leaves your device.</span><span class="cn-only">所有处理在您的浏览器中进行。数据永不离开您的设备。</span></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <h4><span class="en-only">Lightning Fast</span><span class="cn-only">快速高效</span></h4>
+        <p><span class="en-only">No accounts, no logins, no waiting. Open the tool and start working immediately.</span><span class="cn-only">无需账户、无需登录、无需等待。打开工具立即开始工作。</span></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🌏</div>
+        <h4><span class="en-only">Bilingual Native</span><span class="cn-only">原生双语</span></h4>
+        <p><span class="en-only">Full English and Chinese support throughout — designed for cross-border practitioners.</span><span class="cn-only">全程支持英文和中文——专为跨境从业者设计。</span></p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📚</div>
+        <h4><span class="en-only">Standards-Based</span><span class="cn-only">基于标准</span></h4>
+        <p><span class="en-only">Built on PIPL, GB/T 35273, GDPR, and other recognized regulatory frameworks.</span><span class="cn-only">基于PIPL、GB/T 35273、GDPR及其他公认监管框架。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="section" id="about">
+  <div class="section-container" style="max-width: 800px; text-align: center;">
+    <span class="section-eyebrow"><span class="en-only">About</span><span class="cn-only">关于我们</span></span>
+    <h2 style="font-size: 32px; color: var(--primary); margin-bottom: 20px;">
+      <span class="en-only">Empowering Legal Compliance with AI</span>
+      <span class="cn-only">用AI赋能法律合规</span>
+    </h2>
+    <p style="font-size: 16px; color: var(--text-light); line-height: 1.8;">
+      <span class="en-only">LegalAIPay is built for in-house counsel, privacy officers, compliance teams, and legal practitioners who need fast, accurate, standards-based tools to navigate the complex landscape of modern data protection and regulatory compliance. Every tool we build follows recognized legal frameworks and is designed with privacy-by-design principles.</span>
+      <span class="cn-only">LegalAIPay专为内部法律顾问、隐私官、合规团队和法律从业者打造，他们需要快速、准确、基于标准的工具来应对现代数据保护和监管合规的复杂局面。我们构建的每个工具都遵循公认的法律框架，并采用隐私优先的设计原则。</span>
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <h2><span class="en-only">Ready to Get Started?</span><span class="cn-only">准备好开始了吗？</span></h2>
+  <p><span class="en-only">Try our PIPIA tool — completely free, no signup required.</span><span class="cn-only">免费试用我们的PIPIA工具——无需注册。</span></p>
+  <div style="position: relative; z-index: 1;">
+    <a href="pipia.html" class="btn btn-primary">
+      <span class="en-only">Launch PIPIA Tool →</span>
+      <span class="cn-only">启动PIPIA工具 →</span>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <div class="logo-mark">L</div>
+          <span style="color: white;">LegalAIPay</span>
+        </a>
+        <p><span class="en-only">AI-powered legal and compliance tools for modern businesses operating across borders.</span><span class="cn-only">为跨境运营的现代企业提供AI驱动的法律合规工具。</span></p>
+      </div>
+      <div class="footer-col">
+        <h5><span class="en-only">Tools</span><span class="cn-only">工具</span></h5>
+        <ul>
+          <li><a href="pipia.html">PIPIA Assessment</a></li>
+          <li><a href="#tools">Contract Review</a></li>
+          <li><a href="#tools">NDA Triage</a></li>
+          <li><a href="#tools">Cross-Border</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5><span class="en-only">Resources</span><span class="cn-only">资源</span></h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#tools">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5><span class="en-only">Legal</span><span class="cn-only">法律</span></h5>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Use</a></li>
+          <li><a href="#">Disclaimer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 LegalAIPay. All rights reserved.</div>
+      <div><span class="en-only">Tools provide general guidance and do not constitute legal advice.</span><span class="cn-only">工具仅提供一般指导，不构成法律建议。</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleLang() {
+  const body = document.body;
+  body.lang = body.lang === 'en' ? 'cn' : 'en';
+}
+
+// Smooth scroll to anchors
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e) {
+    const href = this.getAttribute('href');
+    if (href === '#') { e.preventDefault(); return; }
+    const target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>

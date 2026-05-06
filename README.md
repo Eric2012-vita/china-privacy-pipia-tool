@@ -1,57 +1,70 @@
-# PIPIA Assessment Tool
-## Personal Information Protection Impact Assessment
+# LegalAIPay
+## AI-Powered Legal & Compliance Platform
 
-An interactive, bilingual (English/Chinese) web-based tool for conducting Personal Information Protection Impact Assessments in compliance with China's PIPL and related data protection regulations.
+LegalAIPay is a platform offering AI-powered legal tools for privacy compliance, contract review, data protection assessments, and more. Designed for in-house counsel, privacy officers, and compliance teams operating across borders.
 
-### Features
+🌐 **Website**: [legalaipay.com](https://legalaipay.com)
 
-- **Cover Page Documentation**: Capture data processing activities and assessment metadata
-- **Smart Module Triggering**: Automatically determines which assessment modules are required based on your data processing activities
-- **8 Comprehensive Modules**:
-  1. Minimization and Necessity Test
-  2. Data Processing Activities (Outsourcing)
-  3. Data Sharing Activities
-  4. Cross-border Data Transfer
-  5. Data Security Measures
-  6. Algorithms and Automated Decision-Making
-  7. Data Merging
-  8. Rights and Interests of Data Subjects
-- **Automated Data Classification**: Auto-classifies data fields based on GB/T 35273 standards
-- **Security Measures Matrix**: Automatically generates required security measures based on data classification levels
-- **Action Items Tracker**: Auto-generates tasks for Legal, IT, and Business teams based on assessment responses
-- **DPO Evaluation Blocks**: Structured evaluation sections for Data Protection Officers in each module
-- **Export & Save**: Export comprehensive reports to HTML or save/load assessment data as JSON
+---
 
-### Usage
+### Site Structure
 
-1. Open `index.html` in a modern web browser
-2. Complete the Cover Page with your project information
-3. Add data fields and let the tool auto-classify them
-4. Answer module triggering questions to determine applicable modules
-5. Complete triggered assessment modules
-6. Review auto-generated action items assigned to your teams
-7. Generate DPO evaluation
-8. Export final report
+```
+/
+├── index.html       # Platform landing page (legalaipay.com homepage)
+├── pipia.html       # PIPIA Assessment Tool
+└── README.md        # This file
+```
+
+---
+
+### Available Tools
+
+#### 🛡️ PIPIA Assessment — `pipia.html` *(Live)*
+Personal Information Protection Impact Assessment tool, fully compliant with China's PIPL and GB/T 35273 standards.
+
+**Features:**
+- 8 comprehensive assessment modules
+- Auto data classification
+- Smart module triggering
+- Action items tracker for Legal, IT, and Business teams
+- DPO evaluation blocks
+- Bilingual (English / Chinese)
+- Export to HTML report or JSON
+
+---
+
+### Coming Soon
+
+- 📋 **Contract Review AI** — AI-powered redline suggestions and risk flags
+- 🔒 **NDA Triage** — Traffic-light NDA classification with risk analysis
+- 🌐 **Cross-Border Transfer** — CAC SCC, certification, and compliance path advisor
+- 📝 **DPA Generator** — Compliant Data Processing Agreement generator
+- 🔍 **Compliance Audit** — Multi-framework readiness audits (PIPL, GDPR, CCPA)
+
+---
 
 ### Technical Details
 
-- **Single-file application**: Fully self-contained HTML with embedded CSS and JavaScript
+- **Single-page applications**: Each tool is a self-contained HTML file
 - **No server required**: Runs entirely in the browser
-- **Client-side only**: No data is transmitted to any server
-- **No dependencies**: No external libraries or CDNs required
-- **Works offline**: Can be used without internet connection
-
-### Privacy & Security
-
-All data entered into the tool remains local to your browser. Nothing is sent to external servers. The tool is designed with privacy-by-design principles, making it ideal for sensitive compliance assessments.
+- **Privacy-first**: All processing happens client-side; no data sent to any server
+- **No dependencies**: No external libraries, CDNs, or build tools required
+- **Works offline**: Can be used without an internet connection
+- **Bilingual**: Full English and Chinese support
 
 ### Browser Compatibility
 
-Works in all modern browsers:
-- Chrome/Edge (recommended)
-- Firefox
-- Safari
+Works in all modern browsers (Chrome/Edge, Firefox, Safari).
+
+### Deployment
+
+Hosted on GitHub Pages with custom domain `legalaipay.com`. The platform is a static site, requiring no backend infrastructure.
+
+### Disclaimer
+
+All tools provide general guidance based on recognized regulatory frameworks and do not constitute legal advice. For specific legal questions, please consult a qualified legal professional.
 
 ### License
 
-Internal use only. Not for redistribution.
+© 2026 LegalAIPay. All rights reserved.
