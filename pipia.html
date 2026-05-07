@@ -1082,6 +1082,15 @@ function toggleCheck(el) {
   }
 }
 
+function handleYN(input) {
+  var q = input.closest('.yn-question');
+  if (q) {
+    q.classList.remove('yn-answered-yes', 'yn-answered-no');
+    q.classList.add(input.value === 'yes' ? 'yn-answered-yes' : 'yn-answered-no');
+  }
+}
+
+
 function togglePriorRef(show) {
   document.getElementById('priorRef').style.display = show ? 'block' : 'none';
 }
@@ -1380,8 +1389,8 @@ function buildModule2() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data outsourced to Affiliated China entities / 委托给关联中国实体处理</h4>
     <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m2_affEntity" placeholder="Affiliated entity name"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q0" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q0" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q1" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q1" value="no" onchange="handleYN(this)"> No 否</label></div></div>
     </div>
     <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface of providing PI / 对外传输个人信息的系统技术接口</label><input class="form-input" id="m2_affTechInt" placeholder="e.g. API, SFTP, Direct DB access"></div>
 
@@ -1389,10 +1398,10 @@ function buildModule2() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data outsourced to NON-Affiliated entities / 委托给非关联实体处理</h4>
     <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m2_nonAffEntity" placeholder="Non-affiliated entity names"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Business','Define ongoing supervision procedures for outsourced processing','定义委托处理的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(2,'Legal','Execute Data Processing Agreement (DPA)','签署数据处理协议(DPA)','high')"><input type="checkbox"><div><div class="label-text">Data Processing Agreement (DPA) signed</div><div class="label-cn">已签署Data Processing Agreement → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div></label>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q2" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q2" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">Data Processing Agreement (DPA) signed</div><div class="label-cn">已签署Data Processing Agreement → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q3" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q3" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q4" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q4" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q5" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q5" value="no" onchange="handleYN(this)"> No 否</label></div></div>
     </div>
     <div class="form-group" style="margin-top:10px;"><label class="form-label">Further subcontracting to / 有转委托处理给</label><input class="form-input" id="m2_subcontract" placeholder="Subcontracted entity names (if any)"></div>
     <div class="form-group"><label class="form-label">DPO of authorized party and subcontracted parties / 受托方和转受托方数据隐私保护负责人</label><input class="form-input" id="m2_subDPO" placeholder="DPO contact details"></div>
@@ -1414,9 +1423,9 @@ function buildModule3() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">A. Data shared to Affiliated China entities / 共享给关联中国实体</h4>
     <div class="form-group"><label class="form-label">Entity / 实体</label><input class="form-input" id="m3_affEntity" placeholder="Affiliated entity name"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Obtain separate consent for data sharing with affiliated entity','就关联实体数据共享取得单独同意','high')"><input type="checkbox"><div><div class="label-text">The data sharing has obtained the separate consent from the data subject concerned</div><div class="label-cn">数据共享已取得数据主体的单独同意 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data sharing activities pass the minimum and necessity test</div><div class="label-cn">数据共享活动已完成最小必要测试</div></div></label>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The Department has confirmed its role as a data provider or a data recipient</div><div class="label-cn">相关部门已确认其职责为数据提供方或接收方</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q6" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q6" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data sharing has obtained the separate consent from the data subject concerned</div><div class="label-cn">数据共享已取得数据主体的单独同意 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q7" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q7" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data sharing activities pass the minimum and necessity test</div><div class="label-cn">数据共享活动已完成最小必要测试</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q8" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q8" value="no" onchange="handleYN(this)"> No 否</label></div></div>
     </div>
     <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface / 系统技术接口</label><input class="form-input" id="m3_affTechInt" placeholder="e.g. API, SFTP"></div>
 
@@ -1424,10 +1433,10 @@ function buildModule3() {
     <h4 style="margin:16px 0 12px; color:var(--primary);">B. Data shared to NON-Affiliated entities / 共享给非关联实体</h4>
     <div class="form-group"><label class="form-label">Entity name(s) / 实体名称</label><input class="form-input" id="m3_nonAffEntity" placeholder="Non-affiliated entity names"></div>
     <div class="check-group">
-      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Business','Define ongoing supervision procedures for data sharing','定义数据共享的持续监督程序','medium')"><input type="checkbox"><div><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(3,'Legal','Execute Data Sharing Agreement','签署数据共享协议','high')"><input type="checkbox"><div><div class="label-text">Data Sharing Agreement signed</div><div class="label-cn">已签署数据共享协议 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div></label>
-      <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"><div><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div></label>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">On-going supervision responsibilities and procedures defined</div><div class="label-cn">已定义持续的监督职责和程序</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q9" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q9" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">Data Sharing Agreement signed</div><div class="label-cn">已签署数据共享协议 → <strong style="color:var(--danger);">If not: Task to Legal</strong></div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q10" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q10" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data processing activities pass the minimum and necessity test</div><div class="label-cn">数据处理活动已完成最小必要测试</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q11" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q11" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+      <div class="yn-question"><div class="yn-text"><div class="label-text">The data privacy officer of the data recipient appointed</div><div class="label-cn">已确定接收方的数据隐私负责人</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_q12" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_q12" value="no" onchange="handleYN(this)"> No 否</label></div></div>
     </div>
     <div class="form-group" style="margin-top:10px;"><label class="form-label">Technical interface / 系统技术接口</label><input class="form-input" id="m3_nonAffTechInt" placeholder="e.g. API, SFTP"></div>
 
@@ -1817,6 +1826,17 @@ td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
 .meta-item label{font-size:11px;color:#a0aec0;text-transform:uppercase;}
 .meta-item .val{font-size:14px;font-weight:600;margin-top:2px;}
 @media print{body{padding:20px;}}
+
+    /* Yes/No question styles */
+    .yn-question { display: flex; align-items: flex-start; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; background: var(--card); gap: 16px; }
+    .yn-text { flex: 1; }
+    .yn-options { display: flex; gap: 10px; align-items: center; flex-shrink: 0; padding-top: 2px; }
+    .yn-yes, .yn-no { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px 12px; border-radius: 16px; border: 1px solid currentColor; transition: background 0.2s, color 0.2s; }
+    .yn-yes { color: var(--success); }
+    .yn-no { color: var(--danger); }
+    .yn-yes:has(input:checked) { background: var(--success); color: white; }
+    .yn-no:has(input:checked) { background: var(--danger); color: white; }
+    .yn-yes input, .yn-no input { accent-color: currentColor; }
 </style></head><body>
 <h1>PIPIA Assessment Report<br><small style="font-weight:400;font-size:14px;color:#718096;">个人信息保护影响评估报告</small></h1>
 <div class="meta">
