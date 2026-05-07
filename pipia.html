@@ -407,26 +407,95 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div class="card-title-cn">Data creation, ingestion, or capture / 数据创造、吸收、获取</div>
 
         <div class="alert alert-info">
-          ℹ️ Select data fields from the dropdown below. Each field is <strong>auto-classified</strong> based on GB/T 35273 as <strong>personal information</strong> or <strong>sensitive personal information</strong>, with the corresponding security level assigned automatically.<br>
-          <span style="font-size:12px; color: var(--text-muted);">从下拉列表中选择数据字段。每个字段根据GB/T 35273自动分类为个人信息或敏感个人信息，并自动分配相应的安全等级。</span>
+          ℹ️ Select all data fields and processing purposes below. Fields are <strong>auto-classified</strong> as <strong>Personal Information 一般个人信息</strong> or <strong>Sensitive Personal Information 敏感个人信息</strong> per GB/T 35273.<br>
+          <span style="font-size:12px; color:var(--text-muted);">从下方选择所有数据字段和处理目的。字段将根据GB/T 35273自动分类为一般个人信息或敏感个人信息。</span>
         </div>
 
-        <div style="overflow-x:auto;">
-          <table class="data-table" id="dataFieldTable">
-            <thead>
-              <tr>
-                <th style="width:180px">Data Field 数据类型</th>
-                <th style="width:100px">Auto Classification<br>自动分类</th>
-                <th style="width:100px">Security Level<br>安全等级</th>
-                <th style="width:160px">Processing Purpose<br>处理目的</th>
-                <th style="width:80px">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="dataFieldBody">
-            </tbody>
-          </table>
+        <!-- Data Fields Multi-Select -->
+        <div class="ms-section">
+          <label class="ms-label">Data Fields 数据字段 <span class="ms-count" id="fieldCount">0 selected</span></label>
+          <div class="ms-dropdown" id="fieldDropdown">
+            <div class="ms-trigger" onclick="toggleMsDropdown('fieldDropdown')">
+              <span id="fieldTriggerText">-- Select Data Fields 选择数据字段 --</span>
+              <span class="ms-arrow">▾</span>
+            </div>
+            <div class="ms-panel" id="fieldPanel" style="display:none;">
+              <div class="ms-search"><input type="text" placeholder="Search 搜索..." oninput="filterMsOptions('fieldPanel', this.value)"></div>
+              <div class="ms-group-label">🔴 Sensitive Personal Information 敏感个人信息</div>
+              <label class="ms-option"><input type="checkbox" value="Biometric Info 生物识别信息" data-type="sensitive" onchange="onFieldCheckChange()"> Biometric Info 生物识别信息</label>
+              <label class="ms-option"><input type="checkbox" value="ID Document Number 证件号码" data-type="sensitive" onchange="onFieldCheckChange()"> ID Document Number 证件号码</label>
+              <label class="ms-option"><input type="checkbox" value="Financial Account 金融账户" data-type="sensitive" onchange="onFieldCheckChange()"> Financial Account 金融账户</label>
+              <label class="ms-option"><input type="checkbox" value="Medical &amp; Health 医疗健康" data-type="sensitive" onchange="onFieldCheckChange()"> Medical &amp; Health 医疗健康</label>
+              <label class="ms-option"><input type="checkbox" value="Location Tracking 行踪轨迹" data-type="sensitive" onchange="onFieldCheckChange()"> Location Tracking 行踪轨迹</label>
+              <label class="ms-option"><input type="checkbox" value="Religious Belief 宗教信仰" data-type="sensitive" onchange="onFieldCheckChange()"> Religious Belief 宗教信仰</label>
+              <label class="ms-option"><input type="checkbox" value="Specific Identity 特定身份" data-type="sensitive" onchange="onFieldCheckChange()"> Specific Identity 特定身份</label>
+              <label class="ms-option"><input type="checkbox" value="Minor (Under 14) 未成年人(14岁以下)" data-type="sensitive" onchange="onFieldCheckChange()"> Minor (Under 14) 未成年人(14岁以下)</label>
+              <label class="ms-option"><input type="checkbox" value="Sexual Orientation 性取向" data-type="sensitive" onchange="onFieldCheckChange()"> Sexual Orientation 性取向</label>
+              <label class="ms-option"><input type="checkbox" value="Criminal Record 犯罪记录" data-type="sensitive" onchange="onFieldCheckChange()"> Criminal Record 犯罪记录</label>
+              <div class="ms-group-label">🔵 Personal Information 一般个人信息</div>
+              <label class="ms-option"><input type="checkbox" value="Name 姓名" data-type="personal" onchange="onFieldCheckChange()"> Name 姓名</label>
+              <label class="ms-option"><input type="checkbox" value="Phone Number 电话号码" data-type="personal" onchange="onFieldCheckChange()"> Phone Number 电话号码</label>
+              <label class="ms-option"><input type="checkbox" value="Email 电子邮箱" data-type="personal" onchange="onFieldCheckChange()"> Email 电子邮箱</label>
+              <label class="ms-option"><input type="checkbox" value="Address 地址" data-type="personal" onchange="onFieldCheckChange()"> Address 地址</label>
+              <label class="ms-option"><input type="checkbox" value="Date of Birth 出生日期" data-type="personal" onchange="onFieldCheckChange()"> Date of Birth 出生日期</label>
+              <label class="ms-option"><input type="checkbox" value="Gender 性别" data-type="personal" onchange="onFieldCheckChange()"> Gender 性别</label>
+              <label class="ms-option"><input type="checkbox" value="Marital Status 婚姻状况" data-type="personal" onchange="onFieldCheckChange()"> Marital Status 婚姻状况</label>
+              <label class="ms-option"><input type="checkbox" value="Education 学历" data-type="personal" onchange="onFieldCheckChange()"> Education 学历</label>
+              <label class="ms-option"><input type="checkbox" value="Employment 就业信息" data-type="personal" onchange="onFieldCheckChange()"> Employment 就业信息</label>
+              <label class="ms-option"><input type="checkbox" value="Device/Network Info 设备网络信息" data-type="personal" onchange="onFieldCheckChange()"> Device/Network Info 设备网络信息</label>
+              <label class="ms-option"><input type="checkbox" value="Online Activity 网络活动" data-type="personal" onchange="onFieldCheckChange()"> Online Activity 网络活动</label>
+              <label class="ms-option"><input type="checkbox" value="Photo/Video 照片视频" data-type="personal" onchange="onFieldCheckChange()"> Photo/Video 照片视频</label>
+              <label class="ms-option"><input type="checkbox" value="Account Info 账号信息" data-type="personal" onchange="onFieldCheckChange()"> Account Info 账号信息</label>
+              <label class="ms-option"><input type="checkbox" value="Preferences 偏好" data-type="personal" onchange="onFieldCheckChange()"> Preferences 偏好</label>
+              <label class="ms-option"><input type="checkbox" value="Vehicle Info 车辆信息" data-type="personal" onchange="onFieldCheckChange()"> Vehicle Info 车辆信息</label>
+              <label class="ms-option"><input type="checkbox" value="Property Info 财产信息" data-type="personal" onchange="onFieldCheckChange()"> Property Info 财产信息</label>
+              <label class="ms-option"><input type="checkbox" value="Aggregated/Anonymized Data 聚合匿名数据" data-type="personal" onchange="onFieldCheckChange()"> Aggregated/Anonymized Data 聚合匿名数据</label>
+              <label class="ms-option"><input type="checkbox" value="Business Data 业务数据" data-type="personal" onchange="onFieldCheckChange()"> Business Data 业务数据</label>
+              <label class="ms-option"><input type="checkbox" value="Public Data 公开数据" data-type="personal" onchange="onFieldCheckChange()"> Public Data 公开数据</label>
+            </div>
+          </div>
         </div>
-        <button class="add-field-btn" onclick="addDataField()">+ Add Data Field 添加数据字段</button>
+
+        <!-- Processing Purpose Multi-Select -->
+        <div class="ms-section" style="margin-top:16px;">
+          <label class="ms-label">Processing Purposes 处理目的 <span class="ms-count" id="purposeCount">0 selected</span></label>
+          <div class="ms-dropdown" id="purposeDropdown">
+            <div class="ms-trigger" onclick="toggleMsDropdown('purposeDropdown')">
+              <span id="purposeTriggerText">-- Select Processing Purposes 选择处理目的 --</span>
+              <span class="ms-arrow">▾</span>
+            </div>
+            <div class="ms-panel" id="purposePanel" style="display:none;">
+              <label class="ms-option"><input type="checkbox" value="Service Delivery 履行合同/提供服务" onchange="onPurposeCheckChange()"> Service Delivery 履行合同/提供服务</label>
+              <label class="ms-option"><input type="checkbox" value="Legal Obligation 履行法律义务" onchange="onPurposeCheckChange()"> Legal Obligation 履行法律义务</label>
+              <label class="ms-option"><input type="checkbox" value="User Consent 用户同意" onchange="onPurposeCheckChange()"> User Consent 用户同意</label>
+              <label class="ms-option"><input type="checkbox" value="Legitimate Interest 合法权益" onchange="onPurposeCheckChange()"> Legitimate Interest 合法权益</label>
+              <label class="ms-option"><input type="checkbox" value="Marketing &amp; Analytics 营销与分析" onchange="onPurposeCheckChange()"> Marketing &amp; Analytics 营销与分析</label>
+              <label class="ms-option"><input type="checkbox" value="Security &amp; Fraud Prevention 安全与反欺诈" onchange="onPurposeCheckChange()"> Security &amp; Fraud Prevention 安全与反欺诈</label>
+              <label class="ms-option"><input type="checkbox" value="Product Improvement 产品改进" onchange="onPurposeCheckChange()"> Product Improvement 产品改进</label>
+              <label class="ms-option"><input type="checkbox" value="HR &amp; Employment 人力资源与雇用" onchange="onPurposeCheckChange()"> HR &amp; Employment 人力资源与雇用</label>
+              <label class="ms-option"><input type="checkbox" value="Research &amp; Statistics 研究与统计" onchange="onPurposeCheckChange()"> Research &amp; Statistics 研究与统计</label>
+              <label class="ms-option"><input type="checkbox" value="Public Health &amp; Safety 公共卫生与安全" onchange="onPurposeCheckChange()"> Public Health &amp; Safety 公共卫生与安全</label>
+              <label class="ms-option"><input type="checkbox" value="Compliance &amp; Audit 合规与审计" onchange="onPurposeCheckChange()"> Compliance &amp; Audit 合规与审计</label>
+              <label class="ms-option"><input type="checkbox" value="Customer Support 客户服务" onchange="onPurposeCheckChange()"> Customer Support 客户服务</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auto-Classification Results -->
+        <div id="classificationResults" style="display:none; margin-top:20px;">
+          <div class="cls-result-title">Auto-Classification Results 自动分类结果</div>
+          <div class="cls-result-grid">
+            <div class="cls-result-box cls-sensitive">
+              <div class="cls-box-title">🔴 Sensitive Personal Information<br><span>敏感个人信息</span></div>
+              <div id="sensitiveFieldsList" class="cls-fields-list"></div>
+            </div>
+            <div class="cls-result-box cls-personal">
+              <div class="cls-box-title">🔵 Personal Information<br><span>一般个人信息</span></div>
+              <div id="personalFieldsList" class="cls-fields-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
       </div>
 
       <div class="card">
@@ -972,36 +1041,15 @@ function buildSelectOptionsHTML() {
 }
 
 function addDataField() {
-  fieldCounter++;
-  const id = 'field_' + fieldCounter;
-  dataFields.push({ id, name: '', classification: null, purpose: '' });
-  renderDataFields();
+  // Legacy stub - no longer used, kept for compatibility
 }
 
 function removeDataField(id) {
   dataFields = dataFields.filter(f => f.id !== id);
-  renderDataFields();
 }
 
 function onFieldSelectChange(id, value) {
-  const field = dataFields.find(f => f.id === id);
-  if (field) {
-    field.name = value;
-    const opt = getFieldOptionByLabel(value);
-    if (opt) {
-      field.classification = { type: opt.type, category: opt.label, level: opt.level, isSensitive: opt.type.includes('Sensitive') };
-    } else {
-      field.classification = null;
-    }
-    // Only re-render the classification cells, not the whole table (to preserve dropdown state)
-    const typeCell = document.getElementById('cls_' + id);
-    const levelCell = document.getElementById('lvl_' + id);
-    if (typeCell && levelCell) {
-      const cls = field.classification;
-      typeCell.innerHTML = cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>';
-      levelCell.innerHTML = cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-';
-    }
-  }
+  // Legacy stub
 }
 
 function onFieldPurposeChange(id, value) {
@@ -1009,28 +1057,99 @@ function onFieldPurposeChange(id, value) {
   if (field) field.purpose = value;
 }
 
-function renderDataFields() {
-  const tbody = document.getElementById('dataFieldBody');
-  tbody.innerHTML = '';
-  const selectHTML = buildSelectOptionsHTML();
-  dataFields.forEach(f => {
-    const cls = f.classification;
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td><select class="form-select" onchange="onFieldSelectChange('${f.id}', this.value)" style="font-size:13px;">${selectHTML}</select></td>
-      <td id="cls_${f.id}">${cls ? `<span class="badge ${getTypeBadgeClass(cls.type)}">${cls.type}</span><br><span style="font-size:11px; color: var(--text-muted);">${cls.category}</span>` : '<span style="color:var(--text-muted); font-size:12px;">Select a field...</span>'}</td>
-      <td id="lvl_${f.id}">${cls ? `<span class="badge ${getLevelBadgeClass(cls.level)}">${cls.level}</span>` : '-'}</td>
-      <td><input class="form-input" value="${escHTML(f.purpose)}" onchange="onFieldPurposeChange('${f.id}', this.value)" placeholder="Purpose 处理目的" style="font-size:13px;"></td>
-      <td><button class="remove-btn" onclick="removeDataField('${f.id}')">✕</button></td>
-    `;
-    tbody.appendChild(tr);
-    // Restore selected value if field already has a name
-    if (f.name) {
-      const sel = tr.querySelector('select');
-      if (sel) sel.value = f.name;
-    }
-  });
+function toggleMsDropdown(dropdownId) {
+  const panel = document.getElementById(dropdownId).querySelector('.ms-panel');
+  const allPanels = document.querySelectorAll('.ms-panel');
+  allPanels.forEach(p => { if (p !== panel) p.style.display = 'none'; });
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
 }
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ms-dropdown')) {
+    document.querySelectorAll('.ms-panel').forEach(p => p.style.display = 'none');
+  }
+});
+
+function filterMsOptions(panelId, query) {
+  const panel = document.getElementById(panelId);
+  const q = query.toLowerCase();
+  panel.querySelectorAll('.ms-option').forEach(opt => {
+    opt.style.display = opt.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+  panel.querySelectorAll('.ms-group-label').forEach(g => g.style.display = '');
+}
+
+function onFieldCheckChange() {
+  const checked = document.querySelectorAll('#fieldPanel input[type=checkbox]:checked');
+  const count = checked.length;
+  document.getElementById('fieldCount').textContent = count + ' selected';
+  document.getElementById('fieldTriggerText').textContent = count > 0
+    ? count + ' field(s) selected'
+    : '-- Select Data Fields 选择数据字段 --';
+
+  // Rebuild dataFields array from checked boxes
+  dataFields = [];
+  let counter = 0;
+  checked.forEach(cb => {
+    const type = cb.dataset.type;
+    const label = cb.value;
+    const purposes = Array.from(document.querySelectorAll('#purposePanel input[type=checkbox]:checked')).map(p => p.value).join('; ');
+    let cls = null;
+    if (type === 'sensitive') {
+      const fo = FIELD_OPTIONS.find(o => o.label === label);
+      cls = fo ? { type: fo.type, category: fo.label, level: fo.level } : { type: 'Sensitive PI 敏感个人信息', category: label, level: 'Confidential 保密' };
+    } else {
+      const fo = FIELD_OPTIONS.find(o => o.label === label);
+      cls = fo ? { type: fo.type, category: fo.label, level: fo.level } : { type: 'Personal Info 个人信息', category: label, level: 'Internal 内部' };
+    }
+    dataFields.push({ id: 'field_' + (++counter), name: label, classification: cls, purpose: purposes });
+  });
+
+  renderClassificationSummary();
+}
+
+function onPurposeCheckChange() {
+  const checked = document.querySelectorAll('#purposePanel input[type=checkbox]:checked');
+  const count = checked.length;
+  document.getElementById('purposeCount').textContent = count + ' selected';
+  document.getElementById('purposeTriggerText').textContent = count > 0
+    ? count + ' purpose(s) selected'
+    : '-- Select Processing Purposes 选择处理目的 --';
+
+  // Update purpose on all dataFields
+  const purposes = Array.from(checked).map(cb => cb.value).join('; ');
+  dataFields.forEach(f => f.purpose = purposes);
+}
+
+function renderClassificationSummary() {
+  const results = document.getElementById('classificationResults');
+  const sensitiveList = document.getElementById('sensitiveFieldsList');
+  const personalList = document.getElementById('personalFieldsList');
+  if (!results) return;
+
+  if (dataFields.length === 0) {
+    results.style.display = 'none';
+    return;
+  }
+
+  const sensitiveFields = dataFields.filter(f => f.classification && f.classification.type && f.classification.type.toLowerCase().includes('sensitive'));
+  const personalFields = dataFields.filter(f => f.classification && (!f.classification.type || !f.classification.type.toLowerCase().includes('sensitive')));
+
+  sensitiveList.innerHTML = sensitiveFields.length > 0
+    ? sensitiveFields.map(f => `<div class="cls-field-tag cls-tag-sensitive">${f.name}</div>`).join('')
+    : '<span style="color:var(--text-muted); font-size:13px;">None 无</span>';
+
+  personalList.innerHTML = personalFields.length > 0
+    ? personalFields.map(f => `<div class="cls-field-tag cls-tag-personal">${f.name}</div>`).join('')
+    : '<span style="color:var(--text-muted); font-size:13px;">None 无</span>';
+
+  results.style.display = 'block';
+}
+
+function renderDataFields() {
+  // Legacy: called by generateSummary - dataFields array is already up to date
+}
+
 
 function escHTML(str) {
   const div = document.createElement('div');
@@ -1837,6 +1956,36 @@ td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
     .yn-yes:has(input:checked) { background: var(--success); color: white; }
     .yn-no:has(input:checked) { background: var(--danger); color: white; }
     .yn-yes input, .yn-no input { accent-color: currentColor; }
+
+    /* Multi-Select Dropdown */
+    .ms-section { margin-bottom: 4px; }
+    .ms-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .ms-count { font-weight: 400; color: var(--accent); margin-left: 8px; }
+    .ms-dropdown { position: relative; }
+    .ms-trigger { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); cursor: pointer; font-size: 13px; color: var(--text-muted); transition: border-color 0.2s; }
+    .ms-trigger:hover { border-color: var(--accent); }
+    .ms-arrow { font-size: 11px; color: var(--text-muted); }
+    .ms-panel { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); z-index: 200; max-height: 280px; overflow-y: auto; }
+    .ms-search { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    .ms-search input { width: 100%; padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; outline: none; }
+    .ms-group-label { padding: 6px 12px 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); background: var(--bg); letter-spacing: 0.5px; }
+    .ms-option { display: flex; align-items: center; gap: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; transition: background 0.15s; }
+    .ms-option:hover { background: var(--bg); }
+    .ms-option input[type=checkbox] { accent-color: var(--accent); width: 14px; height: 14px; flex-shrink: 0; cursor: pointer; }
+    /* Classification Results */
+    .cls-result-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+    .cls-result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .cls-result-box { border-radius: 10px; padding: 14px 16px; min-height: 80px; }
+    .cls-sensitive { background: rgba(229,83,62,0.06); border: 1px solid rgba(229,83,62,0.25); }
+    .cls-personal { background: rgba(26,54,93,0.05); border: 1px solid rgba(26,54,93,0.2); }
+    .cls-box-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+    .cls-sensitive .cls-box-title { color: var(--danger); }
+    .cls-personal .cls-box-title { color: var(--primary); }
+    .cls-box-title span { font-weight: 400; font-size: 12px; }
+    .cls-fields-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cls-field-tag { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 500; }
+    .cls-tag-sensitive { background: rgba(229,83,62,0.12); color: var(--danger); border: 1px solid rgba(229,83,62,0.3); }
+    .cls-tag-personal { background: rgba(26,54,93,0.08); color: var(--primary); border: 1px solid rgba(26,54,93,0.2); }
 </style></head><body>
 <h1>PIPIA Assessment Report<br><small style="font-weight:400;font-size:14px;color:#718096;">个人信息保护影响评估报告</small></h1>
 <div class="meta">
