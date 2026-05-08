@@ -1437,75 +1437,37 @@ function moduleWrap(num, content) {
 // MODULE 1: Minimization and Necessity Test
 // ==========================================
 function buildModule1() {
-  const lbBuckets = [
-    { key: 'contract', label: 'Necessary for Contractual Performance 订立/履行合同所必需', cls: 'lb-contract' },
-    { key: 'legal',    label: 'Necessary for Legal Obligation 履行法定职责/义务所必需',    cls: 'lb-legal'    },
-    { key: 'consent',  label: 'Based on User Consent 基于用户同意',                          cls: 'lb-consent'  },
-    { key: 'other',    label: 'Other Legitimate Interest / Legal Grounds 其他合法权益/法律规定', cls: 'lb-other' },
-  ];
-
   const namedFields = dataFields.filter(f => f.name);
-
-  const bucketHTML = lbBuckets.map(b => {
-    const assigned = namedFields.filter(f => f.legalBasis === b.key);
-    const chips = assigned.map(f =>
-      `<span class="lb-field-chip" onclick="removeFieldFromBucket('${escHTML(f.name)}')" title="Click to remove">
-        ${escHTML(f.name)}<span class="lb-chip-remove"> ✕</span>
-      </span>`
-    ).join('') || `<span class="lb-empty-hint">No fields assigned 暂无</span>`;
-    const unassigned = namedFields.filter(f => !f.legalBasis).map(f =>
-      `<option value="${escHTML(f.name)}">${escHTML(f.name)}</option>`
-    ).join('');
-    return `<div class="lb-bucket ${b.cls}" id="lb_${b.key}">
-      <div class="lb-bucket-title">${b.label}</div>
-      <div class="lb-field-chips">${chips}</div>
-      <div class="lb-select-row">
-        <select class="lb-inline-select" id="lbsel_${b.key}">
-          <option value="">+ Add field to this category...</option>
-          ${unassigned}
-        </select>
-        <button class="lb-add-btn" onclick="addFieldToBucket('${b.key}')">Add 添加</button>
-      </div>
-    </div>`;
-  }).join('');
 
   let rows = '';
   namedFields.forEach(f => {
     const sc = f.minScenario || '';
     const cm = f.consentMethod || '';
     const rm = f.remarks || '';
-    const scOptions = ['','a','b','c','d','e','f','g','h','i','j'].map(v => {
-      const labels = {
-        '': 'Select 选择',
-        'a': 'a. Legal grounds (no consent needed) 法律规定无需同意',
-        'b': 'b. Contract performance 为订立、履行合同所必需',
-        'c': 'c. HR management per labor rules 劳动规章制度人力资源管理所必需',
-        'd': 'd. Statutory duties/obligations 履行法定职责或义务所必需',
-        'e': 'e. Public health emergency 公共卫生应急/保护生命健康财产安全',
-        'f': 'f. Public interest (news/media) 公共利益新闻报道舆论监督',
-        'g': 'g. Publicly disclosed PI 已合法公开的个人信息',
-        'h': 'h. Commercial need — essential for service 商业需求(用户不提供则无法获得完整服务)',
-        'i': 'i. Commercial need — enhances experience 商业需求(影响用户体验提升及服务改进)',
-        'j': 'j. Other 其他情况',
-      };
-      return `<option value="${v}" ${sc===v?'selected':''}>${labels[v]}</option>`;
-    }).join('');
-    const cmOptions = ['none','privacyPolicy','separateConsent','checkbox','contractual','noConsent','other'].map(v => {
-      const labels = {
-        'none': 'Select 选择',
-        'privacyPolicy': 'Via privacy policy acceptance 通过隐私政策同意',
-        'separateConsent': 'Separate consent pop-up 单独同意弹窗',
-        'checkbox': 'Checkbox at data entry 数据输入处的复选框',
-        'contractual': 'Contractual agreement 合同约定',
-        'noConsent': 'No consent required (legal basis) 无需同意(法定依据)',
-        'other': 'Other 其他',
-      };
-      return `<option value="${v}" ${cm===v?'selected':''}>${labels[v]}</option>`;
-    }).join('');
+    const scOptions = [
+      ['', 'Select 选择'],
+      ['a', 'a. Legal grounds (no consent needed) 法律规定无需同意'],
+      ['b', 'b. Contract performance 为订立、履行合同所必需'],
+      ['c', 'c. HR management per labor rules 劳动规章制度人力资源管理所必需'],
+      ['d', 'd. Statutory duties/obligations 履行法定职责或义务所必需'],
+      ['e', 'e. Public health emergency 公共卫生应急/保护生命健康财产安全'],
+      ['f', 'f. Public interest (news/media) 公共利益新闻报道舆论监督'],
+      ['g', 'g. Publicly disclosed PI 已合法公开的个人信息'],
+      ['h', 'h. Commercial need — essential for service 商业需求(用户不提供则无法获得完整服务)'],
+      ['i', 'i. Commercial need — enhances experience 商业需求(影响用户体验提升及服务改进)'],
+      ['j', 'j. Other 其他情况'],
+    ].map(([v, l]) => `<option value="${v}" ${sc===v?'selected':''}>${l}</option>`).join('');
+    const cmOptions = [
+      ['none', 'Select 选择'],
+      ['privacyPolicy', 'Via privacy policy acceptance 通过隐私政策同意'],
+      ['separateConsent', 'Separate consent pop-up 单独同意弹窗'],
+      ['checkbox', 'Checkbox at data entry 数据输入处的复选框'],
+      ['contractual', 'Contractual agreement 合同约定'],
+      ['noConsent', 'No consent required (legal basis) 无需同意(法定依据)'],
+      ['other', 'Other 其他'],
+    ].map(([v, l]) => `<option value="${v}" ${cm===v?'selected':''}>${l}</option>`).join('');
     rows += `<tr>
-      <td>${escHTML(f.name)}${f.classification ? '<br><span class="badge '+getTypeBadgeClass(f.classification.type)+'">'+f.classification.type+'</span>' : ''}
-        ${f.legalBasis ? '<br><span style="font-size:10px;padding:1px 6px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--text-muted);">'+({contract:'Contract 合同',legal:'Legal 法定',consent:'Consent 同意',other:'Other 其他'}[f.legalBasis]||'')+'</span>' : ''}
-      </td>
+      <td>${escHTML(f.name)}${f.classification ? '<br><span class="badge '+getTypeBadgeClass(f.classification.type)+'">'+f.classification.type+'</span>' : ''}</td>
       <td><select class="form-select" style="font-size:12px;" onchange="updateFieldMinScenario('${f.id}',this.value)">${scOptions}</select></td>
       <td><select class="form-select" style="font-size:12px;" onchange="updateFieldConsentMethod('${f.id}',this.value)">${cmOptions}</select></td>
       <td><input class="form-input" style="font-size:12px;" value="${escHTML(rm)}" placeholder="Remarks 备注" onchange="updateFieldRemarks('${f.id}',this.value)"></td>
@@ -1522,51 +1484,25 @@ function buildModule1() {
       The collection of Data is limited to the minimum scope necessary for achieving the purpose of processing. It is not allowed to excessively collect or trace Data, nor to induce or force Data subjects to provide excessive Data.<br>
       <span style="font-size:12px;">收集数据已限于实现处理目的的最小范围，不允许过度收集、追踪数据，或诱导、强迫数据主体提供过多数据。</span>
     </div>
-
-    <div class="lb-section">
-      <div class="lb-title">Part A: Legal Basis Categorization 法律依据分类</div>
-      <div class="lb-subtitle">Assign each data field (selected in Step 1) to the appropriate legal basis for processing. Click a field chip to remove it. 将步骤1中选择的数据字段分配到对应的处理法律依据。点击字段标签可移除。</div>
-      <div class="lb-grid">${bucketHTML}</div>
-    </div>
-
-    <div class="lb-section">
-      <div class="lb-title">Part B: Minimum &amp; Necessity Assessment Per Field 逐字段最小必要性评估</div>
-      <div style="overflow-x:auto;">
-        <table class="data-table">
-          <thead><tr>
-            <th>Data Field 数据类型</th>
-            <th>Min. &amp; Necessary Scenario 最小必要类型</th>
-            <th>Consent Method 取得同意途径</th>
-            <th>Remarks 备注</th>
-          </tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>
+    <p style="font-size:13px;margin-bottom:12px;">For each data field collected, select the minimum and necessary scenario and consent method:<br>
+    <span style="color:var(--text-muted);font-size:12px;">请为每个收集的数据字段选择最小必要类型及取得同意途径：</span></p>
+    <div style="overflow-x:auto;">
+      <table class="data-table">
+        <thead><tr>
+          <th>Data Field 数据类型</th>
+          <th>Min. &amp; Necessary Scenario 最小必要类型</th>
+          <th>Consent Method 取得同意途径</th>
+          <th>Remarks 备注</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
     </div>
   `);
 }
 
-function addFieldToBucket(bucketKey) {
-  const sel = document.getElementById('lbsel_' + bucketKey);
-  if (!sel || !sel.value) return;
-  const fieldName = sel.value;
-  const field = dataFields.find(f => f.name === fieldName);
-  if (field) {
-    field.legalBasis = bucketKey;
-    const lbLabels = {contract:'Necessary for Contractual Performance 订立/履行合同所必需', legal:'Necessary for Legal Obligation 履行法定职责/义务所必需', consent:'Based on User Consent 基于用户同意', other:'Other Legitimate Interest / Legal Grounds 其他合法权益/法律规定'};
-    field.purpose = lbLabels[bucketKey] || bucketKey;
-    buildModuleForms();
-  }
-}
-
-function removeFieldFromBucket(fieldName) {
-  const field = dataFields.find(f => f.name === fieldName);
-  if (field) { field.legalBasis = null; field.purpose = ''; buildModuleForms(); }
-}
-
 function updateFieldMinScenario(id, value) {
   const field = dataFields.find(f => f.id === id);
-  if (field) field.minScenario = value;
+  if (field) { field.minScenario = value; field.purpose = value; }
 }
 
 function updateFieldConsentMethod(id, value) {
@@ -2067,31 +2003,6 @@ td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
     .cls-field-tag { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 500; }
     .cls-tag-sensitive { background: rgba(229,83,62,0.12); color: var(--danger); border: 1px solid rgba(229,83,62,0.3); }
     .cls-tag-personal { background: rgba(26,54,93,0.08); color: var(--primary); border: 1px solid rgba(26,54,93,0.2); }
-
-    /* Legal Basis Categorization */
-    .lb-section { margin-bottom: 20px; }
-    .lb-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-    .lb-subtitle { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
-    .lb-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 8px; }
-    .lb-bucket { border-radius: 10px; padding: 14px 16px; background: var(--card); border: 1px solid var(--border); }
-    .lb-bucket-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; line-height: 1.4; }
-    .lb-bucket.lb-contract { border-left: 4px solid #3182ce; }
-    .lb-bucket.lb-legal   { border-left: 4px solid #38a169; }
-    .lb-bucket.lb-consent { border-left: 4px solid #d69e2e; }
-    .lb-bucket.lb-other   { border-left: 4px solid #718096; }
-    .lb-bucket.lb-contract .lb-bucket-title { color: #3182ce; }
-    .lb-bucket.lb-legal   .lb-bucket-title { color: #38a169; }
-    .lb-bucket.lb-consent .lb-bucket-title { color: #d69e2e; }
-    .lb-bucket.lb-other   .lb-bucket-title { color: #718096; }
-    .lb-field-chips { display: flex; flex-wrap: wrap; gap: 5px; min-height: 28px; margin-bottom: 8px; }
-    .lb-field-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; padding: 3px 8px 3px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; }
-    .lb-field-chip:hover { background: #fee2e2; border-color: var(--danger); }
-    .lb-chip-remove { font-size: 10px; opacity: 0.5; }
-    .lb-select-row { display: flex; gap: 6px; align-items: center; }
-    .lb-inline-select { font-size: 12px; padding: 4px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); flex: 1; min-width: 0; }
-    .lb-add-btn { font-size: 11px; padding: 4px 12px; border-radius: 6px; border: 1px solid var(--accent); background: none; cursor: pointer; color: var(--accent); white-space: nowrap; }
-    .lb-add-btn:hover { background: var(--accent); color: white; }
-    .lb-empty-hint { font-size: 11px; color: var(--text-muted); font-style: italic; }
 </style></head><body>
 <h1>PIPIA Assessment Report<br><small style="font-weight:400;font-size:14px;color:#718096;">个人信息保护影响评估报告</small></h1>
 <div class="meta">
