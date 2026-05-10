@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy Generator | LegalAIPay</title>
+<meta name="description" content="Generate privacy notices and privacy policy templates for GDPR, CCPA/CPRA, COPPA, and PIPL using a simple question-and-answer workflow.">
+<style>
+:root {
+  --primary: #0f1e3d;
+  --accent: #3182ce;
+  --accent-light: #63b3ed;
+  --success: #2f855a;
+  --warning: #b7791f;
+  --bg: #f7fafc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #2d3748;
+  --text-light: #718096;
+  --muted: #a0aec0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+}
+.navbar {
+  background: rgba(255,255,255,0.96);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.nav-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.logo {
+  color: var(--primary);
+  font-size: 21px;
+  font-weight: 750;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 12px rgba(15,30,61,0.2);
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.nav-actions a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+.nav-actions .primary-link {
+  color: white;
+  background: var(--primary);
+  padding: 9px 16px;
+  border-radius: 8px;
+}
+.hero {
+  background: linear-gradient(135deg, #0f1e3d 0%, #1a365d 100%);
+  color: white;
+}
+.hero-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 54px 24px 46px;
+}
+.eyebrow {
+  display: inline-block;
+  color: #bee3f8;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+h1 {
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.12;
+  margin-bottom: 14px;
+}
+.hero p {
+  max-width: 760px;
+  color: rgba(255,255,255,0.82);
+  font-size: 17px;
+}
+.layout {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 24px 60px;
+  display: grid;
+  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.builder {
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow: auto;
+}
+.panel-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-header h2 {
+  color: var(--primary);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+.panel-header p {
+  color: var(--text-light);
+  font-size: 13px;
+}
+.form-body {
+  padding: 18px 20px 22px;
+}
+.field {
+  margin-bottom: 17px;
+}
+.field label,
+.field legend {
+  display: block;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+input,
+textarea,
+select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 11px;
+  font: inherit;
+  color: var(--text);
+  background: white;
+}
+textarea { min-height: 74px; resize: vertical; }
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.checks {
+  display: grid;
+  gap: 8px;
+}
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+.check input {
+  width: auto;
+  margin-top: 3px;
+}
+.hint {
+  color: var(--text-light);
+  font-size: 12px;
+  margin-top: 6px;
+}
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+button {
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+.btn-secondary {
+  background: #edf2f7;
+  color: var(--primary);
+}
+.output-header {
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tab {
+  background: #edf2f7;
+  color: var(--primary);
+  padding: 8px 10px;
+  font-size: 12px;
+}
+.tab.active {
+  background: var(--primary);
+  color: white;
+}
+.doc-tools {
+  display: flex;
+  gap: 8px;
+}
+.doc-tools button {
+  background: #ebf8ff;
+  color: #2b6cb0;
+  font-size: 12px;
+  padding: 8px 10px;
+}
+.document {
+  padding: 24px;
+  background: white;
+  border-radius: 0 0 10px 10px;
+}
+.document pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  color: #1a202c;
+  font-size: 13px;
+  line-height: 1.58;
+}
+.notice {
+  margin-top: 18px;
+  padding: 14px;
+  background: #fffaf0;
+  border: 1px solid #fbd38d;
+  border-radius: 8px;
+  color: #744210;
+  font-size: 13px;
+}
+.source-note {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px 42px;
+  color: var(--text-light);
+  font-size: 12px;
+}
+.source-note a { color: var(--accent); }
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .builder { position: static; max-height: none; }
+  .output-header { align-items: flex-start; flex-direction: column; }
+  .nav-actions a:not(.primary-link) { display: none; }
+}
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">L</span>
+      <span>LegalAIPay</span>
+    </a>
+    <div class="nav-actions">
+      <a href="index.html#tools">Tools</a>
+      <a href="pipia.html">PIPIA</a>
+      <a class="primary-link" href="#generator">Start Generator</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Privacy Policy Generator</span>
+    <h1>Answer simple questions. Generate privacy templates.</h1>
+    <p>This tool turns plain business answers into starter templates for privacy notices, privacy policies, sensitive personal information clauses, COPPA parent notices, and PIPL separate-consent language.</p>
+  </div>
+</section>
+
+<main class="layout" id="generator">
+  <section class="panel builder">
+    <div class="panel-header">
+      <h2>Questionnaire</h2>
+      <p>Plain answers are enough. Leave unknown items blank and review later.</p>
+    </div>
+    <div class="form-body">
+      <div class="field">
+        <label for="company">Company / product name</label>
+        <input id="company" value="Example Company" data-field>
+      </div>
+      <div class="field">
+        <label for="website">Website or app</label>
+        <input id="website" value="example.com" data-field>
+      </div>
+      <div class="field">
+        <label for="contact">Privacy contact email</label>
+        <input id="contact" value="privacy@example.com" data-field>
+      </div>
+      <div class="field">
+        <label for="business">What does the service do?</label>
+        <textarea id="business" data-field>provide online services, customer support, account features, analytics, and related business operations</textarea>
+      </div>
+      <fieldset class="field">
+        <legend>Which laws should the template cover?</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="GDPR" data-check="laws" checked> GDPR / UK GDPR style notice</label>
+          <label class="check"><input type="checkbox" value="CCPA" data-check="laws" checked> CCPA/CPRA California privacy notice</label>
+          <label class="check"><input type="checkbox" value="COPPA" data-check="laws" checked> COPPA child privacy notice</label>
+          <label class="check"><input type="checkbox" value="PIPL" data-check="laws" checked> China PIPL notice and separate consent</label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>What personal information do you collect?</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="identity and contact information, such as name, email address, phone number, account ID, and login credentials" data-check="categories" checked> Identity and contact</label>
+          <label class="check"><input type="checkbox" value="commercial and transaction information, such as purchases, subscriptions, billing records, and customer support history" data-check="categories" checked> Purchases / billing</label>
+          <label class="check"><input type="checkbox" value="internet, device, and usage information, such as IP address, device identifiers, browser type, log data, cookie identifiers, and analytics events" data-check="categories" checked> Device / usage analytics</label>
+          <label class="check"><input type="checkbox" value="user content, such as form entries, messages, uploaded files, feedback, and support requests" data-check="categories"> User content / uploads</label>
+          <label class="check"><input type="checkbox" value="professional or employment information, such as company name, job title, work email, and business contact details" data-check="categories"> Work profile</label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>Sensitive personal information?</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="government ID numbers or identity documents" data-check="sensitive"> Government ID</label>
+          <label class="check"><input type="checkbox" value="financial account, payment, or precise transaction information" data-check="sensitive"> Financial account/payment data</label>
+          <label class="check"><input type="checkbox" value="health, medical, biometric, genetic, or disability information" data-check="sensitive"> Health / biometric / genetic</label>
+          <label class="check"><input type="checkbox" value="precise geolocation or travel route information" data-check="sensitive"> Precise location / routes</label>
+          <label class="check"><input type="checkbox" value="children's personal information" data-check="sensitive"> Children’s information</label>
+          <label class="check"><input type="checkbox" value="religion, political opinions, union membership, sex life, or sexual orientation" data-check="sensitive"> GDPR special-category data</label>
+        </div>
+        <p class="hint">If any are selected, the generator adds sensitive-data notices, extra safeguards, and consent language.</p>
+      </fieldset>
+      <fieldset class="field">
+        <legend>Do you share or disclose information?</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="service providers and processors that host, secure, analyze, support, or operate the service" data-check="recipients" checked> Service providers / processors</label>
+          <label class="check"><input type="checkbox" value="payment processors, billing providers, and fraud-prevention vendors" data-check="recipients"> Payment / fraud vendors</label>
+          <label class="check"><input type="checkbox" value="business partners or integrations selected by the user" data-check="recipients"> Partners / integrations</label>
+          <label class="check"><input type="checkbox" value="professional advisors, authorities, courts, regulators, or parties involved in legal claims or business transfers" data-check="recipients" checked> Legal / advisors / authorities</label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>PIPL special situations</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="piplSensitive" data-field> Process sensitive personal information</label>
+          <label class="check"><input type="checkbox" id="piplTransfer" data-field> Transfer personal information outside mainland China</label>
+          <label class="check"><input type="checkbox" id="piplSharing" data-field> Provide/share personal information to another processor/controller</label>
+          <label class="check"><input type="checkbox" id="piplDisclosure" data-field> Publicly disclose personal information</label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>Children / COPPA</legend>
+        <div class="checks">
+          <label class="check"><input type="radio" name="kids" value="notDirected" checked data-radio> Not directed to children under 13</label>
+          <label class="check"><input type="radio" name="kids" value="mixed" data-radio> Mixed audience; may collect from children under 13 with parental consent</label>
+          <label class="check"><input type="radio" name="kids" value="directed" data-radio> Directed to children under 13</label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="retention">Retention period</label>
+        <input id="retention" value="only as long as necessary for the purposes described, unless a longer period is required by law" data-field>
+      </div>
+      <div class="field">
+        <label for="rights">Privacy rights request method</label>
+        <input id="rights" value="email us or use the privacy request form on our website" data-field>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" id="generate">Generate</button>
+        <button class="btn-secondary" id="reset">Reset sample</button>
+      </div>
+      <div class="notice">Generated text is a starting template, not legal advice. Have counsel review before publishing.</div>
+    </div>
+  </section>
+
+  <section class="panel output">
+    <div class="output-header">
+      <div class="tabs">
+        <button class="tab active" data-tab="notice">Short Notice</button>
+        <button class="tab" data-tab="policy">Full Policy</button>
+        <button class="tab" data-tab="consent">PIPL Consent</button>
+        <button class="tab" data-tab="coppa">COPPA Parent Notice</button>
+      </div>
+      <div class="doc-tools">
+        <button id="copy">Copy</button>
+        <button id="download">Download .txt</button>
+      </div>
+    </div>
+    <div class="document">
+      <pre id="outputText"></pre>
+    </div>
+  </section>
+</main>
+
+<div class="source-note">
+  Framework references used for template prompts: GDPR Articles 13, 14, and 9; California CCPA/CPRA notice, rights, sale/share, and sensitive-personal-information requirements; COPPA notice and verifiable parental consent requirements; China PIPL Articles 17, 23, 25, 28-31, and 38-39.
+</div>
+
+<script>
+const state = { currentTab: "notice" };
+
+function byId(id) {
+  return document.getElementById(id);
+}
+
+function checkedValues(name) {
+  return [...document.querySelectorAll(`[data-check="${name}"]:checked`)].map(input => input.value);
+}
+
+function radioValue(name) {
+  const selected = document.querySelector(`input[name="${name}"]:checked`);
+  return selected ? selected.value : "";
+}
+
+function values() {
+  return {
+    company: byId("company").value.trim() || "[Company name]",
+    website: byId("website").value.trim() || "[website/app]",
+    contact: byId("contact").value.trim() || "[privacy contact]",
+    business: byId("business").value.trim() || "[describe your service]",
+    laws: checkedValues("laws"),
+    categories: checkedValues("categories"),
+    sensitive: checkedValues("sensitive"),
+    recipients: checkedValues("recipients"),
+    piplSensitive: byId("piplSensitive").checked,
+    piplTransfer: byId("piplTransfer").checked,
+    piplSharing: byId("piplSharing").checked,
+    piplDisclosure: byId("piplDisclosure").checked,
+    kids: radioValue("kids"),
+    retention: byId("retention").value.trim() || "[retention period]",
+    rights: byId("rights").value.trim() || "[rights request method]"
+  };
+}
+
+function list(items) {
+  if (!items.length) return "- [Describe applicable categories]";
+  return items.map(item => `- ${item}`).join("\n");
+}
+
+function sentenceList(items) {
+  return items.length ? items.join("; ") : "[describe applicable items]";
+}
+
+function sensitiveClause(v) {
+  if (!v.sensitive.length && !v.piplSensitive) {
+    return "We do not intentionally collect sensitive personal information unless it is necessary for the service, legally permitted, and described at the point of collection.";
+  }
+  return `We may process sensitive personal information only for specific, necessary purposes, including ${sentenceList(v.sensitive)}. We use additional safeguards such as access controls, encryption where appropriate, restricted retention, and limited internal access. Where required by law, we request explicit consent, separate consent, or parental consent before processing sensitive personal information.`;
+}
+
+function childrenClause(v) {
+  if (v.kids === "notDirected") {
+    return "Our service is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If we learn that we collected such information without required consent, we will delete it.";
+  }
+  if (v.kids === "mixed") {
+    return "Our service is a mixed-audience service. If we know we are collecting personal information from a child under 13, we provide direct notice to the parent and obtain verifiable parental consent before collection, use, or disclosure unless a COPPA exception applies.";
+  }
+  return "Our service is directed to children under 13. We provide a child privacy notice, give parents direct notice, obtain verifiable parental consent before collecting, using, or disclosing children's personal information unless a COPPA exception applies, and allow parents to review, delete, or stop further collection.";
+}
+
+function piplConsentTriggers(v) {
+  const rows = [];
+  if (v.piplSensitive || v.sensitive.length) rows.push("processing sensitive personal information");
+  if (v.piplTransfer) rows.push("transferring personal information outside mainland China");
+  if (v.piplSharing) rows.push("providing or sharing personal information with another personal information processor");
+  if (v.piplDisclosure) rows.push("publicly disclosing personal information");
+  return rows;
+}
+
+function notice(v) {
+  return `${v.company} Privacy Notice
+
+Who we are
+${v.company} operates ${v.website}. We use personal information to ${v.business}.
+
+What we collect
+${list(v.categories)}
+
+Sensitive personal information
+${sensitiveClause(v)}
+
+Why we use it
+- Provide, operate, secure, and improve the service
+- Create and manage accounts, customer support, billing, and communications
+- Analyze usage, prevent fraud, debug issues, and comply with legal obligations
+- Send marketing only where permitted by law and your choices
+
+Who receives it
+${list(v.recipients)}
+
+Retention
+We keep personal information ${v.retention}.
+
+Your rights
+Depending on your location, you may request access, correction, deletion, portability, restriction, objection, consent withdrawal, opt-out of sale or sharing, limitation of sensitive personal information, or appeal where applicable. To make a request, ${v.rights} or contact ${v.contact}.
+
+Children
+${childrenClause(v)}
+
+PIPL separate consent triggers
+${piplConsentTriggers(v).length ? "We request separate consent for: " + piplConsentTriggers(v).join("; ") + "." : "No PIPL separate-consent scenario is selected in this questionnaire."}
+
+Contact
+Privacy contact: ${v.contact}`;
+}
+
+function policy(v) {
+  return `${v.company} Privacy Policy
+Effective date: [Month Day, Year]
+Last updated: [Month Day, Year]
+
+1. Who We Are
+${v.company} ("we," "us," or "our") operates ${v.website}. This Privacy Policy explains how we collect, use, disclose, retain, and protect personal information when you use our service.
+
+Privacy contact: ${v.contact}
+
+2. Personal Information We Collect
+We may collect:
+${list(v.categories)}
+
+We collect information directly from you, automatically through the service, from service providers, from business partners, and from legally permitted sources.
+
+3. Sensitive Personal Information
+${sensitiveClause(v)}
+
+For GDPR purposes, special-category data may require an Article 9 condition such as explicit consent or another lawful exception. For CCPA/CPRA purposes, sensitive personal information may require a right to limit use and disclosure when used beyond permitted purposes. For PIPL purposes, sensitive personal information requires a specific purpose, necessity, strict protection measures, notice of necessity and impact, and separate consent unless an exception applies.
+
+4. Purposes and Legal Bases
+We use personal information to:
+- Provide, maintain, personalize, and improve the service
+- Create accounts, authenticate users, process transactions, and provide support
+- Communicate about service, security, legal, and administrative matters
+- Analyze usage, debug issues, improve performance, and develop features
+- Detect, prevent, and respond to fraud, security incidents, and misuse
+- Comply with law, enforce terms, and establish or defend legal claims
+
+Where GDPR applies, our legal bases may include contract performance, consent, legitimate interests, legal obligations, vital interests, or public-interest grounds where applicable.
+
+Where PIPL applies, we process personal information only when there is a lawful processing basis, such as consent, contract necessity, legal duty, human-resources management under lawful rules, emergency protection, public-interest processing, reasonable processing of legally disclosed information, or another basis permitted by law.
+
+5. Disclosure and Sharing
+We may disclose personal information to:
+${list(v.recipients)}
+
+We do not sell personal information in the traditional sense. If an activity is considered a "sale" or "sharing" under CCPA/CPRA, we will provide required notices and opt-out choices, including honoring applicable opt-out preference signals where required.
+
+6. International Transfers
+If personal information is transferred across borders, we use legally required safeguards. Where GDPR applies, this may include adequacy decisions, Standard Contractual Clauses, or other approved safeguards. Where PIPL applies, we provide required notices, conduct assessments where required, use an applicable transfer mechanism, and obtain separate consent where required.
+
+7. Children's Privacy
+${childrenClause(v)}
+
+8. Retention
+We retain personal information ${v.retention}. When information is no longer needed, we delete, anonymize, or securely retain it only as required by law.
+
+9. Security
+We use administrative, technical, and organizational safeguards designed to protect personal information. These may include access controls, logging, encryption where appropriate, vendor controls, security reviews, and retention limits.
+
+10. Your Privacy Rights
+Depending on your location, you may have rights to access, know, correct, delete, restrict, object, withdraw consent, request portability, opt out of sale or sharing, limit sensitive personal information, appeal a decision, or complain to a regulator.
+
+To exercise rights, ${v.rights} or contact ${v.contact}. We may verify your request before responding.
+
+11. PIPL-Specific Notice
+If PIPL applies, we notify individuals of our name and contact details, processing purposes and methods, personal information categories, retention periods, rights-exercise methods, and other required information. We request separate consent where required for sensitive personal information processing, sharing/providing personal information to another processor, public disclosure, and cross-border transfer.
+
+12. Changes
+We may update this Privacy Policy. If changes are material, we will provide notice as required by law.
+
+13. Contact Us
+${v.company}
+Website/App: ${v.website}
+Privacy contact: ${v.contact}`;
+}
+
+function consent(v) {
+  const triggers = piplConsentTriggers(v);
+  return `PIPL Separate Consent Template
+
+Use this as a separate checkbox, pop-up, or signature block when PIPL requires separate consent. Do not bundle this into general terms.
+
+Consent statement
+I have read and understood the notice from ${v.company}. I separately consent to the following processing activity:
+
+${triggers.length ? triggers.map(item => `- ${item}`).join("\n") : "- [Select a PIPL separate-consent scenario in the questionnaire]"}
+
+Required details to show before consent
+- Processor name: ${v.company}
+- Contact method: ${v.contact}
+- Processing purpose: [state the specific purpose]
+- Processing method: [collection/use/storage/transfer/provision/disclosure/etc.]
+- Personal information categories: ${sentenceList(v.categories)}
+- Sensitive personal information categories, if any: ${sentenceList(v.sensitive)}
+- Retention period: ${v.retention}
+- Necessity and impact on rights: [explain why this is necessary and how it may affect the individual]
+- Recipient / overseas recipient, if applicable: [name, contact, processing purpose, method, categories]
+- Rights method: ${v.rights}
+
+Separate consent for sensitive personal information
+I separately consent to ${v.company} processing the sensitive personal information described above for the stated specific purpose. I understand that refusing or withdrawing this consent may affect only the related feature unless the information is necessary to provide the requested service.
+
+Separate consent for sharing/providing to another processor
+I separately consent to ${v.company} providing my personal information to the recipient identified above for the stated purpose and within the stated processing scope.
+
+Separate consent for public disclosure
+I separately consent to ${v.company} publicly disclosing the personal information described above for the stated purpose and scope.
+
+Separate consent for cross-border transfer
+I separately consent to ${v.company} transferring my personal information outside mainland China to the overseas recipient identified above. I understand the overseas recipient's contact details, processing purpose and method, personal information categories, and how I may exercise my rights.`;
+}
+
+function coppa(v) {
+  return `COPPA Parent Direct Notice Template
+
+To: Parent or guardian
+From: ${v.company}
+Contact: ${v.contact}
+
+Why you are receiving this notice
+${v.company} operates ${v.website}. We are asking for your verifiable parental consent before collecting, using, or disclosing personal information from your child.
+
+Information we intend to collect from the child
+${list(v.categories)}
+
+How we will use the information
+We will use the information to ${v.business}, provide requested features, keep the service secure, communicate with you, and comply with legal obligations.
+
+Disclosure to third parties
+We may disclose information to:
+${list(v.recipients)}
+
+Your choices
+You may consent to our collection and internal use of your child's information without consenting to disclosure to third parties, unless the disclosure is integral to the website or online service. You may review your child's personal information, ask us to delete it, and refuse further collection or use.
+
+How to give consent
+[Describe the verifiable parental consent method, such as signed form, payment-card verification, video verification, government ID check with deletion after verification, knowledge-based authentication, or another approved/reliable method.]
+
+If you do not consent
+If you do not provide consent within a reasonable time, we will delete the parent or child contact information collected only to obtain consent.
+
+Contact
+Email ${v.contact} to ask questions, review your child's information, request deletion, or revoke consent.`;
+}
+
+function render() {
+  const v = values();
+  const docs = {
+    notice: notice(v),
+    policy: policy(v),
+    consent: consent(v),
+    coppa: coppa(v)
+  };
+  byId("outputText").textContent = docs[state.currentTab];
+}
+
+document.querySelectorAll("[data-field], [data-check], [data-radio]").forEach(input => {
+  input.addEventListener("input", render);
+  input.addEventListener("change", render);
+});
+
+document.querySelectorAll("[data-tab]").forEach(button => {
+  button.addEventListener("click", () => {
+    state.currentTab = button.dataset.tab;
+    document.querySelectorAll("[data-tab]").forEach(tab => tab.classList.toggle("active", tab === button));
+    render();
+  });
+});
+
+byId("generate").addEventListener("click", render);
+byId("reset").addEventListener("click", () => {
+  document.querySelectorAll("input[type='text'], input:not([type]), textarea").forEach(input => input.value = input.defaultValue);
+  document.querySelectorAll("input[type='checkbox'], input[type='radio']").forEach(input => input.checked = input.defaultChecked);
+  render();
+});
+
+byId("copy").addEventListener("click", async () => {
+  await navigator.clipboard.writeText(byId("outputText").textContent);
+  byId("copy").textContent = "Copied";
+  setTimeout(() => byId("copy").textContent = "Copy", 1200);
+});
+
+byId("download").addEventListener("click", () => {
+  const blob = new Blob([byId("outputText").textContent], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${values().company.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-${state.currentTab}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+render();
+</script>
+</body>
+</html>
