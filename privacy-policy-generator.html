@@ -190,6 +190,56 @@ fieldset {
   font-size: 12px;
   margin-top: 6px;
 }
+.market-options {
+  display: grid;
+  gap: 10px;
+}
+.market-card {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  cursor: pointer;
+  background: #ffffff;
+}
+.market-card:has(input:checked) {
+  border-color: var(--accent);
+  background: #ebf8ff;
+}
+.market-card input {
+  width: auto;
+  margin-top: 4px;
+}
+.market-title {
+  display: block;
+  color: var(--primary);
+  font-weight: 750;
+  font-size: 14px;
+}
+.market-copy {
+  display: block;
+  color: var(--text-light);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.market-guidance {
+  margin: 12px 0 18px;
+  padding: 14px;
+  border: 1px solid #bee3f8;
+  background: #ebf8ff;
+  border-radius: 9px;
+  color: #2a4365;
+  font-size: 13px;
+}
+.market-guidance a {
+  color: #2b6cb0;
+  font-weight: 700;
+}
+.hidden {
+  display: none !important;
+}
 .actions {
   display: flex;
   gap: 10px;
@@ -301,15 +351,15 @@ button {
   <div class="hero-inner">
     <span class="eyebrow">Privacy Policy Generator</span>
     <h1>Answer simple questions. Generate privacy templates.</h1>
-    <p>This tool turns plain business answers into starter templates for privacy notices, privacy policies, sensitive personal information clauses, COPPA parent notices, and PIPL separate-consent language.</p>
+    <p>First choose the market. Then answer only the questions that matter for that market. For Mainland China, start with LegalAIPay's PIPIA flow and use those answers to generate a China privacy policy.</p>
   </div>
 </section>
 
 <main class="layout" id="generator">
   <section class="panel builder">
     <div class="panel-header">
-      <h2>Questionnaire</h2>
-      <p>Plain answers are enough. Leave unknown items blank and review later.</p>
+      <h2>Step-by-step questions</h2>
+      <p>Start with the market. The form will adapt so legal concepts stay out of the user's way.</p>
     </div>
     <div class="form-body">
       <div class="field">
@@ -329,47 +379,86 @@ button {
         <textarea id="business" data-field>provide online services, customer support, account features, analytics, and related business operations</textarea>
       </div>
       <fieldset class="field">
-        <legend>Which laws should the template cover?</legend>
+        <legend>1. Which market is this privacy document for?</legend>
+        <div class="market-options">
+          <label class="market-card">
+            <input type="radio" name="market" value="china" checked data-radio>
+            <span><span class="market-title">Mainland China</span><span class="market-copy">PIPL privacy policy, sensitive personal information notice, separate consent, sharing, disclosure, and cross-border transfer.</span></span>
+          </label>
+          <label class="market-card">
+            <input type="radio" name="market" value="eu" data-radio>
+            <span><span class="market-title">EU / UK</span><span class="market-copy">GDPR-style privacy notice with legal basis, rights, retention, recipients, and transfer safeguards.</span></span>
+          </label>
+          <label class="market-card">
+            <input type="radio" name="market" value="california" data-radio>
+            <span><span class="market-title">California</span><span class="market-copy">CCPA/CPRA notice at collection, privacy policy, rights, sale/share, and sensitive information disclosures.</span></span>
+          </label>
+          <label class="market-card">
+            <input type="radio" name="market" value="children" data-radio>
+            <span><span class="market-title">Children under 13</span><span class="market-copy">COPPA privacy notice and parent direct notice with consent language.</span></span>
+          </label>
+        </div>
+      </fieldset>
+      <div class="market-guidance" data-market-panel="china">
+        <strong>Mainland China path:</strong> complete the <a href="pipia.html" target="_blank" rel="noopener">LegalAIPay PIPIA Assessment</a> first if the product is live or close to launch. Then paste the key PIPIA findings below. This generator will turn those answers into a Mainland China privacy policy plus separate consent templates where needed.
+      </div>
+      <div class="market-guidance hidden" data-market-panel="eu">
+        <strong>EU / UK path:</strong> answer what data is collected, why, the legal basis, who receives it, retention, and international transfers. The output focuses on GDPR Articles 13/14 style notices.
+      </div>
+      <div class="market-guidance hidden" data-market-panel="california">
+        <strong>California path:</strong> answer categories, purposes, disclosures, sale/share, sensitive personal information, and rights request methods. The output focuses on CCPA/CPRA notice and policy language.
+      </div>
+      <div class="market-guidance hidden" data-market-panel="children">
+        <strong>COPPA path:</strong> answer whether the service is directed to children, what is collected from children, and how parents can consent, review, delete, or stop collection.
+      </div>
+      <div class="field" data-market-panel="china">
+        <label for="pipiaFindings">PIPIA result or key findings</label>
+        <textarea id="pipiaFindings" data-field>Personal information collection is necessary for account registration, service delivery, customer support, security, and compliance. No high-risk issue has been identified yet. Further review is needed before processing sensitive personal information or transferring personal information overseas.</textarea>
+        <p class="hint">Paste the summary from the PIPIA tool, or write plain-language findings.</p>
+      </div>
+      <fieldset class="field">
+        <legend>2. What personal information do you collect?</legend>
         <div class="checks">
-          <label class="check"><input type="checkbox" value="GDPR" data-check="laws" checked> GDPR / UK GDPR style notice</label>
-          <label class="check"><input type="checkbox" value="CCPA" data-check="laws" checked> CCPA/CPRA California privacy notice</label>
-          <label class="check"><input type="checkbox" value="COPPA" data-check="laws" checked> COPPA child privacy notice</label>
-          <label class="check"><input type="checkbox" value="PIPL" data-check="laws" checked> China PIPL notice and separate consent</label>
+          <label class="check"><input type="checkbox" value="identity and contact information, such as name, alias, username, email address, phone number, address, account ID, and login credentials" data-check="categories" checked> Identity, contact, account</label>
+          <label class="check"><input type="checkbox" value="profile and preference information, such as age range, language, region, settings, notification choices, interests, saved preferences, and loyalty or membership details" data-check="categories"> Profile, preferences, membership</label>
+          <label class="check"><input type="checkbox" value="user content and communications, such as form entries, posts, comments, messages, uploaded files, photos, audio, video, feedback, support requests, and related metadata" data-check="categories"> Content, messages, uploads</label>
+          <label class="check"><input type="checkbox" value="transaction and commercial information, such as purchases, subscriptions, orders, invoices, billing records, payment status, refund history, and customer support history" data-check="categories" checked> Orders, payment, billing</label>
+          <label class="check"><input type="checkbox" value="device, browser, network, and log information, such as IP address, device identifiers, browser type, operating system, app version, cookie identifiers, crash logs, security logs, and analytics events" data-check="categories" checked> Device, browser, logs</label>
+          <label class="check"><input type="checkbox" value="usage and interaction information, such as pages viewed, features used, search queries, clickstream, content viewed or interacted with, frequency and duration of activities, and advertising or campaign interactions" data-check="categories"> Usage, behavior, analytics</label>
+          <label class="check"><input type="checkbox" value="location information, such as country, city, approximate location from IP address, precise location if enabled, travel route, check-in location, or service location" data-check="categories"> Location / travel route</label>
+          <label class="check"><input type="checkbox" value="contacts, social, or relationship information, such as contacts imported by the user, friends, followers, group membership, referrals, and people or organizations the user interacts with" data-check="categories"> Contacts / relationships</label>
+          <label class="check"><input type="checkbox" value="third-party and partner information, such as information from business partners, integrated apps, advertisers, analytics providers, travel agents, payment providers, fraud-prevention vendors, or public sources" data-check="categories"> Third-party / partner data</label>
+          <label class="check"><input type="checkbox" value="travel, booking, and service preference information, such as itinerary, passport or travel document details, loyalty tier, seat choice, meal preference, special assistance request, lounge visit, cargo booking, and reason for travel" data-check="categories"> Travel / booking / service needs</label>
+          <label class="check"><input type="checkbox" value="professional, employment, supplier, or B2B information, such as employer, job title, work email, business contact details, supplier records, contract records, tax information, and due diligence information" data-check="categories"> Work / supplier / B2B</label>
+          <label class="check"><input type="checkbox" value="AI, automated decision, and inference information, such as prompts, AI interactions, generated outputs, inferred preferences, risk scores, recommendations, fraud signals, and personalization segments" data-check="categories"> AI / inferences / profiling</label>
         </div>
       </fieldset>
       <fieldset class="field">
-        <legend>What personal information do you collect?</legend>
+        <legend>3. Sensitive personal information?</legend>
         <div class="checks">
-          <label class="check"><input type="checkbox" value="identity and contact information, such as name, email address, phone number, account ID, and login credentials" data-check="categories" checked> Identity and contact</label>
-          <label class="check"><input type="checkbox" value="commercial and transaction information, such as purchases, subscriptions, billing records, and customer support history" data-check="categories" checked> Purchases / billing</label>
-          <label class="check"><input type="checkbox" value="internet, device, and usage information, such as IP address, device identifiers, browser type, log data, cookie identifiers, and analytics events" data-check="categories" checked> Device / usage analytics</label>
-          <label class="check"><input type="checkbox" value="user content, such as form entries, messages, uploaded files, feedback, and support requests" data-check="categories"> User content / uploads</label>
-          <label class="check"><input type="checkbox" value="professional or employment information, such as company name, job title, work email, and business contact details" data-check="categories"> Work profile</label>
-        </div>
-      </fieldset>
-      <fieldset class="field">
-        <legend>Sensitive personal information?</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" value="government ID numbers or identity documents" data-check="sensitive"> Government ID</label>
-          <label class="check"><input type="checkbox" value="financial account, payment, or precise transaction information" data-check="sensitive"> Financial account/payment data</label>
-          <label class="check"><input type="checkbox" value="health, medical, biometric, genetic, or disability information" data-check="sensitive"> Health / biometric / genetic</label>
-          <label class="check"><input type="checkbox" value="precise geolocation or travel route information" data-check="sensitive"> Precise location / routes</label>
-          <label class="check"><input type="checkbox" value="children's personal information" data-check="sensitive"> Children’s information</label>
-          <label class="check"><input type="checkbox" value="religion, political opinions, union membership, sex life, or sexual orientation" data-check="sensitive"> GDPR special-category data</label>
+          <label class="check"><input type="checkbox" value="government ID numbers, identity documents, passport, driver's license, or national ID information" data-check="sensitive"> Government ID / passport</label>
+          <label class="check"><input type="checkbox" value="financial account, payment card, precise transaction, credit, tax, or payroll information" data-check="sensitive"> Financial / payment / tax</label>
+          <label class="check"><input type="checkbox" value="health, medical, disability, accessibility, special assistance, fitness-to-travel, allergy, or dietary information that may reveal health or religion" data-check="sensitive"> Health / assistance / dietary</label>
+          <label class="check"><input type="checkbox" value="biometric identifiers or biometric templates, such as face recognition, voiceprint, fingerprint, or identity-verification selfies" data-check="sensitive"> Biometric information</label>
+          <label class="check"><input type="checkbox" value="precise geolocation, travel route, real-time location, or location history" data-check="sensitive"> Precise location / route</label>
+          <label class="check"><input type="checkbox" value="children's personal information, including information about children under 14 in China or under 13 for COPPA" data-check="sensitive"> Children’s information</label>
+          <label class="check"><input type="checkbox" value="religion, political opinions, union membership, ethnicity, race, sex life, sexual orientation, or philosophical beliefs" data-check="sensitive"> Special-category beliefs / identity</label>
+          <label class="check"><input type="checkbox" value="criminal record, sanctions, background-check, fraud-risk, or security-screening information" data-check="sensitive"> Background / criminal / sanctions</label>
         </div>
         <p class="hint">If any are selected, the generator adds sensitive-data notices, extra safeguards, and consent language.</p>
       </fieldset>
       <fieldset class="field">
-        <legend>Do you share or disclose information?</legend>
+        <legend>4. Do you share or disclose information?</legend>
         <div class="checks">
           <label class="check"><input type="checkbox" value="service providers and processors that host, secure, analyze, support, or operate the service" data-check="recipients" checked> Service providers / processors</label>
-          <label class="check"><input type="checkbox" value="payment processors, billing providers, and fraud-prevention vendors" data-check="recipients"> Payment / fraud vendors</label>
-          <label class="check"><input type="checkbox" value="business partners or integrations selected by the user" data-check="recipients"> Partners / integrations</label>
-          <label class="check"><input type="checkbox" value="professional advisors, authorities, courts, regulators, or parties involved in legal claims or business transfers" data-check="recipients" checked> Legal / advisors / authorities</label>
+          <label class="check"><input type="checkbox" value="payment processors, billing providers, banks, insurers, and fraud-prevention vendors" data-check="recipients"> Payment / fraud / insurers</label>
+          <label class="check"><input type="checkbox" value="business partners, advertisers, integrated apps, API partners, travel agents, booking partners, loyalty partners, or user-selected integrations" data-check="recipients"> Partners / integrations / advertisers</label>
+          <label class="check"><input type="checkbox" value="affiliates, group companies, parent companies, subsidiaries, and internal shared service teams" data-check="recipients"> Affiliates / group companies</label>
+          <label class="check"><input type="checkbox" value="professional advisors, authorities, courts, regulators, law enforcement, or parties involved in legal claims, investigations, audits, or business transfers" data-check="recipients" checked> Legal / advisors / authorities</label>
         </div>
       </fieldset>
-      <fieldset class="field">
-        <legend>PIPL special situations</legend>
+      <fieldset class="field" data-market-panel="china">
+        <legend>5. China PIPL special situations</legend>
         <div class="checks">
           <label class="check"><input type="checkbox" id="piplSensitive" data-field> Process sensitive personal information</label>
           <label class="check"><input type="checkbox" id="piplTransfer" data-field> Transfer personal information outside mainland China</label>
@@ -377,7 +466,7 @@ button {
           <label class="check"><input type="checkbox" id="piplDisclosure" data-field> Publicly disclose personal information</label>
         </div>
       </fieldset>
-      <fieldset class="field">
+      <fieldset class="field" data-market-panel="children">
         <legend>Children / COPPA</legend>
         <div class="checks">
           <label class="check"><input type="radio" name="kids" value="notDirected" checked data-radio> Not directed to children under 13</label>
@@ -442,11 +531,12 @@ function radioValue(name) {
 
 function values() {
   return {
+    market: radioValue("market"),
     company: byId("company").value.trim() || "[Company name]",
     website: byId("website").value.trim() || "[website/app]",
     contact: byId("contact").value.trim() || "[privacy contact]",
     business: byId("business").value.trim() || "[describe your service]",
-    laws: checkedValues("laws"),
+    pipiaFindings: byId("pipiaFindings").value.trim() || "[PIPIA findings]",
     categories: checkedValues("categories"),
     sensitive: checkedValues("sensitive"),
     recipients: checkedValues("recipients"),
@@ -495,7 +585,213 @@ function piplConsentTriggers(v) {
   return rows;
 }
 
+function marketName(v) {
+  return {
+    china: "Mainland China",
+    eu: "EU / UK",
+    california: "California",
+    children: "Children under 13"
+  }[v.market] || "selected market";
+}
+
+function chinaNotice(v) {
+  return `${v.company} 中国大陆个人信息处理规则摘要
+
+适用市场
+本摘要适用于 ${v.company} 面向中国大陆用户通过 ${v.website} 提供服务时的个人信息处理活动。
+
+建议先完成 PIPIA
+在发布或重大变更前，建议先完成 LegalAIPay PIPIA。当前 PIPIA/业务结论：
+${v.pipiaFindings}
+
+我们收集哪些个人信息
+${list(v.categories)}
+
+我们为什么处理个人信息
+- 注册、登录、身份识别和账号管理
+- 提供、维护、改进和保障 ${v.website} 服务
+- 处理订单、付款、客服、通知和用户请求
+- 安全风控、反欺诈、日志审计和故障排查
+- 履行法律法规、监管要求、争议解决和权利保护
+
+敏感个人信息
+${sensitiveClause(v)}
+
+根据 PIPL，如果处理敏感个人信息，我们会说明处理的特定目的、必要性、处理方式、保存期限、对个人权益的影响，并在需要时取得单独同意。
+
+委托处理、共享、转让、公开披露
+可能接收个人信息的主体包括：
+${list(v.recipients)}
+
+${v.piplSharing ? "如果我们向其他个人信息处理者提供或共享个人信息，我们会告知接收方名称或姓名、联系方式、处理目的、处理方式和个人信息种类，并在需要时取得单独同意。" : "目前未选择向其他个人信息处理者提供或共享个人信息。如后续发生，应补充接收方信息和单独同意流程。"}
+
+${v.piplDisclosure ? "如果我们公开披露个人信息，我们会告知公开披露的目的、方式、个人信息种类和可能影响，并在需要时取得单独同意。" : "目前未选择公开披露个人信息。如后续发生，应补充公开披露说明和单独同意流程。"}
+
+跨境提供
+${v.piplTransfer ? "如果我们向中国大陆境外提供个人信息，我们会告知境外接收方名称或姓名、联系方式、处理目的、处理方式、个人信息种类、个人行使权利的方式和程序，并根据适用要求完成安全评估、标准合同、认证或其他合法路径，同时取得单独同意。" : "目前未选择向中国大陆境外提供个人信息。如后续发生，应先完成跨境合规路径判断和单独同意。"}
+
+保存期限
+我们会在 ${v.retention} 的期限内保存个人信息，到期后删除或匿名化处理，法律法规另有要求的除外。
+
+个人权利
+个人可以依法行使查阅、复制、更正、补充、删除、撤回同意、限制或拒绝处理、解释处理规则等权利。请通过 ${v.rights} 或 ${v.contact} 联系我们。`;
+}
+
+function chinaPolicy(v) {
+  return `${v.company} 中国大陆隐私政策模板
+生效日期：[填写日期]
+最近更新：[填写日期]
+
+1. 引言
+${v.company}（以下简称“我们”）通过 ${v.website} 提供服务。本隐私政策说明我们如何在中国大陆市场收集、使用、保存、委托处理、共享、转让、公开披露、跨境提供和保护个人信息。
+
+2. PIPIA 与处理必要性
+我们建议在产品上线、处理目的变更、处理敏感个人信息、向第三方共享、公开披露、跨境提供、自动化决策或发生重大处理变化前完成个人信息保护影响评估。
+
+当前 PIPIA/业务结论：
+${v.pipiaFindings}
+
+3. 我们处理的个人信息种类
+${list(v.categories)}
+
+4. 处理目的和处理方式
+我们可能为了以下目的处理个人信息：
+- 账号注册、登录、身份识别、认证和账号安全
+- 提供产品功能、履行合同、处理订单、付款、交付和客服请求
+- 个性化设置、偏好保存、功能优化、质量改进和用户体验分析
+- 安全保障、反欺诈、风控、日志审计、系统维护和故障排查
+- 依法履行法律义务、监管要求、争议解决、权利保护和合规审计
+
+5. 敏感个人信息
+${sensitiveClause(v)}
+
+我们仅在具有特定目的和充分必要性时处理敏感个人信息，并采取严格保护措施。我们会向个人告知处理敏感个人信息的必要性以及对个人权益的影响，并在需要时取得单独同意。
+
+6. 委托处理
+我们可能委托服务提供商处理个人信息，例如云服务、数据存储、客服、支付、风控、安全、分析、通信和技术支持服务。我们会与受托方约定处理目的、期限、方式、个人信息种类、保护措施和双方权利义务，并监督其处理活动。
+
+7. 共享、转让和公开披露
+我们可能向以下主体共享或披露个人信息：
+${list(v.recipients)}
+
+如向其他个人信息处理者提供个人信息，我们会告知接收方名称或姓名、联系方式、处理目的、处理方式和个人信息种类，并在需要时取得单独同意。未经个人单独同意或法律允许，我们不会公开披露个人信息。
+
+8. 跨境提供个人信息
+${v.piplTransfer ? "如需向中国大陆境外提供个人信息，我们会在跨境提供前告知境外接收方名称或姓名、联系方式、处理目的、处理方式、个人信息种类、个人向境外接收方行使权利的方式和程序，并根据适用要求完成安全评估、个人信息保护认证、标准合同或其他合法路径，同时取得个人单独同意。" : "目前未选择向中国大陆境外提供个人信息。如未来发生跨境提供，我们会在提供前补充告知、完成必要合规路径并取得单独同意。"}
+
+9. 自动化决策和画像
+如我们使用自动化决策、画像、推荐、风险评分或个性化展示，我们会确保透明、公平、公正，不对个人在交易条件等方面实行不合理差别待遇。个人可以要求解释并拒绝仅通过自动化决策作出对个人权益有重大影响的决定。
+
+10. 儿童个人信息
+如服务涉及不满十四周岁未成年人个人信息，我们会依法取得监护人同意，设置专门处理规则，并采取更严格保护措施。
+
+11. 保存期限
+我们仅在 ${v.retention} 的期限内保存个人信息。超过保存期限后，我们会删除或匿名化处理，法律法规另有规定的除外。
+
+12. 安全措施
+我们采取访问控制、加密、日志审计、权限管理、员工培训、供应商管理、安全测试、事件响应和最小必要处理等措施保护个人信息。
+
+13. 个人权利
+个人可以依法查阅、复制、更正、补充、删除个人信息，撤回同意，限制或拒绝处理，请求解释处理规则，或注销账号。请通过 ${v.rights} 或 ${v.contact} 联系我们。
+
+14. 联系方式
+个人信息处理者：${v.company}
+服务名称：${v.website}
+个人信息保护联系渠道：${v.contact}`;
+}
+
+function gdprNotice(v) {
+  return `${v.company} GDPR / UK GDPR Privacy Notice
+
+Controller
+${v.company}, operating ${v.website}. Privacy contact: ${v.contact}
+
+Personal data we collect
+${list(v.categories)}
+
+Special-category data
+${sensitiveClause(v)}
+
+Purposes and legal bases
+- Contract necessity: provide the service, accounts, orders, billing, and support
+- Legitimate interests: security, fraud prevention, analytics, service improvement, business operations, and legal claims
+- Consent: marketing, non-essential cookies, precise location, special-category data, or other optional processing where required
+- Legal obligation: tax, accounting, regulatory, law-enforcement, and compliance duties
+
+Recipients
+${list(v.recipients)}
+
+International transfers
+If data is transferred outside the EEA/UK, we use adequacy decisions, Standard Contractual Clauses, UK transfer addendum/IDTA, or other lawful safeguards.
+
+Retention
+${v.retention}
+
+Your rights
+You may request access, rectification, erasure, restriction, portability, objection, and withdrawal of consent. Contact ${v.contact}. You may complain to your supervisory authority.`;
+}
+
+function gdprPolicy(v) {
+  return `${gdprNotice(v)}
+
+Additional GDPR Policy Sections
+
+Cookies and similar technologies
+Describe essential cookies, analytics cookies, advertising cookies, consent controls, and browser choices.
+
+Automated decision-making
+Describe whether profiling, AI, recommendations, fraud scoring, or automated decisions are used and whether they have legal or similarly significant effects.
+
+Data Protection Officer / Representative
+[Insert DPO, EU representative, or UK representative details if required.]`;
+}
+
+function ccpaNotice(v) {
+  return `${v.company} California Notice at Collection / Privacy Notice
+
+Business
+${v.company}, operating ${v.website}. Contact: ${v.contact}
+
+Categories of personal information collected
+${list(v.categories)}
+
+Sensitive personal information
+${sensitiveClause(v)}
+
+Purposes
+- Provide and improve services
+- Process transactions and support requests
+- Security, fraud prevention, debugging, analytics, and compliance
+- Marketing and personalization where permitted
+
+Disclosures
+${list(v.recipients)}
+
+Sale / sharing / targeted advertising
+[State whether personal information is sold or shared for cross-context behavioral advertising. If yes, provide a Do Not Sell or Share mechanism and honor opt-out preference signals where required.]
+
+California rights
+California residents may request to know/access, delete, correct, opt out of sale/share, limit certain sensitive personal information uses, and be free from discrimination for exercising rights. Submit requests by ${v.rights} or contact ${v.contact}.`;
+}
+
+function ccpaPolicy(v) {
+  return `${ccpaNotice(v)}
+
+12-month disclosure table
+For each category, list: categories collected, source, business/commercial purpose, categories of third parties disclosed to, whether sold/shared, and retention period.
+
+Authorized agents
+Describe how authorized agents may submit requests and how verification works.
+
+Appeals
+[Add appeal process if required by applicable state law.]`;
+}
+
 function notice(v) {
+  if (v.market === "china") return chinaNotice(v);
+  if (v.market === "eu") return gdprNotice(v);
+  if (v.market === "california") return ccpaNotice(v);
+  if (v.market === "children") return coppa(v);
   return `${v.company} Privacy Notice
 
 Who we are
@@ -533,6 +829,10 @@ Privacy contact: ${v.contact}`;
 }
 
 function policy(v) {
+  if (v.market === "china") return chinaPolicy(v);
+  if (v.market === "eu") return gdprPolicy(v);
+  if (v.market === "california") return ccpaPolicy(v);
+  if (v.market === "children") return coppa(v);
   return `${v.company} Privacy Policy
 Effective date: [Month Day, Year]
 Last updated: [Month Day, Year]
@@ -672,6 +972,15 @@ Email ${v.contact} to ask questions, review your child's information, request de
 
 function render() {
   const v = values();
+  document.querySelectorAll("[data-market-panel]").forEach(panel => {
+    panel.classList.toggle("hidden", panel.dataset.marketPanel !== v.market);
+  });
+  document.querySelector('[data-tab="consent"]').classList.toggle("hidden", v.market !== "china");
+  document.querySelector('[data-tab="coppa"]').classList.toggle("hidden", v.market !== "children");
+  if ((state.currentTab === "consent" && v.market !== "china") || (state.currentTab === "coppa" && v.market !== "children")) {
+    state.currentTab = v.market === "children" ? "coppa" : "notice";
+  }
+  document.querySelectorAll("[data-tab]").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === state.currentTab));
   const docs = {
     notice: notice(v),
     policy: policy(v),
