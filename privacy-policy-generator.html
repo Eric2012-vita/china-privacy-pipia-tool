@@ -1,1032 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy Generator | LegalAIPay</title>
-<meta name="description" content="Generate privacy notices and privacy policy templates for GDPR, CCPA/CPRA, COPPA, and PIPL using a simple question-and-answer workflow.">
-<style>
-:root {
-  --primary: #0f1e3d;
-  --accent: #3182ce;
-  --accent-light: #63b3ed;
-  --success: #2f855a;
-  --warning: #b7791f;
-  --bg: #f7fafc;
-  --card: #ffffff;
-  --border: #e2e8f0;
-  --text: #2d3748;
-  --text-light: #718096;
-  --muted: #a0aec0;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.55;
-}
-.navbar {
-  background: rgba(255,255,255,0.96);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-.nav-container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-.logo {
-  color: var(--primary);
-  font-size: 21px;
-  font-weight: 750;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.logo-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 4px 12px rgba(15,30,61,0.2);
-}
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-.nav-actions a {
-  color: var(--text);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-}
-.nav-actions .primary-link {
-  color: white;
-  background: var(--primary);
-  padding: 9px 16px;
-  border-radius: 8px;
-}
-.hero {
-  background: linear-gradient(135deg, #0f1e3d 0%, #1a365d 100%);
-  color: white;
-}
-.hero-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 54px 24px 46px;
-}
-.eyebrow {
-  display: inline-block;
-  color: #bee3f8;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-h1 {
-  font-size: clamp(30px, 5vw, 48px);
-  line-height: 1.12;
-  margin-bottom: 14px;
-}
-.hero p {
-  max-width: 760px;
-  color: rgba(255,255,255,0.82);
-  font-size: 17px;
-}
-.layout {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 28px 24px 60px;
-  display: grid;
-  grid-template-columns: minmax(340px, 430px) minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-}
-.panel {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.builder {
-  position: sticky;
-  top: 86px;
-  max-height: calc(100vh - 110px);
-  overflow: auto;
-}
-.panel-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--border);
-}
-.panel-header h2 {
-  color: var(--primary);
-  font-size: 18px;
-  margin-bottom: 4px;
-}
-.panel-header p {
-  color: var(--text-light);
-  font-size: 13px;
-}
-.form-body {
-  padding: 18px 20px 22px;
-}
-.field {
-  margin-bottom: 17px;
-}
-.field label,
-.field legend {
-  display: block;
-  color: var(--primary);
-  font-weight: 700;
-  font-size: 13px;
-  margin-bottom: 7px;
-}
-input,
-textarea,
-select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 11px;
-  font: inherit;
-  color: var(--text);
-  background: white;
-}
-textarea { min-height: 74px; resize: vertical; }
-fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-.checks {
-  display: grid;
-  gap: 8px;
-}
-.check {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--text);
-}
-.check input {
-  width: auto;
-  margin-top: 3px;
-}
-.hint {
-  color: var(--text-light);
-  font-size: 12px;
-  margin-top: 6px;
-}
-.market-options {
-  display: grid;
-  gap: 10px;
-}
-.market-card {
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 10px;
-  cursor: pointer;
-  background: #ffffff;
-}
-.market-card:has(input:checked) {
-  border-color: var(--accent);
-  background: #ebf8ff;
-}
-.market-card input {
-  width: auto;
-  margin-top: 4px;
-}
-.market-title {
-  display: block;
-  color: var(--primary);
-  font-weight: 750;
-  font-size: 14px;
-}
-.market-copy {
-  display: block;
-  color: var(--text-light);
-  font-size: 12px;
-  margin-top: 2px;
-}
-.market-guidance {
-  margin: 12px 0 18px;
-  padding: 14px;
-  border: 1px solid #bee3f8;
-  background: #ebf8ff;
-  border-radius: 9px;
-  color: #2a4365;
-  font-size: 13px;
-}
-.market-guidance a {
-  color: #2b6cb0;
-  font-weight: 700;
-}
-.hidden {
-  display: none !important;
-}
-.actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-button {
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.btn-primary {
-  background: var(--primary);
-  color: white;
-}
-.btn-secondary {
-  background: #edf2f7;
-  color: var(--primary);
-}
-.output-header {
-  padding: 16px 18px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-}
-.tabs {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.tab {
-  background: #edf2f7;
-  color: var(--primary);
-  padding: 8px 10px;
-  font-size: 12px;
-}
-.tab.active {
-  background: var(--primary);
-  color: white;
-}
-.doc-tools {
-  display: flex;
-  gap: 8px;
-}
-.doc-tools button {
-  background: #ebf8ff;
-  color: #2b6cb0;
-  font-size: 12px;
-  padding: 8px 10px;
-}
-.document {
-  padding: 24px;
-  background: white;
-  border-radius: 0 0 10px 10px;
-}
-.document pre {
-  white-space: pre-wrap;
-  word-break: break-word;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-  color: #1a202c;
-  font-size: 13px;
-  line-height: 1.58;
-}
-.notice {
-  margin-top: 18px;
-  padding: 14px;
-  background: #fffaf0;
-  border: 1px solid #fbd38d;
-  border-radius: 8px;
-  color: #744210;
-  font-size: 13px;
-}
-.source-note {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 24px 42px;
-  color: var(--text-light);
-  font-size: 12px;
-}
-.source-note a { color: var(--accent); }
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .builder { position: static; max-height: none; }
-  .output-header { align-items: flex-start; flex-direction: column; }
-  .nav-actions a:not(.primary-link) { display: none; }
-}
-</style>
-</head>
-<body>
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo">
-      <span class="logo-mark">L</span>
-      <span>LegalAIPay</span>
-    </a>
-    <div class="nav-actions">
-      <a href="index.html#tools">Tools</a>
-      <a href="pipia.html">PIPIA</a>
-      <a class="primary-link" href="#generator">Start Generator</a>
-    </div>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-inner">
-    <span class="eyebrow">Privacy Policy Generator</span>
-    <h1>Answer simple questions. Generate privacy templates.</h1>
-    <p>First choose the market. Then answer only the questions that matter for that market. For Mainland China, start with LegalAIPay's PIPIA flow and use those answers to generate a China privacy policy.</p>
-  </div>
-</section>
-
-<main class="layout" id="generator">
-  <section class="panel builder">
-    <div class="panel-header">
-      <h2>Step-by-step questions</h2>
-      <p>Start with the market. The form will adapt so legal concepts stay out of the user's way.</p>
-    </div>
-    <div class="form-body">
-      <div class="field">
-        <label for="company">Company / product name</label>
-        <input id="company" value="Example Company" data-field>
-      </div>
-      <div class="field">
-        <label for="website">Website or app</label>
-        <input id="website" value="example.com" data-field>
-      </div>
-      <div class="field">
-        <label for="contact">Privacy contact email</label>
-        <input id="contact" value="privacy@example.com" data-field>
-      </div>
-      <div class="field">
-        <label for="business">What does the service do?</label>
-        <textarea id="business" data-field>provide online services, customer support, account features, analytics, and related business operations</textarea>
-      </div>
-      <fieldset class="field">
-        <legend>1. Which market is this privacy document for?</legend>
-        <div class="market-options">
-          <label class="market-card">
-            <input type="radio" name="market" value="china" checked data-radio>
-            <span><span class="market-title">Mainland China</span><span class="market-copy">PIPL privacy policy, sensitive personal information notice, separate consent, sharing, disclosure, and cross-border transfer.</span></span>
-          </label>
-          <label class="market-card">
-            <input type="radio" name="market" value="eu" data-radio>
-            <span><span class="market-title">EU / UK</span><span class="market-copy">GDPR-style privacy notice with legal basis, rights, retention, recipients, and transfer safeguards.</span></span>
-          </label>
-          <label class="market-card">
-            <input type="radio" name="market" value="california" data-radio>
-            <span><span class="market-title">California</span><span class="market-copy">CCPA/CPRA notice at collection, privacy policy, rights, sale/share, and sensitive information disclosures.</span></span>
-          </label>
-          <label class="market-card">
-            <input type="radio" name="market" value="children" data-radio>
-            <span><span class="market-title">Children under 13</span><span class="market-copy">COPPA privacy notice and parent direct notice with consent language.</span></span>
-          </label>
-        </div>
-      </fieldset>
-      <div class="market-guidance" data-market-panel="china">
-        <strong>Mainland China path:</strong> complete the <a href="pipia.html" target="_blank" rel="noopener">LegalAIPay PIPIA Assessment</a> first if the product is live or close to launch. Then paste the key PIPIA findings below. This generator will turn those answers into a Mainland China privacy policy plus separate consent templates where needed.
-      </div>
-      <div class="market-guidance hidden" data-market-panel="eu">
-        <strong>EU / UK path:</strong> answer what data is collected, why, the legal basis, who receives it, retention, and international transfers. The output focuses on GDPR Articles 13/14 style notices.
-      </div>
-      <div class="market-guidance hidden" data-market-panel="california">
-        <strong>California path:</strong> answer categories, purposes, disclosures, sale/share, sensitive personal information, and rights request methods. The output focuses on CCPA/CPRA notice and policy language.
-      </div>
-      <div class="market-guidance hidden" data-market-panel="children">
-        <strong>COPPA path:</strong> answer whether the service is directed to children, what is collected from children, and how parents can consent, review, delete, or stop collection.
-      </div>
-      <div class="field" data-market-panel="china">
-        <label for="pipiaFindings">PIPIA result or key findings</label>
-        <textarea id="pipiaFindings" data-field>Personal information collection is necessary for account registration, service delivery, customer support, security, and compliance. No high-risk issue has been identified yet. Further review is needed before processing sensitive personal information or transferring personal information overseas.</textarea>
-        <p class="hint">Paste the summary from the PIPIA tool, or write plain-language findings.</p>
-      </div>
-      <fieldset class="field">
-        <legend>2. What personal information do you collect?</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" value="identity and contact information, such as name, alias, username, email address, phone number, address, account ID, and login credentials" data-check="categories" checked> Identity, contact, account</label>
-          <label class="check"><input type="checkbox" value="profile and preference information, such as age range, language, region, settings, notification choices, interests, saved preferences, and loyalty or membership details" data-check="categories"> Profile, preferences, membership</label>
-          <label class="check"><input type="checkbox" value="user content and communications, such as form entries, posts, comments, messages, uploaded files, photos, audio, video, feedback, support requests, and related metadata" data-check="categories"> Content, messages, uploads</label>
-          <label class="check"><input type="checkbox" value="transaction and commercial information, such as purchases, subscriptions, orders, invoices, billing records, payment status, refund history, and customer support history" data-check="categories" checked> Orders, payment, billing</label>
-          <label class="check"><input type="checkbox" value="device, browser, network, and log information, such as IP address, device identifiers, browser type, operating system, app version, cookie identifiers, crash logs, security logs, and analytics events" data-check="categories" checked> Device, browser, logs</label>
-          <label class="check"><input type="checkbox" value="usage and interaction information, such as pages viewed, features used, search queries, clickstream, content viewed or interacted with, frequency and duration of activities, and advertising or campaign interactions" data-check="categories"> Usage, behavior, analytics</label>
-          <label class="check"><input type="checkbox" value="location information, such as country, city, approximate location from IP address, precise location if enabled, travel route, check-in location, or service location" data-check="categories"> Location / travel route</label>
-          <label class="check"><input type="checkbox" value="contacts, social, or relationship information, such as contacts imported by the user, friends, followers, group membership, referrals, and people or organizations the user interacts with" data-check="categories"> Contacts / relationships</label>
-          <label class="check"><input type="checkbox" value="third-party and partner information, such as information from business partners, integrated apps, advertisers, analytics providers, travel agents, payment providers, fraud-prevention vendors, or public sources" data-check="categories"> Third-party / partner data</label>
-          <label class="check"><input type="checkbox" value="travel, booking, and service preference information, such as itinerary, passport or travel document details, loyalty tier, seat choice, meal preference, special assistance request, lounge visit, cargo booking, and reason for travel" data-check="categories"> Travel / booking / service needs</label>
-          <label class="check"><input type="checkbox" value="professional, employment, supplier, or B2B information, such as employer, job title, work email, business contact details, supplier records, contract records, tax information, and due diligence information" data-check="categories"> Work / supplier / B2B</label>
-          <label class="check"><input type="checkbox" value="AI, automated decision, and inference information, such as prompts, AI interactions, generated outputs, inferred preferences, risk scores, recommendations, fraud signals, and personalization segments" data-check="categories"> AI / inferences / profiling</label>
-        </div>
-      </fieldset>
-      <fieldset class="field">
-        <legend>3. Sensitive personal information?</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" value="government ID numbers, identity documents, passport, driver's license, or national ID information" data-check="sensitive"> Government ID / passport</label>
-          <label class="check"><input type="checkbox" value="financial account, payment card, precise transaction, credit, tax, or payroll information" data-check="sensitive"> Financial / payment / tax</label>
-          <label class="check"><input type="checkbox" value="health, medical, disability, accessibility, special assistance, fitness-to-travel, allergy, or dietary information that may reveal health or religion" data-check="sensitive"> Health / assistance / dietary</label>
-          <label class="check"><input type="checkbox" value="biometric identifiers or biometric templates, such as face recognition, voiceprint, fingerprint, or identity-verification selfies" data-check="sensitive"> Biometric information</label>
-          <label class="check"><input type="checkbox" value="precise geolocation, travel route, real-time location, or location history" data-check="sensitive"> Precise location / route</label>
-          <label class="check"><input type="checkbox" value="children's personal information, including information about children under 14 in China or under 13 for COPPA" data-check="sensitive"> Children’s information</label>
-          <label class="check"><input type="checkbox" value="religion, political opinions, union membership, ethnicity, race, sex life, sexual orientation, or philosophical beliefs" data-check="sensitive"> Special-category beliefs / identity</label>
-          <label class="check"><input type="checkbox" value="criminal record, sanctions, background-check, fraud-risk, or security-screening information" data-check="sensitive"> Background / criminal / sanctions</label>
-        </div>
-        <p class="hint">If any are selected, the generator adds sensitive-data notices, extra safeguards, and consent language.</p>
-      </fieldset>
-      <fieldset class="field">
-        <legend>4. Do you share or disclose information?</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" value="service providers and processors that host, secure, analyze, support, or operate the service" data-check="recipients" checked> Service providers / processors</label>
-          <label class="check"><input type="checkbox" value="payment processors, billing providers, banks, insurers, and fraud-prevention vendors" data-check="recipients"> Payment / fraud / insurers</label>
-          <label class="check"><input type="checkbox" value="business partners, advertisers, integrated apps, API partners, travel agents, booking partners, loyalty partners, or user-selected integrations" data-check="recipients"> Partners / integrations / advertisers</label>
-          <label class="check"><input type="checkbox" value="affiliates, group companies, parent companies, subsidiaries, and internal shared service teams" data-check="recipients"> Affiliates / group companies</label>
-          <label class="check"><input type="checkbox" value="professional advisors, authorities, courts, regulators, law enforcement, or parties involved in legal claims, investigations, audits, or business transfers" data-check="recipients" checked> Legal / advisors / authorities</label>
-        </div>
-      </fieldset>
-      <fieldset class="field" data-market-panel="china">
-        <legend>5. China PIPL special situations</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="piplSensitive" data-field> Process sensitive personal information</label>
-          <label class="check"><input type="checkbox" id="piplTransfer" data-field> Transfer personal information outside mainland China</label>
-          <label class="check"><input type="checkbox" id="piplSharing" data-field> Provide/share personal information to another processor/controller</label>
-          <label class="check"><input type="checkbox" id="piplDisclosure" data-field> Publicly disclose personal information</label>
-        </div>
-      </fieldset>
-      <fieldset class="field" data-market-panel="children">
-        <legend>Children / COPPA</legend>
-        <div class="checks">
-          <label class="check"><input type="radio" name="kids" value="notDirected" checked data-radio> Not directed to children under 13</label>
-          <label class="check"><input type="radio" name="kids" value="mixed" data-radio> Mixed audience; may collect from children under 13 with parental consent</label>
-          <label class="check"><input type="radio" name="kids" value="directed" data-radio> Directed to children under 13</label>
-        </div>
-      </fieldset>
-      <div class="field">
-        <label for="retention">Retention period</label>
-        <input id="retention" value="only as long as necessary for the purposes described, unless a longer period is required by law" data-field>
-      </div>
-      <div class="field">
-        <label for="rights">Privacy rights request method</label>
-        <input id="rights" value="email us or use the privacy request form on our website" data-field>
-      </div>
-      <div class="actions">
-        <button class="btn-primary" id="generate">Generate</button>
-        <button class="btn-secondary" id="reset">Reset sample</button>
-      </div>
-      <div class="notice">Generated text is a starting template, not legal advice. Have counsel review before publishing.</div>
-    </div>
-  </section>
-
-  <section class="panel output">
-    <div class="output-header">
-      <div class="tabs">
-        <button class="tab active" data-tab="notice">Short Notice</button>
-        <button class="tab" data-tab="policy">Full Policy</button>
-        <button class="tab" data-tab="consent">PIPL Consent</button>
-        <button class="tab" data-tab="coppa">COPPA Parent Notice</button>
-      </div>
-      <div class="doc-tools">
-        <button id="copy">Copy</button>
-        <button id="download">Download .txt</button>
-      </div>
-    </div>
-    <div class="document">
-      <pre id="outputText"></pre>
-    </div>
-  </section>
-</main>
-
-<div class="source-note">
-  Framework references used for template prompts: GDPR Articles 13, 14, and 9; California CCPA/CPRA notice, rights, sale/share, and sensitive-personal-information requirements; COPPA notice and verifiable parental consent requirements; China PIPL Articles 17, 23, 25, 28-31, and 38-39.
-</div>
-
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Privacy Policy Generator | LegalAIPay</title><meta name="description" content="Generate privacy notices and privacy policy templates for GDPR, CCPA/CPRA, COPPA, and PIPL using a simple question-and-answer workflow.">
+<style>:root{--primary:#0f1e3d;--accent:#3182ce;--bg:#f7fafc;--card:#fff;--border:#e2e8f0;--text:#2d3748;--text-light:#718096}*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}.navbar{background:rgba(255,255,255,.96);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}.nav-container{max-width:1240px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}.logo{color:var(--primary);font-size:21px;font-weight:750;text-decoration:none;display:flex;align-items:center;gap:10px}.logo-mark{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;display:grid;place-items:center;box-shadow:0 4px 12px rgba(15,30,61,.2)}.nav-actions{display:flex;align-items:center;gap:14px}.nav-actions a{color:var(--text);text-decoration:none;font-weight:600;font-size:14px}.nav-actions .primary-link{color:white;background:var(--primary);padding:9px 16px;border-radius:8px}.hero{background:linear-gradient(135deg,#0f1e3d 0%,#1a365d 100%);color:white}.hero-inner{max-width:1240px;margin:0 auto;padding:54px 24px 46px}.eyebrow{display:inline-block;color:#bee3f8;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin-bottom:14px}.hero p{max-width:760px;color:rgba(255,255,255,.82);font-size:17px}.layout{max-width:1240px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:minmax(340px,460px) minmax(0,1fr);gap:24px;align-items:start}.panel{background:var(--card);border:1px solid var(--border);border-radius:10px}.builder{position:sticky;top:86px;max-height:calc(100vh - 110px);overflow:auto}.panel-header{padding:18px 20px;border-bottom:1px solid var(--border)}.panel-header h2{color:var(--primary);font-size:18px;margin-bottom:4px}.panel-header p,.hint{color:var(--text-light);font-size:12px}.form-body{padding:18px 20px 22px}.field{margin-bottom:17px}.field label,.field legend{display:block;color:var(--primary);font-weight:700;font-size:13px;margin-bottom:7px}input,textarea,select{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 11px;font:inherit;color:var(--text);background:white}textarea{min-height:74px;resize:vertical}fieldset{border:0;margin:0;padding:0}.checks{display:grid;gap:8px}.check{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text)}.check input{width:auto;margin-top:3px}.market-options{display:grid;gap:10px}.market-card{border:1px solid var(--border);border-radius:9px;padding:12px;display:grid;grid-template-columns:auto 1fr;gap:10px;cursor:pointer;background:white}.market-card:has(input:checked){border-color:var(--accent);background:#ebf8ff}.market-card input{width:auto;margin-top:4px}.market-title{display:block;color:var(--primary);font-weight:750;font-size:14px}.market-copy{display:block;color:var(--text-light);font-size:12px;margin-top:2px}.market-guidance{margin:12px 0 18px;padding:14px;border:1px solid #bee3f8;background:#ebf8ff;border-radius:9px;color:#2a4365;font-size:13px}.market-guidance a{color:#2b6cb0;font-weight:700}.pipia-cta{display:inline-block;margin-top:10px;background:var(--accent);color:white!important;padding:8px 14px;border-radius:7px;font-weight:700;text-decoration:none}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.hidden{display:none!important}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}.btn-primary{background:var(--primary);color:white}.btn-secondary{background:#edf2f7;color:var(--primary)}.output-header{padding:16px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;border-bottom:1px solid var(--border)}.tabs,.doc-tools{display:flex;gap:6px;flex-wrap:wrap}.tab{background:#edf2f7;color:var(--primary);padding:8px 10px;font-size:12px}.tab.active{background:var(--primary);color:white}.doc-tools button{background:#ebf8ff;color:#2b6cb0;font-size:12px;padding:8px 10px}.document{padding:24px;background:white;border-radius:0 0 10px 10px}.document pre{white-space:pre-wrap;word-break:break-word;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"PingFang SC","Microsoft YaHei",monospace;color:#1a202c;font-size:13px;line-height:1.75}.document pre strong{color:#9b2c2c;font-weight:800}.notice{margin-top:18px;padding:14px;background:#fffaf0;border:1px solid #fbd38d;border-radius:8px;color:#744210;font-size:13px}.source-note{max-width:1240px;margin:0 auto;padding:0 24px 42px;color:var(--text-light);font-size:12px}@media(max-width:900px){.layout{grid-template-columns:1fr}.builder{position:static;max-height:none}.output-header{align-items:flex-start;flex-direction:column}.nav-actions a:not(.primary-link){display:none}.row2{grid-template-columns:1fr}}</style></head>
+<body><nav class="navbar"><div class="nav-container"><a href="index.html" class="logo"><span class="logo-mark">L</span><span>LegalAIPay</span></a><div class="nav-actions"><a href="index.html#tools">Tools</a><a href="pipia.html">PIPIA</a><a class="primary-link" href="#generator">Start Generator</a></div></div></nav><section class="hero"><div class="hero-inner"><span class="eyebrow">Privacy Policy Generator</span><h1>Pick a market. Answer focused questions. Get a policy your counsel can actually edit.</h1><p>For Mainland China, start with the LegalAIPay PIPIA. The PIPL output is fully Chinese, includes a 字段清单 and SDK 双清单, and highlights sensitive personal information in bold for separate-consent review.</p></div></section>
+<main class="layout" id="generator"><section class="panel builder"><div class="panel-header"><h2>Step-by-step questions</h2><p>Pick the market first. The form will reveal only what that market needs.</p></div><div class="form-body">
+<fieldset class="field"><legend>1. Which market is this privacy document for?</legend><div class="market-options"><label class="market-card"><input type="radio" name="market" value="china" checked data-radio><span><span class="market-title">Mainland China · 中国大陆</span><span class="market-copy">PIPL 隐私政策、敏感个人信息处理、单独同意、SDK 双清单、字段清单、跨境提供。输出全程中文。</span></span></label><label class="market-card"><input type="radio" name="market" value="eu" data-radio><span><span class="market-title">EU / UK</span><span class="market-copy">GDPR-style privacy notice with legal basis, rights, retention, recipients, and transfer safeguards.</span></span></label><label class="market-card"><input type="radio" name="market" value="california" data-radio><span><span class="market-title">California</span><span class="market-copy">CCPA/CPRA notice at collection, privacy policy, rights, sale/share, and sensitive information disclosures.</span></span></label><label class="market-card"><input type="radio" name="market" value="children" data-radio><span><span class="market-title">Children under 13</span><span class="market-copy">COPPA privacy notice and parent direct notice with verifiable parental consent language.</span></span></label></div></fieldset>
+<div class="market-guidance" data-market-panel="china"><strong>选择了「中国大陆」市场。</strong> PIPL 第五十五条要求在处理敏感个人信息、对外提供、公开披露、跨境传输或自动化决策前先完成个人信息保护影响评估（PIPIA）。请先在 LegalAIPay PIPIA 工具中完成评估，再回到本工具生成与之绑定的隐私政策。<br><a class="pipia-cta" href="pipia.html">前往 PIPIA →</a></div><div class="market-guidance hidden" data-market-panel="eu"><strong>EU / UK path:</strong> answer what data is collected, why, the legal basis, who receives it, retention, and international transfers.</div><div class="market-guidance hidden" data-market-panel="california"><strong>California path:</strong> answer categories, purposes, disclosures, sale/share, sensitive personal information, and rights request methods.</div><div class="market-guidance hidden" data-market-panel="children"><strong>COPPA path:</strong> answer whether the service is directed to children and how parents can consent, review, delete, or stop collection.</div>
+<div class="field"><label for="company">Company / product name · 处理者名称</label><input id="company" value="示例科技有限公司" data-field></div><div class="field" data-market-panel="china"><label for="legalName">公司法定名称</label><input id="legalName" value="示例科技有限公司" data-field></div><div class="field"><label for="website">Website or app · 服务名称 / 域名</label><input id="website" value="example.com" data-field></div><div class="field"><label for="contact">Privacy contact email · 个人信息保护联系邮箱</label><input id="contact" value="privacy@example.com" data-field></div><div class="field" data-market-panel="china"><label for="usci">统一社会信用代码</label><input id="usci" value="91110000XXXXXXXXXX" data-field></div><div class="field" data-market-panel="china"><label for="regAddr">注册地址</label><input id="regAddr" value="北京市朝阳区示例大厦 8 层" data-field></div><div class="field" data-market-panel="china"><label for="officeAddr">办公地址</label><input id="officeAddr" value="北京市朝阳区示例大厦 8 层" data-field></div><div class="field" data-market-panel="china"><label for="icp">ICP 备案号</label><input id="icp" value="京 ICP 备 XXXXXXXX 号" data-field></div><div class="row2" data-market-panel="china"><div class="field"><label for="dpoName">个人信息保护负责人</label><input id="dpoName" value="张三" data-field></div><div class="field"><label for="dpoPhone">联系电话</label><input id="dpoPhone" value="+86 10 XXXX XXXX" data-field></div></div><div class="field" data-market-panel="china"><label for="dpoEmail">DPO 邮箱</label><input id="dpoEmail" value="dpo@example.com" data-field></div><div class="row2" data-market-panel="china"><div class="field"><label for="effDate">政策生效日期</label><input id="effDate" value="2026-06-01" data-field></div><div class="field"><label for="policyVer">政策版本号</label><input id="policyVer" value="1.0" data-field></div></div><div class="field" data-market-panel="china"><label for="storageLoc">数据存储位置</label><input id="storageLoc" value="中国大陆境内的合规数据中心" data-field></div><div class="field" data-market-panel="china"><label for="pipiaRef">关联 PIPIA 编号</label><input id="pipiaRef" value="PIPIA-2026-001" data-field></div><div class="field"><label for="business">What does the service do? · 服务说明</label><textarea id="business" data-field>为用户提供在线服务、客户支持、账户功能、数据分析及相关业务运营</textarea></div><div class="field" data-market-panel="china"><label for="businessFunction">业务功能（用于字段清单）</label><input id="businessFunction" value="账号注册、服务交付、付款结算、客户支持、安全风控、合规审计" data-field></div><div class="field" data-market-panel="china"><label for="dataQuantity">数据数量 / 处理规模</label><input id="dataQuantity" value="预计月活用户 10,000 人以内，按最小必要范围处理" data-field></div><div class="field" data-market-panel="china"><label for="pipiaFindings">PIPIA 结论摘要</label><textarea id="pipiaFindings" data-field>本次个人信息处理活动具备充分必要性。已识别风险均已通过技术与管理措施缓解，残余风险等级为低。处理敏感个人信息及跨境提供前将另行启动单独同意流程。</textarea><p class="hint">请粘贴 PIPIA 工具导出的结论；如尚未完成评估，请先返回 PIPIA。</p></div>
+<fieldset class="field"><legend>2. What personal information do you collect? · 收集的个人信息类别</legend><div class="checks" id="categoryChecks"></div></fieldset><fieldset class="field"><legend>3. Sensitive personal information? · 敏感个人信息</legend><div class="checks" id="sensitiveChecks"></div><p class="hint">勾选任一项将触发敏感个人信息条款、加粗显示及单独同意语言。</p></fieldset><fieldset class="field"><legend>4. Do you share or disclose information? · 接收方</legend><div class="checks" id="recipientChecks"></div></fieldset>
+<fieldset class="field" data-market-panel="china"><legend>5. PIPL 特殊情形</legend><div class="checks"><label class="check"><input type="checkbox" id="piplSensitive" data-field> 处理敏感个人信息</label><label class="check"><input type="checkbox" id="piplTransfer" data-field> 向中国大陆境外提供个人信息</label><label class="check"><input type="checkbox" id="piplSharing" data-field> 向其他个人信息处理者提供 / 共享</label><label class="check"><input type="checkbox" id="piplDisclosure" data-field> 公开披露个人信息</label><label class="check"><input type="checkbox" id="piplADM" data-field> 自动化决策 / 用户画像</label></div></fieldset><fieldset class="field" data-market-panel="china"><legend>6. 未成年人</legend><div class="checks"><label class="check"><input type="radio" name="minors" value="not_directed" checked data-radio> 不面向不满十四周岁未成年人</label><label class="check"><input type="radio" name="minors" value="mixed" data-radio> 面向一般用户，可能涉及未成年人（需监护人单独同意）</label><label class="check"><input type="radio" name="minors" value="directed" data-radio> 专门面向不满十四周岁未成年人</label></div></fieldset>
+<fieldset class="field" data-market-panel="china"><legend>7. SDK 与跨境</legend><div class="field"><label for="firstPartySdks">第一方 SDK / 内部组件</label><textarea id="firstPartySdks" data-field>账号登录 SDK：用于身份认证、账号安全、登录状态维护</textarea></div><div class="field"><label for="thirdPartySdks">第三方 SDK</label><textarea id="thirdPartySdks" data-field>支付 SDK：用于付款、退款、交易风控；统计分析 SDK：用于崩溃分析、性能监控、使用统计</textarea></div><div class="field"><label for="cbtName">境外接收方名称</label><input id="cbtName" value="" data-field></div><div class="field"><label for="cbtCountry">所在国家或地区</label><input id="cbtCountry" value="" data-field></div><div class="field"><label for="cbtPurpose">处理目的与方式</label><input id="cbtPurpose" value="" data-field></div><div class="field"><label for="cbtPath">合规路径</label><select id="cbtPath" data-field><option value="">— 选择合规路径 —</option><option value="安全评估（网信办）">安全评估（网信办）</option><option value="个人信息出境标准合同">个人信息出境标准合同</option><option value="个人信息保护认证">个人信息保护认证</option></select></div></fieldset>
+<fieldset class="field" data-market-panel="children"><legend>Children / COPPA</legend><div class="checks"><label class="check"><input type="radio" name="kids" value="notDirected" checked data-radio> Not directed to children under 13</label><label class="check"><input type="radio" name="kids" value="mixed" data-radio> Mixed audience; may collect from children under 13 with parental consent</label><label class="check"><input type="radio" name="kids" value="directed" data-radio> Directed to children under 13</label></div></fieldset><div class="field"><label for="retention">Retention period · 保存期限</label><input id="retention" value="实现处理目的所必需的最短期间内保存，法律法规另有规定的除外" data-field></div><div class="field"><label for="rights">Privacy rights request method · 权利请求方式</label><input id="rights" value="通过隐私请求表单、客服入口或发送邮件至 privacy@example.com" data-field></div><div class="actions"><button class="btn-primary" id="generate">Generate</button><button class="btn-secondary" id="reset">Reset sample</button></div><div class="notice">Generated text is a starting template, not legal advice. Have counsel review before publishing.</div></div></section>
+<section class="panel output"><div class="output-header"><div class="tabs"><button class="tab active" data-tab="notice">Short Notice</button><button class="tab" data-tab="policy">Full Policy</button><button class="tab" data-tab="consent">PIPL Consent</button><button class="tab" data-tab="coppa">COPPA Parent Notice</button></div><div class="doc-tools"><button id="copy">Copy</button><button id="download">Download .txt</button></div></div><div class="document"><pre id="outputText"></pre></div></section></main><div class="source-note">Framework references used for template prompts: GDPR Articles 13, 14, and 9; CCPA/CPRA notice, rights, sale/share, and sensitive-personal-information requirements; COPPA notice and verifiable parental consent requirements; China PIPL Articles 17, 23, 25, 28-31, 38-39, and 55.</div>
 <script>
-const state = { currentTab: "notice" };
+const state={currentTab:"notice"};
+const data={categories:[["身份与联系信息：姓名、用户名、邮箱、手机号、地址、账号 ID 及登录凭证","identity and contact information, such as name, username, email address, phone number, address, account ID, and login credentials",true,"身份与联系信息"],["资料与偏好信息：年龄段、语言、地区、设置、通知偏好、兴趣、会员等级","profile and preference information, such as age range, language, region, settings, notification choices, interests, saved preferences, and membership details",false,"资料与偏好信息"],["内容与通讯信息：表单内容、帖子、评论、消息、上传文件、音视频、反馈及相关元数据","user content and communications, such as form entries, posts, comments, messages, uploaded files, photos, audio, video, feedback, support requests, and related metadata",false,"内容与通讯信息"],["交易与商业信息：订单、订阅、发票、账单、付款状态、退款记录与客服记录","transaction and commercial information, such as purchases, subscriptions, orders, invoices, billing records, payment status, refund history, and customer support history",true,"交易与商业信息"],["设备、浏览器、网络与日志信息：IP 地址、设备标识符、浏览器类型、操作系统、App 版本、Cookie、崩溃日志、安全日志、分析事件","device, browser, network, and log information, such as IP address, device identifiers, browser type, operating system, app version, cookie identifiers, crash logs, security logs, and analytics events",true,"设备、网络与日志信息"],["使用与交互信息：访问页面、使用功能、搜索词、点击流、停留时长、广告或活动互动","usage and interaction information, such as pages viewed, features used, search queries, clickstream, duration of activities, and advertising interactions",false,"使用与交互信息"],["位置信息：基于 IP 的大致位置，启用时的精确位置、行程路线、签到与服务地点","location information, such as approximate location from IP address, precise location if enabled, travel route, check-in location, or service location",false,"位置信息"],["联系人、社交与关系信息：导入的联系人、好友、关注者、群组、推荐与互动对象","contacts, social, or relationship information, such as imported contacts, friends, followers, group membership, referrals, and interaction targets",false,"联系人与关系信息"],["第三方与合作伙伴信息：业务伙伴、广告主、分析、风控、支付方或合法公开来源提供的信息","third-party and partner information, such as information from business partners, advertisers, analytics providers, payment providers, fraud-prevention vendors, or public sources",false,"第三方来源信息"],["出行、预订与服务偏好信息：行程、证件号、舱位、餐食偏好、特殊协助、贵宾室访问、出行原因","travel, booking, and service preference information, such as itinerary, passport details, loyalty tier, seat choice, meal preference, special assistance request, and reason for travel",false,"出行、预订与服务偏好信息"],["职业、雇主、供应商或 B2B 信息：单位名称、职位、办公邮箱、供应商记录、合同、税务及尽职调查信息","professional, employment, supplier, or B2B information, such as employer, job title, work email, supplier records, contract records, tax information, and due diligence information",false,"职业、供应商与 B2B 信息"],["AI、自动化决策与画像信息：用户输入、AI 交互、生成结果、推断偏好、风险评分、推荐与个性化分群","AI, automated decision, and inference information, such as prompts, AI interactions, generated outputs, inferred preferences, risk scores, recommendations, fraud signals, and personalization segments",false,"AI、画像与自动化决策信息"]],sensitive:[["政府证件号码、身份证件、护照、驾驶证或国民身份信息","government ID numbers, identity documents, passport, driver's license, or national ID information","政府证件信息"],["金融账户、支付卡、交易明细、信贷、税务或工资信息","financial account, payment card, precise transaction, credit, tax, or payroll information","金融、支付与税务信息"],["医疗健康、残障、辅助、适航能力、过敏与饮食等可能反映健康或宗教的信息","health, medical, disability, accessibility, special assistance, allergy, or dietary information","健康、辅助与饮食信息"],["生物识别信息：人脸识别、声纹、指纹或核身自拍","biometric identifiers or biometric templates, such as face recognition, voiceprint, fingerprint, or identity-verification selfies","生物识别信息"],["精确地理位置、行程路线、实时位置或位置历史","precise geolocation, travel route, real-time location, or location history","精确位置与行程路线"],["不满十四周岁未成年人的个人信息（PIPL）/不满十三周岁（COPPA）","children's personal information, including information about children under 14 in China or under 13 for COPPA","未成年人个人信息"],["宗教信仰、政治观点、工会身份、民族、种族、性生活、性取向或哲学信仰","religion, political opinions, union membership, ethnicity, race, sex life, sexual orientation, or philosophical beliefs","特殊身份与信仰信息"],["犯罪记录、制裁名单、背景调查、欺诈风险或安全筛查信息","criminal record, sanctions, background-check, fraud-risk, or security-screening information","背景调查、犯罪与制裁信息"]],recipients:[["为服务提供托管、安全、分析、客服或运维支持的服务提供商及受托处理方","service providers and processors that host, secure, analyze, support, or operate the service",true],["支付机构、账单服务商、银行、保险方及反欺诈供应商","payment processors, billing providers, banks, insurers, and fraud-prevention vendors",false],["业务合作方、广告主、集成应用、API 合作方、出行/预订/会员伙伴及用户选择的集成","business partners, advertisers, integrated apps, API partners, booking partners, loyalty partners, or user-selected integrations",false],["关联公司、集团公司、母公司、子公司及内部共享服务团队","affiliates, group companies, parent companies, subsidiaries, and internal shared service teams",false],["专业顾问、监管机构、司法机关、执法部门，或涉及法律请求、调查、审计或业务转让的相关方","professional advisors, authorities, courts, regulators, law enforcement, or parties involved in legal claims, investigations, audits, or business transfers",true]]};
+function byId(id){return document.getElementById(id)}function buildChecks(){const build=(id,name,rows)=>byId(id).innerHTML=rows.map(r=>`<label class="check"><input type="checkbox" data-check="${name}" data-zh="${r[0]}" data-title="${r[3]||r[0]}" value="${r[1]}" ${r[2]?"checked":""}> ${r[3]||r[1]}</label>`).join("");build("categoryChecks","categories",data.categories);build("sensitiveChecks","sensitive",data.sensitive);build("recipientChecks","recipients",data.recipients)}function radioValue(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:""}function checked(name,lang="en"){return[...document.querySelectorAll(`[data-check="${name}"]:checked`)].map(i=>lang==="zh"?i.dataset.zh:i.value)}function checkedTitles(name){return[...document.querySelectorAll(`[data-check="${name}"]:checked`)].map(i=>i.dataset.title||i.dataset.zh||i.value)}function f(id){const el=byId(id);return el?el.value.trim():""}function bool(id){const el=byId(id);return!!(el&&el.checked)}function values(){return{market:radioValue("market"),company:f("company")||"[Company]",legalName:f("legalName")||f("company")||"[公司法定名称]",website:f("website")||"[website/app]",contact:f("contact")||"[privacy contact]",usci:f("usci")||"[统一社会信用代码]",regAddr:f("regAddr")||"[注册地址]",officeAddr:f("officeAddr")||"[办公地址]",icp:f("icp")||"[ICP 备案号]",dpoName:f("dpoName")||"[个人信息保护负责人]",dpoPhone:f("dpoPhone")||"[联系电话]",dpoEmail:f("dpoEmail")||f("contact")||"[DPO 邮箱]",effDate:f("effDate")||"[生效日期]",policyVer:f("policyVer")||"[版本号]",storageLoc:f("storageLoc")||"[数据存储位置]",pipiaRef:f("pipiaRef")||"[PIPIA 编号]",business:f("business")||"[describe service]",businessFunction:f("businessFunction")||"[业务功能]",dataQuantity:f("dataQuantity")||"[数据规模]",pipiaFindings:f("pipiaFindings")||"[PIPIA 结论]",categories:checked("categories"),categoriesZh:checked("categories","zh"),categoryTitles:checkedTitles("categories"),sensitive:checked("sensitive"),sensitiveZh:checked("sensitive","zh"),recipients:checked("recipients"),recipientsZh:checked("recipients","zh"),piplSensitive:bool("piplSensitive"),piplTransfer:bool("piplTransfer"),piplSharing:bool("piplSharing"),piplDisclosure:bool("piplDisclosure"),piplADM:bool("piplADM"),minors:radioValue("minors"),kids:radioValue("kids"),cbtName:f("cbtName")||"[境外接收方名称]",cbtCountry:f("cbtCountry")||"[国家或地区]",cbtPurpose:f("cbtPurpose")||"[处理目的与方式]",cbtPath:f("cbtPath")||"[跨境合规路径]",firstPartySdks:f("firstPartySdks")||"[第一方 SDK 清单]",thirdPartySdks:f("thirdPartySdks")||"[第三方 SDK 清单]",retention:f("retention")||"[retention period]",rights:f("rights")||"[rights request method]"}}
+function list(items){return items.length?items.map(i=>`- ${i}`).join("\n"):"- [请补充适用类别]"}function boldList(items){return items.length?items.map(i=>`- **${i}**`).join("\n"):"- [如适用，请补充敏感个人信息类别]"}function sentence(items){return items.length?items.join("；"):"[请补充]"}function htmlify(text){return text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\*\*(.*?)\*\*/g,"<strong>$1</strong>")}function sdkTable(v){return`第一方 SDK 清单
+${v.firstPartySdks}
 
-function byId(id) {
-  return document.getElementById(id);
-}
+第三方 SDK 清单
+${v.thirdPartySdks}`}function fieldsTable(v){return`| 业务功能 | 个人信息字段 | 处理目的 | 数据数量 / 处理规模 | 保存期限 |
+| --- | --- | --- | --- | --- |
+${v.categoryTitles.map(t=>`| ${v.businessFunction} | ${t} | 提供服务、履行合同、安全风控、客户支持或合规审计 | ${v.dataQuantity} | ${v.retention} |`).join("\n")}`}function sensitiveClauseZh(v){if(!v.sensitiveZh.length&&!v.piplSensitive)return"我们不主动处理敏感个人信息。若特定功能确需处理，我们将在收集前另行告知处理目的、必要性、处理方式、保存期限、对个人权益的影响，并依法取得单独同意。";return`我们可能处理以下敏感个人信息：
+${boldList(v.sensitiveZh)}
+我们仅在具有特定目的和充分必要性时处理敏感个人信息，并采取严格访问控制、加密、最小必要、分级授权、留痕审计和保存期限限制等保护措施。`}function minorClause(v){if(v.minors==="directed")return"本服务专门面向不满十四周岁未成年人。我们将制定儿童个人信息专门处理规则，在处理前取得监护人同意，并提供查阅、更正、删除和撤回同意渠道。";if(v.minors==="mixed")return"本服务面向一般用户，但可能涉及不满十四周岁未成年人。我们将在识别相关情形后取得监护人单独同意，并采取更严格保护措施。";return"本服务不面向不满十四周岁未成年人。如我们发现误收集未成年人个人信息，将及时删除或依法取得监护人同意。"}
+function chinaNotice(v){return`${v.company} 中国大陆个人信息处理规则摘要
 
-function checkedValues(name) {
-  return [...document.querySelectorAll(`[data-check="${name}"]:checked`)].map(input => input.value);
-}
-
-function radioValue(name) {
-  const selected = document.querySelector(`input[name="${name}"]:checked`);
-  return selected ? selected.value : "";
-}
-
-function values() {
-  return {
-    market: radioValue("market"),
-    company: byId("company").value.trim() || "[Company name]",
-    website: byId("website").value.trim() || "[website/app]",
-    contact: byId("contact").value.trim() || "[privacy contact]",
-    business: byId("business").value.trim() || "[describe your service]",
-    pipiaFindings: byId("pipiaFindings").value.trim() || "[PIPIA findings]",
-    categories: checkedValues("categories"),
-    sensitive: checkedValues("sensitive"),
-    recipients: checkedValues("recipients"),
-    piplSensitive: byId("piplSensitive").checked,
-    piplTransfer: byId("piplTransfer").checked,
-    piplSharing: byId("piplSharing").checked,
-    piplDisclosure: byId("piplDisclosure").checked,
-    kids: radioValue("kids"),
-    retention: byId("retention").value.trim() || "[retention period]",
-    rights: byId("rights").value.trim() || "[rights request method]"
-  };
-}
-
-function list(items) {
-  if (!items.length) return "- [Describe applicable categories]";
-  return items.map(item => `- ${item}`).join("\n");
-}
-
-function sentenceList(items) {
-  return items.length ? items.join("; ") : "[describe applicable items]";
-}
-
-function sensitiveClause(v) {
-  if (!v.sensitive.length && !v.piplSensitive) {
-    return "We do not intentionally collect sensitive personal information unless it is necessary for the service, legally permitted, and described at the point of collection.";
-  }
-  return `We may process sensitive personal information only for specific, necessary purposes, including ${sentenceList(v.sensitive)}. We use additional safeguards such as access controls, encryption where appropriate, restricted retention, and limited internal access. Where required by law, we request explicit consent, separate consent, or parental consent before processing sensitive personal information.`;
-}
-
-function childrenClause(v) {
-  if (v.kids === "notDirected") {
-    return "Our service is not directed to children under 13, and we do not knowingly collect personal information from children under 13. If we learn that we collected such information without required consent, we will delete it.";
-  }
-  if (v.kids === "mixed") {
-    return "Our service is a mixed-audience service. If we know we are collecting personal information from a child under 13, we provide direct notice to the parent and obtain verifiable parental consent before collection, use, or disclosure unless a COPPA exception applies.";
-  }
-  return "Our service is directed to children under 13. We provide a child privacy notice, give parents direct notice, obtain verifiable parental consent before collecting, using, or disclosing children's personal information unless a COPPA exception applies, and allow parents to review, delete, or stop further collection.";
-}
-
-function piplConsentTriggers(v) {
-  const rows = [];
-  if (v.piplSensitive || v.sensitive.length) rows.push("processing sensitive personal information");
-  if (v.piplTransfer) rows.push("transferring personal information outside mainland China");
-  if (v.piplSharing) rows.push("providing or sharing personal information with another personal information processor");
-  if (v.piplDisclosure) rows.push("publicly disclosing personal information");
-  return rows;
-}
-
-function marketName(v) {
-  return {
-    china: "Mainland China",
-    eu: "EU / UK",
-    california: "California",
-    children: "Children under 13"
-  }[v.market] || "selected market";
-}
-
-function chinaNotice(v) {
-  return `${v.company} 中国大陆个人信息处理规则摘要
-
-适用市场
-本摘要适用于 ${v.company} 面向中国大陆用户通过 ${v.website} 提供服务时的个人信息处理活动。
-
-建议先完成 PIPIA
-在发布或重大变更前，建议先完成 LegalAIPay PIPIA。当前 PIPIA/业务结论：
-${v.pipiaFindings}
-
-我们收集哪些个人信息
-${list(v.categories)}
-
-我们为什么处理个人信息
-- 注册、登录、身份识别和账号管理
-- 提供、维护、改进和保障 ${v.website} 服务
-- 处理订单、付款、客服、通知和用户请求
-- 安全风控、反欺诈、日志审计和故障排查
-- 履行法律法规、监管要求、争议解决和权利保护
-
-敏感个人信息
-${sensitiveClause(v)}
-
-根据 PIPL，如果处理敏感个人信息，我们会说明处理的特定目的、必要性、处理方式、保存期限、对个人权益的影响，并在需要时取得单独同意。
-
-委托处理、共享、转让、公开披露
-可能接收个人信息的主体包括：
-${list(v.recipients)}
-
-${v.piplSharing ? "如果我们向其他个人信息处理者提供或共享个人信息，我们会告知接收方名称或姓名、联系方式、处理目的、处理方式和个人信息种类，并在需要时取得单独同意。" : "目前未选择向其他个人信息处理者提供或共享个人信息。如后续发生，应补充接收方信息和单独同意流程。"}
-
-${v.piplDisclosure ? "如果我们公开披露个人信息，我们会告知公开披露的目的、方式、个人信息种类和可能影响，并在需要时取得单独同意。" : "目前未选择公开披露个人信息。如后续发生，应补充公开披露说明和单独同意流程。"}
-
-跨境提供
-${v.piplTransfer ? "如果我们向中国大陆境外提供个人信息，我们会告知境外接收方名称或姓名、联系方式、处理目的、处理方式、个人信息种类、个人行使权利的方式和程序，并根据适用要求完成安全评估、标准合同、认证或其他合法路径，同时取得单独同意。" : "目前未选择向中国大陆境外提供个人信息。如后续发生，应先完成跨境合规路径判断和单独同意。"}
-
-保存期限
-我们会在 ${v.retention} 的期限内保存个人信息，到期后删除或匿名化处理，法律法规另有要求的除外。
-
-个人权利
-个人可以依法行使查阅、复制、更正、补充、删除、撤回同意、限制或拒绝处理、解释处理规则等权利。请通过 ${v.rights} 或 ${v.contact} 联系我们。`;
-}
-
-function chinaPolicy(v) {
-  return `${v.company} 中国大陆隐私政策模板
-生效日期：[填写日期]
-最近更新：[填写日期]
-
-1. 引言
-${v.company}（以下简称“我们”）通过 ${v.website} 提供服务。本隐私政策说明我们如何在中国大陆市场收集、使用、保存、委托处理、共享、转让、公开披露、跨境提供和保护个人信息。
-
-2. PIPIA 与处理必要性
-我们建议在产品上线、处理目的变更、处理敏感个人信息、向第三方共享、公开披露、跨境提供、自动化决策或发生重大处理变化前完成个人信息保护影响评估。
-
-当前 PIPIA/业务结论：
-${v.pipiaFindings}
-
-3. 我们处理的个人信息种类
-${list(v.categories)}
-
-4. 处理目的和处理方式
-我们可能为了以下目的处理个人信息：
-- 账号注册、登录、身份识别、认证和账号安全
-- 提供产品功能、履行合同、处理订单、付款、交付和客服请求
-- 个性化设置、偏好保存、功能优化、质量改进和用户体验分析
-- 安全保障、反欺诈、风控、日志审计、系统维护和故障排查
-- 依法履行法律义务、监管要求、争议解决、权利保护和合规审计
-
-5. 敏感个人信息
-${sensitiveClause(v)}
-
-我们仅在具有特定目的和充分必要性时处理敏感个人信息，并采取严格保护措施。我们会向个人告知处理敏感个人信息的必要性以及对个人权益的影响，并在需要时取得单独同意。
-
-6. 委托处理
-我们可能委托服务提供商处理个人信息，例如云服务、数据存储、客服、支付、风控、安全、分析、通信和技术支持服务。我们会与受托方约定处理目的、期限、方式、个人信息种类、保护措施和双方权利义务，并监督其处理活动。
-
-7. 共享、转让和公开披露
-我们可能向以下主体共享或披露个人信息：
-${list(v.recipients)}
-
-如向其他个人信息处理者提供个人信息，我们会告知接收方名称或姓名、联系方式、处理目的、处理方式和个人信息种类，并在需要时取得单独同意。未经个人单独同意或法律允许，我们不会公开披露个人信息。
-
-8. 跨境提供个人信息
-${v.piplTransfer ? "如需向中国大陆境外提供个人信息，我们会在跨境提供前告知境外接收方名称或姓名、联系方式、处理目的、处理方式、个人信息种类、个人向境外接收方行使权利的方式和程序，并根据适用要求完成安全评估、个人信息保护认证、标准合同或其他合法路径，同时取得个人单独同意。" : "目前未选择向中国大陆境外提供个人信息。如未来发生跨境提供，我们会在提供前补充告知、完成必要合规路径并取得单独同意。"}
-
-9. 自动化决策和画像
-如我们使用自动化决策、画像、推荐、风险评分或个性化展示，我们会确保透明、公平、公正，不对个人在交易条件等方面实行不合理差别待遇。个人可以要求解释并拒绝仅通过自动化决策作出对个人权益有重大影响的决定。
-
-10. 儿童个人信息
-如服务涉及不满十四周岁未成年人个人信息，我们会依法取得监护人同意，设置专门处理规则，并采取更严格保护措施。
-
-11. 保存期限
-我们仅在 ${v.retention} 的期限内保存个人信息。超过保存期限后，我们会删除或匿名化处理，法律法规另有规定的除外。
-
-12. 安全措施
-我们采取访问控制、加密、日志审计、权限管理、员工培训、供应商管理、安全测试、事件响应和最小必要处理等措施保护个人信息。
-
-13. 个人权利
-个人可以依法查阅、复制、更正、补充、删除个人信息，撤回同意，限制或拒绝处理，请求解释处理规则，或注销账号。请通过 ${v.rights} 或 ${v.contact} 联系我们。
-
-14. 联系方式
-个人信息处理者：${v.company}
+一、处理者信息
+处理者：${v.legalName}
+统一社会信用代码：${v.usci}
 服务名称：${v.website}
-个人信息保护联系渠道：${v.contact}`;
-}
+注册地址：${v.regAddr}
+办公地址：${v.officeAddr}
+个人信息保护负责人：${v.dpoName}，${v.dpoPhone}，${v.dpoEmail}
+ICP 备案号：${v.icp}
 
-function gdprNotice(v) {
-  return `${v.company} GDPR / UK GDPR Privacy Notice
+二、PIPIA 提示
+在处理敏感个人信息、对外提供、公开披露、跨境提供或自动化决策前，请先完成 LegalAIPay PIPIA。关联编号：${v.pipiaRef}
+${v.pipiaFindings}
 
-Controller
-${v.company}, operating ${v.website}. Privacy contact: ${v.contact}
+三、我们收集的信息
+${list(v.categoriesZh)}
 
-Personal data we collect
-${list(v.categories)}
+四、敏感个人信息
+${sensitiveClauseZh(v)}
 
-Special-category data
-${sensitiveClause(v)}
+五、字段清单
+${fieldsTable(v)}
 
-Purposes and legal bases
-- Contract necessity: provide the service, accounts, orders, billing, and support
-- Legitimate interests: security, fraud prevention, analytics, service improvement, business operations, and legal claims
-- Consent: marketing, non-essential cookies, precise location, special-category data, or other optional processing where required
-- Legal obligation: tax, accounting, regulatory, law-enforcement, and compliance duties
+六、委托处理、共享和披露
+可能接收个人信息的主体包括：
+${list(v.recipientsZh)}
+${v.piplSharing?"我们向其他个人信息处理者提供个人信息前，将告知接收方名称、联系方式、处理目的、方式和个人信息种类，并依法取得单独同意。":"当前未选择向其他个人信息处理者提供或共享个人信息。"}
+${v.piplDisclosure?"如需公开披露个人信息，我们将告知公开披露目的、方式、种类和影响，并依法取得单独同意。":"当前未选择公开披露个人信息。"}
 
-Recipients
-${list(v.recipients)}
+七、跨境提供
+${v.piplTransfer?`境外接收方：${v.cbtName}；所在国家或地区：${v.cbtCountry}；目的与方式：${v.cbtPurpose}；合规路径：${v.cbtPath}。我们将在跨境提供前取得单独同意。`:"当前未选择向中国大陆境外提供个人信息。"}
 
-International transfers
-If data is transferred outside the EEA/UK, we use adequacy decisions, Standard Contractual Clauses, UK transfer addendum/IDTA, or other lawful safeguards.
+八、个人权利
+个人可依法查阅、复制、更正、补充、删除个人信息，撤回同意，注销账号，限制或拒绝处理，并要求解释处理规则。请通过 ${v.rights} 或 ${v.contact} 联系我们。`}
+function chinaPolicy(v){return`${v.legalName} 中国大陆隐私政策
+版本：${v.policyVer}
+生效日期：${v.effDate}
 
-Retention
-${v.retention}
+第一条 适用范围
+本政策适用于 ${v.legalName} 通过 ${v.website} 在中国大陆提供服务时的个人信息处理活动。我们提供的服务包括：${v.business}。
 
-Your rights
-You may request access, rectification, erasure, restriction, portability, objection, and withdrawal of consent. Contact ${v.contact}. You may complain to your supervisory authority.`;
-}
+第二条 处理者信息
+处理者名称：${v.legalName}
+统一社会信用代码：${v.usci}
+注册地址：${v.regAddr}
+办公地址：${v.officeAddr}
+ICP 备案号：${v.icp}
+个人信息保护负责人：${v.dpoName}；电话：${v.dpoPhone}；邮箱：${v.dpoEmail}
 
-function gdprPolicy(v) {
-  return `${gdprNotice(v)}
+第三条 PIPIA 与处理必要性
+本政策应与个人信息保护影响评估配套使用。关联 PIPIA 编号：${v.pipiaRef}。评估结论摘要：${v.pipiaFindings}
 
-Additional GDPR Policy Sections
+第四条 收集的个人信息类别
+${list(v.categoriesZh)}
 
-Cookies and similar technologies
-Describe essential cookies, analytics cookies, advertising cookies, consent controls, and browser choices.
+第五条 字段清单
+${fieldsTable(v)}
 
-Automated decision-making
-Describe whether profiling, AI, recommendations, fraud scoring, or automated decisions are used and whether they have legal or similarly significant effects.
+第六条 处理目的和处理方式
+我们基于账号注册、身份识别、服务交付、付款结算、客户支持、安全风控、数据分析、合规审计、争议解决和法律义务履行等目的处理个人信息。我们采用收集、存储、使用、加工、传输、提供、删除和匿名化等方式，并坚持合法、正当、必要、诚信和最小必要原则。
 
-Data Protection Officer / Representative
-[Insert DPO, EU representative, or UK representative details if required.]`;
-}
+第七条 敏感个人信息
+${sensitiveClauseZh(v)}
 
-function ccpaNotice(v) {
-  return `${v.company} California Notice at Collection / Privacy Notice
+第八条 自动化决策
+${v.piplADM?"我们可能使用自动化决策、画像、推荐、风险评分或个性化展示。我们将保证决策透明、公平、公正，不在交易条件等方面实行不合理差别待遇，并为个人提供拒绝或要求解释的渠道。":"当前未选择自动化决策或画像。如未来使用，我们将补充告知决策逻辑、影响和拒绝方式。"}
 
-Business
-${v.company}, operating ${v.website}. Contact: ${v.contact}
+第九条 未成年人个人信息
+${minorClause(v)}
 
-Categories of personal information collected
-${list(v.categories)}
+第十条 委托处理
+我们可能委托云服务、数据存储、安全、客服、支付、风控、分析、通信和技术支持服务商处理个人信息。我们将通过合同约束受托方的处理目的、期限、方式、个人信息种类、保护措施和双方权利义务，并监督其处理活动。
 
-Sensitive personal information
-${sensitiveClause(v)}
+第十一条 共享、转让和公开披露
+可能接收个人信息的主体包括：
+${list(v.recipientsZh)}
+${v.piplSharing?"向其他个人信息处理者提供个人信息前，我们将告知接收方名称、联系方式、处理目的、处理方式和个人信息种类，并依法取得单独同意。":"除依法委托处理或履行法定义务外，当前未选择向其他个人信息处理者提供个人信息。"}
+${v.piplDisclosure?"如需公开披露个人信息，我们将告知公开披露目的、方式、种类和影响，并依法取得单独同意。":"我们不会公开披露个人信息，法律法规另有规定或个人自行公开的除外。"}
 
-Purposes
-- Provide and improve services
-- Process transactions and support requests
-- Security, fraud prevention, debugging, analytics, and compliance
-- Marketing and personalization where permitted
+第十二条 跨境提供
+${v.piplTransfer?`如需向中国大陆境外提供个人信息，境外接收方为 ${v.cbtName}，所在国家或地区为 ${v.cbtCountry}，处理目的和方式为 ${v.cbtPurpose}，合规路径为 ${v.cbtPath}。我们将告知个人向境外接收方行使权利的方式，并依法取得单独同意。`:"当前未选择向中国大陆境外提供个人信息。如未来发生跨境提供，我们将先完成安全评估、标准合同、认证或其他适用合法路径，并取得单独同意。"}
 
-Disclosures
-${list(v.recipients)}
+第十三条 SDK 双清单
+${sdkTable(v)}
 
-Sale / sharing / targeted advertising
-[State whether personal information is sold or shared for cross-context behavioral advertising. If yes, provide a Do Not Sell or Share mechanism and honor opt-out preference signals where required.]
+第十四条 保存地点和期限
+个人信息存储地点：${v.storageLoc}。保存期限：${v.retention}。超过保存期限后，我们将删除或匿名化处理，法律法规另有规定的除外。
 
-California rights
-California residents may request to know/access, delete, correct, opt out of sale/share, limit certain sensitive personal information uses, and be free from discrimination for exercising rights. Submit requests by ${v.rights} or contact ${v.contact}.`;
-}
+第十五条 安全措施和事件响应
+我们采取访问控制、加密、权限分级、日志审计、员工培训、供应商管理、安全测试、应急响应和最小必要处理等措施。如发生个人信息安全事件，我们将依法告知并采取补救措施。
 
-function ccpaPolicy(v) {
-  return `${ccpaNotice(v)}
+第十六条 个人权利和联系我们
+个人可依法查阅、复制、更正、补充、删除个人信息，撤回同意，注销账号，限制或拒绝处理，并要求解释处理规则。请通过 ${v.rights}、${v.contact} 或 ${v.dpoEmail} 联系我们。`}
+function sensitiveClauseEn(v){return v.sensitive.length?`We may process sensitive personal information only for specific, necessary purposes, including ${sentence(v.sensitive)}. We use additional safeguards and request explicit consent or other legally required consent where applicable.`:"We do not intentionally collect sensitive personal information unless it is necessary, legally permitted, and disclosed at the point of collection."}function gdprNotice(v){return`${v.company} GDPR / UK GDPR Privacy Notice
 
-12-month disclosure table
-For each category, list: categories collected, source, business/commercial purpose, categories of third parties disclosed to, whether sold/shared, and retention period.
+${v.company} operates ${v.website} and acts as controller where it determines the purposes and means of processing. We collect ${sentence(v.categories)} to ${v.business}. ${sensitiveClauseEn(v)}
 
-Authorized agents
-Describe how authorized agents may submit requests and how verification works.
+We process personal data where necessary to perform a contract, comply with legal obligations, pursue legitimate interests such as security and service improvement, protect vital interests, perform a task in the public interest where applicable, or based on consent.
 
-Appeals
-[Add appeal process if required by applicable state law.]`;
-}
+We disclose personal data to ${sentence(v.recipients)}. Where personal data is transferred outside the EEA or UK, we use adequacy decisions, Standard Contractual Clauses, the UK IDTA or addendum, or another lawful safeguard.
 
-function notice(v) {
-  if (v.market === "china") return chinaNotice(v);
-  if (v.market === "eu") return gdprNotice(v);
-  if (v.market === "california") return ccpaNotice(v);
-  if (v.market === "children") return coppa(v);
-  return `${v.company} Privacy Notice
+We retain personal data ${v.retention}. Individuals may request access, rectification, erasure, restriction, portability, objection, or withdrawal of consent by ${v.rights} or contacting ${v.contact}. Individuals may also complain to a supervisory authority.`}function gdprPolicy(v){return`${gdprNotice(v)}
 
-Who we are
-${v.company} operates ${v.website}. We use personal information to ${v.business}.
+Additional drafting notes: describe cookies and similar technologies, automated decision-making or profiling, source categories for Article 14 notices, DPO or EU/UK representative details where required, and any Article 9 condition used for special-category data.`}function ccpaNotice(v){return`${v.company} California Notice at Collection / Privacy Policy
 
-What we collect
-${list(v.categories)}
+We collect the following categories of personal information: ${sentence(v.categories)}. We use them to provide and improve services, process transactions, secure the service, prevent fraud, debug errors, perform analytics, comply with legal obligations, and communicate with users. ${sensitiveClauseEn(v)}
 
-Sensitive personal information
-${sensitiveClause(v)}
+We may disclose personal information to ${sentence(v.recipients)}. State whether any category is sold or shared for cross-context behavioral advertising. If so, provide a Do Not Sell or Share mechanism and honor applicable opt-out preference signals.
 
-Why we use it
-- Provide, operate, secure, and improve the service
-- Create and manage accounts, customer support, billing, and communications
-- Analyze usage, prevent fraud, debug issues, and comply with legal obligations
-- Send marketing only where permitted by law and your choices
+California residents may request to know/access, delete, correct, opt out of sale/share, limit certain sensitive personal information uses, and be free from discrimination for exercising rights. Submit requests by ${v.rights} or contact ${v.contact}. We retain information ${v.retention}.`}function ccpaPolicy(v){return`${ccpaNotice(v)}
 
-Who receives it
-${list(v.recipients)}
-
-Retention
-We keep personal information ${v.retention}.
-
-Your rights
-Depending on your location, you may request access, correction, deletion, portability, restriction, objection, consent withdrawal, opt-out of sale or sharing, limitation of sensitive personal information, or appeal where applicable. To make a request, ${v.rights} or contact ${v.contact}.
-
-Children
-${childrenClause(v)}
-
-PIPL separate consent triggers
-${piplConsentTriggers(v).length ? "We request separate consent for: " + piplConsentTriggers(v).join("; ") + "." : "No PIPL separate-consent scenario is selected in this questionnaire."}
-
-Contact
-Privacy contact: ${v.contact}`;
-}
-
-function policy(v) {
-  if (v.market === "china") return chinaPolicy(v);
-  if (v.market === "eu") return gdprPolicy(v);
-  if (v.market === "california") return ccpaPolicy(v);
-  if (v.market === "children") return coppa(v);
-  return `${v.company} Privacy Policy
-Effective date: [Month Day, Year]
-Last updated: [Month Day, Year]
-
-1. Who We Are
-${v.company} ("we," "us," or "our") operates ${v.website}. This Privacy Policy explains how we collect, use, disclose, retain, and protect personal information when you use our service.
-
-Privacy contact: ${v.contact}
-
-2. Personal Information We Collect
-We may collect:
-${list(v.categories)}
-
-We collect information directly from you, automatically through the service, from service providers, from business partners, and from legally permitted sources.
-
-3. Sensitive Personal Information
-${sensitiveClause(v)}
-
-For GDPR purposes, special-category data may require an Article 9 condition such as explicit consent or another lawful exception. For CCPA/CPRA purposes, sensitive personal information may require a right to limit use and disclosure when used beyond permitted purposes. For PIPL purposes, sensitive personal information requires a specific purpose, necessity, strict protection measures, notice of necessity and impact, and separate consent unless an exception applies.
-
-4. Purposes and Legal Bases
-We use personal information to:
-- Provide, maintain, personalize, and improve the service
-- Create accounts, authenticate users, process transactions, and provide support
-- Communicate about service, security, legal, and administrative matters
-- Analyze usage, debug issues, improve performance, and develop features
-- Detect, prevent, and respond to fraud, security incidents, and misuse
-- Comply with law, enforce terms, and establish or defend legal claims
-
-Where GDPR applies, our legal bases may include contract performance, consent, legitimate interests, legal obligations, vital interests, or public-interest grounds where applicable.
-
-Where PIPL applies, we process personal information only when there is a lawful processing basis, such as consent, contract necessity, legal duty, human-resources management under lawful rules, emergency protection, public-interest processing, reasonable processing of legally disclosed information, or another basis permitted by law.
-
-5. Disclosure and Sharing
-We may disclose personal information to:
-${list(v.recipients)}
-
-We do not sell personal information in the traditional sense. If an activity is considered a "sale" or "sharing" under CCPA/CPRA, we will provide required notices and opt-out choices, including honoring applicable opt-out preference signals where required.
-
-6. International Transfers
-If personal information is transferred across borders, we use legally required safeguards. Where GDPR applies, this may include adequacy decisions, Standard Contractual Clauses, or other approved safeguards. Where PIPL applies, we provide required notices, conduct assessments where required, use an applicable transfer mechanism, and obtain separate consent where required.
-
-7. Children's Privacy
-${childrenClause(v)}
-
-8. Retention
-We retain personal information ${v.retention}. When information is no longer needed, we delete, anonymize, or securely retain it only as required by law.
-
-9. Security
-We use administrative, technical, and organizational safeguards designed to protect personal information. These may include access controls, logging, encryption where appropriate, vendor controls, security reviews, and retention limits.
-
-10. Your Privacy Rights
-Depending on your location, you may have rights to access, know, correct, delete, restrict, object, withdraw consent, request portability, opt out of sale or sharing, limit sensitive personal information, appeal a decision, or complain to a regulator.
-
-To exercise rights, ${v.rights} or contact ${v.contact}. We may verify your request before responding.
-
-11. PIPL-Specific Notice
-If PIPL applies, we notify individuals of our name and contact details, processing purposes and methods, personal information categories, retention periods, rights-exercise methods, and other required information. We request separate consent where required for sensitive personal information processing, sharing/providing personal information to another processor, public disclosure, and cross-border transfer.
-
-12. Changes
-We may update this Privacy Policy. If changes are material, we will provide notice as required by law.
-
-13. Contact Us
-${v.company}
-Website/App: ${v.website}
-Privacy contact: ${v.contact}`;
-}
-
-function consent(v) {
-  const triggers = piplConsentTriggers(v);
-  return `PIPL Separate Consent Template
-
-Use this as a separate checkbox, pop-up, or signature block when PIPL requires separate consent. Do not bundle this into general terms.
-
-Consent statement
-I have read and understood the notice from ${v.company}. I separately consent to the following processing activity:
-
-${triggers.length ? triggers.map(item => `- ${item}`).join("\n") : "- [Select a PIPL separate-consent scenario in the questionnaire]"}
-
-Required details to show before consent
-- Processor name: ${v.company}
-- Contact method: ${v.contact}
-- Processing purpose: [state the specific purpose]
-- Processing method: [collection/use/storage/transfer/provision/disclosure/etc.]
-- Personal information categories: ${sentenceList(v.categories)}
-- Sensitive personal information categories, if any: ${sentenceList(v.sensitive)}
-- Retention period: ${v.retention}
-- Necessity and impact on rights: [explain why this is necessary and how it may affect the individual]
-- Recipient / overseas recipient, if applicable: [name, contact, processing purpose, method, categories]
-- Rights method: ${v.rights}
-
-Separate consent for sensitive personal information
-I separately consent to ${v.company} processing the sensitive personal information described above for the stated specific purpose. I understand that refusing or withdrawing this consent may affect only the related feature unless the information is necessary to provide the requested service.
-
-Separate consent for sharing/providing to another processor
-I separately consent to ${v.company} providing my personal information to the recipient identified above for the stated purpose and within the stated processing scope.
-
-Separate consent for public disclosure
-I separately consent to ${v.company} publicly disclosing the personal information described above for the stated purpose and scope.
-
-Separate consent for cross-border transfer
-I separately consent to ${v.company} transferring my personal information outside mainland China to the overseas recipient identified above. I understand the overseas recipient's contact details, processing purpose and method, personal information categories, and how I may exercise my rights.`;
-}
-
-function coppa(v) {
-  return `COPPA Parent Direct Notice Template
+Add a 12-month disclosure table showing categories collected, source categories, business or commercial purposes, third-party recipient categories, whether sold/shared, and retention period. Include authorized agent, verification, appeal, and non-discrimination procedures where applicable.`}function childrenClause(v){if(v.kids==="directed")return"The service is directed to children under 13. We provide direct notice to parents and obtain verifiable parental consent before collecting, using, or disclosing children's personal information unless a COPPA exception applies.";if(v.kids==="mixed")return"The service is mixed audience. If we know we are collecting personal information from a child under 13, we obtain verifiable parental consent unless a COPPA exception applies.";return"The service is not directed to children under 13, and we do not knowingly collect personal information from children under 13."}function coppa(v){return`COPPA Parent Direct Notice Template
 
 To: Parent or guardian
 From: ${v.company}
 Contact: ${v.contact}
 
-Why you are receiving this notice
-${v.company} operates ${v.website}. We are asking for your verifiable parental consent before collecting, using, or disclosing personal information from your child.
+${childrenClause(v)} We intend to collect ${sentence(v.categories)} to ${v.business}. We may disclose information to ${sentence(v.recipients)}.
 
-Information we intend to collect from the child
-${list(v.categories)}
+Parents may consent to internal use without consenting to disclosure to third parties unless disclosure is integral to the service. Parents may review their child's information, request deletion, and refuse further collection or use.
 
-How we will use the information
-We will use the information to ${v.business}, provide requested features, keep the service secure, communicate with you, and comply with legal obligations.
+Verifiable parental consent method: [describe signed form, payment-card verification, video verification, ID verification with deletion after verification, knowledge-based authentication, or another reliable method]. If consent is not received within a reasonable time, we will delete contact information collected only to obtain consent.`}function consent(v){const triggers=[];if(v.piplSensitive||v.sensitiveZh.length)triggers.push("处理敏感个人信息");if(v.piplSharing)triggers.push("向其他个人信息处理者提供 / 共享个人信息");if(v.piplDisclosure)triggers.push("公开披露个人信息");if(v.piplTransfer)triggers.push("向中国大陆境外提供个人信息");if(v.piplADM)triggers.push("使用自动化决策或画像");return`PIPL 单独同意模板
 
-Disclosure to third parties
-We may disclose information to:
-${list(v.recipients)}
+本人已阅读并理解 ${v.legalName} 的专项告知，并单独同意以下处理活动：
+${list(triggers)}
 
-Your choices
-You may consent to our collection and internal use of your child's information without consenting to disclosure to third parties, unless the disclosure is integral to the website or online service. You may review your child's personal information, ask us to delete it, and refuse further collection or use.
+处理者：${v.legalName}
+联系方式：${v.dpoEmail}
+处理目的：${v.businessFunction}
+个人信息类别：${sentence(v.categoriesZh)}
+敏感个人信息类别：${sentence(v.sensitiveZh)}
+保存期限：${v.retention}
+权利行使方式：${v.rights}
 
-How to give consent
-[Describe the verifiable parental consent method, such as signed form, payment-card verification, video verification, government ID check with deletion after verification, knowledge-based authentication, or another approved/reliable method.]
-
-If you do not consent
-If you do not provide consent within a reasonable time, we will delete the parent or child contact information collected only to obtain consent.
-
-Contact
-Email ${v.contact} to ask questions, review your child's information, request deletion, or revoke consent.`;
-}
-
-function render() {
-  const v = values();
-  document.querySelectorAll("[data-market-panel]").forEach(panel => {
-    panel.classList.toggle("hidden", panel.dataset.marketPanel !== v.market);
-  });
-  document.querySelector('[data-tab="consent"]').classList.toggle("hidden", v.market !== "china");
-  document.querySelector('[data-tab="coppa"]').classList.toggle("hidden", v.market !== "children");
-  if ((state.currentTab === "consent" && v.market !== "china") || (state.currentTab === "coppa" && v.market !== "children")) {
-    state.currentTab = v.market === "children" ? "coppa" : "notice";
-  }
-  document.querySelectorAll("[data-tab]").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === state.currentTab));
-  const docs = {
-    notice: notice(v),
-    policy: policy(v),
-    consent: consent(v),
-    coppa: coppa(v)
-  };
-  byId("outputText").textContent = docs[state.currentTab];
-}
-
-document.querySelectorAll("[data-field], [data-check], [data-radio]").forEach(input => {
-  input.addEventListener("input", render);
-  input.addEventListener("change", render);
-});
-
-document.querySelectorAll("[data-tab]").forEach(button => {
-  button.addEventListener("click", () => {
-    state.currentTab = button.dataset.tab;
-    document.querySelectorAll("[data-tab]").forEach(tab => tab.classList.toggle("active", tab === button));
-    render();
-  });
-});
-
-byId("generate").addEventListener("click", render);
-byId("reset").addEventListener("click", () => {
-  document.querySelectorAll("input[type='text'], input:not([type]), textarea").forEach(input => input.value = input.defaultValue);
-  document.querySelectorAll("input[type='checkbox'], input[type='radio']").forEach(input => input.checked = input.defaultChecked);
-  render();
-});
-
-byId("copy").addEventListener("click", async () => {
-  await navigator.clipboard.writeText(byId("outputText").textContent);
-  byId("copy").textContent = "Copied";
-  setTimeout(() => byId("copy").textContent = "Copy", 1200);
-});
-
-byId("download").addEventListener("click", () => {
-  const blob = new Blob([byId("outputText").textContent], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${values().company.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-${state.currentTab}.txt`;
-  a.click();
-  URL.revokeObjectURL(url);
-});
-
-render();
-</script>
-</body>
-</html>
+如涉及跨境提供，境外接收方为 ${v.cbtName}，所在国家或地区为 ${v.cbtCountry}，处理目的和方式为 ${v.cbtPurpose}，合规路径为 ${v.cbtPath}。本人知悉拒绝或撤回单独同意可能导致相关特定功能无法使用，但不影响其他基本功能。`}
+function currentDoc(v){if(state.currentTab==="policy")return v.market==="china"?chinaPolicy(v):v.market==="eu"?gdprPolicy(v):v.market==="california"?ccpaPolicy(v):coppa(v);if(state.currentTab==="consent")return consent(v);if(state.currentTab==="coppa")return coppa(v);return v.market==="china"?chinaNotice(v):v.market==="eu"?gdprNotice(v):v.market==="california"?ccpaNotice(v):coppa(v)}function render(){const v=values();document.querySelectorAll("[data-market-panel]").forEach(p=>p.classList.toggle("hidden",p.dataset.marketPanel!==v.market));document.querySelector('[data-tab="consent"]').classList.toggle("hidden",v.market!=="china");document.querySelector('[data-tab="coppa"]').classList.toggle("hidden",v.market!=="children");if((state.currentTab==="consent"&&v.market!=="china")||(state.currentTab==="coppa"&&v.market!=="children"))state.currentTab="notice";document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===state.currentTab));byId("outputText").innerHTML=htmlify(currentDoc(v))}function resetSample(){document.querySelectorAll('input[type="checkbox"]').forEach(i=>i.checked=false);document.querySelectorAll('[data-check="categories"]').forEach((i,idx)=>i.checked=[0,3,4].includes(idx));document.querySelectorAll('[data-check="recipients"]').forEach((i,idx)=>i.checked=[0,4].includes(idx));["piplSensitive","piplTransfer","piplSharing","piplDisclosure","piplADM"].forEach(id=>byId(id).checked=false);render()}document.addEventListener("DOMContentLoaded",()=>{buildChecks();document.querySelectorAll("input,textarea,select").forEach(el=>el.addEventListener("input",render));document.querySelectorAll('[data-radio]').forEach(el=>el.addEventListener("change",render));byId("generate").addEventListener("click",render);byId("reset").addEventListener("click",resetSample);document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>{state.currentTab=tab.dataset.tab;render()}));byId("copy").addEventListener("click",async()=>{await navigator.clipboard.writeText(byId("outputText").innerText);byId("copy").textContent="Copied";setTimeout(()=>byId("copy").textContent="Copy",1200)});byId("download").addEventListener("click",()=>{const blob=new Blob([byId("outputText").innerText],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="privacy-policy-template.txt";a.click();URL.revokeObjectURL(a.href)});render()});
+</script></body></html>
