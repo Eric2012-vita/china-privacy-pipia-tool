@@ -197,6 +197,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     <button onclick="exportJSON()">💾 Save 保存</button>
     <button onclick="loadJSON()">📂 Load 加载</button>
     <button onclick="exportReport()">📄 Export Report 导出报告</button>
+    <button onclick="generatePrivacyPolicy()" style="background:#38a169;color:white;font-weight:600;" title="用 PIPIA 评估结果生成隐私政策">✍️ Generate Privacy Policy 生成隐私政策</button>
     <button onclick="window.print()">🖨 Print 打印</button>
   </div>
 </div>
@@ -1890,6 +1891,7 @@ function generateSummary() {
 // SAVE / LOAD / EXPORT
 // ==========================================
 function exportJSON() {
+  try { savePolicyHandoffToLocalStorage(); } catch(e){}
   const data = collectAllData();
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -2047,6 +2049,144 @@ ${actionTasks.map(t=>`<tr><td>M${t.module}</td><td>${t.assignee}</td><td><strong
   reportWindow.document.write(content);
   reportWindow.document.close();
 }
+
+// ============================================
+// PRIVACY POLICY GENERATOR HANDOFF
+// ============================================
+// Maps PIPIA atomic data fields (per GB/T 35273) to the policy generator's
+// bucketed categories so the China-branch privacy policy can be auto-populated
+// without re-asking for the same information.
+
+const PIPIA_TO_POLICY_BUCKETS = {
+  // GB/T 35273 atomic field -> Privacy Policy generator category title (zh)
+  'Name 姓名':                          '身份与联系信息',
+  'Phone Number 电话号码':      '身份与联系信息',
+  'Email 电子邮箱':            '身份与联系信息',
+  'Address 地址':                       '身份与联系信息',
+  'Account Info 账号信息':      '身份与联系信息',
+  'ID Document Number 证件号码':'身份与联系信息',
+  'Date of Birth 出生日期':     '资料与偏好信息',
+  'Gender 性别':                        '资料与偏好信息',
+  'Marital Status 婚姻状况':    '资料与偏好信息',
+  'Education 学历':                    '资料与偏好信息',
+  'Employment 就业信息':       '职业、供应商与 B2B 信息',
+  'Preferences 偏好':                  '资料与偏好信息',
+  'Photo/Video 照片视频':       '内容与通讯信息',
+  'Device/Network Info 设备网络信息': '设备、网络与日志信息',
+  'Online Activity 网络活动':   '使用与交互信息',
+  'Vehicle Info 车辆信息':      '出行、预订与服务偏好信息',
+  'Property Info 财产信息':     '交易与商业信息',
+  'Financial Account 金融账户': '交易与商业信息',
+  'Location Tracking 行踪轨迹': '位置信息',
+  'Biometric Info 生物识别信息': '身份与联系信息',
+  'Medical & Health 医疗健康': '资料与偏好信息',
+  'Religious Belief 宗教信仰': '资料与偏好信息',
+  'Sexual Orientation 性取向':     '资料与偏好信息',
+  'Specific Identity 特定身份':'资料与偏好信息',
+  'Minor (Under 14) 未成年人(14岁以下)': '身份与联系信息',
+  'Criminal Record 犯罪记录':  '身份与联系信息',
+  'Business Data 业务数据':    '交易与商业信息',
+  'Aggregated/Anonymized Data 聚合匿名数据': '资料与偏好信息',
+  'Public Data 公开数据':      '资料与偏好信息'
+};
+
+// Sensitive-PI atomic fields that should flip the policy generator's sensitive checkboxes.
+const PIPIA_TO_POLICY_SENSITIVE = {
+  'ID Document Number 证件号码':       'government ID numbers, identity documents, passport, driver',
+  'Financial Account 金融账户':        'financial account, payment card, precise transaction, credit, tax, or payroll',
+  'Medical & Health 医疗健康':          'health, medical, disability, accessibility',
+  'Biometric Info 生物识别信息':'biometric identifiers or biometric templates',
+  'Location Tracking 行踪轨迹':        'precise geolocation, travel route, real-time location',
+  'Minor (Under 14) 未成年人(14岁以下)': 'children\'s personal information, including information about children under 14',
+  'Religious Belief 宗教信仰':          'religion, political opinions, union membership, ethnicity',
+  'Sexual Orientation 性取向':              'religion, political opinions, union membership, ethnicity',
+  'Specific Identity 特定身份':         'religion, political opinions, union membership, ethnicity',
+  'Criminal Record 犯罪记录':           'criminal record, sanctions, background-check, fraud-risk'
+};
+
+function buildPolicyHandoff() {
+  const safeVal = id => { const el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
+  const refNo = safeVal('refNo') || ('PIPIA-' + new Date().getFullYear() + '-001');
+  const projectName = safeVal('projectName');
+  const bizFunction = safeVal('bizFunction');
+  const controllerOther = safeVal('controllerOther');
+  const fields = (typeof dataFields !== 'undefined' && Array.isArray(dataFields)) ? dataFields : [];
+  // Build bucketed list (unique, preserve order)
+  const buckets = [];
+  const seen = new Set();
+  const sensitiveTriggers = new Set();
+  const rawFields = [];
+  fields.forEach(f => {
+    if (!f || !f.name) return;
+    rawFields.push({ name: f.name, classification: f.classification, purpose: f.purpose || '' });
+    const bucket = PIPIA_TO_POLICY_BUCKETS[f.name];
+    if (bucket && !seen.has(bucket)) { seen.add(bucket); buckets.push(bucket); }
+    const sens = PIPIA_TO_POLICY_SENSITIVE[f.name];
+    if (sens) sensitiveTriggers.add(sens);
+    if (f.classification === 'Sensitive Personal Information' || f.classification === '敏感个人信息') {
+      // ensure piplSensitive flag will be set
+      sensitiveTriggers.add('__piplSensitive__');
+    }
+  });
+  // Triggered modules tell us cross-border/sharing/disclosure flags
+  const triggered = (typeof triggeredModules !== 'undefined') ? Array.from(triggeredModules) : [];
+  const has = n => triggered.includes(n);
+  const purposes = (typeof selectedPurposes !== 'undefined' && selectedPurposes) ? Array.from(selectedPurposes) : [];
+  return {
+    schemaVersion: 1,
+    timestamp: new Date().toISOString(),
+    pipiaRef: refNo,
+    controllerName: controllerOther,
+    projectName: projectName,
+    businessFunction: bizFunction,
+    serviceDescription: safeVal('featureDesc'),
+    dataQuantities: safeVal('dataQuantity'),
+    storageLocation: safeVal('storageLocation'),
+    retentionPeriod: safeVal('retentionPeriod'),
+    rawDataFields: rawFields,
+    policyCategories: buckets,
+    policySensitive: Array.from(sensitiveTriggers).filter(s => s !== '__piplSensitive__'),
+    piplFlags: {
+      sensitive: sensitiveTriggers.has('__piplSensitive__') || has(1),
+      crossBorder: has(4),
+      sharing: has(3) || has(2),
+      disclosure: has(6),
+      automatedDecision: has(7),
+      minor: has(5)
+    },
+    crossBorder: {
+      recipientName: safeVal('m4_nonAffEntities'),
+      country: safeVal('m4_nonAffCountry'),
+      purpose: safeVal('m4_nonAffPurpose'),
+      legalPath: ''
+    },
+    conclusionSummary: safeVal('dpoComments') || safeVal('crossBorderReq'),
+    processingPurposes: purposes
+  };
+}
+
+function savePolicyHandoffToLocalStorage() {
+  try {
+    const payload = buildPolicyHandoff();
+    localStorage.setItem('legalaipay.pipiaHandoff', JSON.stringify(payload));
+    return payload;
+  } catch (e) { console.warn('handoff save failed', e); return null; }
+}
+
+function generatePrivacyPolicy() {
+  const payload = savePolicyHandoffToLocalStorage();
+  if (!payload) { alert('无法保存 PIPIA 数据'); return; }
+  try {
+    const token = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const url = 'privacy-policy-generator.html?pipia=' + encodeURIComponent(token) + '&ref=' + encodeURIComponent(payload.pipiaRef);
+    window.location.href = url;
+  } catch (e) {
+    // Fallback: rely on localStorage only
+    window.location.href = 'privacy-policy-generator.html?pipia=1&ref=' + encodeURIComponent(payload.pipiaRef);
+  }
+}
+
+
 
 // ==========================================
 // INITIALIZATION
