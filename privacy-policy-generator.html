@@ -161,4 +161,138 @@ ${list(triggers)}
 
 如涉及跨境提供，境外接收方为 ${v.cbtName}，所在国家或地区为 ${v.cbtCountry}，处理目的和方式为 ${v.cbtPurpose}，合规路径为 ${v.cbtPath}。本人知悉拒绝或撤回单独同意可能导致相关特定功能无法使用，但不影响其他基本功能。`}
 function currentDoc(v){if(state.currentTab==="policy")return v.market==="china"?chinaPolicy(v):v.market==="eu"?gdprPolicy(v):v.market==="california"?ccpaPolicy(v):coppa(v);if(state.currentTab==="consent")return consent(v);if(state.currentTab==="coppa")return coppa(v);return v.market==="china"?chinaNotice(v):v.market==="eu"?gdprNotice(v):v.market==="california"?ccpaNotice(v):coppa(v)}function render(){const v=values();document.querySelectorAll("[data-market-panel]").forEach(p=>p.classList.toggle("hidden",p.dataset.marketPanel!==v.market));document.querySelector('[data-tab="consent"]').classList.toggle("hidden",v.market!=="china");document.querySelector('[data-tab="coppa"]').classList.toggle("hidden",v.market!=="children");if((state.currentTab==="consent"&&v.market!=="china")||(state.currentTab==="coppa"&&v.market!=="children"))state.currentTab="notice";document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===state.currentTab));byId("outputText").innerHTML=htmlify(currentDoc(v))}function resetSample(){document.querySelectorAll('input[type="checkbox"]').forEach(i=>i.checked=false);document.querySelectorAll('[data-check="categories"]').forEach((i,idx)=>i.checked=[0,3,4].includes(idx));document.querySelectorAll('[data-check="recipients"]').forEach((i,idx)=>i.checked=[0,4].includes(idx));["piplSensitive","piplTransfer","piplSharing","piplDisclosure","piplADM"].forEach(id=>byId(id).checked=false);render()}document.addEventListener("DOMContentLoaded",()=>{buildChecks();document.querySelectorAll("input,textarea,select").forEach(el=>el.addEventListener("input",render));document.querySelectorAll('[data-radio]').forEach(el=>el.addEventListener("change",render));byId("generate").addEventListener("click",render);byId("reset").addEventListener("click",resetSample);document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>{state.currentTab=tab.dataset.tab;render()}));byId("copy").addEventListener("click",async()=>{await navigator.clipboard.writeText(byId("outputText").innerText);byId("copy").textContent="Copied";setTimeout(()=>byId("copy").textContent="Copy",1200)});byId("download").addEventListener("click",()=>{const blob=new Blob([byId("outputText").innerText],{type:"text/plain;charset=utf-8"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="privacy-policy-template.txt";a.click();URL.revokeObjectURL(a.href)});render()});
+
+
+/* PIPIA HANDOFF READER */
+function __readPipiaHandoff() {
+  try {
+    const usp = new URLSearchParams(window.location.search);
+    const tok = usp.get('pipia');
+    if (tok && tok !== '1') {
+      const json = decodeURIComponent(escape(atob(decodeURIComponent(tok))));
+      return JSON.parse(json);
+    }
+  } catch (e) { console.warn('handoff URL parse failed', e); }
+  try {
+    const raw = localStorage.getItem('legalaipay.pipiaHandoff');
+    if (raw) return JSON.parse(raw);
+  } catch (e) { console.warn('handoff localStorage parse failed', e); }
+  return null;
+}
+function __setVal(id, v) {
+  const el = document.getElementById(id);
+  if (!el || v == null || v === '') return false;
+  el.value = v;
+  return true;
+}
+function __setCheckByLabelStartsWith(name, prefix) {
+  document.querySelectorAll('input[type="checkbox"][name="' + name + '"]').forEach(cb => {
+    const lbl = cb.closest('label');
+    const txt = lbl ? lbl.textContent.trim() : '';
+    if (txt.toLowerCase().includes(prefix.toLowerCase().substring(0, 30))) cb.checked = true;
+  });
+}
+function __setCheckByLabelExact(name, title) {
+  document.querySelectorAll('input[type="checkbox"][name="' + name + '"]').forEach(cb => {
+    const lbl = cb.closest('label');
+    const txt = lbl ? lbl.textContent.trim() : '';
+    if (txt.startsWith(title)) cb.checked = true;
+  });
+}
+function __applyPipiaHandoff(p) {
+  if (!p) return;
+  const cn = document.querySelector('input[name="market"][value="china"]');
+  if (cn) { cn.checked = true; cn.dispatchEvent(new Event('change', {bubbles: true})); }
+  __setVal('company', p.controllerName);
+  __setVal('legalName', p.controllerName);
+  __setVal('pipiaRef', p.pipiaRef);
+  __setVal('business', p.serviceDescription || p.projectName);
+  __setVal('businessFunction', p.businessFunction);
+  __setVal('dataQuantity', p.dataQuantities);
+  __setVal('storageLoc', p.storageLocation);
+  __setVal('pipiaFindings', p.conclusionSummary);
+  __setVal('retention', p.retentionPeriod);
+  if (Array.isArray(p.policyCategories)) {
+    document.querySelectorAll('input[type="checkbox"][name="categories"]').forEach(cb => cb.checked = false);
+    p.policyCategories.forEach(cat => __setCheckByLabelExact('categories', cat));
+  }
+  if (Array.isArray(p.policySensitive) && p.policySensitive.length) {
+    document.querySelectorAll('input[type="checkbox"][name="sensitive"]').forEach(cb => cb.checked = false);
+    p.policySensitive.forEach(s => __setCheckByLabelStartsWith('sensitive', s));
+  }
+  if (p.piplFlags) {
+    const f = p.piplFlags;
+    const pf = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
+    pf('piplSensitive', f.sensitive);
+    pf('piplTransfer', f.crossBorder);
+    pf('piplSharing', f.sharing);
+    pf('piplDisclosure', f.disclosure);
+    pf('piplADM', f.automatedDecision);
+  }
+  if (p.crossBorder) {
+    __setVal('cbtName', p.crossBorder.recipientName);
+    __setVal('cbtCountry', p.crossBorder.country);
+    __setVal('cbtPurpose', p.crossBorder.purpose);
+    if (p.crossBorder.legalPath) __setVal('cbtPath', p.crossBorder.legalPath);
+  }
+  const importedIds = ['company','legalName','pipiaRef','business','businessFunction','dataQuantity','storageLoc','pipiaFindings','retention','cbtName','cbtCountry','cbtPurpose','cbtPath'];
+  importedIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const wrap = el.closest('.field') || el.parentElement;
+    if (wrap) { wrap.classList.add('pipia-imported'); wrap.setAttribute('data-pipia-imported', '1'); }
+  });
+  __injectPipiaBanner(p);
+  __collapseImportedFields();
+  document.querySelectorAll('[data-field], input, textarea, select').forEach(el => {
+    el.dispatchEvent(new Event('change', {bubbles: true}));
+    el.dispatchEvent(new Event('input', {bubbles: true}));
+  });
+  if (typeof render === 'function') try { render(); } catch (e) {}
+}
+function __injectPipiaBanner(p) {
+  if (document.getElementById('pipiaImportBanner')) return;
+  const banner = document.createElement('div');
+  banner.id = 'pipiaImportBanner';
+  banner.style.cssText = 'background:#ebf8ff;border:1px solid #3182ce;border-left:4px solid #3182ce;padding:14px 18px;margin:16px 0;border-radius:6px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;';
+  const ref = (p && p.pipiaRef) ? p.pipiaRef : '';
+  banner.innerHTML = '<div><strong>✓ Imported from PIPIA</strong> &middot; 已从 PIPIA 评估导入数据' + (ref ? ' (' + ref + ')' : '') + '<br><span style="font-size:13px;color:#4a5568;">下列字段已由 PIPIA 填充，无需重复输入。如需修改请点击右侧按钮。</span></div><button type="button" id="pipiaToggleEdit" style="background:#3182ce;color:white;border:none;padding:8px 14px;border-radius:6px;cursor:pointer;font-weight:600;">点击编辑 / Edit</button>';
+  const form = document.querySelector('form, .question-form, .questions, main') || document.body;
+  const guidance = document.querySelector('.market-guidance[data-market-panel="china"]');
+  if (guidance && guidance.parentNode) guidance.parentNode.insertBefore(banner, guidance.nextSibling);
+  else if (form.firstChild) form.insertBefore(banner, form.firstChild);
+  else form.appendChild(banner);
+  document.getElementById('pipiaToggleEdit').addEventListener('click', () => {
+    const collapsed = document.body.classList.toggle('pipia-collapsed-off');
+    document.querySelectorAll('.pipia-imported').forEach(el => {
+      el.style.display = collapsed ? '' : 'none';
+    });
+    document.getElementById('pipiaToggleEdit').textContent = collapsed ? '隐藏 / Hide' : '点击编辑 / Edit';
+  });
+}
+function __collapseImportedFields() {
+  document.querySelectorAll('.pipia-imported').forEach(el => { el.style.display = 'none'; });
+}
+window.addEventListener('DOMContentLoaded', () => {
+  const payload = __readPipiaHandoff();
+  if (!payload) return;
+  setTimeout(() => __applyPipiaHandoff(payload), 50);
+});
+window.addEventListener('DOMContentLoaded', () => {
+  const cn = document.querySelector('input[name="market"][value="china"]');
+  if (!cn) return;
+  cn.addEventListener('change', () => {
+    if (!cn.checked) return;
+    if (__readPipiaHandoff()) return;
+    const guidance = document.querySelector('.market-guidance[data-market-panel="china"]');
+    if (guidance && !document.getElementById('pipiaForceCta')) {
+      const cta = document.createElement('div');
+      cta.id = 'pipiaForceCta';
+      cta.style.cssText = 'background:#fffaf0;border:1px solid #dd6b20;padding:12px;border-radius:6px;margin-top:10px;font-size:14px;';
+      cta.innerHTML = '建议先完成 PIPIA 以避免重复输入同一信息。 <a href="pipia.html" style="font-weight:600;color:#dd6b20;">前往 PIPIA →</a>';
+      guidance.appendChild(cta);
+    }
+  });
+});
+
 </script></body></html>
