@@ -1,3 +1,116 @@
+Skip to content
+Eric2012-vita
+china-privacy-pipia-tool
+Repository navigation
+Code
+Issues
+Pull requests
+2
+ (2)
+Agents
+Actions
+Projects
+Wiki
+Security and quality
+Insights
+Settings
+Important update
+On April 24 we'll start using GitHub Copilot interaction data for AI model training unless you opt out. Review this update and manage your preferences in your GitHub account settings.
+Files
+Go to file
+t
+T
+.github
+commands
+skills
+Contract Review
+README.md
+contract-review.html
+index.html
+pipia.html
+privacy-policy-generator.html
+china-privacy-pipia-tool
+/
+contract-review.html
+in
+main
+
+Edit
+
+Preview
+Indent mode
+
+Spaces
+Indent size
+
+2
+Line wrap mode
+
+No wrap
+Editing contract-review.html file contents
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,511 +174,6 @@ body {
   box-shadow: 0 4px 12px rgba(15,30,61,0.2);
 }
 .nav-actions { display: flex; align-items: center; gap: 14px; }
-.nav-actions a { color: var(--text); text-decoration: none; font-weight: 650; font-size: 14px; }
-.nav-actions .primary-link { color: white; background: var(--primary); padding: 9px 16px; border-radius: 8px; }
-.hero { background: linear-gradient(135deg, #0f1e3d, #1a365d); color: white; }
-.hero-inner { max-width: 1240px; margin: 0 auto; padding: 46px 24px 40px; }
-.eyebrow { color: #bee3f8; font-size: 12px; letter-spacing: 1px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: inline-block; }
-h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; margin-bottom: 12px; }
-.hero p { max-width: 820px; color: rgba(255,255,255,0.82); font-size: 16px; }
-.layout {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 26px 24px 60px;
-  display: grid;
-  grid-template-columns: minmax(340px, 470px) minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-.panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
-.input-panel { position: sticky; top: 86px; max-height: calc(100vh - 110px); overflow: auto; }
-.panel-header { padding: 18px 20px; border-bottom: 1px solid var(--border); }
-.panel-header h2 { color: var(--primary); font-size: 18px; }
-.panel-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.form-body { padding: 18px 20px 22px; }
-.field { margin-bottom: 16px; }
-.field label, .field legend { display: block; color: var(--primary); font-size: 13px; font-weight: 800; margin-bottom: 7px; }
-input, textarea, select {
-  width: 100%;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 11px;
-  font: inherit;
-  color: var(--text);
-  background: white;
-}
-textarea { min-height: 210px; resize: vertical; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-fieldset { border: 0; }
-.checks { display: grid; gap: 8px; }
-.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
-.check input { width: auto; margin-top: 3px; }
-.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-button {
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-weight: 800;
-  cursor: pointer;
-}
-.btn-primary { background: var(--primary); color: white; }
-.btn-secondary { background: #edf2f7; color: var(--primary); }
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-}
-.metric { background: #f8fafc; border: 1px solid var(--border); border-radius: 9px; padding: 12px; }
-.metric strong { display: block; color: var(--primary); font-size: 24px; line-height: 1.1; }
-.metric span { color: var(--muted); font-size: 12px; }
-.tabs { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
-.tab { background: #edf2f7; color: var(--primary); font-size: 12px; padding: 8px 10px; }
-.tab.active { background: var(--primary); color: white; }
-.output-body { padding: 18px; }
-.issue { border: 1px solid var(--border); border-left-width: 4px; border-radius: 9px; padding: 14px; margin-bottom: 12px; background: white; }
-.issue.high { border-left-color: var(--high); }
-.issue.medium { border-left-color: var(--medium); }
-.issue.low { border-left-color: var(--low); }
-.issue h3 { font-size: 15px; color: var(--primary); margin-bottom: 6px; }
-.issue-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-.issue p { font-size: 13px; margin: 7px 0; }
-.badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 3px 8px;
-  font-size: 11px;
-  font-weight: 800;
-  margin-right: 6px;
-}
-.badge.high { background: #fed7d7; color: #9b2c2c; }
-.badge.medium { background: #feebc8; color: #7b341e; }
-.badge.low { background: #c6f6d5; color: #22543d; }
-pre {
-  white-space: pre-wrap;
-  word-break: break-word;
-  font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "PingFang SC", "Microsoft YaHei", monospace;
-  color: #1a202c;
-}
-.hidden { display: none; }
-.empty { color: var(--muted); font-size: 14px; padding: 18px; background: #f8fafc; border: 1px dashed var(--border); border-radius: 9px; }
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-  .input-panel { position: static; max-height: none; }
-  .metrics { grid-template-columns: repeat(2, 1fr); }
-  .row2 { grid-template-columns: 1fr; }
-  .nav-actions a:not(.primary-link) { display: none; }
-}
-</style>
-</head>
-<body>
-<nav class="navbar">
-  <div class="nav-container">
-    <a href="index.html" class="logo"><span class="logo-mark">L</span><span>LegalAIPay</span></a>
-    <div class="nav-actions">
-      <a href="index.html#tools">Tools</a>
-      <a href="privacy-policy-generator.html">Privacy Generator</a>
-      <a class="primary-link" href="#review">Start Review</a>
-    </div>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-inner">
-    <span class="eyebrow">Contract Review</span>
-    <h1>Review contract risk before the next redline.</h1>
-    <p>Local browser review for NDAs, SaaS agreements, DPAs, MSAs, service agreements, and vendor terms. No contract text leaves this page.</p>
-  </div>
-</section>
-
-<main class="layout" id="review">
-  <section class="panel input-panel">
-    <div class="panel-header">
-      <h2>Review setup</h2>
-      <p>Choose the commercial position, then paste the contract text.</p>
-    </div>
-    <div class="form-body">
-      <div class="row2">
-        <div class="field">
-          <label for="contractType">Contract type</label>
-          <select id="contractType">
-            <option value="General commercial agreement">General commercial agreement</option>
-            <option value="NDA">NDA</option>
-            <option value="SaaS agreement">SaaS agreement</option>
-            <option value="DPA">DPA</option>
-            <option value="MSA / services agreement">MSA / services agreement</option>
-            <option value="Vendor terms">Vendor terms</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="position">Review position</label>
-          <select id="position">
-            <option value="Customer / buyer">Customer / buyer</option>
-            <option value="Vendor / supplier">Vendor / supplier</option>
-            <option value="Mutual / neutral">Mutual / neutral</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row2">
-        <div class="field">
-          <label for="law">Governing law target</label>
-          <input id="law" value="New York / California / England / PRC">
-        </div>
-        <div class="field">
-          <label for="riskTolerance">Risk tolerance</label>
-          <select id="riskTolerance">
-            <option value="Balanced">Balanced</option>
-            <option value="Conservative">Conservative</option>
-            <option value="Business-friendly">Business-friendly</option>
-          </select>
-        </div>
-      </div>
-
-      <fieldset class="field">
-        <legend>Review focus</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" data-focus value="Liability" checked> Liability and indemnity</label>
-          <label class="check"><input type="checkbox" data-focus value="Payment" checked> Payment, fees, taxes</label>
-          <label class="check"><input type="checkbox" data-focus value="Data" checked> Data protection and security</label>
-          <label class="check"><input type="checkbox" data-focus value="IP" checked> IP ownership and license</label>
-          <label class="check"><input type="checkbox" data-focus value="Termination" checked> Termination and renewal</label>
-          <label class="check"><input type="checkbox" data-focus value="Disputes" checked> Governing law and disputes</label>
-        </div>
-      </fieldset>
-
-      <div class="field">
-        <label for="contractText">Contract text</label>
-        <textarea id="contractText">Paste contract text here, or use the sample to test the review engine.</textarea>
-      </div>
-
-      <div class="actions">
-        <button class="btn-primary" id="reviewBtn">Review Contract</button>
-        <button class="btn-secondary" id="sampleBtn">Load Sample</button>
-        <button class="btn-secondary" id="clearBtn">Clear</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="metrics">
-      <div class="metric"><strong id="score">-</strong><span>Risk score</span></div>
-      <div class="metric"><strong id="highCount">0</strong><span>High</span></div>
-      <div class="metric"><strong id="mediumCount">0</strong><span>Medium</span></div>
-      <div class="metric"><strong id="lowCount">0</strong><span>Low</span></div>
-    </div>
-    <div class="tabs">
-      <button class="tab active" data-tab="issues">Issues</button>
-      <button class="tab" data-tab="clauses">Clause Map</button>
-      <button class="tab" data-tab="report">Report</button>
-      <button class="tab" data-tab="playbook">Playbook</button>
-      <button class="btn-secondary" id="copyBtn">Copy Report</button>
-      <button class="btn-secondary" id="downloadBtn">Download .txt</button>
-    </div>
-    <div class="output-body">
-      <div id="issuesView"></div>
-      <div id="clausesView" class="hidden"></div>
-      <div id="reportView" class="hidden"><pre id="reportText"></pre></div>
-      <div id="playbookView" class="hidden"></div>
-    </div>
-  </section>
-</main>
-
-<script>
-const playbook = [
-  {
-    area: "Liability",
-    severity: "high",
-    title: "Unlimited or uncapped liability",
-    patterns: [/unlimited liability/i, /liability shall not be limited/i, /without limitation.*liable/i],
-    why: "Unlimited exposure is rarely acceptable without a narrow carve-out.",
-    ask: "Add a commercially reasonable liability cap and keep uncapped items limited to negotiated carve-outs.",
-    fallback: "If uncapped liability is required, define precise carve-outs for fraud, wilful misconduct, confidentiality breach, IP infringement, and payment obligations."
-  },
-  {
-    area: "Liability",
-    severity: "medium",
-    title: "Missing liability cap",
-    patterns: [/limitation of liability/i],
-    missing: true,
-    why: "A contract without a liability cap can create unpredictable downside.",
-    ask: "Add a cap tied to fees paid or payable in the prior 12 months.",
-    fallback: "For high-risk services, consider separate caps for data breach, confidentiality, and indemnity."
-  },
-  {
-    area: "Indemnity",
-    severity: "high",
-    title: "Broad one-way indemnity",
-    patterns: [/indemnif(?:y|ies|ication).*any and all/i, /hold harmless.*any and all/i],
-    why: "Broad indemnities can shift remote or uncontrolled losses.",
-    ask: "Limit indemnity to third-party claims caused by breach, negligence, wilful misconduct, IP infringement, or legal violation.",
-    fallback: "Add control of defence, prompt notice, mitigation, settlement consent, and no admission without consent."
-  },
-  {
-    area: "Payment",
-    severity: "medium",
-    title: "Short payment deadline or aggressive late fees",
-    patterns: [/net\s*(7|10|15)\b/i, /late fee.*(1\.5%|2%|18%|24%)/i, /interest.*(1\.5%|2%|18%|24%)/i],
-    why: "Short payment terms or high default interest may not match internal payment operations.",
-    ask: "Use Net 30 or Net 45 and cap late fees at the maximum lawful and commercially reasonable amount.",
-    fallback: "Tie payment dispute rights to good-faith disputed amounts."
-  },
-  {
-    area: "Data",
-    severity: "high",
-    title: "Missing data processing terms",
-    patterns: [/personal data|personal information|process(?:ing)? data|data protection/i],
-    missing: true,
-    why: "If personal data is handled, the contract should include controller/processor roles, security, subprocessors, breach notice, deletion, audit, and cross-border transfer terms.",
-    ask: "Attach a DPA or add data protection clauses.",
-    fallback: "At minimum, include purpose limitation, confidentiality, security controls, breach notice, return/deletion, assistance, and transfer safeguards."
-  },
-  {
-    area: "Data",
-    severity: "medium",
-    title: "Long security incident notice period",
-    patterns: [/notify.*(10|15|30)\s*(business\s*)?days.*(breach|security incident)/i, /(breach|security incident).*within\s*(10|15|30)\s*(business\s*)?days/i],
-    why: "Long breach notice periods can impair regulatory and customer notification duties.",
-    ask: "Require notice without undue delay and no later than 48-72 hours after confirmation.",
-    fallback: "Include rolling updates as investigation progresses."
-  },
-  {
-    area: "IP",
-    severity: "high",
-    title: "Overbroad assignment of IP",
-    patterns: [/assigns? all right, title and interest/i, /work product.*owned exclusively/i, /all intellectual property.*customer/i],
-    why: "Broad assignment can unintentionally transfer background IP, tools, templates, know-how, or pre-existing materials.",
-    ask: "Separate background IP from deliverables and grant only the license needed to use the deliverables.",
-    fallback: "Add residual knowledge and pre-existing materials carve-outs."
-  },
-  {
-    area: "Confidentiality",
-    severity: "medium",
-    title: "No confidentiality survival period found",
-    patterns: [/confidential/i],
-    missingRelated: /surviv(?:e|al)|for a period of|trade secret/i,
-    why: "Confidentiality obligations should survive termination; trade secrets should remain protected while they qualify as trade secrets.",
-    ask: "Add survival of at least 3-5 years, with trade secrets protected for as long as legally protected.",
-    fallback: "For NDAs, consider indefinite protection for highly sensitive information."
-  },
-  {
-    area: "Termination",
-    severity: "medium",
-    title: "Auto-renewal without clear cancellation window",
-    patterns: [/automatically renew/i, /auto-renew/i, /successive renewal/i],
-    why: "Auto-renewal can create unwanted commitments if notice windows are unclear.",
-    ask: "Add clear renewal term, notice deadline, non-renewal method, and renewal-price notice.",
-    fallback: "For customer position, require reminder notice before renewal."
-  },
-  {
-    area: "Termination",
-    severity: "high",
-    title: "No termination for convenience",
-    patterns: [/termination for convenience|terminate for convenience/i],
-    missing: true,
-    why: "Without convenience termination, a party may be locked into a poor-performing or no-longer-needed relationship.",
-    ask: "Add termination for convenience with reasonable notice.",
-    fallback: "If rejected, strengthen termination for cause, SLA termination, and transition assistance."
-  },
-  {
-    area: "Disputes",
-    severity: "medium",
-    title: "Unfavorable venue or arbitration clause",
-    patterns: [/exclusive jurisdiction/i, /venue.*(delaware|new york|california|singapore|hong kong|england)/i, /arbitration/i],
-    why: "Dispute forum affects cost, leverage, injunctive relief, and enforceability.",
-    ask: "Confirm venue, language, interim relief, fee allocation, consolidation, confidentiality, and injunctive relief carve-outs.",
-    fallback: "For cross-border contracts, verify enforcement path before signing."
-  },
-  {
-    area: "Compliance",
-    severity: "medium",
-    title: "Missing sanctions / anti-bribery compliance",
-    patterns: [/sanctions|anti-bribery|anti corruption|anti-corruption|export control/i],
-    missing: true,
-    why: "Regulated or cross-border arrangements need baseline compliance commitments.",
-    ask: "Add anti-bribery, sanctions, export control, modern slavery or other applicable compliance obligations.",
-    fallback: "Tie breach to immediate termination rights."
-  }
-];
-
-const clausePatterns = [
-  ["Parties", /between|party|parties|effective date/i],
-  ["Scope / Services", /services|statement of work|scope|deliverables|order form/i],
-  ["Fees / Payment", /fees|payment|invoice|tax|net\s*\d+/i],
-  ["Confidentiality", /confidential|non-disclosure|proprietary information/i],
-  ["Data Protection", /personal data|personal information|data protection|security incident|subprocessor/i],
-  ["IP", /intellectual property|copyright|license|work product|deliverables/i],
-  ["Warranties", /warrant|disclaimer|as is|merchantability|fitness/i],
-  ["Indemnity", /indemnif|hold harmless|defend/i],
-  ["Liability", /limitation of liability|liability cap|consequential damages/i],
-  ["Term / Termination", /term|termination|expire|renew/i],
-  ["Governing Law", /governing law|jurisdiction|venue|arbitration|dispute/i],
-  ["Compliance", /sanctions|anti-bribery|export control|law|regulation/i]
-];
-
-const sample = `MASTER SERVICES AGREEMENT
-
-Customer shall pay all invoices Net 10. Late amounts accrue interest at 1.5% per month. The agreement automatically renews for successive one-year terms unless either party gives notice at least 90 days before renewal.
-
-Vendor may process personal information to provide the services. Vendor will notify Customer of a security incident within 15 business days after confirmation.
-
-Customer assigns all right, title and interest in all intellectual property and work product to Vendor. Each party shall indemnify and hold harmless the other party from any and all claims, losses, damages, liabilities, costs and expenses.
-
-This Agreement is governed by the laws of New York. The parties submit to exclusive jurisdiction in New York. Confidential information must be protected during the term of the Agreement.`;
-
-let current = { issues: [], clauses: [], report: "" };
-
-function selectedFocus() {
-  return [...document.querySelectorAll("[data-focus]:checked")].map(i => i.value);
-}
-
-function severityWeight(severity) {
-  return severity === "high" ? 18 : severity === "medium" ? 10 : 4;
-}
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
-}
-
-function analyze() {
-  const text = document.getElementById("contractText").value.trim();
-  const focus = selectedFocus();
-  const normalized = text.replace(/\s+/g, " ");
-  const issues = [];
-
-  playbook.forEach(rule => {
-    if (focus.length && !focus.includes(rule.area) && !(rule.area === "Indemnity" && focus.includes("Liability")) && !(rule.area === "Compliance" && focus.includes("Disputes"))) return;
-    const matched = rule.patterns.some(pattern => pattern.test(normalized));
-    let triggered = matched;
-    if (rule.missing) triggered = !matched;
-    if (rule.missingRelated) triggered = matched && !rule.missingRelated.test(normalized);
-    if (triggered) issues.push({ ...rule, matched });
-  });
-
-  const clauses = clausePatterns.map(([name, pattern]) => ({
-    name,
-    present: pattern.test(normalized),
-    signal: (normalized.match(pattern) || [""])[0]
-  }));
-
-  const score = Math.min(100, issues.reduce((sum, issue) => sum + severityWeight(issue.severity), 0));
-  const report = buildReport(text, issues, clauses, score);
-  current = { issues, clauses, report, score };
-  render();
-}
-
-function buildReport(text, issues, clauses, score) {
-  const type = document.getElementById("contractType").value;
-  const position = document.getElementById("position").value;
-  const law = document.getElementById("law").value;
-  const tolerance = document.getElementById("riskTolerance").value;
-  const high = issues.filter(i => i.severity === "high").length;
-  const medium = issues.filter(i => i.severity === "medium").length;
-  const low = issues.filter(i => i.severity === "low").length;
-  return `CONTRACT REVIEW REPORT
-
-Contract type: ${type}
-Review position: ${position}
-Governing law target: ${law}
-Risk tolerance: ${tolerance}
-Risk score: ${score}/100
-Issues: ${high} high / ${medium} medium / ${low} low
-
-EXECUTIVE SUMMARY
-${score >= 55 ? "High-risk draft. Legal review should focus on liability allocation, data protection, termination flexibility, and operational commitments before signature." : score >= 25 ? "Moderate-risk draft. Several provisions should be negotiated or clarified before signature." : "Lower-risk draft based on the current rule set. Counsel should still confirm commercial terms, governing law, and deal-specific risks."}
-
-ISSUE LIST
-${issues.length ? issues.map((issue, idx) => `${idx + 1}. [${issue.severity.toUpperCase()}] ${issue.title}
-   Area: ${issue.area}
-   Why it matters: ${issue.why}
-   Ask: ${issue.ask}
-   Fallback: ${issue.fallback}`).join("\n\n") : "No issues triggered by the current rule set."}
-
-CLAUSE MAP
-${clauses.map(c => `- ${c.present ? "Present" : "Missing / not detected"}: ${c.name}`).join("\n")}
-
-NEXT STEPS
-- Confirm the business position and fallback position for each high-risk item.
-- Add redlines for liability cap, data protection, confidentiality survival, termination, and compliance where applicable.
-- Ask counsel to review enforceability under the selected governing law.
-
-NOTE
-This browser-based review is a structured issue-spotting tool, not legal advice.`;
-}
-
-function render() {
-  const issues = current.issues || [];
-  const high = issues.filter(i => i.severity === "high").length;
-  const medium = issues.filter(i => i.severity === "medium").length;
-  const low = issues.filter(i => i.severity === "low").length;
-  document.getElementById("score").textContent = current.score === undefined ? "-" : `${current.score}`;
-  document.getElementById("highCount").textContent = high;
-  document.getElementById("mediumCount").textContent = medium;
-  document.getElementById("lowCount").textContent = low;
-
-  document.getElementById("issuesView").innerHTML = issues.length ? issues.map(issue => `
-    <article class="issue ${issue.severity}">
-      <h3><span class="badge ${issue.severity}">${issue.severity.toUpperCase()}</span>${escapeHtml(issue.title)}</h3>
-      <div class="issue-meta">${escapeHtml(issue.area)} · ${issue.matched ? "Text signal detected" : "Expected clause not detected"}</div>
-      <p><strong>Why it matters:</strong> ${escapeHtml(issue.why)}</p>
-      <p><strong>Primary ask:</strong> ${escapeHtml(issue.ask)}</p>
-      <p><strong>Fallback:</strong> ${escapeHtml(issue.fallback)}</p>
-    </article>
-  `).join("") : `<div class="empty">Run a review to see contract issues.</div>`;
-
-  document.getElementById("clausesView").innerHTML = current.clauses && current.clauses.length ? current.clauses.map(c => `
-    <article class="issue ${c.present ? "low" : "medium"}">
-      <h3>${c.present ? "Detected" : "Not detected"}: ${escapeHtml(c.name)}</h3>
-      <p>${c.present ? `Signal: ${escapeHtml(c.signal)}` : "Consider whether this clause should be included for the selected contract type."}</p>
-    </article>
-  `).join("") : `<div class="empty">Run a review to see the clause map.</div>`;
-
-  document.getElementById("playbookView").innerHTML = playbook.map(rule => `
-    <article class="issue ${rule.severity}">
-      <h3><span class="badge ${rule.severity}">${rule.severity.toUpperCase()}</span>${escapeHtml(rule.title)}</h3>
-      <div class="issue-meta">${escapeHtml(rule.area)}</div>
-      <p>${escapeHtml(rule.why)}</p>
-    </article>
-  `).join("");
-
-  document.getElementById("reportText").textContent = current.report || "Run a review to generate the report.";
-}
-
-function switchTab(tab) {
-  document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
-  document.getElementById("issuesView").classList.toggle("hidden", tab !== "issues");
-  document.getElementById("clausesView").classList.toggle("hidden", tab !== "clauses");
-  document.getElementById("reportView").classList.toggle("hidden", tab !== "report");
-  document.getElementById("playbookView").classList.toggle("hidden", tab !== "playbook");
-}
-
-document.getElementById("reviewBtn").addEventListener("click", analyze);
-document.getElementById("sampleBtn").addEventListener("click", () => {
-  document.getElementById("contractText").value = sample;
-  analyze();
-});
-document.getElementById("clearBtn").addEventListener("click", () => {
-  document.getElementById("contractText").value = "";
-  current = { issues: [], clauses: [], report: "", score: undefined };
-  render();
-});
-document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
-document.getElementById("copyBtn").addEventListener("click", async () => {
-  await navigator.clipboard.writeText(current.report || "");
-  document.getElementById("copyBtn").textContent = "Copied";
-  setTimeout(() => document.getElementById("copyBtn").textContent = "Copy Report", 1200);
-});
-document.getElementById("downloadBtn").addEventListener("click", () => {
-  const blob = new Blob([current.report || ""], { type: "text/plain;charset=utf-8" });
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "contract-review-report.txt";
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
-render();
-</script>
-</body>
-</html>
+Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
+ 
+skills/contract-review content loaded
