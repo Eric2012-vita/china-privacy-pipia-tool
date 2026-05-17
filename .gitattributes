@@ -1,0 +1,27 @@
+# Enforce UTF-8 and LF for text source files to prevent mojibake
+# (regression seen on privacy-policy-generator.html where UTF-8 bytes were
+# re-saved as Latin-1, turning Chinese characters into Latin-1-looking sequences).
+* text=auto eol=lf
+
+*.html   text working-tree-encoding=UTF-8 eol=lf
+*.htm    text working-tree-encoding=UTF-8 eol=lf
+*.md     text working-tree-encoding=UTF-8 eol=lf
+*.css    text working-tree-encoding=UTF-8 eol=lf
+*.js     text working-tree-encoding=UTF-8 eol=lf
+*.mjs    text working-tree-encoding=UTF-8 eol=lf
+*.json   text working-tree-encoding=UTF-8 eol=lf
+*.yml    text working-tree-encoding=UTF-8 eol=lf
+*.yaml   text working-tree-encoding=UTF-8 eol=lf
+*.txt    text working-tree-encoding=UTF-8 eol=lf
+*.svg    text working-tree-encoding=UTF-8 eol=lf
+
+# Binary assets — never normalize
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.ico    binary
+*.pdf    binary
+*.zip    binary
+*.woff   binary
+*.woff2  binary
