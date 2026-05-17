@@ -1,0 +1,77 @@
+name: encoding-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  no-mojibake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan tracked text files for UTF-8/Latin-1 mojibake
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Common mojibake byte triplets that appear when UTF-8 Chinese is mis-decoded as Latin-1.
+          # Stored as Python-escaped UTF-8 so this YAML stays pure ASCII.
+          python3 - <<'PY'
+          import os, re, subprocess, sys
+
+          # 6 high-signal sequences. Each is the Latin-1 rendering of a common
+          # 3-byte UTF-8 prefix for a CJK character.
+          PATTERNS = [
+              b"\xc3\xa4\xc2\xb8\xc2\xad",   # mojibake of U+4E2D (中)
+              b"\xc3\xa5\xc2\xa4\xc2\xa7",   # mojibake of U+5927 (大)
+              b"\xc3\xa4\xc2\xb8\xc2\xaa",   # mojibake of U+4E2A (个)
+              b"\xc3\xa4\xc2\xba\xc2\xba",   # mojibake of U+4EBA (人)
+              b"\xc3\xa6\xc2\x9c\xc2\x8d",   # mojibake of U+670D (服)
+              b"\xc3\xa5\xc2\x90\xc2\x8c",   # mojibake of U+540C (同)
+          ]
+
+          # Compile as a single alternation regex.
+          regex = re.compile(b"|".join(re.escape(p) for p in PATTERNS))
+
+          # Limit to tracked, text-like files. Use git ls-files for the list.
+          out = subprocess.check_output(["git", "ls-files"]).decode().splitlines()
+          text_exts = (".html", ".htm", ".md", ".txt", ".css", ".js", ".mjs",
+                       ".json", ".yml", ".yaml", ".svg")
+
+          hits = []
+          for path in out:
+              if not path.lower().endswith(text_exts):
+                  continue
+              # Skip this workflow file itself (defense in depth: it never contains the
+              # raw mojibake bytes, only Python escape sequences, but be explicit).
+              if path == ".github/workflows/encoding-check.yml":
+                  continue
+              try:
+                  with open(path, "rb") as f:
+                      data = f.read()
+              except OSError:
+                  continue
+              for m in regex.finditer(data):
+                  # Compute line number for friendlier output.
+                  line = data.count(b"\n", 0, m.start()) + 1
+                  hits.append((path, line, m.group(0)))
+
+          if hits:
+              print("Mojibake detected in tracked text files:")
+              for path, line, seq in hits[:50]:
+                  print(f"  {path}:{line}  bytes={seq.hex()}")
+              if len(hits) > 50:
+                  print(f"  ... and {len(hits) - 50} more")
+              print("")
+              print("Likely cause: a UTF-8 file was re-saved as Latin-1/Windows-1252.")
+              print("Fix: re-save the file as UTF-8 (no BOM), or revert the offending commit.")
+              sys.exit(1)
+
+          print("OK: no UTF-8/Latin-1 mojibake sequences found.")
+          PY
