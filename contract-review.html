@@ -1,135 +1,23 @@
-Skip to content
-Eric2012-vita
-china-privacy-pipia-tool
-Repository navigation
-Code
-Issues
-Pull requests
-2
- (2)
-Agents
-Actions
-Projects
-Wiki
-Security and quality
-Insights
-Settings
-Important update
-On April 24 we'll start using GitHub Copilot interaction data for AI model training unless you opt out. Review this update and manage your preferences in your GitHub account settings.
-Files
-Go to file
-t
-T
-.github
-commands
-skills
-Contract Review
-README.md
-contract-review.html
-index.html
-pipia.html
-privacy-policy-generator.html
-china-privacy-pipia-tool
-/
-contract-review.html
-in
-main
-
-Edit
-
-Preview
-Indent mode
-
-Spaces
-Indent size
-
-2
-Line wrap mode
-
-No wrap
-Editing contract-review.html file contents
-  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contract Review | LegalAIPay</title>
-<meta name="description" content="Review contracts in the browser with a structured legal playbook, risk flags, clause checks, and exportable issue reports.">
+<title>Contract Review Workspace | LegalAIPay</title>
+<meta name="description" content="Upload or paste a contract, run a Claude legal-skills based review, and generate proposed comments, explanations, and redline-style review documents.">
 <style>
 :root {
   --primary: #0f1e3d;
-  --accent: #3182ce;
-  --bg: #f7fafc;
+  --accent: #2b6cb0;
+  --bg: #f6f8fb;
   --card: #ffffff;
-  --border: #e2e8f0;
-  --text: #273244;
+  --border: #dbe3ef;
+  --text: #243044;
   --muted: #718096;
   --low: #2f855a;
   --medium: #b7791f;
   --high: #c53030;
+  --critical: #8b1a1a;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -138,42 +26,595 @@ body {
   color: var(--text);
   line-height: 1.55;
 }
-.navbar {
-  background: rgba(255,255,255,0.96);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-.nav-container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-}
-.logo {
-  color: var(--primary);
-  font-size: 21px;
-  font-weight: 750;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.logo-mark {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  color: white;
-  display: grid;
-  place-items: center;
-  box-shadow: 0 4px 12px rgba(15,30,61,0.2);
-}
+.navbar { background: rgba(255,255,255,0.96); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+.nav-container { max-width: 1280px; margin: 0 auto; padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.logo { color: var(--primary); font-size: 21px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.logo-mark { width: 38px; height: 38px; border-radius: 9px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(15,30,61,0.2); }
 .nav-actions { display: flex; align-items: center; gap: 14px; }
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
- 
-skills/contract-review content loaded
+.nav-actions a { color: var(--text); text-decoration: none; font-weight: 650; font-size: 14px; }
+.nav-actions .primary-link { color: white; background: var(--primary); padding: 9px 16px; border-radius: 8px; }
+.hero { background: linear-gradient(135deg, #0f1e3d, #1a365d); color: white; }
+.hero-inner { max-width: 1280px; margin: 0 auto; padding: 42px 24px 36px; }
+.eyebrow { color: #bee3f8; font-size: 12px; letter-spacing: 1px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; margin-bottom: 12px; }
+.hero p { max-width: 880px; color: rgba(255,255,255,0.84); font-size: 16px; }
+.layout { max-width: 1280px; margin: 0 auto; padding: 24px; display: grid; grid-template-columns: minmax(360px, 460px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+.input-panel { position: sticky; top: 78px; max-height: calc(100vh - 98px); overflow: auto; }
+.panel-header { padding: 17px 19px; border-bottom: 1px solid var(--border); }
+.panel-header h2 { color: var(--primary); font-size: 18px; }
+.panel-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+.form-body { padding: 18px 19px 22px; }
+.field { margin-bottom: 16px; }
+.field label, .field legend { display: block; color: var(--primary); font-size: 13px; font-weight: 800; margin-bottom: 7px; }
+input, textarea, select { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 10px 11px; font: inherit; color: var(--text); background: white; }
+textarea { min-height: 190px; resize: vertical; }
+.small-textarea { min-height: 78px; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.upload-zone { border: 1px dashed #9db7d8; background: #f8fbff; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+.upload-zone input { margin-top: 8px; }
+.hint { color: var(--muted); font-size: 12px; margin-top: 6px; }
+.status-box { display: none; border: 1px solid #bee3f8; background: #ebf8ff; color: #234e72; border-radius: 8px; padding: 10px; font-size: 12px; margin: 10px 0 14px; }
+.status-box.show { display: block; }
+fieldset { border: 0; }
+.checks { display: grid; gap: 8px; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.check input { width: auto; margin-top: 3px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+button { border: 0; border-radius: 8px; padding: 10px 14px; font-weight: 800; cursor: pointer; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: #edf2f7; color: var(--primary); }
+.btn-accent { background: #ebf8ff; color: #2b6cb0; }
+.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 16px; border-bottom: 1px solid var(--border); }
+.metric { background: #f8fafc; border: 1px solid var(--border); border-radius: 9px; padding: 12px; }
+.metric strong { display: block; color: var(--primary); font-size: 23px; line-height: 1.1; }
+.metric span { color: var(--muted); font-size: 12px; }
+.tabs { padding: 14px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
+.tab { background: #edf2f7; color: var(--primary); font-size: 12px; padding: 8px 10px; }
+.tab.active { background: var(--primary); color: white; }
+.output-body { padding: 18px; }
+.card-list { display: grid; gap: 12px; }
+.issue { border: 1px solid var(--border); border-left-width: 4px; border-radius: 9px; padding: 14px; background: white; }
+.issue.critical { border-left-color: var(--critical); }
+.issue.high { border-left-color: var(--high); }
+.issue.medium { border-left-color: var(--medium); }
+.issue.low { border-left-color: var(--low); }
+.issue h3 { font-size: 15px; color: var(--primary); margin-bottom: 6px; }
+.issue-meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.issue p { font-size: 13px; margin: 7px 0; }
+.badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 800; margin-right: 6px; }
+.badge.critical { background: #fed7d7; color: #742a2a; }
+.badge.high { background: #fed7d7; color: #9b2c2c; }
+.badge.medium { background: #feebc8; color: #7b341e; }
+.badge.low { background: #c6f6d5; color: #22543d; }
+pre { white-space: pre-wrap; word-break: break-word; font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "PingFang SC", "Microsoft YaHei", monospace; color: #1a202c; }
+.redline-doc { background: white; border: 1px solid var(--border); border-radius: 9px; padding: 18px; font-family: Georgia, "Times New Roman", serif; color: #111827; }
+.redline-doc h2 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: var(--primary); font-size: 18px; margin-bottom: 12px; }
+.redline-doc p { margin: 0 0 12px; }
+del { color: #9b2c2c; background: #fed7d7; text-decoration: line-through; }
+ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
+.comment-mark { background: #fefcbf; border-bottom: 2px solid #d69e2e; }
+.comment-box { border-left: 3px solid #d69e2e; background: #fffaf0; padding: 9px 10px; margin: 8px 0 14px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; font-size: 12px; }
+.hidden { display: none; }
+.empty { color: var(--muted); font-size: 14px; padding: 18px; background: #f8fafc; border: 1px dashed var(--border); border-radius: 9px; }
+.notice { color: #744210; background: #fffaf0; border: 1px solid #fbd38d; border-radius: 8px; padding: 12px; font-size: 13px; margin-bottom: 14px; }
+@media (max-width: 920px) { .layout { grid-template-columns: 1fr; } .input-panel { position: static; max-height: none; } .metrics { grid-template-columns: repeat(2, 1fr); } .row2 { grid-template-columns: 1fr; } .nav-actions a:not(.primary-link) { display: none; } }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo"><span class="logo-mark">L</span><span>LegalAIPay</span></a>
+    <div class="nav-actions">
+      <a href="index.html#tools">Tools</a>
+      <a href="privacy-policy-generator.html">Privacy Generator</a>
+      <a class="primary-link" href="#review">Start Review</a>
+    </div>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Contract Review Workspace</span>
+    <h1>Upload a contract. Get comments, explanations, and redline-style output.</h1>
+    <p>Uses the Claude legal skills saved in this repository as the default playbook. If a deeper LLM review is needed, users can bring their own API key; otherwise the browser uses the embedded skills-based review engine.</p>
+  </div>
+</section>
+<main class="layout" id="review">
+  <section class="panel input-panel">
+    <div class="panel-header">
+      <h2>Review setup</h2>
+      <p>Upload a contract or paste text. Then choose the side, risk posture, and output package.</p>
+    </div>
+    <div class="form-body">
+      <div class="upload-zone">
+        <label for="contractFile">1. Upload contract file</label>
+        <input id="contractFile" type="file" accept=".txt,.md,.html,.htm,.csv,.docx,.pdf,.png,.jpg,.jpeg,.webp">
+        <p class="hint">Supported in-browser: text/HTML/Markdown, DOCX, PDF text, and clear PNG/JPG screenshots. Scanned PDFs may need copy/paste or screenshot OCR.</p>
+      </div>
+      <div id="fileStatus" class="status-box"></div>
+      <div class="row2">
+        <div class="field">
+          <label for="contractType">Detected / confirmed type</label>
+          <select id="contractType">
+            <option value="General commercial agreement">General commercial agreement</option>
+            <option value="NDA">NDA</option>
+            <option value="SaaS agreement">SaaS agreement</option>
+            <option value="DPA">DPA</option>
+            <option value="MSA / services agreement">MSA / services agreement</option>
+            <option value="Vendor terms">Vendor terms</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="position">Your side</label>
+          <select id="position">
+            <option value="Customer / buyer">Customer / buyer</option>
+            <option value="Vendor / supplier">Vendor / supplier</option>
+            <option value="Mutual / neutral">Mutual / neutral</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="law">Governing law target</label>
+          <input id="law" value="New York / California / England / PRC">
+        </div>
+        <div class="field">
+          <label for="riskTolerance">Risk posture</label>
+          <select id="riskTolerance">
+            <option value="Balanced">Balanced</option>
+            <option value="Conservative">Conservative</option>
+            <option value="Business-friendly">Business-friendly</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="dealContext">Business context</label>
+        <textarea id="dealContext" class="small-textarea">Inbound contract for legal/commercial review. Please identify material legal risk, business fallback positions, and proposed redlines.</textarea>
+      </div>
+      <fieldset class="field">
+        <legend>Review focus</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" data-focus value="Liability" checked> Liability, indemnity, damages cap</label>
+          <label class="check"><input type="checkbox" data-focus value="Data" checked> Privacy, data protection, security</label>
+          <label class="check"><input type="checkbox" data-focus value="IP" checked> IP ownership, license, AI/data use</label>
+          <label class="check"><input type="checkbox" data-focus value="Payment" checked> Fees, payment, taxes, renewal</label>
+          <label class="check"><input type="checkbox" data-focus value="Termination" checked> Term, termination, transition</label>
+          <label class="check"><input type="checkbox" data-focus value="Disputes" checked> Governing law, venue, arbitration</label>
+        </div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>Optional LLM review</legend>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="useLLM"> Use my own API key for a deeper LLM draft</label>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="provider">Provider</label>
+            <select id="provider">
+              <option value="openai">OpenAI-compatible</option>
+              <option value="anthropic">Anthropic Claude</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="model">Model</label>
+            <input id="model" value="gpt-4.1-mini / claude-3-5-sonnet-latest">
+          </div>
+        </div>
+        <div class="field">
+          <label for="apiKey">API key (optional, never saved)</label>
+          <input id="apiKey" type="password" placeholder="Paste your own API key only if you want live LLM drafting">
+          <p class="hint">If no key is provided, the page uses the built-in Claude legal-skills playbook. Browser API calls may be blocked by provider CORS; if blocked, copy the generated LLM prompt.</p>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="contractText">Contract text</label>
+        <textarea id="contractText">Upload a file, paste contract text here, or click Load Sample.</textarea>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" id="reviewBtn">Run Skills Review</button>
+        <button class="btn-secondary" id="llmBtn">Try BYO API Draft</button>
+        <button class="btn-secondary" id="sampleBtn">Load Sample</button>
+        <button class="btn-secondary" id="clearBtn">Clear</button>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="metrics">
+      <div class="metric"><strong id="score">-</strong><span>Triage score</span></div>
+      <div class="metric"><strong id="commentCount">0</strong><span>Comments</span></div>
+      <div class="metric"><strong id="redlineCount">0</strong><span>Redlines</span></div>
+      <div class="metric"><strong id="typeMetric">-</strong><span>Detected type</span></div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" data-tab="memo">Review Memo</button>
+      <button class="tab" data-tab="comments">Proposed Comments</button>
+      <button class="tab" data-tab="redline">Redline-Style Doc</button>
+      <button class="tab" data-tab="prompt">LLM Prompt</button>
+      <button class="btn-accent" id="copyBtn">Copy Memo</button>
+      <button class="btn-accent" id="downloadMemoBtn">Download Memo</button>
+      <button class="btn-accent" id="downloadRedlineBtn">Download Redline .doc</button>
+    </div>
+    <div class="output-body">
+      <div id="memoView"><div class="empty">Run a skills review to generate the memo.</div></div>
+      <div id="commentsView" class="hidden"><div class="empty">Run a skills review to generate proposed comments.</div></div>
+      <div id="redlineView" class="hidden"><div class="empty">Run a skills review to generate redline-style output.</div></div>
+      <div id="promptView" class="hidden"><pre id="promptText"></pre></div>
+    </div>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+if (window.pdfjsLib) {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+}
+const sample = `MUTUAL NON-DISCLOSURE AGREEMENT\n\nThe Receiving Party shall keep Confidential Information confidential for two (2) years. The Receiving Party may retain residual knowledge in unaided memory. The parties agree not to solicit each other's employees for two years. Each party assigns all right, title and interest in any feedback or work product to the other party. Liability shall not be limited for any breach of this Agreement. This Agreement is governed by the laws of New York and disputes shall be resolved by binding arbitration.`;
+const skillSources = [
+  "NDA skill: triage as GREEN/YELLOW/RED; check whether an NDA contains non-NDA obligations such as non-solicit, exclusivity, IP assignment, licensing, standstill, ROFR, MFN, broad arbitration. If yes, route for attorney review.",
+  "Redline granularity skill: make surgical edits at the smallest possible level. Replace a word before a phrase, a phrase before a sentence, and a sentence before a whole clause.",
+  "Vendor agreement skill: every issue should have severity, business impact, proposed redline language, fallback, and escalation call.",
+  "Liability skill: review cap amount, cap base, indirect damages, carveouts, and whether data breach, IP, confidentiality, and indemnity sit above or below the cap.",
+  "DPA-by-reference skill: if a DPA is incorporated by URL or reference, data protection analysis is incomplete until the DPA is reviewed.",
+  "Privilege/destination skill: separate privileged internal work product from external counterparty comments."
+];
+const reviewRules = [
+  {
+    id: "unlimited-liability",
+    area: "Liability",
+    severity: "critical",
+    title: "Unlimited or uncapped liability",
+    detect: /unlimited liability|liability shall not be limited|without limitation[^.]{0,80}liable|liability.*not.*limited/i,
+    comment: "This creates potentially uncapped exposure. Please add a negotiated liability cap and define any uncapped carveouts narrowly.",
+    explanation: "The Claude legal skills emphasize that the cap amount is only one dimension; the review should also analyze cap base, indirect damages, and carveouts.",
+    redline: { find: /liability shall not be limited/ig, replace: "liability shall be limited to the agreed liability cap, except for negotiated carveouts" },
+    fallback: "If the counterparty will not accept a general cap, propose separate higher caps for confidentiality, data breach, IP infringement, and indemnity."
+  },
+  {
+    id: "missing-liability-cap",
+    area: "Liability",
+    severity: "high",
+    title: "No clear limitation of liability found",
+    missing: /limitation of liability|liability cap|aggregate liability|total liability/i,
+    comment: "No clear liability cap was detected. Ask for a limitation-of-liability clause tied to fees paid or payable over a defined period.",
+    explanation: "Vendor agreement review skills call for a specific proposed fix and fallback, not a vague 'consider revising' note.",
+    insert: "Except for negotiated carveouts, each party's aggregate liability under this Agreement shall not exceed the fees paid or payable under the applicable order form during the twelve (12) months preceding the event giving rise to liability.",
+    fallback: "Escalate if the deal value, data risk, or service criticality makes the cap commercially inadequate."
+  },
+  {
+    id: "broad-indemnity",
+    area: "Liability",
+    severity: "high",
+    title: "Broad indemnity language",
+    detect: /indemnif(?:y|ies|ication)[^.]{0,160}(any and all|all claims|all losses)|hold harmless[^.]{0,120}(any and all|all claims|all losses)/i,
+    comment: "The indemnity appears broad. Limit it to third-party claims caused by specified breaches, IP infringement, confidentiality breach, negligence, wilful misconduct, or legal violation.",
+    explanation: "The skills ask for control of defense, prompt notice, mitigation, settlement consent, and no admission without consent.",
+    redline: { find: /any and all/ig, replace: "reasonable, finally awarded or agreed" },
+    fallback: "If broad indemnity remains, add defense-control and settlement-consent protections."
+  },
+  {
+    id: "data-processing-gap",
+    area: "Data",
+    severity: "high",
+    title: "Personal data referenced without full DPA controls",
+    detect: /personal data|personal information|process(?:ing)? data|customer data|security incident/i,
+    requires: /subprocessor|data processing agreement|dpa|standard contractual clauses|return or delete|delete.*data|audit/i,
+    comment: "The contract references personal data, but full DPA controls may be missing. Add or attach a DPA covering roles, purpose limitation, security, subprocessors, breach notice, deletion, assistance, audit, and transfers.",
+    explanation: "The DPA-by-reference skill says data protection analysis is incomplete when a DPA is incorporated by URL or omitted from the review package.",
+    insert: "The parties shall enter into a data processing addendum before any processing of personal data, including terms for security, subprocessors, breach notification, assistance, return/deletion, audit, and cross-border transfers.",
+    fallback: "If the DPA is hosted by URL, request the current DPA version and review it separately."
+  },
+  {
+    id: "long-breach-notice",
+    area: "Data",
+    severity: "medium",
+    title: "Long security incident notice period",
+    detect: /(security incident|data breach|breach)[^.]{0,100}(10|15|30)\s*(business\s*)?days|notify[^.]{0,100}(10|15|30)\s*(business\s*)?days[^.]{0,80}(security incident|data breach|breach)/i,
+    comment: "The incident notice period may be too long. Request notice without undue delay and no later than 48-72 hours after confirmation, with rolling updates.",
+    explanation: "A long incident notice period can impair customer and regulatory notification duties.",
+    redline: { find: /(10|15|30)\s*(business\s*)?days/ig, replace: "seventy-two (72) hours" },
+    fallback: "If 72 hours is rejected, ask for prompt initial notice plus rolling updates."
+  },
+  {
+    id: "ip-assignment",
+    area: "IP",
+    severity: "high",
+    title: "Overbroad IP assignment or feedback ownership",
+    detect: /assigns? all right, title and interest|all intellectual property|feedback.*owned|work product.*owned exclusively/i,
+    comment: "The IP language may transfer background IP, tools, templates, know-how, or feedback too broadly. Carve out pre-existing materials and residual know-how.",
+    explanation: "The skills call for surgical redlines and specific fallback positions instead of wholesale rewriting unless necessary.",
+    redline: { find: /all right, title and interest/ig, replace: "right, title and interest in the final deliverables, excluding pre-existing materials, tools, templates, and residual know-how" },
+    fallback: "If ownership is commercially required, convert background IP to a limited license needed to use the deliverables."
+  },
+  {
+    id: "nda-extra-obligations",
+    area: "NDA",
+    severity: "high",
+    title: "NDA contains obligations beyond confidentiality",
+    detect: /non-solicit|non solicit|non-compete|non compete|exclusiv|standstill|right of first refusal|most favored|most-favored|assigns? all right|license grant/i,
+    onlyTypes: ["NDA"],
+    comment: "This document is labeled or detected as an NDA but contains non-NDA obligations. Route for attorney review rather than treating it as routine NDA triage.",
+    explanation: "The NDA skill says these provisions make the document auto-YELLOW regardless of normal NDA term analysis.",
+    redline: { find: /non-solicit|non solicit|non-compete|non compete|exclusiv[^.]{0,80}|standstill/ig, replace: "[LEGAL REVIEW REQUIRED: non-NDA obligation]" },
+    fallback: "Move commercial covenants into a separate agreement or strike them from the NDA."
+  },
+  {
+    id: "confidentiality-survival",
+    area: "NDA",
+    severity: "medium",
+    title: "Confidentiality survival may be short or unclear",
+    detect: /confidential/i,
+    requires: /surviv|trade secret|for as long as|five \(5\) years|5 years/i,
+    comment: "Confidentiality survival should be clear. Trade secrets should remain protected for as long as they remain trade secrets.",
+    explanation: "The NDA skill asks for triage based on playbook positions and flags missing survival periods.",
+    insert: "Confidentiality obligations shall survive for at least five (5) years, and trade secrets shall remain protected for so long as they qualify as trade secrets under applicable law.",
+    fallback: "If a shorter period is accepted, confirm it matches the company's NDA playbook."
+  },
+  {
+    id: "auto-renewal",
+    area: "Payment",
+    severity: "medium",
+    title: "Auto-renewal without practical cancellation controls",
+    detect: /automatically renew|auto-renew|successive renewal/i,
+    comment: "Add clear renewal term, cancellation method, notice deadline, and price-increase notice.",
+    explanation: "The vendor agreement skill treats renewal and termination as practical business risk, not only legal drafting.",
+    insert: "Either party may prevent renewal by giving written notice at least thirty (30) days before the end of the then-current term. Any renewal price increase requires at least sixty (60) days' prior notice.",
+    fallback: "For customer/buyer position, request renewal reminders before the notice window closes."
+  },
+  {
+    id: "governing-law",
+    area: "Disputes",
+    severity: "medium",
+    title: "Governing law / venue needs jurisdiction check",
+    detect: /governing law|exclusive jurisdiction|venue|arbitration|dispute/i,
+    comment: "Confirm the selected governing law, venue, arbitration rules, language, interim relief, confidentiality, fee allocation, and enforcement path.",
+    explanation: "The skills warn that enforceability varies by jurisdiction; do not silently assume playbook positions transfer across laws.",
+    fallback: "If cross-border, verify enforcement strategy before accepting dispute terms."
+  },
+  {
+    id: "compliance-gap",
+    area: "Disputes",
+    severity: "medium",
+    title: "Baseline compliance clause may be missing",
+    missing: /sanctions|anti-bribery|anti corruption|anti-corruption|export control|modern slavery|code of conduct/i,
+    comment: "Add baseline sanctions, anti-bribery, export control, and applicable compliance obligations, with termination rights for breach.",
+    explanation: "The vendor agreement skill flags regulated or cross-border arrangements without compliance commitments.",
+    insert: "Each party shall comply with applicable anti-bribery, anti-corruption, sanctions, export control, and other laws relevant to its performance under this Agreement.",
+    fallback: "Tie material compliance breach to immediate termination rights."
+  }
+];
+let current = { memo: "", comments: [], issues: [], redlineHtml: "", prompt: "", detection: null };
+function selectedFocus() {
+  return [...document.querySelectorAll("[data-focus]:checked")].map(i => i.value);
+}
+function setStatus(message) {
+  const box = document.getElementById("fileStatus");
+  box.textContent = message || "";
+  box.classList.toggle("show", Boolean(message));
+}
+function escapeHtml(value) {
+  return String(value || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+}
+function stripHtml(html) {
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  return div.textContent || div.innerText || "";
+}
+function detectContractType(text) {
+  const normalized = text.toLowerCase();
+  const signals = [
+    ["NDA", "NDA / Non-disclosure agreement", [[/non[-\s]?disclosure|confidential disclosure|confidential information/g, 4], [/receiving party|disclosing party|permitted purpose/g, 3], [/trade secret|return or destroy|residual/g, 2]]],
+    ["SaaS agreement", "SaaS agreement", [[/subscription|saas|software as a service|hosted service/g, 4], [/service level|uptime|availability|support plan/g, 3], [/authorized user|order form|usage limits/g, 2]]],
+    ["DPA", "Data Processing Agreement / DPA", [[/data processing agreement|dpa|processor|controller/g, 5], [/personal data|data subject|subprocessor/g, 3], [/standard contractual clauses|sccs|security incident/g, 2]]],
+    ["MSA / services agreement", "MSA / services agreement", [[/master services agreement|statement of work|sow/g, 5], [/services|deliverables|milestone|acceptance criteria/g, 2], [/change order|professional services|implementation/g, 2]]],
+    ["Vendor terms", "Vendor terms", [[/vendor|supplier|purchase order|procurement/g, 4], [/goods|shipment|delivery|vendor personnel/g, 2], [/insurance|audit rights|background check/g, 2]]]
+  ].map(([type, label, patterns]) => {
+    let score = 0;
+    patterns.forEach(([pattern, weight]) => {
+      const matches = normalized.match(pattern);
+      if (matches) score += matches.length * weight;
+    });
+    return { type, label, score };
+  }).sort((a, b) => b.score - a.score);
+  const top = signals[0];
+  if (!text.trim() || top.score < 3) return { type: "General commercial agreement", label: "General commercial agreement", confidence: "Low", reason: "Not enough contract-specific signals were detected." };
+  return { type: top.type, label: top.label, confidence: top.score >= 12 ? "High" : top.score >= 7 ? "Medium" : "Low", reason: `Detected from ${top.score} clause signals.` };
+}
+function applyRedline(text, issue) {
+  if (!issue.redline) return text;
+  return text.replace(issue.redline.find, match => `<del>${escapeHtml(match)}</del> <ins>${escapeHtml(issue.redline.replace)}</ins>`);
+}
+function findSnippet(text, rule) {
+  const pattern = rule.detect || rule.missing;
+  if (!pattern) return "";
+  const match = text.match(pattern);
+  if (!match || match.index === undefined) return match ? match[0] : "";
+  const start = Math.max(0, match.index - 90);
+  const end = Math.min(text.length, match.index + match[0].length + 140);
+  return text.slice(start, end).replace(/\s+/g, " ").trim();
+}
+function analyze() {
+  const text = document.getElementById("contractText").value.trim();
+  if (!text || text === "Upload a file, paste contract text here, or click Load Sample.") {
+    setStatus("Please upload a file or paste contract text first.");
+    return;
+  }
+  const detection = detectContractType(text);
+  document.getElementById("contractType").value = detection.type;
+  const confirmedType = document.getElementById("contractType").value;
+  const focus = selectedFocus();
+  const issues = [];
+  reviewRules.forEach(rule => {
+    if (rule.onlyTypes && !rule.onlyTypes.includes(confirmedType)) return;
+    if (focus.length && !focus.includes(rule.area) && !(rule.area === "NDA" && confirmedType === "NDA")) return;
+    let triggered = false;
+    let matched = false;
+    if (rule.detect) {
+      matched = rule.detect.test(text);
+      triggered = matched;
+      rule.detect.lastIndex = 0;
+    }
+    if (rule.requires && matched) {
+      triggered = !rule.requires.test(text);
+      rule.requires.lastIndex = 0;
+    }
+    if (rule.missing) {
+      triggered = !rule.missing.test(text);
+      rule.missing.lastIndex = 0;
+    }
+    if (triggered) issues.push({ ...rule, snippet: findSnippet(text, rule) });
+  });
+  const score = Math.min(100, issues.reduce((sum, issue) => sum + ({ critical: 25, high: 18, medium: 10, low: 4 }[issue.severity] || 8), 0));
+  const comments = issues.map((issue, index) => ({
+    id: `C${index + 1}`,
+    area: issue.area,
+    severity: issue.severity,
+    title: issue.title,
+    comment: issue.comment,
+    explanation: issue.explanation,
+    snippet: issue.snippet,
+    fallback: issue.fallback
+  }));
+  const redlineHtml = buildRedlineDoc(text, issues, comments, detection);
+  const memo = buildMemo(text, issues, comments, score, detection);
+  const prompt = buildPrompt(text, issues, comments, detection);
+  current = { memo, comments, issues, redlineHtml, prompt, detection, score };
+  render();
+}
+function buildMemo(text, issues, comments, score, detection) {
+  const type = document.getElementById("contractType").value;
+  const position = document.getElementById("position").value;
+  const law = document.getElementById("law").value;
+  const posture = document.getElementById("riskTolerance").value;
+  const context = document.getElementById("dealContext").value.trim();
+  const critical = issues.filter(i => i.severity === "critical").length;
+  const high = issues.filter(i => i.severity === "high").length;
+  const medium = issues.filter(i => i.severity === "medium").length;
+  return `CONTRACT REVIEW MEMO\n\nSource: LegalAIPay Contract Review Workspace\nDefault method: Claude legal skills saved in this repository\n\n1. Intake\nConfirmed type: ${type}\nDetected type: ${detection.label} (${detection.confidence})\nYour side: ${position}\nGoverning law target: ${law}\nRisk posture: ${posture}\nBusiness context: ${context}\n\n2. Executive Summary\nPreliminary triage score: ${score}/100\nIssues: ${critical} critical / ${high} high / ${medium} medium\n${score >= 60 ? "This draft should be escalated for attorney review before signature or external redlines are sent." : score >= 25 ? "This draft needs targeted review and business/legal alignment before signature." : "No major flags were detected by the embedded skills engine, but counsel should still verify deal-specific points."}\n\n3. Skills Applied\n${skillSources.map(s => `- ${s}`).join("\n")}\n\n4. Proposed Comments\n${comments.length ? comments.map(c => `${c.id}. [${c.severity.toUpperCase()}] ${c.title}\n   Area: ${c.area}\n   Proposed comment: ${c.comment}\n   Explanation: ${c.explanation}\n   Fallback: ${c.fallback || "Confirm fallback with counsel."}`).join("\n\n") : "No proposed comments triggered by the current skills rules."}\n\n5. Redline Instructions\nUse the Redline-Style Doc tab for proposed insertions/deletions. These are drafting suggestions, not final legal advice. Apply edits surgically and route complex provisions to counsel.\n\n6. Important Limitations\nThis browser tool uses a rules/playbook engine based on the provided Claude legal skills. It does not replace lawyer review. If users need LLM drafting, they should bring their own API key or copy the LLM Prompt tab into their approved AI environment.`;
+}
+function buildPrompt(text, issues, comments, detection) {
+  return `You are a contract-review assistant using the following Claude legal skills:\n${skillSources.map(s => `- ${s}`).join("\n")}\n\nReview the contract from this context:\nType: ${document.getElementById("contractType").value}\nDetected type: ${detection.label} (${detection.confidence})\nSide: ${document.getElementById("position").value}\nGoverning law target: ${document.getElementById("law").value}\nRisk posture: ${document.getElementById("riskTolerance").value}\nBusiness context: ${document.getElementById("dealContext").value}\n\nProduce:\n1. Review memo\n2. Proposed comments by section\n3. Surgical redline suggestions\n4. Explanation for each issue\n5. Fallback positions\n6. Items requiring attorney or business owner input\n\nInitial skills-engine findings:\n${comments.map(c => `- ${c.id}: ${c.title} (${c.severity}) - ${c.comment}`).join("\n") || "No initial flags."}\n\nContract text:\n${text}`;
+}
+function buildRedlineDoc(text, issues, comments, detection) {
+  let working = escapeHtml(text);
+  issues.forEach(issue => {
+    if (issue.redline) working = applyRedline(working, issue);
+  });
+  const paragraphs = working.split(/\n{2,}/).slice(0, 80).map((p, idx) => `<p>${p.replace(/\n/g, "<br>")}</p>${idx < comments.length ? `<div class=\"comment-box\"><strong>${comments[idx].id} - ${escapeHtml(comments[idx].title)}</strong><br>${escapeHtml(comments[idx].comment)}</div>` : ""}`).join("");
+  const insertions = issues.filter(i => i.insert).map((i, idx) => `<div class=\"comment-box\"><strong>Proposed insertion ${idx + 1}: ${escapeHtml(i.title)}</strong><br><ins>${escapeHtml(i.insert)}</ins><br>${escapeHtml(i.comment)}</div>`).join("");
+  return `<div class=\"redline-doc\"><h2>Redline-Style Review Document</h2><div class=\"notice\">This is a Word-compatible redline-style output using insertions, deletions, and comments. It is not a native DOCX tracked-changes file.</div><p><strong>Detected type:</strong> ${escapeHtml(detection.label)} (${escapeHtml(detection.confidence)})</p>${paragraphs}${insertions}</div>`;
+}
+function render() {
+  document.getElementById("score").textContent = current.score === undefined ? "-" : current.score;
+  document.getElementById("commentCount").textContent = current.comments.length;
+  document.getElementById("redlineCount").textContent = current.issues.filter(i => i.redline || i.insert).length;
+  document.getElementById("typeMetric").textContent = current.detection ? current.detection.type.replace(" agreement", "") : "-";
+  document.getElementById("memoView").innerHTML = `<pre>${escapeHtml(current.memo)}</pre>`;
+  document.getElementById("commentsView").innerHTML = current.comments.length ? `<div class=\"card-list\">${current.comments.map(c => `<article class=\"issue ${c.severity}\"><h3><span class=\"badge ${c.severity}\">${c.severity.toUpperCase()}</span>${escapeHtml(c.id)}. ${escapeHtml(c.title)}</h3><div class=\"issue-meta\">${escapeHtml(c.area)}</div>${c.snippet ? `<p><strong>Text signal:</strong> ${escapeHtml(c.snippet)}</p>` : ""}<p><strong>Proposed comment:</strong> ${escapeHtml(c.comment)}</p><p><strong>Explanation:</strong> ${escapeHtml(c.explanation)}</p><p><strong>Fallback:</strong> ${escapeHtml(c.fallback || "Confirm with counsel.")}</p></article>`).join("")}</div>` : `<div class=\"empty\">No proposed comments triggered by the current skills rules.</div>`;
+  document.getElementById("redlineView").innerHTML = current.redlineHtml || `<div class=\"empty\">Run a skills review to generate redline-style output.</div>`;
+  document.getElementById("promptText").textContent = current.prompt || "Run a skills review to generate the LLM prompt.";
+}
+function switchTab(tab) {
+  document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+  document.getElementById("memoView").classList.toggle("hidden", tab !== "memo");
+  document.getElementById("commentsView").classList.toggle("hidden", tab !== "comments");
+  document.getElementById("redlineView").classList.toggle("hidden", tab !== "redline");
+  document.getElementById("promptView").classList.toggle("hidden", tab !== "prompt");
+}
+async function readFile(file) {
+  const lower = file.name.toLowerCase();
+  setStatus(`Reading ${file.name}...`);
+  if (/\.(txt|md|html|htm|csv)$/i.test(lower) || file.type.startsWith("text/")) return file.text();
+  if (/\.docx$/i.test(lower) && window.mammoth) {
+    const buffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+    return result.value;
+  }
+  if (/\.pdf$/i.test(lower) && window.pdfjsLib) {
+    const buffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: buffer }).promise;
+    const pages = [];
+    for (let i = 1; i <= pdf.numPages; i++) {
+      setStatus(`Reading PDF page ${i} of ${pdf.numPages}...`);
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      pages.push(content.items.map(item => item.str).join(" "));
+    }
+    return pages.join("\n\n");
+  }
+  if (/\.(png|jpe?g|webp)$/i.test(lower) || file.type.startsWith("image/")) {
+    if (!window.Tesseract) throw new Error("OCR library did not load. Paste the text instead.");
+    const result = await Tesseract.recognize(file, "eng+chi_sim", { logger: p => p.status && setStatus(`${p.status}${p.progress ? ` ${Math.round(p.progress * 100)}%` : ""}`) });
+    return (result.data && result.data.text) || "";
+  }
+  throw new Error("This file type cannot be read in this static browser page. Please paste contract text.");
+}
+async function callLLM() {
+  analyze();
+  if (!document.getElementById("useLLM").checked) {
+    setStatus("LLM is optional. The skills-based review has been generated. Enable BYO API if needed.");
+    switchTab("prompt");
+    return;
+  }
+  const key = document.getElementById("apiKey").value.trim();
+  if (!key) {
+    setStatus("Please paste your own API key, or copy the LLM Prompt tab into your approved AI tool.");
+    switchTab("prompt");
+    return;
+  }
+  const provider = document.getElementById("provider").value;
+  const model = document.getElementById("model").value.split("/")[0].trim() || "gpt-4.1-mini";
+  try {
+    setStatus("Calling your selected LLM provider. Your key is used only in this browser session.");
+    let responseText = "";
+    if (provider === "openai") {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` }, body: JSON.stringify({ model, messages: [{ role: "system", content: "You are a legal contract review drafting assistant. Do not provide final legal advice. Produce proposed comments, explanations, and surgical redline suggestions." }, { role: "user", content: current.prompt }], temperature: 0.2 }) });
+      const data = await res.json();
+      responseText = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : JSON.stringify(data, null, 2);
+    } else {
+      const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: document.getElementById("model").value.split("/").pop().trim() || "claude-3-5-sonnet-latest", max_tokens: 4000, messages: [{ role: "user", content: current.prompt }] }) });
+      const data = await res.json();
+      responseText = data.content ? data.content.map(part => part.text || "").join("\n") : JSON.stringify(data, null, 2);
+    }
+    current.memo += `\n\n7. BYO LLM DRAFT\n${responseText}`;
+    render();
+    switchTab("memo");
+    setStatus("LLM draft added to the memo. Please review before relying on it.");
+  } catch (error) {
+    setStatus(`Browser API call failed, likely due to provider CORS or network restrictions. Copy the LLM Prompt tab instead. Error: ${error.message}`);
+    switchTab("prompt");
+  }
+}
+function download(filename, content, type) {
+  const blob = new Blob([content], { type });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+document.getElementById("contractFile").addEventListener("change", async event => {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  try {
+    const text = await readFile(file);
+    document.getElementById("contractText").value = text || "No readable text was found. Please paste the contract text manually.";
+    const detection = detectContractType(text || "");
+    document.getElementById("contractType").value = detection.type;
+    setStatus(`Loaded ${file.name}. Detected: ${detection.label} (${detection.confidence}).`);
+  } catch (error) {
+    setStatus(error.message);
+  }
+});
+document.getElementById("reviewBtn").addEventListener("click", analyze);
+document.getElementById("llmBtn").addEventListener("click", callLLM);
+document.getElementById("sampleBtn").addEventListener("click", () => { document.getElementById("contractText").value = sample; analyze(); });
+document.getElementById("clearBtn").addEventListener("click", () => { document.getElementById("contractText").value = ""; document.getElementById("contractFile").value = ""; setStatus(""); current = { memo: "", comments: [], issues: [], redlineHtml: "", prompt: "", detection: null }; render(); });
+document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+document.getElementById("copyBtn").addEventListener("click", async () => { await navigator.clipboard.writeText(current.memo || ""); setStatus("Memo copied."); });
+document.getElementById("downloadMemoBtn").addEventListener("click", () => download("contract-review-memo.txt", current.memo || "", "text/plain;charset=utf-8"));
+document.getElementById("downloadRedlineBtn").addEventListener("click", () => download("contract-redline-style.doc", `<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>Redline Style Contract Review</title><style>body{font-family:Georgia,serif;line-height:1.5}del{color:#9b2c2c;background:#fed7d7;text-decoration:line-through}ins{color:#22543d;background:#c6f6d5;text-decoration:none}.comment-box{border-left:3px solid #d69e2e;background:#fffaf0;padding:8px;margin:8px 0}</style></head><body>${current.redlineHtml || ""}</body></html>`, "application/msword;charset=utf-8"));
+render();
+</script>
+</body>
+</html>
