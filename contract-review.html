@@ -183,28 +183,8 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
         </div>
       </fieldset>
       <fieldset class="field">
-        <legend>Optional LLM review</legend>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="useLLM"> Use my own API key for a deeper LLM draft</label>
-        </div>
-        <div class="row2">
-          <div class="field">
-            <label for="provider">Provider</label>
-            <select id="provider">
-              <option value="openai">OpenAI-compatible</option>
-              <option value="anthropic">Anthropic Claude</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="model">Model</label>
-            <input id="model" value="gpt-4.1-mini / claude-3-5-sonnet-latest">
-          </div>
-        </div>
-        <div class="field">
-          <label for="apiKey">API key (optional, never saved)</label>
-          <input id="apiKey" type="password" placeholder="Paste your own API key only if you want live LLM drafting">
-          <p class="hint">If no key is provided, the page uses the built-in Claude legal-skills playbook. Browser API calls may be blocked by provider CORS; if blocked, copy the generated LLM prompt.</p>
-        </div>
+        <legend>LLM handoff (prompt-only)</legend>
+        <p class="hint" style="margin-top:4px">This page does not call any external LLM. Run the skills review locally, then open the <strong>LLM Prompt</strong> tab and copy the generated prompt into your own ChatGPT or Claude session for a deeper draft.</p>
       </fieldset>
       <div class="field">
         <label for="contractText">Contract text</label>
@@ -212,7 +192,6 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
       </div>
       <div class="actions">
         <button class="btn-primary" id="reviewBtn">Run Skills Review</button>
-        <button class="btn-secondary" id="llmBtn">Try BYO API Draft</button>
         <button class="btn-secondary" id="sampleBtn">Load Sample</button>
         <button class="btn-secondary" id="clearBtn">Clear</button>
       </div>
@@ -549,42 +528,7 @@ async function readFile(file) {
   }
   throw new Error("This file type cannot be read in this static browser page. Please paste contract text.");
 }
-async function callLLM() {
-  analyze();
-  if (!document.getElementById("useLLM").checked) {
-    setStatus("LLM is optional. The skills-based review has been generated. Enable BYO API if needed.");
-    switchTab("prompt");
-    return;
-  }
-  const key = document.getElementById("apiKey").value.trim();
-  if (!key) {
-    setStatus("Please paste your own API key, or copy the LLM Prompt tab into your approved AI tool.");
-    switchTab("prompt");
-    return;
-  }
-  const provider = document.getElementById("provider").value;
-  const model = document.getElementById("model").value.split("/")[0].trim() || "gpt-4.1-mini";
-  try {
-    setStatus("Calling your selected LLM provider. Your key is used only in this browser session.");
-    let responseText = "";
-    if (provider === "openai") {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", { method: "POST", headers: { "Content-Type": "application/json", "Authorization": `Bearer ${key}` }, body: JSON.stringify({ model, messages: [{ role: "system", content: "You are a legal contract review drafting assistant. Do not provide final legal advice. Produce proposed comments, explanations, and surgical redline suggestions." }, { role: "user", content: current.prompt }], temperature: 0.2 }) });
-      const data = await res.json();
-      responseText = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : JSON.stringify(data, null, 2);
-    } else {
-      const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: document.getElementById("model").value.split("/").pop().trim() || "claude-3-5-sonnet-latest", max_tokens: 4000, messages: [{ role: "user", content: current.prompt }] }) });
-      const data = await res.json();
-      responseText = data.content ? data.content.map(part => part.text || "").join("\n") : JSON.stringify(data, null, 2);
-    }
-    current.memo += `\n\n7. BYO LLM DRAFT\n${responseText}`;
-    render();
-    switchTab("memo");
-    setStatus("LLM draft added to the memo. Please review before relying on it.");
-  } catch (error) {
-    setStatus(`Browser API call failed, likely due to provider CORS or network restrictions. Copy the LLM Prompt tab instead. Error: ${error.message}`);
-    switchTab("prompt");
-  }
-}
+
 function download(filename, content, type) {
   const blob = new Blob([content], { type });
   const a = document.createElement("a");
@@ -607,7 +551,6 @@ document.getElementById("contractFile").addEventListener("change", async event =
   }
 });
 document.getElementById("reviewBtn").addEventListener("click", analyze);
-document.getElementById("llmBtn").addEventListener("click", callLLM);
 document.getElementById("sampleBtn").addEventListener("click", () => { document.getElementById("contractText").value = sample; analyze(); });
 document.getElementById("clearBtn").addEventListener("click", () => { document.getElementById("contractText").value = ""; document.getElementById("contractFile").value = ""; setStatus(""); current = { memo: "", comments: [], issues: [], redlineHtml: "", prompt: "", detection: null }; render(); });
 document.querySelectorAll(".tab").forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
