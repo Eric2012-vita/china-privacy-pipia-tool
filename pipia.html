@@ -2209,14 +2209,8 @@ function savePolicyHandoffToLocalStorage() {
 function generatePrivacyPolicy() {
   const payload = savePolicyHandoffToLocalStorage();
   if (!payload) { alert('无法保存 PIPIA 数据'); return; }
-  try {
-    const token = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-    const url = 'privacy-policy-generator.html?pipia=' + encodeURIComponent(token) + '&ref=' + encodeURIComponent(payload.pipiaRef);
-    window.location.href = url;
-  } catch (e) {
-    // Fallback: rely on localStorage only
-    window.location.href = 'privacy-policy-generator.html?pipia=1&ref=' + encodeURIComponent(payload.pipiaRef);
-  }
+  // Data lives in localStorage only; URL carries just a non-sensitive reference id.
+  window.location.href = '/privacy-policy-generator?pipia=1&ref=' + encodeURIComponent(payload.pipiaRef);
 }
 
 
