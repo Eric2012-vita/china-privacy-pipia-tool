@@ -2047,6 +2047,8 @@ td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
   <div class="meta-item"><label>Business Function</label><div class="val">${document.getElementById('bizFunction').value || '-'}</div></div>
 </div>
 
+<div style="margin-top:18px;padding:14px 18px;background:#fff8e1;border-left:4px solid #d69e2e;border-radius:6px;color:#5a4012;font-size:13px;line-height:1.55;"><strong>⚠️ Not legal advice.</strong> This report is a starting template generated from your inputs. It is <strong>not legal advice</strong> and may not reflect the latest regulatory guidance. Have qualified counsel review before relying on it. <span style="color:#7a5b1a;">本报告仅为模板工具，不构成法律意见，依赖前请咨询有资质的法律顾问。</span></div>
+
 <h2>Data Fields & Classification 数据字段与分类</h2>
 <table><thead><tr><th>Data Field</th><th>Type</th><th>Category</th><th>Level</th><th>Purpose</th></tr></thead><tbody>
 ${dataFields.filter(f=>f.name).map(f=>{
