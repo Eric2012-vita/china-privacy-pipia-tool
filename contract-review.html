@@ -130,6 +130,32 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
   </div>
 </section>
 <main class="layout" id="review">
+<aside class="advisory" role="note" aria-label="Legal advisory" style="margin:16px auto;max-width:1100px;padding:12px 16px;background:#fff8e1;border-left:4px solid #d69e2e;border-radius:6px;color:#5a4012;font-size:13px;line-height:1.55;">
+  <strong>&#9888;&#65039; Not legal advice.</strong>
+  This workspace produces a starting draft generated from your inputs and the selected playbook. It is <strong>not legal advice</strong> and may not reflect the latest regulatory guidance. Have qualified counsel review before relying on any output.
+  <span class="cn-only" lang="zh"> &#26412;&#24037;&#20855;&#29983;&#25104;&#30340;&#20869;&#23481;&#20165;&#20026;&#36215;&#33609;&#21442;&#32771;&#65292;&#19981;&#26500;&#25104;&#27861;&#24459;&#24847;&#35265;&#65292;&#20351;&#29992;&#21069;&#35831;&#30001;&#21512;&#26684;&#27861;&#24459;&#39038;&#38382;&#22797;&#26680;&#12290;</span>
+</aside>
+<div class="local-data-notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px auto 16px;max-width:1100px;padding:10px 12px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:12.5px;color:#334155;">
+  <span>
+    &#128274; Your contract text, settings, and any API key stay in <strong>your browser</strong>. Nothing is sent to LegalAIPay servers.
+    <span class="cn-only" lang="zh">&#21512;&#21516;&#20869;&#23481;&#19982;&#35774;&#32622;&#20165;&#20445;&#23384;&#20110;&#24744;&#30340;&#27983;&#35272;&#22120;&#26412;&#22320;&#65292;&#19981;&#19978;&#20256;&#33267;&#26381;&#21153;&#22120;&#12290;</span>
+  </span>
+  <button type="button" id="clearLocalDataBtn" style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 10px;font-size:12.5px;cursor:pointer;color:#0f172a;">Clear local data / &#28165;&#38500;&#26412;&#22320;&#25968;&#25454;</button>
+</div>
+<fieldset class="run-mode" style="margin:8px auto 16px;max-width:1100px;padding:10px 12px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;">
+  <legend style="font-size:12.5px;color:#0f172a;padding:0 6px;">Run mode / &#36816;&#34892;&#27169;&#24335;</legend>
+  <label style="display:block;margin:4px 0;font-size:13px;color:#1e293b;">
+    <input type="radio" name="runMode" value="prompt" checked>
+    <strong>Prompt export</strong> &#8212; generate a ready-to-paste prompt; no API call from this page. <em>Recommended.</em>
+  </label>
+  <label style="display:block;margin:4px 0;font-size:13px;color:#1e293b;">
+    <input type="radio" name="runMode" value="direct">
+    <strong>Direct call (advanced)</strong> &#8212; call the model from your browser using your own API key. Key and contract text leave your browser to the vendor only.
+  </label>
+  <label id="directConsentWrap" style="display:none;margin:8px 0 0;padding-left:22px;font-size:12.5px;color:#5a4012;">
+    <input type="checkbox" id="directConsent"> I understand my API key and contract text will be sent to the model vendor from this browser.
+  </label>
+</fieldset>
   <section class="panel input-panel">
     <div class="panel-header">
       <h2>Review setup</h2>
@@ -230,6 +256,11 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
       <div id="promptView" class="hidden"><pre id="promptText"></pre></div>
     </div>
   </section>
+
+<p class="output-meta" style="max-width:1100px;margin:24px auto 16px;padding:12px 16px 0;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;line-height:1.6;">
+  Playbook version: <strong>v2026.05</strong> &middot; Generated on: <span id="reviewGeneratedDate"></span> &middot; Jurisdiction scope: U.S., EU/UK, PRC commercial contracts &middot; <em>Human attorney review required before execution.</em>
+  <br><span class="cn-only" lang="zh">&#27169;&#26495;&#29256;&#26412; v2026.05 &middot; &#29983;&#25104;&#26085;&#26399;&#35265;&#19978; &middot; &#36866;&#29992;&#27861;&#22495;&#65306;&#32654;&#22269;&#12289;&#27431;&#30431;/&#33521;&#22269;&#12289;&#20013;&#22269;&#22823;&#38470;&#21830;&#20107;&#21512;&#21516; &middot; &#36755;&#20986;&#22312;&#31614;&#32626;&#21069;&#39035;&#30001;&#24459;&#24072;&#22797;&#26680;&#12290;</span>
+</p>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -568,6 +599,43 @@ document.getElementById("copyBtn").addEventListener("click", async () => { await
 document.getElementById("downloadMemoBtn").addEventListener("click", () => download("contract-review-memo.txt", current.memo || "", "text/plain;charset=utf-8"));
 document.getElementById("downloadRedlineBtn").addEventListener("click", () => download("contract-redline-style.doc", `<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>Redline Style Contract Review</title><style>body{font-family:Georgia,serif;line-height:1.5}del{color:#9b2c2c;background:#fed7d7;text-decoration:line-through}ins{color:#22543d;background:#c6f6d5;text-decoration:none}.comment-box{border-left:3px solid #d69e2e;background:#fffaf0;padding:8px;margin:8px 0}</style></head><body>${current.redlineHtml || ""}</body></html>`, "application/msword;charset=utf-8"));
 render();
+</script>
+
+<script>
+(function () {
+  var btn = document.getElementById('clearLocalDataBtn');
+  if (btn) {
+    var KEY_PREFIXES = ['cr_', 'contractReview_', 'legalaipay_cr_'];
+    btn.addEventListener('click', function () {
+      if (!window.confirm('This will clear the contract text, settings, API key, and any cached review output stored in this browser. Continue?')) return;
+      try {
+        Object.keys(localStorage).forEach(function (k) {
+          if (KEY_PREFIXES.some(function (p) { return k.indexOf(p) === 0; })) localStorage.removeItem(k);
+        });
+        Object.keys(sessionStorage).forEach(function (k) {
+          if (KEY_PREFIXES.some(function (p) { return k.indexOf(p) === 0; })) sessionStorage.removeItem(k);
+        });
+        ['contractFile','contractText','apiKey','playbookSelect','side','risk'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el && 'value' in el) el.value = '';
+        });
+        alert('Local data cleared.');
+      } catch (e) {
+        alert('Could not fully clear local data: ' + (e && e.message ? e.message : e));
+      }
+    });
+  }
+  var el = document.getElementById('reviewGeneratedDate');
+  if (el) el.textContent = new Date().toISOString().slice(0, 10);
+  var modeRadios = document.querySelectorAll('input[name="runMode"]');
+  var consentWrap = document.getElementById('directConsentWrap');
+  function syncMode() {
+    var dir = document.querySelector('input[name="runMode"]:checked');
+    if (consentWrap) consentWrap.style.display = (dir && dir.value === 'direct') ? 'block' : 'none';
+  }
+  modeRadios.forEach(function (r) { r.addEventListener('change', syncMode); });
+  syncMode();
+})();
 </script>
 </body>
 </html>
