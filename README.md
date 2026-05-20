@@ -1,3 +1,5 @@
+![LegalAIPay logo](legalaipay-logo.png)
+
 # LegalAIPay
 ## AI-Powered Legal & Compliance Platform
 
