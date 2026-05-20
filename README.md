@@ -1,4 +1,4 @@
-![LegalAIPay logo](legalaipay-logo.png)
+<p align="center"><img src="legalaipay-logo.png" alt="LegalAIPay logo" width="240"></p>
 
 # LegalAIPay
 ## AI-Powered Legal & Compliance Platform
