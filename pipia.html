@@ -184,6 +184,32 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   .main { padding: 20px; }
   .form-row, .form-row-3, .summary-grid { grid-template-columns: 1fr; }
 }
+
+/* === Completeness validation UI === */
+.req-mark{color:#e53e3e;font-weight:700;margin-left:3px}
+.field-empty-required{border-color:#e53e3e!important;background:#fff5f5!important}
+.step-nav li .step-badge{margin-left:auto;font-size:11px;padding:2px 8px;border-radius:10px;background:#edf2f7;color:#718096;font-weight:600;min-width:42px;text-align:center}
+.step-nav li.step-complete .step-badge{background:#c6f6d5;color:#22543d}
+.step-nav li.step-partial .step-badge{background:#feebc8;color:#7b341e}
+.overall-progress{margin:14px 24px 0;padding:12px 14px;background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px}
+.overall-progress-label{display:flex;justify-content:space-between;font-size:12px;color:#4a5568;margin-bottom:6px;font-weight:600}
+.overall-progress-bar{height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.overall-progress-fill{height:100%;background:linear-gradient(90deg,#3182ce,#38a169);transition:width .3s;width:0%}
+.btn-gated[disabled]{opacity:.55;cursor:not-allowed!important;filter:grayscale(.5)}
+.btn-gated[disabled]:hover{background:inherit}
+.completeness-modal{position:fixed;inset:0;background:rgba(15,30,61,.6);display:none;align-items:center;justify-content:center;z-index:9999}
+.completeness-modal.show{display:flex}
+.completeness-modal-box{background:#fff;border-radius:12px;padding:28px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.completeness-modal h3{margin:0 0 8px;font-size:20px;color:#0f1e3d}
+.completeness-modal .cm-sub{color:#718096;font-size:13px;margin-bottom:16px}
+.completeness-modal ul{list-style:none;padding:0;margin:0 0 18px;max-height:260px;overflow-y:auto}
+.completeness-modal li{padding:8px 12px;background:#fff5f5;border-left:3px solid #e53e3e;border-radius:4px;margin-bottom:6px;font-size:13px;color:#742a2a;cursor:pointer}
+.completeness-modal li:hover{background:#fed7d7}
+.completeness-modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.completeness-modal button{padding:8px 18px;border-radius:6px;border:none;cursor:pointer;font-weight:600;font-size:13px}
+.cm-cancel{background:#e2e8f0;color:#2d3748}
+.cm-force{background:#e53e3e;color:#fff}
+.cm-fill{background:#3182ce;color:#fff}
 </style>
 
     <meta name="description" content="Free Personal Information Protection Impact Assessment (PIPIA) tool for PRC PIPL compliance. Identify, assess, and document data protection risks in your browser — no data leaves your device.">
@@ -229,8 +255,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <div class="header-actions">
     <button onclick="exportJSON()">💾 Save 保存</button>
     <button onclick="loadJSON()">📂 Load 加载</button>
-    <button onclick="exportReport()">📄 Export Report 导出报告</button>
-    <button onclick="generatePrivacyPolicy()" style="background:#38a169;color:white;font-weight:600;" title="用 PIPIA 评估结果生成隐私政策">✍️ Generate Privacy Policy 生成隐私政策</button>
+    <button class="btn-gated" onclick="guardedExportReport()">📄 Export Report 导出报告</button>
+    <button class="btn-gated" onclick="guardedGeneratePolicy()" style="background:#38a169;color:white;font-weight:600;" title="用 PIPIA 评估结果生成隐私政策">✍️ Generate Privacy Policy 生成隐私政策</button>
     <button onclick="window.print()">🖨 Print 打印</button>
   </div>
 </div>
@@ -268,7 +294,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <span class="step-num">7</span>
         <div>Summary & Export<span class="step-label-cn">总结与导出</span></div>
       </li>
-    </ul>
+    </ul><div class="overall-progress"><div class="overall-progress-label"><span>📋 Required Completeness 必填完成度</span><span id="overallProgressText">0 / 0</span></div><div class="overall-progress-bar"><div class="overall-progress-fill" id="overallProgressFill"></div></div></div>
   </div>
 
   <div class="main">
@@ -876,7 +902,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
       <div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goToStep(5)">← Back</button>
-        <button class="btn btn-success" onclick="exportReport()">📄 Export Full Report 导出完整报告</button>
+        <button class="btn btn-success btn-gated" onclick="guardedExportReport()">📄 Export Full Report 导出完整报告</button>
       </div>
     </div>
   </div>
@@ -2238,6 +2264,47 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// === Completeness validation engine ===
+var REQUIRED_FIELDS={
+  0:["refNo","assessDate","bizFunction","projectName"],
+  1:["fieldCount","purposeCount","dataQuantity","userInterface","featureDesc","dataUsingDept"],
+  2:["storageSystem","storageLocation","storageDept","retentionPeriod"],
+  3:["triggerSummary"],
+  4:[],
+  5:["dpoFollowUp","crossBorderReq"],
+  6:[]
+};
+var REQUIRED_LABELS={
+  "refNo":"PIPIA Reference No. / 参考编号",
+  "assessDate":"Date of Assessment / 评估日期",
+  "bizFunction":"Responsible Business Function / 负责的业务部门",
+  "projectName":"Project Name / 项目名称",
+  "fieldCount":"Field count / 数据字段数量",
+  "purposeCount":"Purpose count / 处理目的数量",
+  "dataQuantity":"Data Quantities / 数据数量",
+  "userInterface":"User Interface / 与用户的交互界面",
+  "featureDesc":"Feature Description / 功能描述",
+  "dataUsingDept":"Data Using Department / 数据使用部门",
+  "storageSystem":"Storage System / 存储系统",
+  "storageLocation":"Storage Location / 存储位置",
+  "storageDept":"Storage Department / 存储部门",
+  "retentionPeriod":"Retention Period / 保留期限",
+  "triggerSummary":"Trigger Summary / 触发模块汇总",
+  "dpoFollowUp":"DPO Follow-up / DPO 跟进",
+  "crossBorderReq":"Cross-border Requirements / 跨境要求"
+};
+function isFieldFilled(id){var el=document.getElementById(id);if(!el)return false;if(el.type==="checkbox"||el.type==="radio")return el.checked;return (el.value||"").trim().length>0}
+function computeStepStats(stepIdx){var req=REQUIRED_FIELDS[stepIdx]||[];var filled=req.filter(isFieldFilled).length;return{filled:filled,total:req.length,pct:req.length===0?100:Math.round(filled/req.length*100)}}
+function computeOverall(){var totalReq=0,totalFilled=0;for(var i=0;i<7;i++){var s=computeStepStats(i);totalReq+=s.total;totalFilled+=s.filled}return{filled:totalFilled,total:totalReq,pct:totalReq===0?100:Math.round(totalFilled/totalReq*100)}}
+function getMissingRequired(){var miss=[];for(var i=0;i<7;i++){var req=REQUIRED_FIELDS[i]||[];req.forEach(function(id){if(!isFieldFilled(id))miss.push({step:i,id:id,label:REQUIRED_LABELS[id]||id})})}return miss}
+function updateCompletenessUI(){var lis=document.querySelectorAll(".step-nav li");lis.forEach(function(li,i){var st=computeStepStats(i);var badge=li.querySelector(".step-badge");if(!badge){badge=document.createElement("span");badge.className="step-badge";li.appendChild(badge)}badge.textContent=st.filled+"/"+st.total;li.classList.remove("step-complete","step-partial");if(st.total>0){if(st.filled===st.total)li.classList.add("step-complete");else if(st.filled>0)li.classList.add("step-partial")}});var ov=computeOverall();var op=document.getElementById("overallProgressFill");var ot=document.getElementById("overallProgressText");if(op)op.style.width=ov.pct+"%";if(ot)ot.textContent=ov.filled+" / "+ov.total+" required fields ("+ov.pct+"%)";var miss=getMissingRequired();var btns=document.querySelectorAll(".btn-gated");btns.forEach(function(b){if(miss.length>0){b.setAttribute("disabled","disabled");b.setAttribute("title","还有 "+miss.length+" 个必填字段未完成，点击查看 / "+miss.length+" required fields missing")}else{b.removeAttribute("disabled");b.setAttribute("title","")}});var reqInputs=Object.keys(REQUIRED_LABELS);reqInputs.forEach(function(id){var el=document.getElementById(id);if(!el)return;if(isFieldFilled(id))el.classList.remove("field-empty-required");else el.classList.add("field-empty-required")})}
+function markRequiredLabels(){var seen={};Object.keys(REQUIRED_LABELS).forEach(function(id){var el=document.getElementById(id);if(!el||seen[id])return;seen[id]=1;var lbl=el.previousElementSibling;if(!lbl||lbl.tagName!=="LABEL"){var parent=el.parentElement;if(parent){lbl=parent.querySelector("label.form-label")}}if(lbl && lbl.querySelector(".req-mark"))return;if(lbl){var sp=document.createElement("span");sp.className="req-mark";sp.textContent="*";sp.title="Required / 必填";lbl.appendChild(sp)}})}
+function openCompletenessModal(onForce){var miss=getMissingRequired();if(miss.length===0){if(onForce)onForce();return}var modal=document.getElementById("completenessModal");var ul=modal.querySelector("ul");ul.innerHTML="";miss.forEach(function(m){var li=document.createElement("li");li.textContent="Step "+(m.step+1)+" — "+m.label;li.onclick=function(){closeCompletenessModal();goToStep(m.step);setTimeout(function(){var el=document.getElementById(m.id);if(el){el.scrollIntoView({behavior:"smooth",block:"center"});el.focus()}},100)};ul.appendChild(li)});modal.querySelector(".cm-force").onclick=function(){closeCompletenessModal();if(onForce)onForce()};modal.classList.add("show")}
+function closeCompletenessModal(){var m=document.getElementById("completenessModal");if(m)m.classList.remove("show")}
+function guardedExportReport(){openCompletenessModal(function(){exportReport()})}
+function guardedGeneratePolicy(){openCompletenessModal(function(){generatePrivacyPolicy()})}
+document.addEventListener("DOMContentLoaded",function(){markRequiredLabels();updateCompletenessUI();document.addEventListener("input",updateCompletenessUI);document.addEventListener("change",updateCompletenessUI);document.addEventListener("click",function(e){if(e.target && e.target.closest && e.target.closest(".check-item"))setTimeout(updateCompletenessUI,50)})});
 </script>
-</body>
+<div class="completeness-modal" id="completenessModal" onclick="if(event.target===this)closeCompletenessModal()"><div class="completeness-modal-box"><h3>⚠️ 完成度检查 / Completeness Check</h3><div class="cm-sub">以下必填字段尚未完成。点击任一项可跳转到对应位置 / The following required fields are missing. Click any item to jump to it.</div><ul></ul><div class="completeness-modal-actions"><button class="cm-cancel" onclick="closeCompletenessModal()">Cancel 取消</button><button class="cm-force" onclick="">Export Anyway 仍然导出</button></div></div></div></body>
 </html>
