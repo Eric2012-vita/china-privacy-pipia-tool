@@ -2384,11 +2384,26 @@ function renderConsolidatedResult(){
   el.innerHTML=html;
 }
 
+/* Ensure every triggered module has a DPO block (comments + adjustable risk matrix) */
+function ensureModuleDpoBlocks(){
+  for(var n=1;n<=8;n++){
+    var body=document.getElementById('mb_m'+n);
+    if(!body) continue;
+    if(document.getElementById('dpo_m'+n+'_comments')) continue;
+    if(typeof dpoBlocK==='function'){
+      var wrap=document.createElement('div');
+      wrap.innerHTML=dpoBlocK(n);
+      body.appendChild(wrap);
+    }
+  }
+}
+
 /* Hooks: wrap existing functions non-destructively */
 (function(){
   if(typeof recalcTriggers==='function'){ var _rt=recalcTriggers; recalcTriggers=function(){ var r=_rt.apply(this,arguments); try{ renderDpoPreModuleRec(); }catch(e){} return r; }; window.recalcTriggers=recalcTriggers; }
   if(typeof generateSummary==='function'){ var _gs=generateSummary; generateSummary=function(){ var r=_gs.apply(this,arguments); try{ renderConsolidatedResult(); }catch(e){} return r; }; window.generateSummary=generateSummary; }
-  if(typeof goToStep==='function'){ var _gt=goToStep; goToStep=function(n){ var r=_gt.apply(this,arguments); try{ if(n===3){ renderDpoPreModuleRec(); } if(n===6){ renderConsolidatedResult(); } }catch(e){} return r; }; window.goToStep=goToStep; }
+  if(typeof buildModuleForms==='function'){ var _bmf=buildModuleForms; buildModuleForms=function(){ var r=_bmf.apply(this,arguments); try{ ensureModuleDpoBlocks(); }catch(e){} return r; }; window.buildModuleForms=buildModuleForms; }
+    if(typeof goToStep==='function'){ var _gt=goToStep; goToStep=function(n){ var r=_gt.apply(this,arguments); try{ if(n===3){ renderDpoPreModuleRec(); } if(n===6){ renderConsolidatedResult(); } }catch(e){} return r; }; window.goToStep=goToStep; }
   document.addEventListener('change',function(e){ if(e.target && (e.target.name==='offlineProc'||e.target.name==='retentionPolicy')){ try{ evalProcessingRetentionRisks(); renderDpoPreModuleRec(); }catch(err){} } });
 })();
 </script>
