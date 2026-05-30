@@ -624,16 +624,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
           <div class="check-group">
             <label class="check-item" onclick="toggleCheck(this)">
               <input type="radio" name="offlineProc" value="offline">
-              <div><div class="label-text">Data will be processed offline</div><div class="label-cn">数据将通过线下方式处理 → Module 5 Required</div></div>
+              <div><div class="label-text">Data will be processed offline (High Risk)</div><div class="label-cn">数据将通过线下方式处理 → High Risk 高风险</div></div>
             </label>
-            <label class="check-item" onclick="toggleCheck(this)">
-              <input type="radio" name="offlineProc" value="onlineUnapproved">
-              <div><div class="label-text">Online system NOT reviewed by IT security</div><div class="label-cn">非经IT安全评估的线上系统处理 → Module 5 Required</div></div>
-            </label>
-            <label class="check-item" onclick="toggleCheck(this)">
-              <input type="radio" name="offlineProc" value="onlineApproved">
-              <div><div class="label-text">Online system reviewed and approved by IT security</div><div class="label-cn">经IT安全评估通过的线上系统处理 → N/A</div></div>
-            </label>
+            <label class="check-item"><input type="radio" name="offlineProc" value="online"><div class="label-text">Data will be processed online</div><div class="label-cn">数据将通过线上方式处理 → Module 5 Required</div></label>
           </div>
         </div>
 
@@ -780,7 +773,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div id="triggerSummary"></div>
       </div>
 
-      <div class="nav-buttons">
+      <div id="dpoPreModuleRec" style="margin:16px 0;"></div><div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goToStep(2)">← Back</button>
         <button class="btn btn-primary" onclick="buildModuleForms(); goToStep(4)">Next: Module Assessment →</button>
       </div>
@@ -900,7 +893,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <div id="summaryActionItems"></div>
       </div>
 
-      <div class="nav-buttons">
+      <div id="pipiaConsolidatedResult" style="margin:18px 0;"></div><div class="nav-buttons">
         <button class="btn btn-secondary" onclick="goToStep(5)">← Back</button>
         <button class="btn btn-success btn-gated" onclick="guardedExportReport()">📄 Export Full Report 导出完整报告</button>
       </div>
@@ -1322,7 +1315,7 @@ function recalcTriggers() {
 
   // Offline processing
   const op = document.querySelector('input[name="offlineProc"]:checked');
-  if (op && (op.value === 'offline' || op.value === 'onlineUnapproved')) {
+  if (op && (op.value === 'online')) {
     triggeredModules.add(5);
   }
 
@@ -1408,7 +1401,7 @@ function renderTaskTracker() {
 function dpoBlocK(moduleNum) {
   return `
     <div class="dpo-box" style="margin-top:20px;">
-      <h4>DPO's Evaluation 数据保护官评估 — Module ${moduleNum}</h4>
+      <h4>DPO's Evaluation 数据保护官评估 — Module ${moduleNum}</h4><div class="form-group" style="margin:12px 0;padding:12px;border:1px solid #e2e8f0;border-radius:8px;background:#fafbfc;"><label class="form-label">DPO Risk Rating / 数据保护官风险评级 <span style="color:#718096;font-weight:400;">(adjustable)</span></label><div class="radio-pills" id="dpo_m${moduleNum}_riskpills"><label class="check-item"><input type="radio" name="dpo_m${moduleNum}_risk" value="high" onchange="updateModuleRisk(${moduleNum},'high')"><div class="label-text" style="color:#e53e3e;">High Risk</div><div class="label-cn">高风险</div></label><label class="check-item"><input type="radio" name="dpo_m${moduleNum}_risk" value="middle" onchange="updateModuleRisk(${moduleNum},'middle')"><div class="label-text" style="color:#d69e2e;">Middle Risk</div><div class="label-cn">中风险</div></label><label class="check-item"><input type="radio" name="dpo_m${moduleNum}_risk" value="low" onchange="updateModuleRisk(${moduleNum},'low')"><div class="label-text" style="color:#38a169;">Low Risk</div><div class="label-cn">低风险</div></label></div><label class="form-label" style="margin-top:8px;">Risk rationale / 风险说明</label><textarea class="form-input" id="dpo_m${moduleNum}_riskcomment" rows="2" placeholder="DPO comment on the risk rating and required mitigation"></textarea></div>
       <div class="form-group">
         <label class="form-label">Double check if the understanding is consistent with law requirements<br><span class="form-label-cn">再次检查以上内容是否与法律要求相符</span></label>
       </div>
@@ -2305,6 +2298,98 @@ function closeCompletenessModal(){var m=document.getElementById("completenessMod
 function guardedExportReport(){openCompletenessModal(function(){exportReport()})}
 function guardedGeneratePolicy(){openCompletenessModal(function(){generatePrivacyPolicy()})}
 document.addEventListener("DOMContentLoaded",function(){markRequiredLabels();updateCompletenessUI();document.addEventListener("input",updateCompletenessUI);document.addEventListener("change",updateCompletenessUI);document.addEventListener("click",function(e){if(e.target && e.target.closest && e.target.closest(".check-item"))setTimeout(updateCompletenessUI,50)})});
+
+
+/* ===== PIPIA risk + DPO consolidation (added) ===== */
+window.pipiaRiskFlags = [];
+function registerRisk(source, level, recommendation){
+  window.pipiaRiskFlags = window.pipiaRiskFlags.filter(function(r){return r.source!==source;});
+  window.pipiaRiskFlags.push({source:source, level:level, recommendation:recommendation||""});
+}
+function evalProcessingRetentionRisks(){
+  var op = document.querySelector('input[name="offlineProc"]:checked');
+  if(op && op.value==='offline'){ registerRisk('Processing: offline','high','Offline processing flagged as High Risk — DPO to confirm controls.'); }
+  else if(op && op.value==='online'){ registerRisk('Processing: online','middle','Online processing — Module 5 (security) required.'); }
+  else { window.pipiaRiskFlags = window.pipiaRiskFlags.filter(function(r){return r.source.indexOf('Processing:')!==0;}); }
+  var rp = document.querySelector('input[name="retentionPolicy"]:checked');
+  window.pipiaRiskFlags = window.pipiaRiskFlags.filter(function(r){return r.source!=='Retention in privacy policy';});
+  if(rp && rp.value==='general'){ registerRisk('Retention in privacy policy','middle','DPO recommendation: need to specify the retention period.'); }
+  else if(rp && rp.value==='notMentioned'){ registerRisk('Retention in privacy policy','high','DPO recommendation: need to specify the retention period.'); }
+}
+window.moduleRisks = window.moduleRisks || {};
+function updateModuleRisk(moduleNum, level){
+  var c = document.getElementById('dpo_m'+moduleNum+'_riskcomment');
+  window.moduleRisks[moduleNum] = {level:level, comment: c?c.value:''};
+}
+function riskBadge(level){
+  var map={high:["High Risk 高风险","#e53e3e"],middle:["Middle Risk 中风险","#d69e2e"],low:["Low Risk 低风险","#38a169"]};
+  var m=map[level]||["Not rated 未评级","#718096"];
+  return '<span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600;color:#fff;background:'+m[1]+'">'+m[0]+'</span>';
+}
+
+function renderDpoPreModuleRec(){
+  evalProcessingRetentionRisks();
+  var el = document.getElementById('dpoPreModuleRec'); if(!el) return;
+  var flags = window.pipiaRiskFlags || [];
+  var rows = flags.map(function(f){ return '<div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid #edf2f7;">'+riskBadge(f.level)+'<div><strong>'+f.source+'</strong><div style="color:#4a5568;font-size:13px;">'+(f.recommendation||'')+'</div></div></div>'; }).join('');
+  if(!rows){ rows = '<div style="color:#718096;font-size:13px;padding:6px 0;">No automatic risk flags from processing or retention. The DPO can still add comments per module below.</div>'; }
+  el.innerHTML = '<div style="border:1px solid #d4a574;border-radius:10px;padding:16px;background:#fffdf8;">'+
+    '<div style="font-weight:700;color:#0f1e3d;margin-bottom:4px;">⚖️ DPO Recommendation (before module assessment) / 模块评估前的数据保护官建议</div>'+
+    '<div style="color:#718096;font-size:12px;margin-bottom:8px;">Reviewed after the data record (ROPA) is complete, before the modules are assessed. 在处理记录完成后、模块评估之前审阅。</div>'+
+    rows +
+    '<label class="form-label" style="margin-top:10px;">DPO overall recommendation / 数据保护官总体建议</label>'+
+    '<textarea class="form-input" id="dpoPreModuleComment" rows="2" placeholder="DPO recommendation before proceeding to modules"></textarea>'+
+  '</div>';
+  var saved = window.dpoPreModuleComment; if(saved){ var ta=document.getElementById('dpoPreModuleComment'); if(ta) ta.value=saved; }
+  var ta2=document.getElementById('dpoPreModuleComment'); if(ta2){ ta2.addEventListener('input',function(){window.dpoPreModuleComment=ta2.value;}); }
+}
+
+function collectModuleDpo(){
+  var out=[];
+  for(var n=1;n<=8;n++){
+    var pills=document.getElementsByName('dpo_m'+n+'_risk');
+    if(!pills || pills.length===0) continue;
+    var sel=null; for(var k=0;k<pills.length;k++){ if(pills[k].checked) sel=pills[k].value; }
+    var rc=document.getElementById('dpo_m'+n+'_riskcomment');
+    var cc=document.getElementById('dpo_m'+n+'_comments');
+    var ch=document.getElementById('dpo_m'+n+'_changes');
+    out.push({module:n, level:sel, riskComment: rc?rc.value:'', comments: cc?cc.value:'', changes: ch?ch.value:''});
+  }
+  return out;
+}
+function renderConsolidatedResult(){
+  evalProcessingRetentionRisks();
+  var el=document.getElementById('pipiaConsolidatedResult'); if(!el) return;
+  var flags=window.pipiaRiskFlags||[];
+  var mods=collectModuleDpo();
+  var order={high:0,middle:1,low:2,undefined:3};
+  var levels=flags.map(function(f){return f.level;}).concat(mods.map(function(m){return m.level;})).filter(Boolean);
+  var overall = levels.indexOf('high')>-1?'high':(levels.indexOf('middle')>-1?'middle':(levels.indexOf('low')>-1?'low':undefined));
+  var html='<div style="border:2px solid #0f1e3d;border-radius:12px;padding:18px;background:#fff;">';
+  html+='<div style="font-size:18px;font-weight:800;color:#0f1e3d;margin-bottom:6px;">⚖️ PIPIA Result — Consolidated Risk & DPO Findings / PIPIA 结果汇总</div>';
+  html+='<div style="margin-bottom:12px;">Overall residual risk / 整体剩余风险: '+riskBadge(overall)+'</div>';
+  html+='<div style="font-weight:700;color:#2d3748;margin:10px 0 4px;">Risk matrix / 风险矩阵</div>';
+  html+='<table style="width:100%;border-collapse:collapse;font-size:13px;"><tr style="background:#f7fafc;"><th style="text-align:left;padding:6px;border:1px solid #e2e8f0;">Source / 来源</th><th style="text-align:left;padding:6px;border:1px solid #e2e8f0;">Risk</th><th style="text-align:left;padding:6px;border:1px solid #e2e8f0;">DPO comment / mitigation</th></tr>';
+  flags.forEach(function(f){ html+='<tr><td style="padding:6px;border:1px solid #e2e8f0;">'+f.source+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+riskBadge(f.level)+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+(f.recommendation||'')+'</td></tr>'; });
+  mods.forEach(function(m){ html+='<tr><td style="padding:6px;border:1px solid #e2e8f0;">Module '+m.module+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+riskBadge(m.level)+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+((m.riskComment||'')+(m.comments?(' | '+m.comments):''))+'</td></tr>'; });
+  html+='</table>';
+  var pre=(window.dpoPreModuleComment||'');
+  if(pre){ html+='<div style="font-weight:700;color:#2d3748;margin:12px 0 4px;">DPO recommendation (pre-module) / 模块前建议</div><div style="font-size:13px;color:#4a5568;">'+pre+'</div>'; }
+  var actions=[];
+  flags.forEach(function(f){ if(f.recommendation) actions.push(f.recommendation); });
+  mods.forEach(function(m){ if(m.changes) actions.push('Module '+m.module+': '+m.changes); });
+  if(actions.length){ html+='<div style="font-weight:700;color:#2d3748;margin:12px 0 4px;">Recommended mitigation actions / 建议的缓解措施</div><ul style="margin:0;padding-left:18px;font-size:13px;color:#4a5568;">'; actions.forEach(function(a){ html+='<li>'+a+'</li>'; }); html+='</ul>'; }
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+/* Hooks: wrap existing functions non-destructively */
+(function(){
+  if(typeof recalcTriggers==='function'){ var _rt=recalcTriggers; recalcTriggers=function(){ var r=_rt.apply(this,arguments); try{ renderDpoPreModuleRec(); }catch(e){} return r; }; window.recalcTriggers=recalcTriggers; }
+  if(typeof generateSummary==='function'){ var _gs=generateSummary; generateSummary=function(){ var r=_gs.apply(this,arguments); try{ renderConsolidatedResult(); }catch(e){} return r; }; window.generateSummary=generateSummary; }
+  if(typeof goToStep==='function'){ var _gt=goToStep; goToStep=function(n){ var r=_gt.apply(this,arguments); try{ if(n===3){ renderDpoPreModuleRec(); } if(n===6){ renderConsolidatedResult(); } }catch(e){} return r; }; window.goToStep=goToStep; }
+  document.addEventListener('change',function(e){ if(e.target && (e.target.name==='offlineProc'||e.target.name==='retentionPolicy')){ try{ evalProcessingRetentionRisks(); renderDpoPreModuleRec(); }catch(err){} } });
+})();
 </script>
 <div class="completeness-modal" id="completenessModal" onclick="if(event.target===this)closeCompletenessModal()"><div class="completeness-modal-box"><h3>⚠️ 完成度检查 / Completeness Check</h3><div class="cm-sub">以下必填字段尚未完成。点击任一项可跳转到对应位置 / The following required fields are missing. Click any item to jump to it.</div><ul></ul><div class="completeness-modal-actions"><button class="cm-cancel" onclick="closeCompletenessModal()">Cancel 取消</button><button class="cm-force" onclick="">Export Anyway 仍然导出</button></div></div></div></body>
 </html>
