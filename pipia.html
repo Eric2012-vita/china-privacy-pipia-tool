@@ -2341,8 +2341,8 @@ function renderDpoPreModuleRec(){
     '<label class="form-label" style="margin-top:10px;">DPO overall recommendation / 数据保护官总体建议</label>'+
     '<textarea class="form-input" id="dpoPreModuleComment" rows="2" placeholder="DPO recommendation before proceeding to modules"></textarea>'+
   '</div>';
-  var saved = window.dpoPreModuleComment; if(saved){ var ta=document.getElementById('dpoPreModuleComment'); if(ta) ta.value=saved; }
-  var ta2=document.getElementById('dpoPreModuleComment'); if(ta2){ ta2.addEventListener('input',function(){window.dpoPreModuleComment=ta2.value;}); }
+  var saved = window._dpoPreModuleVal; if(saved){ var ta=document.getElementById('dpoPreModuleComment'); if(ta) ta.value=saved; }
+  var ta2=document.getElementById('dpoPreModuleComment'); if(ta2){ ta2.addEventListener('input',function(){window._dpoPreModuleVal=ta2.value;}); }
 }
 
 function collectModuleDpo(){
@@ -2374,7 +2374,7 @@ function renderConsolidatedResult(){
   flags.forEach(function(f){ html+='<tr><td style="padding:6px;border:1px solid #e2e8f0;">'+f.source+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+riskBadge(f.level)+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+(f.recommendation||'')+'</td></tr>'; });
   mods.forEach(function(m){ html+='<tr><td style="padding:6px;border:1px solid #e2e8f0;">Module '+m.module+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+riskBadge(m.level)+'</td><td style="padding:6px;border:1px solid #e2e8f0;">'+((m.riskComment||'')+(m.comments?(' | '+m.comments):''))+'</td></tr>'; });
   html+='</table>';
-  var pre=(window.dpoPreModuleComment||'');
+  var pre=(window._dpoPreModuleVal||'');
   if(pre){ html+='<div style="font-weight:700;color:#2d3748;margin:12px 0 4px;">DPO recommendation (pre-module) / 模块前建议</div><div style="font-size:13px;color:#4a5568;">'+pre+'</div>'; }
   var actions=[];
   flags.forEach(function(f){ if(f.recommendation) actions.push(f.recommendation); });
