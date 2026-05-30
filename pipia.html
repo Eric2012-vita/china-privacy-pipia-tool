@@ -2307,6 +2307,7 @@ function registerRisk(source, level, recommendation){
   window.pipiaRiskFlags.push({source:source, level:level, recommendation:recommendation||""});
 }
 function evalProcessingRetentionRisks(){
+  window.pipiaRiskFlags = window.pipiaRiskFlags.filter(function(r){return r.source.indexOf('Processing:')!==0;});
   var op = document.querySelector('input[name="offlineProc"]:checked');
   if(op && op.value==='offline'){ registerRisk('Processing: offline','high','Offline processing flagged as High Risk — DPO to confirm controls.'); }
   else if(op && op.value==='online'){ registerRisk('Processing: online','middle','Online processing — Module 5 (security) required.'); }
