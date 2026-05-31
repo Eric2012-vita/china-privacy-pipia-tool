@@ -150,7 +150,7 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
   </label>
   <label style="display:block;margin:4px 0;font-size:13px;color:#1e293b;">
     <input type="radio" name="runMode" value="direct">
-    <strong>Direct call (advanced)</strong> &#8212; call the model from your browser using your own API key. Key and contract text leave your browser to the vendor only.
+    <strong>Direct call (advanced)</strong> &#8212; call the model from your browser using your own API key. Your API key and contract text go directly from your browser to your own AI provider (e.g. OpenAI or Anthropic) — never to LegalAIPay. Your provider may bill you for usage.
   </label>
   <label id="directConsentWrap" style="display:none;margin:8px 0 0;padding-left:22px;font-size:12.5px;color:#5a4012;">
     <input type="checkbox" id="directConsent"> I understand my API key and contract text will be sent to the model vendor from this browser.
@@ -522,7 +522,7 @@ function buildRedlineDoc(text, issues, comments, detection) {
   });
   const paragraphs = working.split(/\n{2,}/).slice(0, 80).map((p, idx) => `<p>${p.replace(/\n/g, "<br>")}</p>${idx < comments.length ? `<div class=\"comment-box\"><strong>${comments[idx].id} - ${escapeHtml(comments[idx].title)}</strong><br>${escapeHtml(comments[idx].comment)}</div>` : ""}`).join("");
   const insertions = issues.filter(i => i.insert).map((i, idx) => `<div class=\"comment-box\"><strong>Proposed insertion ${idx + 1}: ${escapeHtml(i.title)}</strong><br><ins>${escapeHtml(i.insert)}</ins><br>${escapeHtml(i.comment)}</div>`).join("");
-  return `<div class=\"redline-doc\"><h2>Redline-Style Review Document</h2><div class=\"notice\">This is a Word-compatible redline-style output using insertions, deletions, and comments. It is not a native DOCX tracked-changes file.</div><p><strong>Detected type:</strong> ${escapeHtml(detection.label)} (${escapeHtml(detection.confidence)})</p>${paragraphs}${insertions}</div>`;
+  return `<div class=\"redline-doc\"><h2>Redline-Style Review Document</h2><div class=\"notice\">This is a Word-compatible redline-style output using insertions, deletions, and comments. It opens in Word and shows insertions, deletions, and comments visually, but is not yet a true tracked-changes file you can Accept or Reject — review and finalize the wording in Word before sending.</div><p><strong>Detected type:</strong> ${escapeHtml(detection.label)} (${escapeHtml(detection.confidence)})</p>${paragraphs}${insertions}</div>`;
 }
 function render() {
   document.getElementById("score").textContent = current.score === undefined ? "-" : current.score;
