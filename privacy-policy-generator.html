@@ -499,6 +499,20 @@ window.addEventListener('DOMContentLoaded', () => {
   if (!payload) return;
   setTimeout(() => __applyPipiaHandoff(payload), 50);
 });
+/* MARKET PRESELECT FROM URL (?market=china|eu|california|children) */
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (__readPipiaHandoff()) return; // pipia handoff takes priority and forces china
+    const want = (new URLSearchParams(window.location.search).get('market') || '').toLowerCase();
+    const valid = ['china', 'eu', 'california', 'children'];
+    if (!valid.includes(want)) return;
+    const radio = document.querySelector('input[name="market"][value="' + want + '"]');
+    if (radio && !radio.checked) {
+      radio.checked = true;
+      radio.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+  } catch (e) { console.warn('market preselect failed', e); }
+});
 window.addEventListener('DOMContentLoaded', () => {
   const cn = document.querySelector('input[name="market"][value="china"]');
   if (!cn) return;
