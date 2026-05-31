@@ -186,6 +186,7 @@ body[lang="en"] .cn-only { display: none; }
 .what-text{ font-size:14px; line-height:1.5; font-weight:500;}
 .what-text small{ display:block; color:var(--text-light); font-size:12px; font-weight:400; margin-top:2px;}
 @media(max-width:768px){.what-strip{padding:36px 18px}.what-grid{gap:10px}.what-item{padding:14px}}
+.region-chip{display:inline-flex;align-items:center;gap:.35rem;border:1px solid var(--border);border-radius:999px;padding:.4rem .85rem;font-size:.9rem;cursor:pointer;user-select:none;background:var(--bg);transition:all .15s;}.region-chip:hover{border-color:var(--primary);}.region-chip input{accent-color:var(--primary);margin:0;}.region-chip.checked{background:var(--primary);color:#fff;border-color:var(--primary);}
 </style>
 <link rel="canonical" href="https://legalaipay.com/index-v2.html">
 <meta property="og:type" content="website">
@@ -230,8 +231,8 @@ body[lang="en"] .cn-only { display: none; }
 <p class="hero-subtitle-cn en-only">为跨境业务的创始人与中小法务团队设计。</p>
 <div class="hero-buttons">
 <a href="#what" class="btn btn-primary">
-<span class="en-only">Find the right tool for my situation</span>
-<span class="cn-only">找到适合我的工具</span>
+<span class="en-only">Find the right tool for where you operate</span>
+<span class="cn-only">按业务所在地找到合适的工具</span>
 <span>↓</span>
 </a>
 <a href="/privacy-policy-generator" class="btn btn-secondary">
@@ -250,7 +251,7 @@ body[lang="en"] .cn-only { display: none; }
 <div class="what-strip" id="what">
 <div class="what-container">
 <span class="what-eyebrow"><span class="en-only">What do you need to do today?</span><span class="cn-only">今天需要解决什么问题？</span></span>
-<div class="what-title"><span class="en-only">Pick the question closest to your situation — we point you to the right tool.</span><span class="cn-only">选一个最接近你今天问题的选项 — 我们带你去对应的工具。</span></div>
+<div class="what-title"><span class="en-only">Pick the question closest to your situation — we point you to the right tool.</span><span class="cn-only">选一个最接近你今天问题的选项 — 我们带你去对应的工具。</span></div><div style="text-align:center;margin:1rem auto 1.6rem;"><div id="region-picker" style="display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;"><label class="region-chip"><input type="checkbox" value="cn"> 🇨🇳 <span class="en-only">China</span><span class="cn-only">中国</span></label><label class="region-chip"><input type="checkbox" value="eu"> 🇪🇺 <span class="en-only">EU/EEA</span><span class="cn-only">欧盟</span></label><label class="region-chip"><input type="checkbox" value="uk"> 🇬🇧 <span class="en-only">UK</span><span class="cn-only">英国</span></label><label class="region-chip"><input type="checkbox" value="us"> 🇺🇸 <span class="en-only">US</span><span class="cn-only">美国</span></label></div><div id="region-note" style="font-size:0.8rem;color:var(--text-light);margin-top:0.6rem;"></div><a id="risk-cta" href="#" aria-disabled="true" class="btn btn-primary" style="margin-top:1rem;opacity:.5;pointer-events:none;"><span class="en-only">Select a region to begin</span><span class="cn-only">请先选择地区</span> →</a></div>
 <div class="what-grid">
 <a class="what-item" href="https://gdpr.legalaipay.com/dpa.html"><div class="what-icon">📝</div><div class="what-text"><span class="en-only">A customer is asking me for a DPA</span><span class="cn-only">客户要求我提供 DPA</span><small><span class="en-only">Draft a data processing agreement they’ll accept</span><span class="cn-only">生成客户可接受的数据处理协议</span></small></div></a>
 <a class="what-item" href="https://gdpr.legalaipay.com/transfer.html"><div class="what-icon">🌐</div><div class="what-text"><span class="en-only">I need to send data outside the EU or China</span><span class="cn-only">我要把数据传到欧盟 / 中国以外</span><small><span class="en-only">Find out if it’s legal — and what paperwork you need</span><span class="cn-only">看看能不能传，需要准备什么文件</span></small></div></a>
@@ -276,6 +277,47 @@ function toggleNav(){var links=document.querySelector(".nav-links");var btn=docu
 document.addEventListener("click",function(e){var links=document.querySelector(".nav-links");if(!links||!links.classList.contains("is-open"))return;if(e.target.closest(".nav-links a")){links.classList.remove("is-open");var btn=document.getElementById("navToggle");if(btn)btn.setAttribute("aria-expanded","false");}});
 function toggleLang() { const body = document.body; body.lang = body.lang === "en" ? "cn" : "en"; }
 document.querySelectorAll("a[href^=\"#\"]").forEach(a => { a.addEventListener("click", function(e) { const href = this.getAttribute("href"); if (href === "#") { e.preventDefault(); return; } const target = document.querySelector(href); if (target) { e.preventDefault(); target.scrollIntoView({ behavior: "smooth", block: "start" }); } }); });
+</script>
+<script>
+(function () {
+  var MAP = {
+    cn: { href: "/pipia",                                en: "Run your China PIPIA — Free", cn: "开始中国 PIPIA 评估 — 免费" },
+    eu: { href: "https://gdpr.legalaipay.com/dpia.html", en: "Run your EU DPIA — Free",     cn: "开始欧盟 DPIA 评估 — 免费" },
+    uk: { href: "https://gdpr.legalaipay.com/dpia.html", en: "Run your UK DPIA — Free",     cn: "开始英国 DPIA 评估 — 免费" },
+    us: { href: "/privacy-policy-generator", en: "Generate your CCPA/CPRA policy — Free", cn: "生成加州 CCPA 隐私政策 — 免费" }
+  };
+  var picker = document.getElementById('region-picker');
+  var cta    = document.getElementById('risk-cta');
+  var note   = document.getElementById('region-note');
+  if (!picker || !cta) return;
+  function setCta(href, en, cn, disabled) {
+    cta.href = href || '#';
+    cta.style.opacity = disabled ? '.5' : '1';
+    cta.style.pointerEvents = disabled ? 'none' : 'auto';
+    cta.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+    cta.innerHTML = '<span class="en-only">' + en + '</span><span class="cn-only">' + cn + '</span> →';
+  }
+  function update() {
+    var sel = [].slice.call(picker.querySelectorAll('input:checked')).map(function (i) { return i.value; });
+    [].slice.call(picker.querySelectorAll('.region-chip')).forEach(function (l) {
+      l.classList.toggle('checked', l.querySelector('input').checked);
+    });
+    note.innerHTML = '';
+    var risk = sel.filter(function (r) { return MAP[r]; });
+    var hasUS = sel.indexOf('us') > -1;
+    if (sel.length === 0) {
+      setCta('#', 'Select a region to begin', '请先选择地区', true);
+    } else if (sel.length === 1) {
+      var m = MAP[sel[0]];
+      setCta(m.href, m.en, m.cn, false);
+    } else {
+      setCta('#what', 'See your toolkits (' + sel.map(function(r){return r.toUpperCase();}).join(' + ') + ')', '查看您的工具包', false);
+      note.innerHTML = '<span class="en-only">You operate across regions — each needs its own check. We’ll show all that apply.</span><span class="cn-only">您跨法域经营 — 每个法域都需要单独评估，我们会列出全部适用工具。</span>';
+    }
+  }
+  picker.addEventListener('change', update);
+  update();
+})();
 </script>
 </body>
 </html>
