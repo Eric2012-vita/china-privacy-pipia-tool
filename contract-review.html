@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contract Review Workspace | LegalAIPay</title>
-<meta name="description" content="Upload or paste a contract, run a Claude legal-skills based review, and generate proposed comments, explanations, and redline-style review documents.">
+<meta name="description" content="Upload or paste a contract, run a playbook-based review, and generate proposed comments, explanations, and redline-style review documents.">
 <style>
 :root {
   --primary: #0f1e3d;
@@ -104,12 +104,12 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
     <link rel="canonical" href="https://legalaipay.com/contract-review">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Contract Review Workspace | LegalAIPay">
-    <meta property="og:description" content="Upload or paste a contract, run a Claude legal-skills based review, and generate proposed comments, explanations, and redline-style review documents.">
+    <meta property="og:description" content="Upload or paste a contract, run a playbook-based review, and generate proposed comments, explanations, and redline-style review documents.">
     <meta property="og:url" content="https://legalaipay.com/contract-review">
     <meta property="og:site_name" content="LegalAIPay">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Contract Review Workspace | LegalAIPay">
-    <meta name="twitter:description" content="Upload or paste a contract, run a Claude legal-skills based review, and generate proposed comments, explanations, and redline-style review documents.">
+    <meta name="twitter:description" content="Upload or paste a contract, run a playbook-based review, and generate proposed comments, explanations, and redline-style review documents.">
   </head>
 <body>
 <nav class="navbar">
@@ -126,7 +126,7 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
   <div class="hero-inner">
     <span class="eyebrow">Contract Review Workspace</span>
     <h1>Upload a contract. Get comments, explanations, and redline-style output.</h1>
-    <p>Uses the Claude legal skills saved in this repository as the default playbook. For a deeper LLM draft, copy the generated prompt into your own ChatGPT or Claude session — this page never sees your API keys or contract data.</p>
+    <p>Uses a built-in legal playbook to review your contract. For a deeper LLM draft, copy the generated prompt into your own ChatGPT or Claude session — this page never sees your API keys or contract data.</p>
   </div>
 </section>
 <main class="layout" id="review">
@@ -220,7 +220,7 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
       </fieldset>
       <fieldset class="field">
         <legend>LLM handoff (prompt-only)</legend>
-        <p class="hint" style="margin-top:4px">This page does not call any external LLM. Run the skills review locally, then open the <strong>LLM Prompt</strong> tab and copy the generated prompt into your own ChatGPT or Claude session for a deeper draft.</p>
+        <p class="hint" style="margin-top:4px">This page does not call any external LLM. Run the review locally, then open the <strong>LLM Prompt</strong> tab and copy the generated prompt into your own ChatGPT or Claude session for a deeper draft.</p>
       </fieldset>
       <div class="field">
         <label for="contractText">Contract text</label>
@@ -250,9 +250,9 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
       <button class="btn-accent" id="downloadRedlineBtn">Download Redline .doc</button>
     </div>
     <div class="output-body">
-      <div id="memoView"><div class="empty">Run a skills review to generate the memo.</div></div>
-      <div id="commentsView" class="hidden"><div class="empty">Run a skills review to generate proposed comments.</div></div>
-      <div id="redlineView" class="hidden"><div class="empty">Run a skills review to generate redline-style output.</div></div>
+      <div id="memoView"><div class="empty">Run a review to generate the memo.</div></div>
+      <div id="commentsView" class="hidden"><div class="empty">Run a review to generate proposed comments.</div></div>
+      <div id="redlineView" class="hidden"><div class="empty">Run a review to generate redline-style output.</div></div>
       <div id="promptView" class="hidden"><pre id="promptText"></pre></div>
     </div>
   </section>
@@ -286,7 +286,7 @@ const reviewRules = [
     title: "Unlimited or uncapped liability",
     detect: /unlimited liability|liability shall not be limited|without limitation[^.]{0,80}liable|liability.*not.*limited/i,
     comment: "This creates potentially uncapped exposure. Please add a negotiated liability cap and define any uncapped carveouts narrowly.",
-    explanation: "The Claude legal skills emphasize that the cap amount is only one dimension; the review should also analyze cap base, indirect damages, and carveouts.",
+    explanation: "Why this matters: A liability cap is only as good as its details. Without limits on the cap base, indirect damages, and carve-outs, your real exposure can be far higher than the headline number.",
     redline: { find: /liability shall not be limited/ig, replace: "liability shall be limited to the agreed liability cap, except for negotiated carveouts" },
     fallback: "If the counterparty will not accept a general cap, propose separate higher caps for confidentiality, data breach, IP infringement, and indemnity."
   },
@@ -297,7 +297,7 @@ const reviewRules = [
     title: "No clear limitation of liability found",
     missing: /limitation of liability|liability cap|aggregate liability|total liability/i,
     comment: "No clear liability cap was detected. Ask for a limitation-of-liability clause tied to fees paid or payable over a defined period.",
-    explanation: "Vendor agreement review skills call for a specific proposed fix and fallback, not a vague 'consider revising' note.",
+    explanation: "Why this matters: Vague terms are hard to enforce and easy to dispute. Pin down a specific position so both sides know exactly what was agreed.",
     insert: "Except for negotiated carveouts, each party's aggregate liability under this Agreement shall not exceed the fees paid or payable under the applicable order form during the twelve (12) months preceding the event giving rise to liability.",
     fallback: "Escalate if the deal value, data risk, or service criticality makes the cap commercially inadequate."
   },
@@ -308,7 +308,7 @@ const reviewRules = [
     title: "Broad indemnity language",
     detect: /indemnif(?:y|ies|ication)[^.]{0,160}(any and all|all claims|all losses)|hold harmless[^.]{0,120}(any and all|all claims|all losses)/i,
     comment: "The indemnity appears broad. Limit it to third-party claims caused by specified breaches, IP infringement, confidentiality breach, negligence, wilful misconduct, or legal violation.",
-    explanation: "The skills ask for control of defense, prompt notice, mitigation, settlement consent, and no admission without consent.",
+    explanation: "Why this matters: If a third-party claim arises, these terms decide who runs the defense and who can settle. Without them you could be bound by decisions you did not make.",
     redline: { find: /any and all/ig, replace: "reasonable, finally awarded or agreed" },
     fallback: "If broad indemnity remains, add defense-control and settlement-consent protections."
   },
@@ -320,7 +320,7 @@ const reviewRules = [
     detect: /personal data|personal information|process(?:ing)? data|customer data|security incident/i,
     requires: /subprocessor|data processing agreement|dpa|standard contractual clauses|return or delete|delete.*data|audit/i,
     comment: "The contract references personal data, but full DPA controls may be missing. Add or attach a DPA covering roles, purpose limitation, security, subprocessors, breach notice, deletion, assistance, audit, and transfers.",
-    explanation: "The DPA-by-reference skill says data protection analysis is incomplete when a DPA is incorporated by URL or omitted from the review package.",
+    explanation: "Why this matters: If the data-protection terms live at a web link or are missing, you may be agreeing to obligations you have never actually read.",
     insert: "The parties shall enter into a data processing addendum before any processing of personal data, including terms for security, subprocessors, breach notification, assistance, return/deletion, audit, and cross-border transfers.",
     fallback: "If the DPA is hosted by URL, request the current DPA version and review it separately."
   },
@@ -331,7 +331,7 @@ const reviewRules = [
     title: "Long security incident notice period",
     detect: /(security incident|data breach|breach)[^.]{0,100}(10|15|30)\s*(business\s*)?days|notify[^.]{0,100}(10|15|30)\s*(business\s*)?days[^.]{0,80}(security incident|data breach|breach)/i,
     comment: "The incident notice period may be too long. Request notice without undue delay and no later than 48-72 hours after confirmation, with rolling updates.",
-    explanation: "A long incident notice period can impair customer and regulatory notification duties.",
+    explanation: "Why this matters: If your vendor is slow to tell you about an incident, you can miss your own legal deadlines to notify customers and regulators.",
     redline: { find: /(10|15|30)\s*(business\s*)?days/ig, replace: "seventy-two (72) hours" },
     fallback: "If 72 hours is rejected, ask for prompt initial notice plus rolling updates."
   },
@@ -342,7 +342,7 @@ const reviewRules = [
     title: "Overbroad IP assignment or feedback ownership",
     detect: /assigns? all right, title and interest|all intellectual property|feedback.*owned|work product.*owned exclusively/i,
     comment: "The IP language may transfer background IP, tools, templates, know-how, or feedback too broadly. Carve out pre-existing materials and residual know-how.",
-    explanation: "The skills call for surgical redlines and specific fallback positions instead of wholesale rewriting unless necessary.",
+    explanation: "Why this matters: Targeted edits are far more likely to be accepted than a full rewrite. Change only what reduces real risk.",
     redline: { find: /all right, title and interest/ig, replace: "right, title and interest in the final deliverables, excluding pre-existing materials, tools, templates, and residual know-how" },
     fallback: "If ownership is commercially required, convert background IP to a limited license needed to use the deliverables."
   },
@@ -354,7 +354,7 @@ const reviewRules = [
     detect: /non-solicit|non solicit|non-compete|non compete|exclusiv|standstill|right of first refusal|most favored|most-favored|assigns? all right|license grant/i,
     onlyTypes: ["NDA"],
     comment: "This document is labeled or detected as an NDA but contains non-NDA obligations. Route for attorney review rather than treating it as routine NDA triage.",
-    explanation: "The NDA skill says these provisions make the document auto-YELLOW regardless of normal NDA term analysis.",
+    explanation: "Why this matters: This NDA contains commitments that do not belong in a confidentiality agreement, so it needs closer review no matter how standard the rest looks.",
     redline: { find: /non-solicit|non solicit|non-compete|non compete|exclusiv[^.]{0,80}|standstill/ig, replace: "[LEGAL REVIEW REQUIRED: non-NDA obligation]" },
     fallback: "Move commercial covenants into a separate agreement or strike them from the NDA."
   },
@@ -366,7 +366,7 @@ const reviewRules = [
     detect: /confidential/i,
     requires: /surviv|trade secret|for as long as|five \(5\) years|5 years/i,
     comment: "Confidentiality survival should be clear. Trade secrets should remain protected for as long as they remain trade secrets.",
-    explanation: "The NDA skill asks for triage based on playbook positions and flags missing survival periods.",
+    explanation: "Why this matters: If the confidentiality obligation has no clear survival period, your secrets may stop being protected sooner than you expect.",
     insert: "Confidentiality obligations shall survive for at least five (5) years, and trade secrets shall remain protected for so long as they qualify as trade secrets under applicable law.",
     fallback: "If a shorter period is accepted, confirm it matches the company's NDA playbook."
   },
@@ -377,7 +377,7 @@ const reviewRules = [
     title: "Auto-renewal without practical cancellation controls",
     detect: /automatically renew|auto-renew|successive renewal/i,
     comment: "Add clear renewal term, cancellation method, notice deadline, and price-increase notice.",
-    explanation: "The vendor agreement skill treats renewal and termination as practical business risk, not only legal drafting.",
+    explanation: "Why this matters: Auto-renewal and exit terms decide how easily you can leave. Get them wrong and you could be locked in or surprised by a renewal.",
     insert: "Either party may prevent renewal by giving written notice at least thirty (30) days before the end of the then-current term. Any renewal price increase requires at least sixty (60) days' prior notice.",
     fallback: "For customer/buyer position, request renewal reminders before the notice window closes."
   },
@@ -388,7 +388,7 @@ const reviewRules = [
     title: "Governing law / venue needs jurisdiction check",
     detect: /governing law|exclusive jurisdiction|venue|arbitration|dispute/i,
     comment: "Confirm the selected governing law, venue, arbitration rules, language, interim relief, confidentiality, fee allocation, and enforcement path.",
-    explanation: "The skills warn that enforceability varies by jurisdiction; do not silently assume playbook positions transfer across laws.",
+    explanation: "Why this matters: A clause that is enforceable in one country may not hold in another. Confirm these terms actually work under the governing law.",
     fallback: "If cross-border, verify enforcement strategy before accepting dispute terms."
   },
   {
@@ -398,7 +398,7 @@ const reviewRules = [
     title: "Baseline compliance clause may be missing",
     missing: /sanctions|anti-bribery|anti corruption|anti-corruption|export control|modern slavery|code of conduct/i,
     comment: "Add baseline sanctions, anti-bribery, export control, and applicable compliance obligations, with termination rights for breach.",
-    explanation: "The vendor agreement skill flags regulated or cross-border arrangements without compliance commitments.",
+    explanation: "Why this matters: For regulated or cross-border deals, missing anti-bribery, sanctions, and export-control terms can leave you exposed to a partner's misconduct.",
     insert: "Each party shall comply with applicable anti-bribery, anti-corruption, sanctions, export control, and other laws relevant to its performance under this Agreement.",
     fallback: "Tie material compliance breach to immediate termination rights."
   }
@@ -510,7 +510,7 @@ function buildMemo(text, issues, comments, score, detection) {
   const critical = issues.filter(i => i.severity === "critical").length;
   const high = issues.filter(i => i.severity === "high").length;
   const medium = issues.filter(i => i.severity === "medium").length;
-  return `CONTRACT REVIEW MEMO\n\nSource: LegalAIPay Contract Review Workspace\nDefault method: Claude legal skills saved in this repository\n\n1. Intake\nConfirmed type: ${type}\nDetected type: ${detection.label} (${detection.confidence})\nYour side: ${position}\nGoverning law target: ${law}\nRisk posture: ${posture}\nBusiness context: ${context}\n\n2. Executive Summary\nPreliminary triage score: ${score}/100\nIssues: ${critical} critical / ${high} high / ${medium} medium\n${score >= 60 ? "This draft should be escalated for attorney review before signature or external redlines are sent." : score >= 25 ? "This draft needs targeted review and business/legal alignment before signature." : "No major flags were detected by the embedded skills engine, but counsel should still verify deal-specific points."}\n\n3. Skills Applied\n${skillSources.map(s => `- ${s}`).join("\n")}\n\n4. Proposed Comments\n${comments.length ? comments.map(c => `${c.id}. [${c.severity.toUpperCase()}] ${c.title}\n   Area: ${c.area}\n   Proposed comment: ${c.comment}\n   Explanation: ${c.explanation}\n   Fallback: ${c.fallback || "Confirm fallback with counsel."}`).join("\n\n") : "No proposed comments triggered by the current skills rules."}\n\n5. Redline Instructions\nUse the Redline-Style Doc tab for proposed insertions/deletions. These are drafting suggestions, not final legal advice. Apply edits surgically and route complex provisions to counsel.\n\n6. Important Limitations\nThis browser tool uses a rules/playbook engine based on the provided Claude legal skills. It does not replace lawyer review. For deeper LLM drafting, copy the LLM Prompt tab into your own ChatGPT or Claude session.`;
+  return `CONTRACT REVIEW MEMO\n\nSource: LegalAIPay Contract Review Workspace\nMethod: built-in legal playbook\n\n1. Intake\nConfirmed type: ${type}\nDetected type: ${detection.label} (${detection.confidence})\nYour side: ${position}\nGoverning law target: ${law}\nRisk posture: ${posture}\nBusiness context: ${context}\n\n2. Executive Summary\nPreliminary triage score: ${score}/100\nIssues: ${critical} critical / ${high} high / ${medium} medium\n${score >= 60 ? "This draft should be escalated for attorney review before signature or external redlines are sent." : score >= 25 ? "This draft needs targeted review and business/legal alignment before signature." : "No major flags were detected by the embedded skills engine, but counsel should still verify deal-specific points."}\n\n3. Skills Applied\n${skillSources.map(s => `- ${s}`).join("\n")}\n\n4. Proposed Comments\n${comments.length ? comments.map(c => `${c.id}. [${c.severity.toUpperCase()}] ${c.title}\n   Area: ${c.area}\n   Proposed comment: ${c.comment}\n   Explanation: ${c.explanation}\n   Fallback: ${c.fallback || "Confirm fallback with counsel."}`).join("\n\n") : "No proposed comments triggered by the current skills rules."}\n\n5. Redline Instructions\nUse the Redline-Style Doc tab for proposed insertions/deletions. These are drafting suggestions, not final legal advice. Apply edits surgically and route complex provisions to counsel.\n\n6. Important Limitations\nThis browser tool uses a rules/playbook engine based on the provided Claude legal skills. It does not replace lawyer review. For deeper LLM drafting, copy the LLM Prompt tab into your own ChatGPT or Claude session.`;
 }
 function buildPrompt(text, issues, comments, detection) {
   return `You are a contract-review assistant using the following Claude legal skills:\n${skillSources.map(s => `- ${s}`).join("\n")}\n\nReview the contract from this context:\nType: ${document.getElementById("contractType").value}\nDetected type: ${detection.label} (${detection.confidence})\nSide: ${document.getElementById("position").value}\nGoverning law target: ${document.getElementById("law").value}\nRisk posture: ${document.getElementById("riskTolerance").value}\nBusiness context: ${document.getElementById("dealContext").value}\n\nProduce:\n1. Review memo\n2. Proposed comments by section\n3. Surgical redline suggestions\n4. Explanation for each issue\n5. Fallback positions\n6. Items requiring attorney or business owner input\n\nInitial skills-engine findings:\n${comments.map(c => `- ${c.id}: ${c.title} (${c.severity}) - ${c.comment}`).join("\n") || "No initial flags."}\n\nContract text:\n${text}`;
@@ -531,8 +531,8 @@ function render() {
   document.getElementById("typeMetric").textContent = current.detection ? current.detection.type.replace(" agreement", "") : "-";
   document.getElementById("memoView").innerHTML = `<pre>${escapeHtml(current.memo)}</pre>`;
   document.getElementById("commentsView").innerHTML = current.comments.length ? `<div class=\"card-list\">${current.comments.map(c => `<article class=\"issue ${c.severity}\"><h3><span class=\"badge ${c.severity}\">${c.severity.toUpperCase()}</span>${escapeHtml(c.id)}. ${escapeHtml(c.title)}</h3><div class=\"issue-meta\">${escapeHtml(c.area)}</div>${c.snippet ? `<p><strong>Text signal:</strong> ${escapeHtml(c.snippet)}</p>` : ""}<p><strong>Proposed comment:</strong> ${escapeHtml(c.comment)}</p><p><strong>Explanation:</strong> ${escapeHtml(c.explanation)}</p><p><strong>Fallback:</strong> ${escapeHtml(c.fallback || "Confirm with counsel.")}</p></article>`).join("")}</div>` : `<div class=\"empty\">No proposed comments triggered by the current skills rules.</div>`;
-  document.getElementById("redlineView").innerHTML = current.redlineHtml || `<div class=\"empty\">Run a skills review to generate redline-style output.</div>`;
-  document.getElementById("promptText").textContent = current.prompt || "Run a skills review to generate the LLM prompt.";
+  document.getElementById("redlineView").innerHTML = current.redlineHtml || `<div class=\"empty\">Run a review to generate redline-style output.</div>`;
+  document.getElementById("promptText").textContent = current.prompt || "Run a review to generate the LLM prompt.";
 }
 function switchTab(tab) {
   document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
