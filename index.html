@@ -832,7 +832,8 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   var MAP = {
     cn: { href: "/pipia",                                en: "Run your China PIPIA — Free", cn: "开始中国 PIPIA 评估 — 免费" },
     eu: { href: "https://gdpr.legalaipay.com/dpia.html", en: "Run your EU DPIA — Free",     cn: "开始欧盟 DPIA 评估 — 免费" },
-    uk: { href: "https://gdpr.legalaipay.com/dpia.html", en: "Run your UK DPIA — Free",     cn: "开始英国 DPIA 评估 — 免费" }
+    uk: { href: "https://gdpr.legalaipay.com/dpia.html", en: "Run your UK DPIA — Free",     cn: "开始英国 DPIA 评估 — 免费" },
+    us: { href: "/privacy-policy-generator", en: "Generate your CCPA/CPRA policy — Free", cn: "生成加州 CCPA 隐私政策 — 免费" }
   };
   var picker = document.getElementById('region-picker');
   var cta    = document.getElementById('risk-cta');
@@ -855,15 +856,11 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     var hasUS = sel.indexOf('us') > -1;
     if (sel.length === 0) {
       setCta('#', 'Select a region to begin', '请先选择地区', true);
-    } else if (risk.length === 0 && hasUS) {
-      setCta('#', 'US privacy assessment — coming soon', '美国隐私评估 — 即将推出', true);
-      note.innerHTML = '<span class="en-only">No US privacy check yet — for now, use the cross-border &amp; <a href="/contract-review">contract tools</a>.</span><span class="cn-only">美国隐私评估暂未上线 — 目前请使用跨境与<a href="/contract-review">合同工具</a>。</span>';
-    } else if (risk.length === 1) {
-      var m = MAP[risk[0]];
+    } else if (sel.length === 1) {
+      var m = MAP[sel[0]];
       setCta(m.href, m.en, m.cn, false);
-      if (hasUS) note.innerHTML = '<span class="en-only">US privacy check is coming soon — start with the above.</span><span class="cn-only">美国隐私评估即将推出 — 请先完成上面的步骤。</span>';
     } else {
-      setCta('#toolkit', 'See your toolkits (' + risk.map(function(r){return r.toUpperCase();}).join(' + ') + ')', '查看您的工具包', false);
+      setCta('#toolkit', 'See your toolkits (' + sel.map(function(r){return r.toUpperCase();}).join(' + ') + ')', '查看您的工具包', false);
       note.innerHTML = '<span class="en-only">You operate across regions — each needs its own check. We’ll show all that apply.</span><span class="cn-only">您跨法域经营 — 每个法域都需要单独评估，我们会列出全部适用工具。</span>';
     }
   }
