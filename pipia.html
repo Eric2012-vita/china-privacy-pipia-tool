@@ -261,6 +261,94 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   </div>
 </div>
 
+
+<!-- Priority 3: PIPIA Mode selector + Simple Mode -->
+<div id="modeChooser">
+  <div class="mode-intro">
+    <h2>Choose your mode <span style="color:#a0aec0;font-weight:500;">| 选择模式</span></h2>
+    <p>New to PIPIA? Start with Simple Mode for a quick read on your risk. Need the full filing? Use Expert Mode. 不熟悉 PIPIA？先用简易模式快速评估风险；需要完整备案请使用专家模式。</p>
+  </div>
+  <div class="mode-cards">
+    <div class="mode-card" id="card-simple" onclick="enterSimpleMode()">
+      <span class="mc-badge">Simple Mode · 简易模式</span>
+      <h3>Quick risk check</h3>
+      <p>Answer a few business-friendly questions. Get an initial risk level, the PIPIA modules you likely need, and what to prepare next. 回答几个通俗问题，获得初步风险等级与所需模块。</p>
+      <ul>
+        <li>~3 minutes, no jargon · 约 3 分钟，无术语</li>
+        <li>Initial risk level + triggered modules · 初步风险与模块</li>
+        <li>Missing-info checklist + next steps · 待补清单与下一步</li>
+      </ul>
+      <button type="button" class="mc-go" onclick="event.stopPropagation();enterSimpleMode()">Start Simple Mode →</button>
+    </div>
+    <div class="mode-card" id="card-expert" onclick="enterExpertMode()">
+      <span class="mc-badge">Expert Mode · 专家模式</span>
+      <h3>Full PIPIA assessment</h3>
+      <p>The complete, detailed assessment with every module, classification step and exportable report. 完整详细的评估，含全部模块、分类步骤与可导出报告。</p>
+      <ul>
+        <li>All steps and modules · 全部步骤与模块</li>
+        <li>Exportable report &amp; policy handoff · 可导出报告</li>
+        <li>For filings and detailed review · 适用于备案与详审</li>
+      </ul>
+      <button type="button" class="mc-go secondary" onclick="event.stopPropagation();enterExpertMode()">Open Expert Mode →</button>
+    </div>
+  </div>
+</div>
+
+<div id="simpleMode" style="display:none;">
+  <button type="button" class="simple-back" onclick="backToChooser()">← Back to mode choice 返回</button>
+  <div class="simple-card">
+    <div class="simple-q" data-q="region">
+      <label class="q">1. Where are your users or customers located? 用户/客户位于哪里？</label>
+      <div class="opts">
+        <label class="opt"><input type="checkbox" name="s_region" value="china">🇨🇳 Mainland China 中国大陆</label>
+        <label class="opt"><input type="checkbox" name="s_region" value="overseas">🌐 Overseas / 海外</label>
+      </div>
+    </div>
+    <div class="simple-q" data-q="sensitive">
+      <label class="q">2. Do you handle sensitive personal information (e.g. ID numbers, health, finance, biometrics, location, or any data about children under 14)? 是否处理敏感个人信息（身份证号、健康、财务、生物识别、定位或不满14岁儿童信息）？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="s_sensitive" value="yes">Yes 是</label>
+        <label class="opt"><input type="radio" name="s_sensitive" value="no">No 否</label>
+        <label class="opt"><input type="radio" name="s_sensitive" value="unsure">Not sure 不确定</label>
+      </div>
+    </div>
+    <div class="simple-q" data-q="volume">
+      <label class="q">3. Roughly how many people's data do you process? 处理多少人的数据？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="s_volume" value="small">Under 100k 少于 10 万</label>
+        <label class="opt"><input type="radio" name="s_volume" value="large">100k–1M 10万–100万</label>
+        <label class="opt"><input type="radio" name="s_volume" value="huge">Over 1M 超过 100 万</label>
+      </div>
+    </div>
+    <div class="simple-q" data-q="vendors">
+      <label class="q">4. Do you share data with vendors or other companies? 是否与供应商或其他公司共享数据？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="s_vendors" value="yes">Yes 是</label>
+        <label class="opt"><input type="radio" name="s_vendors" value="no">No 否</label>
+      </div>
+    </div>
+    <div class="simple-q" data-q="crossborder">
+      <label class="q">5. Do you send personal data outside mainland China? 是否将个人信息传输至中国大陆境外？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="s_crossborder" value="yes">Yes 是</label>
+        <label class="opt"><input type="radio" name="s_crossborder" value="no">No 否</label>
+        <label class="opt"><input type="radio" name="s_crossborder" value="unsure">Not sure 不确定</label>
+      </div>
+    </div>
+    <div class="simple-q" data-q="automated">
+      <label class="q">6. Do you use automated decision-making or profiling (e.g. recommendations, scoring, targeted ads)? 是否使用自动化决策或画像（推荐、评分、定向广告）？</label>
+      <div class="opts">
+        <label class="opt"><input type="radio" name="s_automated" value="yes">Yes 是</label>
+        <label class="opt"><input type="radio" name="s_automated" value="no">No 否</label>
+      </div>
+    </div>
+    <button type="button" class="mc-go" onclick="computeSimpleResults()">See my result 查看结果</button>
+
+    <div id="simpleResults" style="display:none;"></div>
+  </div>
+</div>
+
+<div class="expert-handoff-note" id="expertHandoffNote"></div>
 <div class="container">
   <div class="sidebar">
     <div class="progress-text" id="progressText">Step 1 of 7</div>
@@ -2057,6 +2145,42 @@ td{padding:8px 10px;border-bottom:1px solid #e2e8f0;}
     .cls-field-tag { font-size: 12px; padding: 3px 10px; border-radius: 12px; font-weight: 500; }
     .cls-tag-sensitive { background: rgba(229,83,62,0.12); color: var(--danger); border: 1px solid rgba(229,83,62,0.3); }
     .cls-tag-personal { background: rgba(26,54,93,0.08); color: var(--primary); border: 1px solid rgba(26,54,93,0.2); }
+
+/* ===== Priority 3: PIPIA Simple/Expert mode ===== */
+#modeChooser{max-width:1000px;margin:28px auto 0;padding:0 20px}
+.mode-intro{text-align:center;margin-bottom:22px}
+.mode-intro h2{font-size:1.5rem;color:#0f1e3d;margin-bottom:.4rem}
+.mode-intro p{color:#5a6b85;font-size:.95rem;max-width:640px;margin:0 auto}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;cursor:pointer;transition:box-shadow .15s,transform .15s,border-color .15s}
+.mode-card:hover{box-shadow:0 10px 28px rgba(15,30,61,.1);transform:translateY(-2px);border-color:#3182ce}
+.mode-card .mc-badge{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#3182ce;background:rgba(49,130,206,.1);padding:.25rem .6rem;border-radius:999px;margin-bottom:.7rem}
+.mode-card h3{font-size:1.2rem;color:#0f1e3d;margin-bottom:.45rem}
+.mode-card p{color:#5a6b85;font-size:.9rem;line-height:1.5;margin-bottom:1rem}
+.mode-card ul{margin:0 0 1rem;padding-left:1.1rem;color:#5a6b85;font-size:.86rem;line-height:1.55}
+.mode-card .mc-go{display:inline-block;font-weight:600;font-size:.9rem;color:#fff;background:#0f1e3d;border:none;border-radius:10px;padding:.6rem 1.1rem;cursor:pointer}
+.mode-card .mc-go.secondary{background:#fff;color:#0f1e3d;border:1px solid #cbd5e0}
+#simpleMode{max-width:860px;margin:24px auto 0;padding:0 20px}
+.simple-back{background:none;border:none;color:#3182ce;font-size:.9rem;cursor:pointer;margin-bottom:12px}
+.simple-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:26px}
+.simple-q{margin-bottom:20px}
+.simple-q label.q{display:block;font-weight:600;color:#0f1e3d;margin-bottom:.55rem;font-size:.98rem}
+.simple-q .opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.simple-q .opt{border:1px solid #cbd5e0;border-radius:10px;padding:.5rem .85rem;cursor:pointer;font-size:.88rem;color:#2d3748;background:#fff}
+.simple-q .opt input{margin-right:.4rem}
+.simple-q .opt.checked{border-color:#3182ce;background:rgba(49,130,206,.08)}
+#simpleResults{margin-top:22px;border-top:1px solid #e2e8f0;padding-top:20px}
+.sr-risk{display:inline-block;font-weight:700;padding:.35rem .8rem;border-radius:999px;font-size:.9rem;margin-bottom:12px}
+.sr-risk.low{background:rgba(56,161,105,.12);color:#2f855a}
+.sr-risk.med{background:rgba(214,158,46,.14);color:#b7791f}
+.sr-risk.high{background:rgba(229,62,62,.12);color:#c53030}
+#simpleResults h4{color:#0f1e3d;margin:14px 0 .4rem;font-size:.98rem}
+#simpleResults ul{margin:0;padding-left:1.2rem;color:#3a4a63;font-size:.9rem;line-height:1.6}
+.simple-actions{margin-top:20px;display:flex;gap:.7rem;flex-wrap:wrap}
+.simple-actions button{font-weight:600;font-size:.92rem;border-radius:10px;padding:.65rem 1.2rem;cursor:pointer;border:1px solid #cbd5e0;background:#fff;color:#0f1e3d}
+.simple-actions button.primary{background:#0f1e3d;color:#fff;border-color:#0f1e3d}
+.expert-handoff-note{max-width:1000px;margin:14px auto 0;padding:12px 16px;background:#f0f7ff;border:1px solid #cfe3fb;border-left:4px solid #3182ce;border-radius:10px;color:#2d3748;font-size:.88rem;display:none}
 </style></head><body>
 <h1>PIPIA Assessment Report<br><small style="font-weight:400;font-size:14px;color:#718096;">个人信息保护影响评估报告</small></h1>
 <div class="meta">
@@ -2407,5 +2531,108 @@ function ensureModuleDpoBlocks(){
   document.addEventListener('change',function(e){ if(e.target && (e.target.name==='offlineProc'||e.target.name==='retentionPolicy')){ try{ evalProcessingRetentionRisks(); renderDpoPreModuleRec(); }catch(err){} } });
 })();
 </script>
-<div class="completeness-modal" id="completenessModal" onclick="if(event.target===this)closeCompletenessModal()"><div class="completeness-modal-box"><h3>⚠️ 完成度检查 / Completeness Check</h3><div class="cm-sub">以下必填字段尚未完成。点击任一项可跳转到对应位置 / The following required fields are missing. Click any item to jump to it.</div><ul></ul><div class="completeness-modal-actions"><button class="cm-cancel" onclick="closeCompletenessModal()">Cancel 取消</button><button class="cm-force" onclick="">Export Anyway 仍然导出</button></div></div></div></body>
+<div class="completeness-modal" id="completenessModal" onclick="if(event.target===this)closeCompletenessModal()"><div class="completeness-modal-box"><h3>⚠️ 完成度检查 / Completeness Check</h3><div class="cm-sub">以下必填字段尚未完成。点击任一项可跳转到对应位置 / The following required fields are missing. Click any item to jump to it.</div><ul></ul><div class="completeness-modal-actions"><button class="cm-cancel" onclick="closeCompletenessModal()">Cancel 取消</button><button class="cm-force" onclick="">Export Anyway 仍然导出</button></div></div></div>
+<script>
+(function(){
+  var SIMPLE_KEY = 'legalaipay.pipiaSimple';
+  function wizard(){ return document.querySelector('div.container'); }
+  function el(id){ return document.getElementById(id); }
+
+  window.enterSimpleMode = function(){
+    el('modeChooser').style.display='none';
+    if(wizard()) wizard().style.display='none';
+    el('simpleMode').style.display='block';
+    el('expertHandoffNote').style.display='none';
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  window.enterExpertMode = function(){
+    el('modeChooser').style.display='none';
+    el('simpleMode').style.display='none';
+    if(wizard()) wizard().style.display='';
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  window.backToChooser = function(){
+    el('simpleMode').style.display='none';
+    if(wizard()) wizard().style.display='none';
+    el('modeChooser').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  // checked styling
+  document.addEventListener('change', function(e){
+    if(e.target && e.target.name && e.target.name.indexOf('s_')===0){
+      var grp=e.target.closest('.opts');
+      if(e.target.type==='radio' && grp){ grp.querySelectorAll('.opt').forEach(function(o){o.classList.remove('checked');}); }
+      var lbl=e.target.closest('.opt'); if(lbl) lbl.classList.toggle('checked', e.target.checked);
+    }
+  });
+
+  function readAnswers(){
+    var a={};
+    a.region=[].slice.call(document.querySelectorAll('input[name=s_region]:checked')).map(function(x){return x.value;});
+    ['s_sensitive','s_volume','s_vendors','s_crossborder','s_automated'].forEach(function(n){
+      var c=document.querySelector('input[name='+n+']:checked'); a[n.slice(2)]=c?c.value:null;
+    });
+    return a;
+  }
+
+  window.computeSimpleResults = function(){
+    var a=readAnswers();
+    var score=0, modules=[], missing=[], next=[];
+    if(a.sensitive==='yes'){ score+=2; modules.push('Sensitive personal information module 敏感个人信息模块'); }
+    if(a.sensitive==='unsure'){ score+=1; missing.push('Confirm whether any data is sensitive 确认是否含敏感信息'); }
+    if(a.volume==='large'){ score+=1; }
+    if(a.volume==='huge'){ score+=2; }
+    if(a.vendors==='yes'){ score+=1; modules.push('Third-party sharing / entrusted processing module 第三方共享/委托处理模块'); }
+    if(a.crossborder==='yes'){ score+=2; modules.push('Cross-border transfer module 跨境传输模块'); }
+    if(a.crossborder==='unsure'){ score+=1; missing.push('Confirm whether data leaves mainland China 确认是否出境'); }
+    if(a.automated==='yes'){ score+=1; modules.push('Automated decision-making module 自动化决策模块'); }
+    if(a.region && a.region.indexOf('overseas')>-1){ next.push('You may also have GDPR/US obligations — check the compliance path on the homepage. 可能同时涉及 GDPR/美国义务。'); }
+
+    var level, cls;
+    if(score>=4){ level='High risk 高风险'; cls='high'; }
+    else if(score>=2){ level='Medium risk 中风险'; cls='med'; }
+    else { level='Lower risk 较低风险'; cls='low'; }
+
+    if(!modules.length) modules.push('Base assessment only — no special modules triggered yet 仅基础评估');
+    if(a.sensitive==='yes' || a.region.indexOf('china')>-1) next.push('Proceed to Expert Mode to complete the full PIPIA. 进入专家模式完成完整 PIPIA。');
+    if(!next.length) next.push('Review your answers, then continue to Expert Mode when ready. 核对答案后进入专家模式。');
+    if(!missing.length) missing.push('No obvious gaps from these answers. 暂无明显缺失。');
+
+    try{ localStorage.setItem(SIMPLE_KEY, JSON.stringify({answers:a,level:level,score:score,modules:modules,ts:Date.now()})); }catch(e){}
+
+    function li(arr){ return arr.map(function(x){return '<li>'+x+'</li>';}).join(''); }
+    el('simpleResults').innerHTML =
+      '<span class="sr-risk '+cls+'">Initial result: '+level+'</span>'+
+      '<h4>Likely PIPIA modules 可能需要的模块</h4><ul>'+li(modules)+'</ul>'+
+      '<h4>Still to confirm 待确认信息</h4><ul>'+li(missing)+'</ul>'+
+      '<h4>Suggested next steps 建议的下一步</h4><ul>'+li(next)+'</ul>'+
+      '<div class="simple-actions">'+
+        '<button type="button" class="primary" onclick="continueToExpert()">Continue into Expert Mode → 进入专家模式</button>'+
+        '<button type="button" onclick="el2(\'simpleResults\')">Adjust answers 修改答案</button>'+
+      '</div>';
+    el('simpleResults').style.display='block';
+    el('simpleResults').scrollIntoView({behavior:'smooth'});
+  };
+  window.el2 = function(id){ var n=document.getElementById(id); if(n){ n.style.display='none'; window.scrollTo({top:0,behavior:'smooth'}); } };
+
+  window.continueToExpert = function(){
+    var note=el('expertHandoffNote');
+    var saved=null; try{ saved=JSON.parse(localStorage.getItem(SIMPLE_KEY)||'null'); }catch(e){}
+    if(note){
+      note.innerHTML='✓ Your Simple Mode summary was saved'+(saved?(' (initial: '+saved.level+')'):'')+'. Continue the detailed assessment below. 已保存简易模式结果，请在下方完成详细评估。';
+      note.style.display='block';
+    }
+    enterExpertMode();
+    if(note){ note.style.display='block'; }
+  };
+
+  document.addEventListener('DOMContentLoaded', function(){
+    // Default to chooser; hide expert wizard until a mode is picked
+    if(wizard()) wizard().style.display='none';
+    var mc=el('modeChooser'); if(mc) mc.style.display='block';
+  });
+})();
+</script>
+</body>
 </html>
