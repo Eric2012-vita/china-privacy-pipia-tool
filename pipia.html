@@ -210,6 +210,44 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .cm-cancel{background:#e2e8f0;color:#2d3748}
 .cm-force{background:#e53e3e;color:#fff}
 .cm-fill{background:#3182ce;color:#fff}
+
+/* === Priority 3 mode-chooser CSS relocated into active style block (quick fix; see TODO: 2nd style block not parsed) === */
+/* ===== Priority 3: PIPIA Simple/Expert mode ===== */
+#modeChooser{max-width:1000px;margin:28px auto 0;padding:0 20px}
+.mode-intro{text-align:center;margin-bottom:22px}
+.mode-intro h2{font-size:1.5rem;color:#0f1e3d;margin-bottom:.4rem}
+.mode-intro p{color:#5a6b85;font-size:.95rem;max-width:640px;margin:0 auto}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.mode-cards{grid-template-columns:1fr}}
+.mode-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;cursor:pointer;transition:box-shadow .15s,transform .15s,border-color .15s}
+.mode-card:hover{box-shadow:0 10px 28px rgba(15,30,61,.1);transform:translateY(-2px);border-color:#3182ce}
+.mode-card .mc-badge{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#3182ce;background:rgba(49,130,206,.1);padding:.25rem .6rem;border-radius:999px;margin-bottom:.7rem}
+.mode-card h3{font-size:1.2rem;color:#0f1e3d;margin-bottom:.45rem}
+.mode-card p{color:#5a6b85;font-size:.9rem;line-height:1.5;margin-bottom:1rem}
+.mode-card ul{margin:0 0 1rem;padding-left:1.1rem;color:#5a6b85;font-size:.86rem;line-height:1.55}
+.mode-card .mc-go{display:inline-block;font-weight:600;font-size:.9rem;color:#fff;background:#0f1e3d;border:none;border-radius:10px;padding:.6rem 1.1rem;cursor:pointer}
+.mode-card .mc-go.secondary{background:#fff;color:#0f1e3d;border:1px solid #cbd5e0}
+#simpleMode{max-width:860px;margin:24px auto 0;padding:0 20px}
+.simple-back{background:none;border:none;color:#3182ce;font-size:.9rem;cursor:pointer;margin-bottom:12px}
+.simple-card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:26px}
+.simple-q{margin-bottom:20px}
+.simple-q label.q{display:block;font-weight:600;color:#0f1e3d;margin-bottom:.55rem;font-size:.98rem}
+.simple-q .opts{display:flex;flex-wrap:wrap;gap:.5rem}
+.simple-q .opt{border:1px solid #cbd5e0;border-radius:10px;padding:.5rem .85rem;cursor:pointer;font-size:.88rem;color:#2d3748;background:#fff}
+.simple-q .opt input{margin-right:.4rem}
+.simple-q .opt.checked{border-color:#3182ce;background:rgba(49,130,206,.08)}
+#simpleResults{margin-top:22px;border-top:1px solid #e2e8f0;padding-top:20px}
+.sr-risk{display:inline-block;font-weight:700;padding:.35rem .8rem;border-radius:999px;font-size:.9rem;margin-bottom:12px}
+.sr-risk.low{background:rgba(56,161,105,.12);color:#2f855a}
+.sr-risk.med{background:rgba(214,158,46,.14);color:#b7791f}
+.sr-risk.high{background:rgba(229,62,62,.12);color:#c53030}
+#simpleResults h4{color:#0f1e3d;margin:14px 0 .4rem;font-size:.98rem}
+#simpleResults ul{margin:0;padding-left:1.2rem;color:#3a4a63;font-size:.9rem;line-height:1.6}
+.simple-actions{margin-top:20px;display:flex;gap:.7rem;flex-wrap:wrap}
+.simple-actions button{font-weight:600;font-size:.92rem;border-radius:10px;padding:.65rem 1.2rem;cursor:pointer;border:1px solid #cbd5e0;background:#fff;color:#0f1e3d}
+.simple-actions button.primary{background:#0f1e3d;color:#fff;border-color:#0f1e3d}
+.expert-handoff-note{max-width:1000px;margin:14px auto 0;padding:12px 16px;background:#f0f7ff;border:1px solid #cfe3fb;border-left:4px solid #3182ce;border-radius:10px;color:#2d3748;font-size:.88rem;display:none}
+
 </style>
 
     <meta name="description" content="Free Personal Information Protection Impact Assessment (PIPIA) tool for PRC PIPL compliance. Identify, assess, and document data protection risks in your browser — no data leaves your device.">
