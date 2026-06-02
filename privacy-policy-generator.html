@@ -545,8 +545,9 @@ window.addEventListener('DOMContentLoaded', () => {
   function fpGroupAnswered(fs){var ins=fs.querySelectorAll('input,select,textarea');for(var i=0;i<ins.length;i++){var el=ins[i];if(el.type==="radio"||el.type==="checkbox"){if(el.checked)return true;}else if(el.value&&String(el.value).trim()!=="")return true;}return false;}
   function updateFlatProgress(){var box=document.getElementById("flatProgress");if(!box)return;var mk=fpMarket();if(mk!=="china"&&mk!=="california"){box.classList.remove("visible");return;}box.classList.add("visible");var fsets=[].slice.call(document.querySelectorAll(".form-body fieldset.field"));var visible=fsets.filter(function(fs){if(fs.offsetParent===null)return false;var lg=fs.querySelector("legend");if(lg&&/which market/i.test(lg.textContent))return false;return fs.querySelectorAll('input,select,textarea').length>0;});var total=visible.length;var done=visible.filter(fpGroupAnswered).length;var pct=total?Math.round(done/total*100):0;var fill=document.getElementById("fpFill");if(fill)fill.style.width=pct+"%";var txt=document.getElementById("fpText");if(txt){txt.innerHTML='<span class="en-only">'+done+' of '+total+' answered</span><span class="cn-only">'+done+' / '+total+'</span>';}}
   window.__updateFlatProgress=updateFlatProgress;
-  document.addEventListener("input",updateFlatProgress,true);
-  document.addEventListener("change",updateFlatProgress,true);
+  function fpDefer(){setTimeout(updateFlatProgress,0);}
+  document.addEventListener("input",fpDefer,true);
+  document.addEventListener("change",fpDefer,true);
   if(document.readyState!=="loading")setTimeout(updateFlatProgress,0);else document.addEventListener("DOMContentLoaded",function(){setTimeout(updateFlatProgress,0);});
 })();
 </script>
