@@ -99,6 +99,8 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
 .empty { color: var(--muted); font-size: 14px; padding: 18px; background: #f8fafc; border: 1px dashed var(--border); border-radius: 9px; }
 .notice { color: #744210; background: #fffaf0; border: 1px solid #fbd38d; border-radius: 8px; padding: 12px; font-size: 13px; margin-bottom: 14px; }
 @media (max-width: 920px) { .layout { grid-template-columns: 1fr; } .input-panel { position: static; max-height: none; } .metrics { grid-template-columns: repeat(2, 1fr); } .row2 { grid-template-columns: 1fr; } .nav-actions a:not(.primary-link) { display: none; } }
+
+.cr-steps{display:flex;align-items:stretch;gap:8px;margin:0 0 18px 0}.cr-step{flex:1;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;transition:border-color .2s,background .2s}.cr-step .cr-num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;background:#eef1f5;color:#6b7280}.cr-step .cr-lbl{display:flex;flex-direction:column;line-height:1.2}.cr-step .cr-lbl b{font-size:.85rem;color:#2d3748}.cr-step .cr-lbl span{font-size:.72rem;color:#6b7280}.cr-step.active{border-color:#2563eb;background:#f5f8ff}.cr-step.active .cr-num{background:#2563eb;color:#fff}.cr-step.done .cr-num{background:#16a34a;color:#fff}.cr-step.done{border-color:#bbf7d0}@media(max-width:640px){.cr-steps{flex-direction:column}}
 </style>
 
     <link rel="canonical" href="https://legalaipay.com/contract-review">
@@ -162,6 +164,7 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
       <p>Upload a contract or paste text. Then choose the side, risk posture, and output package.</p>
     </div>
     <div class="form-body">
+        <div class="cr-steps" id="crSteps" aria-label="Review steps"><div class="cr-step" data-cr-step="1"><span class="cr-num">1</span><span class="cr-lbl"><b>Add contract</b><span>Upload or paste</span></span></div><div class="cr-step" data-cr-step="2"><span class="cr-num">2</span><span class="cr-lbl"><b>Configure</b><span>Side, risk, outputs</span></span></div><div class="cr-step" data-cr-step="3"><span class="cr-num">3</span><span class="cr-lbl"><b>Review</b><span>Run and read results</span></span></div></div>
       <div class="upload-zone">
         <label for="contractFile">1. Upload contract file</label>
         <input id="contractFile" type="file" accept=".txt,.md,.html,.htm,.csv,.docx,.pdf,.png,.jpg,.jpeg,.webp">
@@ -636,6 +639,8 @@ render();
   modeRadios.forEach(function (r) { r.addEventListener('change', syncMode); });
   syncMode();
 })();
+
+<script>(function(){function crHasContract(){var ta=document.getElementById('contractText');var fs=document.getElementById('fileStatus');var v=ta?(ta.value||'').trim():'';var def='Upload a file, paste contract text here, or click Load Sample.';if(v&&v!==def&&v.length>20)return true;if(fs&&(fs.textContent||'').trim().length>0)return true;return false;}function crHasResults(){var s=document.getElementById('score');if(!s)return false;var v=(s.textContent||'').trim();return v!==''&&v!=='-';}function crUpdate(){var box=document.getElementById('crSteps');if(!box)return;var hasC=crHasContract();var hasR=crHasResults();var active=hasR?3:(hasC?2:1);var steps=box.querySelectorAll('[data-cr-step]');for(var i=0;i<steps.length;i++){var n=parseInt(steps[i].getAttribute('data-cr-step'),10);steps[i].classList.remove('active','done');if(n<active)steps[i].classList.add('done');else if(n===active)steps[i].classList.add('active');}}function crDefer(){setTimeout(crUpdate,0);}document.addEventListener('input',crDefer,true);document.addEventListener('change',crDefer,true);document.addEventListener('click',crDefer,true);if(document.readyState!=='loading')setTimeout(crUpdate,0);else document.addEventListener('DOMContentLoaded',function(){setTimeout(crUpdate,0);});})();</script>
 </script>
 </body>
 </html>
