@@ -3,50 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>US Privacy & AI Compliance — Simple Mode | LegalAIPay</title>
-<meta name="description" content="Simplified US compliance workflow: risk scoring, state matrix, essential recommendations, evidence pack download.">
+<title>US Privacy Law Triage — Am I Covered? | LegalAIPay</title>
+<meta name="description" content="Plain-English US privacy law triage. Find out which state privacy laws apply to you based on real CCPA and state thresholds, what you must do, and export a counsel-ready summary.">
 <style>
-body{font-family:Arial,sans-serif;background:#f7fafc;color:#2d3748;margin:0;padding:0}
-.nav{background:#0f1e3d;color:#fff;padding:12px 20px}
-.nav a{color:#fff;text-decoration:none;font-weight:700;margin-right:14px}
-.hero{background:#3182ce;color:#fff;padding:40px 20px;text-align:center}
-.hero h1{margin:0;font-size:28px}
-.hero p{font-size:15px;margin-top:8px}
-.wrap{max-width:1000px;margin:auto;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:760px){.wrap{grid-template-columns:1fr}}
-.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.field{margin-bottom:12px}
-label{font-weight:700;font-size:13px;display:block;margin-bottom:6px}
-input, select, textarea{width:100%;padding:8px;border-radius:6px;border:1px solid #e2e8f0;font-size:13px;box-sizing:border-box}
-textarea{min-height:60px}
+:root{--ink:#2d3748;--navy:#0f1e3d;--blue:#3182ce}
+*{box-sizing:border-box}
+body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f7fafc;color:var(--ink);margin:0;padding:0;line-height:1.5}
+.nav{background:var(--navy);color:#fff;padding:12px 20px}
+.nav a{color:#fff;text-decoration:none;font-weight:700;margin-right:14px;font-size:14px}
+.hero{background:var(--blue);color:#fff;padding:36px 20px;text-align:center}
+.hero h1{margin:0;font-size:26px}
+.hero p{font-size:15px;margin-top:8px;max-width:680px;margin-left:auto;margin-right:auto;opacity:.95}
+.disclaimer{max-width:1040px;margin:18px auto 0;padding:0 20px}
+.disclaimer .box{background:#fffaf0;border:1px solid #f6e05e;border-radius:10px;padding:12px 14px;font-size:13px;color:#744210}
+.wrap{max-width:1040px;margin:auto;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:820px){.wrap{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:12px;padding:22px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+h2{font-size:17px;margin:0 0 14px}
+.field{margin-bottom:14px}
+label.q{font-weight:700;font-size:13px;display:block;margin-bottom:6px}
+.hint{font-weight:400;color:#718096;font-size:12px;display:block;margin-top:2px}
+input,select,textarea{width:100%;padding:9px;border-radius:6px;border:1px solid #e2e8f0;font-size:13px}
+textarea{min-height:54px}
 .checks{display:grid;gap:6px}
-.check{display:flex;align-items:center;gap:6px;font-weight:400;font-size:13px}
-.check input{width:auto}
-.btn{background:#0f1e3d;color:#fff;padding:8px 14px;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:10px}
-.btn.soft{background:#3182ce;margin-left:8px}
-.tabs{display:flex;gap:6px;margin-top:0;flex-wrap:wrap}
-.tab{flex:1;padding:8px;text-align:center;border-radius:8px;background:#edf2f7;color:#0f1e3d;cursor:pointer;font-weight:700;font-size:13px}
-.tab.active{background:#0f1e3d;color:#fff}
-.out{margin-top:12px;padding:12px;background:#f0f4f8;border-radius:10px;white-space:pre-wrap;font-family:monospace;font-size:13px;line-height:1.5}
-.matrix{margin-top:12px;display:grid;gap:8px;max-height:420px;overflow:auto}
-.state{padding:10px;background:#fff;border-radius:8px;border:1px solid #e2e8f0;font-size:13px}
-.state strong{display:block;margin-bottom:4px}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700}
-.yes{background:#c6f6d5;color:#22543d}
-.maybe{background:#fefcbf;color:#744210}
-.no{background:#e2e8f0;color:#4a5568}
+.check{display:flex;align-items:flex-start;gap:7px;font-size:13px}
+.check input{width:auto;margin-top:3px}
+.btn{background:var(--navy);color:#fff;padding:10px 16px;border:none;border-radius:8px;cursor:pointer;font-weight:700;margin-top:8px}
+.btn.soft{background:var(--blue);margin-left:8px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{flex:1;min-width:90px;padding:8px;text-align:center;border-radius:8px;background:#edf2f7;color:var(--navy);cursor:pointer;font-weight:700;font-size:13px}
+.tab.active{background:var(--navy);color:#fff}
+.out{margin-top:14px;padding:14px;background:#f0f4f8;border-radius:10px;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
+.matrix{margin-top:14px;display:grid;gap:10px;max-height:460px;overflow:auto}
+.state{padding:12px;background:#fff;border-radius:8px;border:1px solid #e2e8f0;font-size:13px}
+.state strong{display:block;margin-bottom:4px;font-size:14px}
+.state .why{color:#4a5568;margin-top:6px}
+.pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.applies{background:#fed7d7;color:#822727}
+.likely{background:#feebc8;color:#7b341e}
+.unlikely{background:#c6f6d5;color:#22543d}
+.review{background:#e2e8f0;color:#2d3748}
+.foot{font-size:11px;color:#718096;margin-top:10px}
 </style>
 </head>
 <body>
-<nav class="nav"><a href="/us-compliance/">US Compliance</a><a href="/privacy-policy-generator">Privacy Generator</a><a href="/contract-review">Contract Review</a></nav>
+<nav class="nav"><a href="/us-compliance/">US Privacy Triage</a><a href="/privacy-policy-generator">Privacy Policy Generator</a><a href="/contract-review">Contract Review</a></nav>
 <section class="hero">
-<h1>US Privacy & AI Compliance — Simple Mode</h1>
-<p>Essential workflow: risk score, state matrix, key recommendations, and a downloadable evidence pack. Minimal options, no advanced settings.</p>
+<h1>US Privacy Law Triage — "Am I Covered?"</h1>
+<p>Answer a few questions. We apply the real thresholds in the major US state privacy laws to tell you which ones likely cover you, why, and what to do next — in plain English.</p>
 </section>
+<div class="disclaimer"><div class="box"><strong>Read me first.</strong> This is an educational triage tool, not legal advice, and it does not create an attorney-client relationship. Results are based on general statutory thresholds as understood in early 2025; US state privacy and AI laws change quickly. Use the "Export for counsel" button and have a qualified US privacy attorney confirm before you rely on anything here.</div></div>
 <div class="wrap">
 <div class="card">
-  <div class="field"><label>Company / Product</label><input id="company" value="Example AI SaaS"></div>
-  <div class="field"><label>Business type</label>
+  <h2>Step 1 - Tell us about your business</h2>
+  <div class="field"><label class="q">Company / product</label><input id="company" value="Example AI SaaS"></div>
+  <div class="field"><label class="q">Business type</label>
     <select id="biz">
       <option>AI tool or model provider</option>
       <option>SaaS / software platform</option>
@@ -56,7 +67,30 @@ textarea{min-height:60px}
       <option>Education / edtech</option>
     </select>
   </div>
-  <div class="field"><label>US user states</label>
+  <div class="field"><label class="q">Approx. annual revenue (USD)</label>
+    <select id="revenue">
+      <option value="lt25">Under $25M</option>
+      <option value="gte25">$25M or more</option>
+    </select>
+    <span class="hint">CCPA covers for-profits with $25M+ in gross annual revenue (one of several triggers).</span>
+  </div>
+  <div class="field"><label class="q">Consumers whose data you process, per state, per year</label>
+    <select id="volume">
+      <option value="lt25k">Fewer than 25,000 in any single state</option>
+      <option value="25kto100k">25,000-100,000 in at least one state</option>
+      <option value="gte100k">100,000 or more in at least one state</option>
+    </select>
+    <span class="hint">Most state laws trigger at 100k consumers; several also trigger at 25k+ if you sell data.</span>
+  </div>
+  <div class="field"><label class="q">Do you sell or "share" personal data (incl. cross-context targeted ads)?</label>
+    <select id="sells">
+      <option value="no">No</option>
+      <option value="some">Some / targeted advertising</option>
+      <option value="major">Yes - a meaningful share of revenue</option>
+    </select>
+    <span class="hint">Selling/sharing lowers several states' thresholds (25k) and triggers CCPA's 50%-of-revenue test.</span>
+  </div>
+  <div class="field"><label class="q">US states where you have users</label>
     <div class="checks">
       <label class="check"><input type="checkbox" class="stateBox" value="CA"> California</label>
       <label class="check"><input type="checkbox" class="stateBox" value="CO"> Colorado</label>
@@ -68,94 +102,127 @@ textarea{min-height:60px}
       <label class="check"><input type="checkbox" id="nationwide"> Nationwide / not sure</label>
     </div>
   </div>
-  <div class="field"><label>Key risk triggers</label>
+  <div class="field"><label class="q">Are you a "small business" under the federal SBA size standard?</label>
+    <select id="smb">
+      <option value="unsure">Not sure</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+    <span class="hint">Texas exempts SBA-defined small businesses (with a narrow sensitive-data carve-out).</span>
+  </div>
+  <div class="field"><label class="q">Risk triggers (check all that apply)</label>
     <div class="checks">
-      <label class="check"><input type="checkbox" id="children"> Children / Teens</label>
-      <label class="check"><input type="checkbox" id="sensitive"> Sensitive Data</label>
-      <label class="check"><input type="checkbox" id="ads"> Targeted Ads / Sale</label>
-      <label class="check"><input type="checkbox" id="ai"> Customer-Facing AI</label>
-      <label class="check"><input type="checkbox" id="admt"> Automated Decisions / Profiling</label>
+      <label class="check"><input type="checkbox" id="children"> Children / teens use the product</label>
+      <label class="check"><input type="checkbox" id="sensitive"> Sensitive data (health, precise geo, biometrics, race, etc.)</label>
+      <label class="check"><input type="checkbox" id="ai"> Customer-facing AI</label>
+      <label class="check"><input type="checkbox" id="admt"> Automated decisions / profiling with significant effects</label>
     </div>
   </div>
-  <div class="field"><label>Data categories</label><textarea id="data">identity/contact; account info; usage & log data; uploaded content; transactions/support</textarea></div>
-  <button class="btn" onclick="generate()">Generate Report</button>
+  <button class="btn" onclick="generate()">Run triage</button>
 </div>
 <div class="card">
+  <h2>Step 2 - Your results</h2>
   <div class="tabs">
-    <div class="tab active" data-tab="risk" onclick="tab('risk',this)">Risk</div>
-    <div class="tab" data-tab="matrix" onclick="tab('matrix',this)">State Matrix</div>
-    <div class="tab" data-tab="recommendations" onclick="tab('recommendations',this)">Recommendations</div>
-    <div class="tab" data-tab="download" onclick="tab('download',this)">Evidence Pack</div>
+    <div class="tab active" data-tab="summary" onclick="tab('summary',this)">Summary</div>
+    <div class="tab" data-tab="matrix" onclick="tab('matrix',this)">State-by-state</div>
+    <div class="tab" data-tab="todo" onclick="tab('todo',this)">What to do</div>
+    <div class="tab" data-tab="export" onclick="tab('export',this)">Export for counsel</div>
   </div>
-  <div class="out" id="out">Click "Generate Report" to see results.</div>
+  <div class="out" id="out">Fill in Step 1 and click "Run triage".</div>
   <div class="matrix" id="matrix" style="display:none"></div>
-  <div id="dlActions" style="display:none">
-    <button class="btn" onclick="downloadPack()">Download Markdown</button>
+  <div id="exportActions" style="display:none">
+    <button class="btn" onclick="downloadPack()">Download summary (.md)</button>
     <button class="btn soft" onclick="copyOut()">Copy</button>
+    <div class="foot">Tip: paste this into an email to your privacy attorney for a 20-minute review.</div>
   </div>
 </div>
 </div>
 <script>
-const STATE_LAWS={CA:'California (CCPA/CPRA)',CO:'Colorado (CPA)',CT:'Connecticut (CTDPA)',VA:'Virginia (VCDPA)',TX:'Texas (TDPSA)',OR:'Oregon (OCPA)',NJ:'New Jersey (NJDPA)'};
-let current='risk';
-let outputs={};
+var LAW={CA:'California (CCPA/CPRA)',CO:'Colorado (CPA)',CT:'Connecticut (CTDPA)',VA:'Virginia (VCDPA)',TX:'Texas (TDPSA)',OR:'Oregon (OCPA)',NJ:'New Jersey (NJDPA)'};
+var current='summary';
+var outputs={};
 function el(id){return document.getElementById(id)}
 function c(id){return el(id).checked}
-function selectedStates(){return Array.from(document.querySelectorAll('.stateBox:checked')).map(x=>x.value)}
-function calc(){
-  let score=0,reasons=[];
-  if(selectedStates().includes('CA')){score+=15;reasons.push('California users')}
-  if(c('nationwide')){score+=15;reasons.push('Nationwide / unsure')}
-  if(c('children')){score+=20;reasons.push('Children / Teens')}
-  if(c('sensitive')){score+=25;reasons.push('Sensitive Data')}
-  if(c('ads')){score+=20;reasons.push('Targeted Ads / Sale')}
-  if(c('ai')){score+=25;reasons.push('Customer-Facing AI')}
-  if(c('admt')){score+=30;reasons.push('Automated Decisions / Profiling')}
-  let level=score>100?'Critical':score>60?'High':score>25?'Medium':'Low';
-  return{score,level,reasons}
+function val(id){return el(id).value}
+function selectedStates(){return Array.prototype.slice.call(document.querySelectorAll('.stateBox:checked')).map(function(x){return x.value})}
+function v100k(){return val('volume')==='gte100k'}
+function v25k(){return val('volume')==='25kto100k'||val('volume')==='gte100k'}
+function sells(){return val('sells')!=='no'}
+function assess(s){
+  if(s==='CA'){
+    if(val('revenue')==='gte25') return {status:'applies',why:'Your business has $25M+ annual revenue, which alone makes CCPA/CPRA apply to a for-profit handling California residents data.'};
+    if(v100k()) return {status:'applies',why:'You process the personal data of 100,000+ California consumers/households a year, which triggers CCPA/CPRA.'};
+    if(val('sells')==='major') return {status:'likely',why:'If 50%+ of your revenue comes from selling/sharing personal data, CCPA/CPRA applies regardless of size. Confirm the revenue mix.'};
+    return {status:'unlikely',why:'You do not appear to meet any CCPA trigger ($25M revenue, 100k consumers, or 50%-of-revenue from selling data). Re-check if you grow or start selling data.'};
+  }
+  if(['CO','CT','OR','NJ','VA'].indexOf(s)>-1){
+    if(v100k()) return {status:'applies',why:'You process 100,000+ consumers in this state per year, which meets this law applicability threshold.'};
+    if(v25k()&&sells()) return {status:'applies',why:'You process 25,000+ consumers AND sell/share personal data, which meets the lower threshold under this law.'};
+    if(v25k()) return {status:'review',why:'You process 25k-100k consumers but indicated no data sales. This law generally needs 100k consumers, or 25k+ with data sales. Confirm whether targeted ads count as a sale/share for you.'};
+    return {status:'unlikely',why:'You appear below this law thresholds (typically 100k consumers, or 25k+ if you sell data).'};
+  }
+  if(s==='TX'){
+    if(val('smb')==='yes') return {status:'review',why:'Texas has no consumer-number threshold, but it exempts SBA-defined small businesses. As a small business you are largely exempt, except you still need consent before selling sensitive data.'};
+    return {status:'applies',why:'Texas has no numeric threshold: if you do business in Texas (or sell to Texans) and process their personal data, TDPSA applies unless you are an SBA-defined small business.'};
+  }
+  return {status:'review',why:'Check this state specific threshold.'};
 }
 function generate(){
-  let r=calc(),company=el('company').value||'Company',biz=el('biz').value,states=selectedStates(),data=el('data').value;
-  outputs.risk=company+' — US Privacy & AI Risk Result\n\nBusiness type: '+biz+'\nRisk Level: '+r.level+'\nScore: '+r.score+'\n\nDrivers:\n'+(r.reasons.length?r.reasons.map(x=>'- '+x).join('\n'):'- No major triggers selected');
-  outputs.matrix=(states.length?states.map(s=>STATE_LAWS[s]||s).join('\n'):'No specific states selected')+(c('nationwide')?'\nNationwide / not sure — assume all major state laws may apply':'');
-  outputs.recommendations='Recommended next steps:\n- Review privacy notices and opt-out mechanisms\n- Confirm consumer rights workflows (access, delete, correct)'+(c('sensitive')?'\n- Apply sensitive-data safeguards and obtain consent where required':'')+(c('children')?'\n- Add age-appropriate design and parental consent controls':'')+(c('ads')?'\n- Provide "Do Not Sell/Share" and targeted-ads opt-out':'')+((c('ai')||c('admt'))?'\n- Document AI/profiling logic and offer opt-out of automated decisions':'')+'\n\nData categories in scope:\n'+data;
-  outputs.download='# US Compliance Evidence Pack\n\n## Risk\n'+outputs.risk+'\n\n## State Matrix\n'+outputs.matrix+'\n\n## Recommendations\n'+outputs.recommendations+'\n\n_Generated by LegalAIPay — general guidance, not legal advice._';
-  renderMatrix(r);
+  var states=selectedStates();
+  if(c('nationwide')&&!states.length){states=['CA','CO','CT','VA','TX','OR','NJ'];}
+  var results=states.map(function(s){var a=assess(s);return {s:s,status:a.status,why:a.why}});
+  var applies=results.filter(function(r){return r.status==='applies'||r.status==='likely'});
+  var company=val('company')||'Your company';
+  var head=applies.length
+    ? 'Based on your answers, the following US state privacy laws most likely apply to '+company+':\n\n'+applies.map(function(r){return '\u2022 '+LAW[r.s]}).join('\n')
+    : 'Based on your answers, no listed state privacy law appears to clearly apply to '+company+' yet. This can change fast as you grow or start selling data.';
+  var triggers=[];
+  if(c('sensitive'))triggers.push('Sensitive data: most laws require opt-in consent (or an opt-out of use) and tighter safeguards.');
+  if(c('children'))triggers.push('Children/teens: COPPA (under 13) and state age-appropriate-design rules may add duties beyond general privacy law.');
+  if(sells())triggers.push('Selling/targeted ads: you generally must offer a Do Not Sell or Share My Personal Information opt-out and honor Global Privacy Control signals.');
+  if(c('admt')||c('ai'))triggers.push('AI / automated decisions: profiling opt-outs and AI-specific rules (e.g., California ADMT, Colorado AI Act) are emerging and moving fast. Treat as a watch item with counsel.');
+  outputs.summary=head+'\n\nKey factors flagged:\n'+(triggers.length?triggers.map(function(t){return '- '+t}).join('\n'):'- None of the special triggers were selected.')+'\n\nRemember: thresholds are about whether a law applies at all. Even where a law applies, your specific obligations depend on facts a lawyer should confirm.';
+  var todo=['Map your data: what you collect, why, who you share it with, and how long you keep it (a data inventory / RoPA).',
+    'Publish a compliant privacy notice for each applicable state (you can draft one in our Privacy Policy Generator).',
+    'Stand up consumer-rights request handling (access, delete, correct, and a verification + response workflow).'];
+  if(sells())todo.push('Add a Do Not Sell or Share My Personal Information link and honor Global Privacy Control opt-out signals.');
+  if(c('sensitive'))todo.push('Add a Limit the Use of My Sensitive Personal Information mechanism (CA) and consent where required by other states.');
+  if(c('children'))todo.push('Implement age screening, parental-consent flows (COPPA), and review state age-appropriate-design obligations.');
+  if(c('admt')||c('ai'))todo.push('Document your AI/profiling logic and prepare a profiling opt-out; track California ADMT and Colorado AI Act developments.');
+  todo.push('Put data processing agreements (DPAs) in place with vendors/processors.');
+  todo.push('Have a data-breach notification plan ready (all 50 states require notice; timelines differ).');
+  outputs.todo='Suggested next steps (prioritized):\n\n'+todo.map(function(t,i){return (i+1)+'. '+t}).join('\n')+'\n\nThese are starting points, not a guarantee of compliance. Your attorney should tailor and confirm them.';
+  var trig=[c('children')&&'children',c('sensitive')&&'sensitive',c('ai')&&'AI',c('admt')&&'automated-decisions'].filter(Boolean).join(', ');
+  outputs.export='# US Privacy Triage - Counsel Review Packet\n\nCompany: '+company+'\nBusiness type: '+val('biz')+'\nGenerated: '+new Date().toISOString().slice(0,10)+'\n\n## Inputs\n- Annual revenue: '+(val('revenue')==='gte25'?'$25M or more':'Under $25M')+'\n- Consumer volume: '+val('volume')+'\n- Sells/shares data: '+val('sells')+'\n- States with users: '+(states.join(', ')||'none')+'\n- SBA small business: '+val('smb')+'\n- Triggers: '+(trig||'none')+'\n\n## Likely applicable laws\n'+(applies.length?applies.map(function(r){return '- '+LAW[r.s]+' - '+r.why}).join('\n'):'- None clearly applicable based on inputs')+'\n\n## State-by-state assessment\n'+results.map(function(r){return '- '+LAW[r.s]+' ['+r.status.toUpperCase()+']: '+r.why}).join('\n')+'\n\n## Suggested next steps\n'+outputs.todo+'\n\n---\nEducational triage only - not legal advice; no attorney-client relationship. Based on general statutory thresholds understood as of early 2025; laws change frequently. Confirm with a qualified US privacy attorney.';
+  outputs._results=results;
+  renderMatrix(results);
   show();
 }
 function show(){tab(current,document.querySelector('.tab[data-tab="'+current+'"]'))}
-function applic(s,r){if(s==='CA') return r.score>0?'yes':'maybe';return r.score>25?'yes':'maybe';}
-function renderMatrix(r){
-  let states=selectedStates();
-  let html='';
-  if(!states.length && !c('nationwide')){html='<div class="state">No states selected. Choose user states on the left.</div>';}
-  states.forEach(s=>{
-    let a=applic(s,r);
-    let cls=a==='yes'?'yes':'maybe';
-    let txt=a==='yes'?'Likely applies':'Check thresholds';
-    html+='<div class="state"><strong>'+(STATE_LAWS[s]||s)+'</strong><span class="pill '+cls+'">'+txt+'</span></div>';
-  });
-  if(c('nationwide')){html+='<div class="state"><strong>Nationwide / not sure</strong><span class="pill maybe">Assume major state laws apply</span></div>';}
-  el('matrix').innerHTML=html;
+function renderMatrix(results){
+  var m=el('matrix');
+  if(!results.length){m.innerHTML='<div class="state">No states selected. Pick states (or Nationwide) in Step 1.</div>';return;}
+  var map={applies:['applies','Likely applies'],likely:['likely','Possibly applies'],unlikely:['unlikely','Likely not covered'],review:['review','Needs a closer look']};
+  m.innerHTML=results.map(function(r){
+    var mm=map[r.status]||map.review;
+    return '<div class="state"><strong>'+LAW[r.s]+'</strong><span class="pill '+mm[0]+'">'+mm[1]+'</span><div class="why">'+r.why+'</div></div>';
+  }).join('');
 }
 function tab(t,btn){
   current=t;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  let isMatrix=(t==='matrix'),isDl=(t==='download');
+  Array.prototype.slice.call(document.querySelectorAll('.tab')).forEach(function(b){b.classList.remove('active')});
+  if(btn)btn.classList.add('active');
+  var isMatrix=(t==='matrix'),isExport=(t==='export');
   el('out').style.display=isMatrix?'none':'block';
   el('matrix').style.display=isMatrix?'block':'none';
-  el('dlActions').style.display=isDl?'block':'none';
-  if(!isMatrix) el('out').textContent=outputs[t]||'Click "Generate Report" to see results.';
+  el('exportActions').style.display=isExport?'block':'none';
+  if(!isMatrix)el('out').textContent=outputs[t]||'Fill in Step 1 and click "Run triage".';
 }
-function copyOut(){navigator.clipboard.writeText(outputs.download||'')}
+function copyOut(){navigator.clipboard.writeText(outputs.export||'')}
 function downloadPack(){
-  let b=new Blob([outputs.download||''],{type:'text/markdown'});
-  let a=document.createElement('a');
-  a.href=URL.createObjectURL(b);
-  a.download='us-compliance-evidence-pack.md';
-  a.click();
-  URL.revokeObjectURL(a.href);
+  var b=new Blob([outputs.export||''],{type:'text/markdown'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='us-privacy-triage-counsel-packet.md';a.click();URL.revokeObjectURL(a.href);
 }
 </script>
 </body>
