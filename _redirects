@@ -1,2 +1,6 @@
-/us-compliance /us-compliance.html 200
-/us-privacy-ai /us-compliance.html 200
+/us-compliance /us-compliance/index.html 200
+/us-compliance/ /us-compliance/index.html 200
+/us-privacy-ai /us-compliance/index.html 200
+/us-privacy-ai/ /us-compliance/index.html 200
+/us-state-checker /us-compliance/index.html 200
+/us-state-checker/ /us-compliance/index.html 200
