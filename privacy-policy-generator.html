@@ -552,4 +552,48 @@ window.addEventListener('DOMContentLoaded', () => {
   if(document.readyState!=="loading")setTimeout(updateFlatProgress,0);else document.addEventListener("DOMContentLoaded",function(){setTimeout(updateFlatProgress,0);});
 })();
 </script>
-</script></body></html>
+</script><script>
+/* triagePrefill: receives US compliance triage handoff (?from=triage). Additive only. */
+(function triagePrefill(){
+  try{
+    var q = new URLSearchParams(window.location.search);
+    if(q.get("from")!=="triage") return;
+    function fire(elm,type){ try{ elm.dispatchEvent(new Event(type,{bubbles:true})); }catch(e){} }
+    // 1) select California market and reveal its fields
+    var mkt = document.querySelector('input[name="market"][value="california"]');
+    if(mkt){ mkt.checked=true; fire(mkt,"change"); fire(mkt,"input"); fire(mkt,"click"); }
+    // 2) prefill company name if a matching field exists
+    var company = q.get("company");
+    if(company){
+      var ci = document.getElementById("company") || document.querySelector('input[placeholder*="Company" i], input[name*="company" i]');
+      if(ci){ ci.value=company; fire(ci,"input"); fire(ci,"change"); }
+    }
+    // 3) check data-category boxes by value prefix
+    function checkByPrefix(prefix){
+      var boxes=[].slice.call(document.querySelectorAll('input[type=checkbox]'));
+      for(var i=0;i<boxes.length;i++){
+        var v=(boxes[i].value||"").toLowerCase();
+        if(v.indexOf(prefix.toLowerCase())===0 && !boxes[i].checked){ boxes[i].checked=true; fire(boxes[i],"change"); fire(boxes[i],"input"); }
+      }
+    }
+    // baseline categories most services collect
+    ["identity and contact","device, browser","usage and interaction"].forEach(checkByPrefix);
+    var flags=(q.get("flags")||"").split(",");
+    if(flags.indexOf("sensitive")>-1){ checkByPrefix("health, medical"); checkByPrefix("biometric identifiers"); checkByPrefix("precise geolocation"); }
+    if(flags.indexOf("ai")>-1||flags.indexOf("admt")>-1){ checkByPrefix("ai, automated decision"); }
+    if(flags.indexOf("children")>-1){ checkByPrefix("children\u0027s personal information"); }
+    // 4) banner
+    var b=document.createElement("div");
+    b.setAttribute("role","status");
+    b.style.cssText="margin:12px 0;padding:10px 14px;border:1px solid #0a7d33;background:#eafaef;border-radius:8px;font-size:13px;color:#14532d;display:flex;justify-content:space-between;gap:12px;align-items:center";
+    b.innerHTML="<span>Pre-filled from your US privacy triage (California / CCPA-CPRA). Review every field before generating — this is a starting point, not legal advice.</span>";
+    var x=document.createElement("button");
+    x.textContent="Dismiss"; x.style.cssText="border:none;background:#0a7d33;color:#fff;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12px";
+    x.onclick=function(){ b.remove(); };
+    b.appendChild(x);
+    var host=document.querySelector("main")||document.body;
+    host.insertBefore(b, host.firstChild);
+  }catch(e){ /* never break the page */ }
+})();
+</script>
+</body></html>
