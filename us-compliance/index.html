@@ -129,6 +129,7 @@ input,select,textarea{width:100%;padding:9px;border-radius:6px;border:1px solid 
   <div id="exportActions" style="display:none">
     <button class="btn" onclick="downloadPack()">Download summary (.md)</button>
     <button class="btn soft" onclick="copyOut()">Copy</button>
+    <button class="btn" onclick="toGenerator()" style="background:#0a7d33">Generate matching privacy policy &rarr;</button>
     <div class="foot">Tip: paste this into an email to your privacy attorney for a 20-minute review.</div>
   </div>
 </div>
@@ -227,6 +228,28 @@ function downloadPack(){
   var a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='us-privacy-triage-counsel-packet.md';a.click();URL.revokeObjectURL(a.href);
 }
+
+function toGenerator(){
+  try{
+    var states = selectedStates();
+    var p = new URLSearchParams();
+    p.set('from','triage');
+    p.set('market','california');
+    if(el('company')&&val('company')) p.set('company', val('company'));
+    if(states.length) p.set('states', states.join(','));
+    if(el('revenue')) p.set('revenue', val('revenue'));
+    if(el('volume')) p.set('volume', val('volume'));
+    if(el('sells')) p.set('sells', val('sells'));
+    var flags=[];
+    if(el('children')&&el('children').checked) flags.push('children');
+    if(el('sensitive')&&el('sensitive').checked) flags.push('sensitive');
+    if(el('ai')&&el('ai').checked) flags.push('ai');
+    if(el('admt')&&el('admt').checked) flags.push('admt');
+    if(flags.length) p.set('flags', flags.join(','));
+    window.location.href = '/privacy-policy-generator?'+p.toString();
+  }catch(e){ window.location.href='/privacy-policy-generator?from=triage&market=california'; }
+}
+
 </script>
 </body>
 </html>
