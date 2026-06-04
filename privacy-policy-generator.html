@@ -562,6 +562,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // 1) select California market and reveal its fields
     var mkt = document.querySelector('input[name="market"][value="california"]');
     if(mkt){ mkt.checked=true; fire(mkt,"change"); fire(mkt,"input"); fire(mkt,"click"); }
+    /* deferred */ setTimeout(function(){
     // 2) prefill company name if a matching field exists
     var company = q.get("company");
     if(company){
@@ -593,6 +594,7 @@ window.addEventListener('DOMContentLoaded', () => {
     b.appendChild(x);
     var host=document.querySelector("main")||document.body;
     host.insertBefore(b, host.firstChild);
+    }, 60);
   }catch(e){ /* never break the page */ }
 })();
 </script>
