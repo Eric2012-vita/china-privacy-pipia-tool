@@ -127,7 +127,7 @@ input,select,textarea{width:100%;padding:9px;border-radius:6px;border:1px solid 
   <div class="out" id="out">Answer Step 1, click "Next: refine", then "Run triage".</div>
   <div class="matrix" id="matrix" style="display:none"></div>
   <div id="exportActions" style="display:none">
-    <button class="btn" onclick="downloadPack()">Download summary (.md)</button><button class="btn" onclick="downloadPackWord()">Download Word</button><button class="btn" onclick="downloadPackHtml()">Download HTML</button>
+    <button class="btn" onclick="downloadPack()">Download summary (.md)</button><button class="btn" onclick="downloadPackWord()">Download Word</button><button class="btn" onclick="downloadPackHtml()">Download HTML</button><button class="btn ghost" onclick="downloadCounselMemo()">Counsel memo (Word)</button>
     <button class="btn soft" onclick="copyOut()">Copy</button>
     <button class="btn" onclick="toGenerator()" style="background:#0a7d33">Generate matching privacy policy &rarr;</button>
     <a class="btn soft" href="/pricing" style="text-decoration:none;display:inline-block">See pricing & plans →</a>
@@ -285,6 +285,34 @@ function downloadPackHtml(){
   var body=esc(md).replace(/\n/g,'<br>');
   var html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>US Privacy Compliance Pack</title><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;color:#1a1a1a;max-width:860px;margin:40px auto;padding:0 22px}</style></head><body>'+body+'<hr><p style="font-size:12px;color:#666">'+__pkFooter()+'</p></body></html>';
   __pkFile('us-privacy-compliance-pack.html',html,'text/html;charset=utf-8');
+}
+function __pkMemoMd(){
+  var co=__pkCompany(); var dt=new Date().toISOString().slice(0,10);
+  var by=(__pkGet('preparedBy')||'').trim()||'Privacy program';
+  var rows=__pkRiskRows();
+  var high=rows.filter(function(x){return x[2]==='High';});
+  var med=rows.filter(function(x){return x[2]==='Medium';});
+  var m='# Privacy Risk Memo\n\n**To:** File / Counsel  \n**From:** '+by+'  \n**Re:** US state privacy exposure for '+co+'  \n**Date:** '+dt+'  \n**Privilege:** Draft prepared to facilitate legal review  \n\n---\n\n';
+  m+='## 1. Executive summary\n\n'+co+' was assessed against US state consumer-privacy laws based on a structured triage. The assessment surfaces '+high.length+' high-priority and '+med.length+' medium-priority issues. High-priority items should be remediated before launch or processing of the affected data; medium-priority items should be scheduled into the compliance roadmap. This memo is a working draft for review by qualified counsel and is not legal advice.\n\n';
+  m+='## 2. Applicable laws (from triage)\n\n';
+  var ex=outputs.export||''; var li=ex.indexOf('## Likely applicable laws'); var se=ex.indexOf('## State-by-state assessment');
+  m+=(li>=0&&se>li)?ex.slice(li+25,se).trim()+'\n\n':'See triage output.\n\n';
+  m+='## 3. Risk register\n\n| # | Area | Finding | Severity | Recommended action |\n|---|------|---------|----------|--------------------|\n';
+  rows.forEach(function(x,i){m+='| '+(i+1)+' | '+x[0]+' | '+x[1]+' | '+x[2]+' | '+x[3]+' |\n';});
+  m+='\n## 4. Prioritized recommendations\n\n';
+  m+='**Address first (high severity):**\n'; if(high.length){high.forEach(function(x){m+='- '+x[0]+': '+x[3]+'\n';});} else {m+='- None flagged as high severity.\n';}
+  m+='\n**Schedule next (medium severity):**\n'; if(med.length){med.forEach(function(x){m+='- '+x[0]+': '+x[3]+'\n';});} else {m+='- None flagged as medium severity.\n';}
+  m+='\n## 5. Evidence appendix\n\nThe following starter templates accompany this memo as supporting documents (Data Processing Addendum, consumer opt-out mechanisms, and breach response plan). They are starting templates and require tailoring by counsel.\n\n';
+  var pi=ex.indexOf('# Pipeline templates'); if(pi<0)pi=ex.indexOf('# Appendix: starter templates'); if(pi>=0){m+=ex.slice(pi);}
+  m+='\n\n---\nDraft for legal review - not legal advice; no attorney-client relationship. Citations are general and current as understood in early 2025; confirm with a qualified US privacy attorney.\n';
+  return m;
+}
+function downloadCounselMemo(){
+  var md=__pkMemoMd();
+  var esc=function(s){return s.replace(/&/g,'\u0026amp;').replace(/</g,'\u0026lt;').replace(/>/g,'\u0026gt;');};
+  var body=esc(md).replace(/\n/g,'<br>');
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>Privacy Risk Memo</title></head><body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#111">'+body+'<hr><div style="font-size:9pt;color:#666">'+__pkFooter()+'</div></body></html>';
+  __pkFile('us-privacy-risk-memo.doc','\ufeff'+html,'application/msword');
 }
 
 function toGenerator(){
