@@ -251,5 +251,78 @@ function toGenerator(){
 }
 
 </script>
+<script>
+(function(){
+  var chr10=String.fromCharCode(10);
+  function gv(id){try{return (val(id)||'').trim();}catch(e){return '';}}
+  function gco(){return gv('company')||'[Your Company]';}
+  function gstates(){try{var s=(typeof effectiveStates==='function'?effectiveStates():selectedStates())||[];return s;}catch(e){return [];}}
+  function flag(n){try{return !!c(n);}catch(e){return false;}}
+  function doesSell(){try{return !!sells();}catch(e){return false;}}
+  function jnList(a){a=a||[];return a.length?a.join(', '):'(none selected)';}
+  function dpaTpl(){
+    var co=gco(), st=jnList(gstates()); var L=[];
+    L.push('# Vendor Data Processing Addendum (DPA) — STARTER TEMPLATE');
+    L.push('Between '+co+' (Business/Controller) and Vendor (Service Provider/Processor). States: '+st+'.');
+    L.push('1. Roles. Vendor processes personal information solely to perform the services as a service provider/contractor under Cal. Civ. Code 1798.140(ag)/(j) and a processor under Colo. Rev. Stat. 6-1-1305 and Va. Code 59.1-579.');
+    L.push('2. Purpose limitation. Vendor shall not sell or share the information, retain/use/disclose it outside the services, or combine it with other sources except as permitted by Cal. Civ. Code 1798.140(ag)(1).');
+    L.push('3. Security. Vendor shall maintain reasonable security appropriate to the data (Cal. Civ. Code 1798.81.5; Colo. Rev. Stat. 6-1-1308(5)).');
+    L.push('4. Subprocessors. Equivalent obligations flow down; Vendor remains liable.');
+    L.push('5. Rights assistance. Vendor assists '+co+' with verifiable consumer requests (access, delete, correct, opt-out) within statutory timelines.');
+    L.push('6. Deletion/return on termination unless retention is legally required.');
+    L.push('7. Audit. Vendor provides information to demonstrate compliance and allows reasonable assessments.');
+    L.push('8. Vendor notifies '+co+' if it can no longer meet its obligations (Cal. Civ. Code 1798.140(ag)(2)).');
+    return L.join(chr10);
+  }
+  function optoutTpl(){
+    var co=gco(); var L=[]; var sell=doesSell(); var sens=flag('sensitive');
+    L.push('# Consumer Opt-Out Mechanisms — STARTER TEMPLATE'); L.push('Company: '+co);
+    L.push('A. Do Not Sell or Share My Personal Information');
+    L.push(sell?'   Required: you indicated you sell/share for targeted advertising.':'   Not currently selling/sharing; becomes mandatory if that changes.');
+    L.push('   Provide a labeled Do Not Sell or Share link (Cal. Civ. Code 1798.135); honor Global Privacy Control signals (11 CCR 7025); process within 15 business days; no account required.');
+    L.push('   Also offer opt-out of targeted advertising/sale under Colo. Rev. Stat. 6-1-1306(1)(a) and Va. Code 59.1-577(A)(5).');
+    L.push('B. Limit the Use of My Sensitive Personal Information');
+    L.push(sens?'   Required: you process sensitive personal information.':'   Required only if you use sensitive PI beyond permitted purposes.');
+    L.push('   Provide a Limit the Use of My Sensitive Personal Information link (Cal. Civ. Code 1798.121, 1798.135).');
+    L.push('C. Profiling / automated-decision opt-out');
+    L.push((flag('ai')||flag('admt'))?'   You flagged AI/automated decisions: offer a profiling opt-out (Colo. Rev. Stat. 6-1-1306(1)(a)(I)(C); Va. Code 59.1-577(A)(5)); track CA ADMT rules under Cal. Civ. Code 1798.185(a)(15)-(16).':'   Add if you adopt profiling with legal or similarly significant effects.');
+    return L.join(chr10);
+  }
+  function breachTpl(){
+    var co=gco(), st=gstates(); var L=[];
+    L.push('# Data Breach Response Plan — STARTER TEMPLATE'); L.push('Company: '+co);
+    L.push('1. Detect and contain; preserve logs/evidence.');
+    L.push('2. Assess what personal information was involved and whose.');
+    L.push('3. Notify affected residents without unreasonable delay:');
+    if(st.indexOf('CA')>=0) L.push('   California: Cal. Civ. Code 1798.82 (and 1798.29 for agencies); if over 500 CA residents, send a sample to the CA Attorney General.');
+    if(st.indexOf('TX')>=0) L.push('   Texas: Bus. and Com. Code 521.053; notify within 60 days; if over 250 Texans, notify the TX Attorney General.');
+    if(st.indexOf('CO')>=0) L.push('   Colorado: Colo. Rev. Stat. 6-1-716; notify within 30 days; AG if over 500 residents.');
+    if(st.indexOf('VA')>=0) L.push('   Virginia: Va. Code 18.2-186.6; notify without unreasonable delay; AG notice required.');
+    L.push('   All 50 states have breach laws; confirm each jurisdiction where affected residents live.');
+    L.push('4. Notify AGs and, if over 1,000 residents affected, consider consumer reporting agencies.');
+    L.push('5. Document the incident, decisions, and notifications in writing.');
+    L.push('6. Remediate root cause; update safeguards and this plan.');
+    return L.join(chr10);
+  }
+  function disc(){return chr10+'> Starting templates, not legal advice; no attorney-client relationship. Reflects US privacy law as understood in early 2025; CCPA/CPRA, state, and AI rules change fast. Have a qualified US privacy attorney review before use.'+chr10;}
+  function buildAll(){
+    return chr10+'# Pipeline templates (DPA / opt-out / breach response)'+disc()+chr10+'## Vendor DPA'+chr10+dpaTpl()+chr10+chr10+'## Consumer opt-out mechanisms'+chr10+optoutTpl()+chr10+chr10+'## Data breach response plan'+chr10+breachTpl()+chr10;
+  }
+  window.__kitAll=buildAll;
+  function renderInto(){
+    var out=document.getElementById('out'); if(!out) return;
+    var pre=document.createElement('pre'); pre.style.whiteSpace='pre-wrap'; pre.style.fontSize='13px'; pre.style.margin='0'; pre.textContent=buildAll();
+    out.innerHTML=''; out.appendChild(pre);
+  }
+  function injectTab(){
+    var nav=document.querySelector('.tabs'); if(!nav||nav.querySelector('[data-tab="templates"]')) return;
+    var d=document.createElement('div'); d.className='tab'; d.setAttribute('data-tab','templates'); d.textContent='Templates';
+    d.onclick=function(){ [].forEach.call(nav.querySelectorAll('.tab'),function(t){t.classList.remove('active');}); d.classList.add('active'); var ex=document.getElementById('exportActions'); if(ex) ex.style.display='none'; var mx=document.getElementById('matrix'); if(mx) mx.style.display='none'; var o=document.getElementById('out'); if(o) o.style.display='block'; renderInto(); };
+    nav.appendChild(d);
+  }
+  if(typeof downloadPack==='function'){ var orig=downloadPack; window.downloadPack=function(){ try{ if(typeof outputs!=='undefined'&&outputs&&typeof outputs.export==='string'&&outputs.export.indexOf('Pipeline templates')<0){ outputs.export+=buildAll(); } }catch(e){} return orig.apply(this,arguments); }; }
+  if(document.readyState!=='loading') injectTab(); else document.addEventListener('DOMContentLoaded',injectTab);
+})();
+</script>
 </body>
 </html>
