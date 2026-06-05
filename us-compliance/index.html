@@ -127,7 +127,7 @@ input,select,textarea{width:100%;padding:9px;border-radius:6px;border:1px solid 
   <div class="out" id="out">Answer Step 1, click "Next: refine", then "Run triage".</div>
   <div class="matrix" id="matrix" style="display:none"></div>
   <div id="exportActions" style="display:none">
-    <button class="btn" onclick="downloadPack()">Download summary (.md)</button>
+    <button class="btn" onclick="downloadPack()">Download summary (.md)</button><button class="btn" onclick="downloadPackWord()">Download Word</button><button class="btn" onclick="downloadPackHtml()">Download HTML</button>
     <button class="btn soft" onclick="copyOut()">Copy</button>
     <button class="btn" onclick="toGenerator()" style="background:#0a7d33">Generate matching privacy policy &rarr;</button>
     <a class="btn soft" href="/pricing" style="text-decoration:none;display:inline-block">See pricing & plans →</a>
@@ -228,6 +228,60 @@ function downloadPack(){
   var b=new Blob([outputs.export||''],{type:'text/markdown'});
   var a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='us-privacy-triage-counsel-packet.md';a.click();URL.revokeObjectURL(a.href);
+}
+function __pkGet(id){var e=document.getElementById(id);return e?(e.type==='checkbox'?e.checked:e.value):'';}
+function __pkCompany(){return (__pkGet('company')||'').trim()||'Your company';}
+function __pkRiskRows(){
+  var sells=__pkGet('sells'),sens=__pkGet('sensitive'),ai=__pkGet('ai'),admt=__pkGet('admt'),kids=__pkGet('children'),vol=__pkGet('volume');
+  var r=[];
+  r.push(['Notice and transparency','Required state privacy notice missing or outdated','High','Publish a compliant privacy notice covering consumer rights and data categories before launch.']);
+  r.push(['Consumer rights handling','No documented process to honor access, delete, and correct requests','High','Stand up a verified intake workflow that fulfills rights requests within statutory deadlines.']);
+  if(sells==='all'||sells==='some'){r.push(['Sale / share opt-out','You indicated you sell or share personal data','High','Add a Do-Not-Sell-or-Share opt-out, honor Global Privacy Control signals, and update the notice.']);}
+  if(sens===true){r.push(['Sensitive data','Processing of sensitive personal information indicated','High','Add a limit-the-use or opt-in mechanism for sensitive data per applicable state law.']);}
+  if(kids===true){r.push(['Minors','Personal data from minors indicated','High','Apply opt-in consent and stricter handling for minors; review COPPA and state minor rules with counsel.']);}
+  if(ai===true||admt===true){r.push(['Automated decisions / AI','Profiling or automated decision-making indicated','Medium','Prepare opt-out and disclosure for automated decisions and track emerging state ADMT rules.']);}
+  if(vol==='gte100k'){r.push(['Data volume','High volume of consumer records','Medium','Maintain a data inventory and assess data-protection-assessment obligations.']);}
+  r.push(['Vendor management','Processor contracts may lack required data-processing terms','Medium','Execute Data Processing Addenda with vendors (see appendix template).']);
+  r.push(['Breach readiness','No documented breach response plan','Medium','Adopt the breach response plan in the appendix and confirm state notification timelines.']);
+  return r;
+}
+function __pkRiskMd(){
+  var rows=__pkRiskRows();
+  var out='## Risk register (severity-graded)\n\n| # | Area | Finding | Severity | Recommended action |\n|---|------|---------|----------|--------------------|\n';
+  rows.forEach(function(x,i){out+='| '+(i+1)+' | '+x[0]+' | '+x[1]+' | '+x[2]+' | '+x[3]+' |\n';});
+  return out+'\n';
+}
+function __pkExecMd(){
+  var rows=__pkRiskRows(); var high=rows.filter(function(x){return x[2]==='High';}).length; var med=rows.filter(function(x){return x[2]==='Medium';}).length;
+  var co=__pkCompany();
+  return '## Executive summary\n\n'+co+' completed a US state-privacy triage. This packet identifies the state privacy laws most likely to apply, the current compliance gaps, and a severity-graded risk register. It flags '+high+' high-severity and '+med+' medium-severity items for attention, with recommended actions and starter templates (privacy notice inputs, vendor DPA, consumer opt-out, and breach response) attached as an appendix. These materials are starting templates for review by qualified counsel, not legal advice.\n\n';
+}
+function __pkCoverMd(){
+  var co=__pkCompany(); var dt=new Date().toISOString().slice(0,10);
+  return '# US Privacy Compliance Pack\n\n**Prepared for:** '+co+'  \n**Date:** '+dt+'  \n**Document version:** 1.0  \n**Scope:** US state consumer-privacy laws (triage-based)\n\n### Contents\n1. Executive summary\n2. Likely applicable laws\n3. State-by-state assessment\n4. Gap checklist\n5. Risk register\n6. Appendix: starter templates (DPA, opt-out, breach response)\n\n---\n\n';
+}
+function __pkBuildMd(){
+  var md=outputs.export||'';
+  var pipe='# Pipeline templates (DPA / opt-out / breach response)';
+  var risk=__pkRiskMd();
+  if(md.indexOf(pipe)>=0){md=md.replace(pipe, risk+'---\n\n# Appendix: starter templates (DPA / opt-out / breach response)');}
+  else {md=md+'\n\n'+risk;}
+  return __pkCoverMd()+__pkExecMd()+md;
+}
+function __pkFile(name,content,mime){var b=new Blob([content],{type:mime});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();URL.revokeObjectURL(a.href);}
+function downloadPackWord(){
+  var md=__pkBuildMd();
+  var esc=function(s){return s.replace(/&/g,'\u0026amp;').replace(/</g,'\u0026lt;').replace(/>/g,'\u0026gt;');};
+  var body=esc(md).replace(/\n/g,'<br>');
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>US Privacy Compliance Pack</title></head><body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1.5;color:#111">'+body+'</body></html>';
+  __pkFile('us-privacy-compliance-pack.doc','\ufeff'+html,'application/msword');
+}
+function downloadPackHtml(){
+  var md=__pkBuildMd();
+  var esc=function(s){return s.replace(/&/g,'\u0026amp;').replace(/</g,'\u0026lt;').replace(/>/g,'\u0026gt;');};
+  var body=esc(md).replace(/\n/g,'<br>');
+  var html='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>US Privacy Compliance Pack</title><style>body{font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;color:#1a1a1a;max-width:860px;margin:40px auto;padding:0 22px}</style></head><body>'+body+'</body></html>';
+  __pkFile('us-privacy-compliance-pack.html',html,'text/html;charset=utf-8');
 }
 
 function toGenerator(){
