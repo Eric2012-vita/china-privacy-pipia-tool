@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy Generator v2 | LegalAIPay</title>
+<style>
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;max-width:920px;margin:0 auto;padding:24px;color:#1a1a1a;line-height:1.6}
+h1{font-size:1.5rem}h2{font-size:1.15rem;margin-top:1.6em}
+.market-pick{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}
+.market-pick button{padding:12px 18px;border:1px solid #ccc;border-radius:8px;background:#fff;cursor:pointer;font-size:1rem}
+.market-pick button.active{border-color:#0a66c2;background:#eaf3fb;font-weight:600}
+.panel{display:none}.panel.active{display:block}
+label{display:block;margin:10px 0 4px;font-weight:600}
+input,select,textarea{width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:.95rem}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9rem}
+th,td{border:1px solid #ddd;padding:6px;text-align:left;vertical-align:top}
+th{background:#f5f7fa}
+td input{border:none;padding:4px}
+.row-actions{margin:8px 0}
+.row-actions button{margin-right:8px;padding:6px 12px;border:1px solid #0a66c2;background:#fff;color:#0a66c2;border-radius:6px;cursor:pointer}
+.primary{padding:10px 18px;background:#0a66c2;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem;margin:12px 8px 12px 0}
+.note{background:#fff8e1;border:1px solid #ffe082;padding:10px 14px;border-radius:8px;margin:12px 0;font-size:.9rem}
+.disclaimer{color:#666;font-size:.85rem;border-top:1px solid #eee;margin-top:24px;padding-top:12px}
+#output{white-space:pre-wrap;background:#fafafa;border:1px solid #e0e0e0;border-radius:8px;padding:16px;margin-top:16px}
+.import-status{font-size:.9rem;margin:8px 0}
+.import-status.ok{color:#1b7f3b}.import-status.warn{color:#b26a00}
+</style>
+</head>
+<body>
+<h1>Privacy Policy Generator <small>v2</small></h1>
+<p>请先选择适用市场 / Select the applicable market first.</p>
+
+<div class="market-pick">
+  <button data-market="cn" class="active">中国大陆 · PIPL</button>
+  <button data-market="eu">EU / UK · GDPR</button>
+  <button data-market="us">United States · CCPA/CPRA</button>
+</div>
+
+<section class="panel active" id="panel-cn">
+  <div class="row-actions">
+    <button type="button" id="importPipia">↧ 从 PIPIA 导入 / Import from PIPIA</button>
+  </div>
+  <div class="import-status" id="importStatus"></div>
+
+  <label>处理者名称 / Controller</label><input id="cn-controller" placeholder="[公司名称]">
+  <label>PIPIA 关联编号 / Ref</label><input id="cn-ref" placeholder="[PIPIA-XXXX-XXX]">
+  <label>服务名称 / 域名</label><input id="cn-service" placeholder="[example.com]">
+  <label>联系方式 / Contact</label><input id="cn-contact" placeholder="[privacy@example.com]">
+
+  <h2>个人信息收集清单</h2>
+  <table id="cn-collect"><thead><tr>
+    <th>字段</th><th>分类</th><th>收集目的</th><th>处理规模</th><th>保留期限</th></tr></thead>
+    <tbody></tbody></table>
+  <div class="row-actions"><button type="button" onclick="addCollectRow()">+ 添加行</button></div>
+
+  <h2>数据共享 / SDK 清单</h2>
+  <p class="note">跨境接收方将自动带出；第三方/SDK 明细 PIPIA 暂未采集，请手动补录（含数据保护措施与接收方隐私政策链接）。</p>
+  <table id="cn-share"><thead><tr>
+    <th>接收方 / SDK</th><th>共享字段</th><th>共享目的</th><th>处理方式</th><th>数据保护措施</th><th>接收方隐私政策</th></tr></thead>
+    <tbody></tbody></table>
+  <div class="row-actions"><button type="button" onclick="addShareRow()">+ 添加行</button></div>
+
+  <button class="primary" onclick="genCN()">生成隐私政策</button>
+  <button class="primary" onclick="genConsentCN()" style="background:#5a3d8a">生成单独同意书</button>
+</section>
+
+<section class="panel" id="panel-eu">
+  <label>Controller</label><input id="eu-controller" placeholder="[COMPANY NAME], [ADDRESS]">
+  <label>DPO / Representative</label><input id="eu-dpo" placeholder="[DPO EMAIL]">
+  <label>Contact</label><input id="eu-contact" placeholder="[CONTACT EMAIL]">
+  <label>Supervisory authority</label><input id="eu-authority" placeholder="ICO (UK) / [EEA authority]">
+  <button class="primary" onclick="genEU()">Generate Privacy Policy</button>
+</section>
+
+<section class="panel" id="panel-us">
+  <label>Company</label><input id="us-company" placeholder="[COMPANY NAME], [ADDRESS]">
+  <label>Contact</label><input id="us-contact" placeholder="[CONTACT EMAIL]">
+  <label>Sell/share personal information?</label>
+  <select id="us-sell"><option value="no">We do NOT sell or share</option>
+    <option value="yes">We may sell/share (opt-out provided)</option></select>
+  <label>Children age threshold</label>
+  <select id="us-age"><option>13</option><option>16</option></select>
+  <button class="primary" onclick="genUS()">Generate Privacy Policy</button>
+</section>
+
+<div id="output" hidden></div>
+<button class="primary" id="copyBtn" hidden onclick="copyOut()">复制 / Copy</button>
+
+<p class="disclaimer">本工具输出为起始模板，不构成法律意见，发布前请由合格律师审阅。<br>
+This output is a starting template, not legal advice; have qualified counsel review before publishing.</p>
+
+<script>
+document.querySelectorAll('.market-pick button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.market-pick button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+b.dataset.market).classList.add('active');
+    document.getElementById('output').hidden=true;
+    document.getElementById('copyBtn').hidden=true;
+  });
+});
+function cell(v){return '<td><input value="'+(v?String(v).replace(/"/g,'&quot;'):'')+'"></td>';}
+function addCollectRow(d){d=d||{};var tb=document.querySelector('#cn-collect tbody');
+  var tr=document.createElement('tr');
+  tr.innerHTML=cell(d.name||'[字段]')+cell(d.classification||'[分类]')+cell(d.purpose||'[目的]')+cell(d.quantity||'[规模]')+cell(d.retention||'[保留期限]');
+  tb.appendChild(tr);}
+function addShareRow(d){d=d||{};var tb=document.querySelector('#cn-share tbody');
+  var tr=document.createElement('tr');
+  tr.innerHTML=cell(d.recipient||'[接收方/SDK]')+cell(d.fields||'[共享字段]')+cell(d.purpose||'[共享目的]')+cell(d.method||'[提供/SDK采集]')+cell(d.measures||'[数据保护措施]')+cell(d.policy||'[隐私政策URL]');
+  tb.appendChild(tr);}
+function importPipia(){
+  var status=document.getElementById('importStatus');
+  var raw=null;
+  try{ raw=localStorage.getItem('legalaipay.pipiaHandoff'); }catch(e){}
+  if(!raw){ status.className='import-status warn';
+    status.textContent='⚠ 未检测到 PIPIA 数据。请先在 PIPIA 工具完成评估，或手动填写下方表格。'; return; }
+  var h; try{ h=JSON.parse(raw); }catch(e){ status.className='import-status warn'; status.textContent='⚠ PIPIA 数据解析失败，请手动填写。'; return; }
+  document.getElementById('cn-controller').value=h.controllerName||'';
+  document.getElementById('cn-ref').value=h.pipiaRef||'';
+  document.getElementById('cn-service').value=h.serviceDescription||'';
+  var tb=document.querySelector('#cn-collect tbody'); tb.innerHTML='';
+  (h.rawDataFields||[]).forEach(function(f){
+    addCollectRow({name:f.name,classification:f.classification,purpose:f.purpose,
+      quantity:h.dataQuantities||'',retention:h.retentionPeriod||''});
+  });
+  if(!tb.children.length) addCollectRow();
+  var sb=document.querySelector('#cn-share tbody'); sb.innerHTML='';
+  if(h.crossBorder && h.crossBorder.recipientName){
+    addShareRow({recipient:h.crossBorder.recipientName+'（境外，'+(h.crossBorder.country||'')+'）',
+      purpose:h.crossBorder.purpose||'',method:'跨境提供',measures:h.crossBorder.legalPath||''});
+  }
+  if(h.piplFlags && h.piplFlags.sharing){ addShareRow(); }
+  if(!sb.children.length) addShareRow();
+  window.__pipl=h.piplFlags||{};
+  status.className='import-status ok';
+  status.textContent='✓ 已从 PIPIA 导入（'+(h.pipiaRef||'')+'）。共享明细如有第三方/SDK 请手动补录。';
+}
+document.getElementById('importPipia').addEventListener('click',importPipia);
+addCollectRow(); addShareRow();
+function tableData(sel){return Array.from(document.querySelectorAll(sel+' tbody tr')).map(function(tr){
+  return Array.from(tr.querySelectorAll('input')).map(i=>i.value);});}
+function show(t){var o=document.getElementById('output');o.hidden=false;o.textContent=t;
+  document.getElementById('copyBtn').hidden=false;window.scrollTo(0,document.body.scrollHeight);}
+function copyOut(){navigator.clipboard.writeText(document.getElementById('output').textContent);}
+function genCN(){
+  var c=id=>document.getElementById(id).value;
+  var f=window.__pipl||{};
+  var collect=tableData('#cn-collect').map(r=>'| '+r.join(' | ')+' |').join('\n');
+  var share=tableData('#cn-share').map(r=>'| '+r.join(' | ')+' |').join('\n');
+  var t='个人信息保护政策\n更新日期：[DATE]\n\n'+
+  (c('cn-controller')||'[公司名称]')+'（"我们"）依据《个人信息保护法》及相关法律法规处理您的个人信息。\n\n'+
+  '一、PIPIA 关联：'+(c('cn-ref')||'[PIPIA 编号]')+'。处理敏感个人信息、对外提供或跨境提供前，将另行启动单独同意流程。\n\n'+
+  '二、个人信息收集清单\n| 字段 | 分类 | 收集目的 | 处理规模 | 保留期限 |\n| --- | --- | --- | --- | --- |\n'+collect+'\n\n'+
+  '三、数据共享 / SDK 清单\n| 接收方/SDK | 共享字段 | 共享目的 | 处理方式 | 数据保护措施 | 接收方隐私政策 |\n| --- | --- | --- | --- | --- | --- |\n'+share+'\n'+
+  '向第三方提供或通过 SDK 共享前，将依法告知并取得单独同意（法律另有规定的除外）。\n\n'+
+  (f.crossBorder?'四、跨境提供\n如向中国境外提供个人信息，我们将依法履行安全评估、认证或标准合同等条件，并取得您的单独同意。\n\n':'')+
+  '五、您的权利\n您有权查阅、复制、更正、补充、删除个人信息，请求解释处理规则，撤回同意，注销账号。\n'+
+  '关于自动化决策：您有权要求说明，并有权拒绝我们仅通过自动化决策方式作出对您权益有重大影响的决定；对于自动化推送/营销，我们提供不针对您个人特征的选项或便捷的拒绝（opt-out）方式。\n'+
+  '请通过 '+(c('cn-contact')||'[联系方式]')+' 行使上述权利。\n\n'+
+  '六、未成年人\n如处理不满十四周岁未成年人个人信息，将取得监护人同意并制定专门规则。\n\n'+
+  '本模板不构成法律意见，使用前请由合格律师审阅。';
+  show(t);
+}
+function genConsentCN(){
+  var c=id=>document.getElementById(id).value;
+  var t='个人信息处理单独同意书\n版本 [VERSION]｜日期 [DATE]｜处理者：'+(c('cn-controller')||'[公司名称]')+'\n\n'+
+  '请在勾选同意前仔细阅读《个人信息保护政策》。以下事项依法需取得您的单独同意，您可拒绝或随时撤回。\n\n'+
+  '☐ 敏感个人信息处理同意：我同意为 [目的] 处理我的以下敏感个人信息：[敏感信息类别]。\n\n'+
+  '☐ 第三方共享同意：我同意向接收方 [名称] 提供 [字段]，目的 [目的]，接收方联系方式 [联系方式]。\n\n'+
+  '☐ 跨境提供同意：我同意向中国境外接收方 [名称，国家/地区] 提供 [字段]，目的 [目的]；我已知悉境外接收方信息及行权途径。\n\n'+
+  '撤回同意方式：'+(c('cn-contact')||'[联系方式]')+'\n\n本模板不构成法律意见，使用前请由合格律师审阅。';
+  show(t);
+}
+function genEU(){
+  var c=id=>document.getElementById(id).value;
+  var t='Privacy Policy (GDPR)\nLast updated: [DATE]\n\n'+
+  (c('eu-controller')||'[COMPANY NAME]')+' is the controller responsible for your personal data. '+
+  (c('eu-dpo')?('DPO/representative: '+c('eu-dpo')+'.'):'')+'\n\n'+
+  '1. Personal data we collect: account and contact details, content you provide, communications, and technical/usage data (incl. cookies).\n\n'+
+  '2. How we use it and legal bases: performance of a contract; our legitimate interests (e.g., securing and improving the Services); your consent (e.g., marketing/cookies), withdrawable anytime; and compliance with legal obligations.\n\n'+
+  '3. Sharing: with processors acting on our behalf, professional advisors, authorities where required by law, and in business transfers.\n\n'+
+  '4. International transfers: where we transfer outside the EEA/UK we rely on adequacy decisions or appropriate safeguards such as the SCCs (and UK IDTA).\n\n'+
+  '5. Retention: only as long as necessary for the purposes described and legal requirements.\n\n'+
+  '6. Your rights: access, rectification, erasure, restriction, portability, objection, and withdrawal of consent. Contact '+(c('eu-contact')||'[CONTACT EMAIL]')+'. You may lodge a complaint with '+(c('eu-authority')||'[AUTHORITY]')+'.\n\n'+
+  '7. Security; 8. Changes; 9. Contact: '+(c('eu-controller')||'[COMPANY NAME]')+'.\n\n'+
+  'This template is not legal advice; have counsel review before publishing.';
+  show(t);
+}
+function genUS(){
+  var c=id=>document.getElementById(id).value;
+  var sell=document.getElementById('us-sell').value==='no'
+    ? 'We do not sell or share your personal information as defined under applicable US state privacy laws.'
+    : 'We may sell or share personal information; you may opt out via [LINK / "Do Not Sell or Share My Personal Information"].';
+  var t='Privacy Policy\nLast updated: [DATE]\n\n'+
+  (c('us-company')||'[COMPANY NAME]')+' ("we") describes here how we collect, use, and disclose personal information of US residents.\n\n'+
+  '1. Information we collect: identifiers, commercial information, internet/network activity, approximate geolocation, information you submit, and information from third parties.\n\n'+
+  '2. How we use it: to provide and maintain the Services, process transactions, communicate, personalize, improve our products, ensure security/prevent fraud, and comply with law.\n\n'+
+  '3. Disclosure: to service providers, professional advisors, in business transactions, to authorities where required, and with your direction.\n\n'+
+  '4. Sale/Share: '+sell+'\n\n'+
+  '5. Your rights: to know/access, correct, delete, opt out of sale/share and targeted advertising, and non-discrimination. Submit requests to '+(c('us-contact')||'[CONTACT EMAIL]')+'; we will verify your identity. Authorized agents permitted where applicable.\n\n'+
+  '6. Retention; 7. Children (under '+document.getElementById('us-age').value+'); 8. Security; 9. Changes; 10. Contact: '+(c('us-company')||'[COMPANY NAME]')+'.\n\n'+
+  'This template is not legal advice; have counsel review before publishing.';
+  show(t);
+}
+</script>
+</body>
+</html>
