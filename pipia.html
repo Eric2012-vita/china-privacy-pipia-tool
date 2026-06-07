@@ -1897,6 +1897,10 @@ function buildModule6() {
       <label class="check-item" onclick="toggleCheck(this); if(!this.querySelector('input').checked) addTask(6,'IT','Ensure algorithm explainability and remedy mechanism','确保算法可解释性和救济机制','high')"><input type="checkbox"><div><div class="label-text">Algorithms can be explained, improved and remedied when the automated decision has a significant impact on an individual's rights and interests</div><div class="label-cn">通过自动化决策方式作出对个人权益有重大影响的决定时，算法可以被解释、改进或救济</div></div></label>
     </div>
     <div class="form-group" style="margin-top:16px;"><label class="form-label">How individuals are informed (specify method) / 告知方式（请说明）</label><input class="form-input" id="m6_inform" placeholder="e.g. Pop-up notice, In-app notification, Privacy Policy section"></div>
+    <div class="check-group">
+      <div class="yn-question"><div class="yn-text"><div class="label-text">Opt-out / refusal mechanism provided for automated decision-making</div><div class="label-cn">对自动化决策提供 Opt-Out / 拒绝机制</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_optout" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_optout" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+    </div>
+
 
     <div class="dpo-box" style="margin-top:20px;">
       <h4>DPO's Evaluation 数据保护官评估 — Module 6</h4>
@@ -1969,7 +1973,11 @@ function buildModule8() {
       <textarea class="form-textarea" id="m8_adverseDetail" placeholder="Please specify the adverse impact details / 请进一步描述不利影响" style="margin-top:8px;"></textarea>
     </div>
 
-    ${dpoBlocK(8)}
+    
+    <div class="check-group">
+      <div class="yn-question"><div class="yn-text"><div class="label-text">Data subject rights requests can be practically fulfilled</div><div class="label-cn">数据主体权利请求能够实际响应/实现</div></div><div class="yn-options"><label class="yn-yes"><input type="radio" name="yn_rights" value="yes" onchange="handleYN(this)"> Yes 是</label><label class="yn-no"><input type="radio" name="yn_rights" value="no" onchange="handleYN(this)"> No 否</label></div></div>
+    </div>
+${dpoBlocK(8)}
   `);
 }
 
@@ -2260,6 +2268,47 @@ ${actionTasks.length === 0 ? '<p style="color:#a0aec0;">No action items triggere
 ${actionTasks.map(t=>`<tr><td>M${t.module}</td><td>${t.assignee}</td><td><strong>${t.description}</strong><br><small style="color:#718096;">${t.descCn}</small></td><td style="color:${t.priority==='high'?'#e53e3e':t.priority==='medium'?'#d69e2e':'#38a169'};font-weight:600;text-transform:capitalize;">${t.priority}</td></tr>`).join('')}
 </tbody></table>`}
 
+
+<h2>Scenario Summary / 场景总结</h2>
+${(function(){
+  function chk(v){ var e=document.querySelector("input[name=\"trigger\"][value=\""+v+"\"]"); return e&&e.checked; }
+  var rows=[];
+  rows.push(["Outsourced processing / 委托处理", chk("outsource")]);
+  rows.push(["External sharing / 对外共享", chk("sharing")]);
+  rows.push(["Cross-border transfer / 数据跨境", chk("crossBorder")]);
+  rows.push(["Data merging / 数据合并", chk("merging")]);
+  rows.push(["Automated decision-making / 自动决策", chk("automated")]);
+  rows.push(["Sensitive PI involved / 涉及敏感个人信息", chk("sensitive")]);
+  var df=(window.dataFields||[]);
+  var sens=df.filter(function(d){return (d.classification||"").toLowerCase().indexOf("sensitive")>-1;}).length;
+  var h="<table><thead><tr><th>Scenario / 场景</th><th>Applies / 是否适用</th></tr></thead><tbody>";
+  rows.forEach(function(r){ h+="<tr><td>"+r[0]+"</td><td>"+(r[1]?"Yes / 是":"No / 否")+"</td></tr>"; });
+  h+="</tbody></table>";
+  h+="<p style=\"font-size:13px;color:#4a5568;\">Data fields captured / 数据字段共："+df.length+"（sensitive / 敏感："+sens+"）</p>";
+  return h;
+})()}
+
+<h2>Automated DPO Risk Register / 自动DPO风险登记</h2>
+${(function(){
+  try{ evalAutoDpoRisks(); }catch(e){}
+  var flags=(window.pipiaRiskFlags||[]);
+  var order={high:0,middle:1,low:2};
+  var lv=flags.map(function(f){return f.level;}).filter(Boolean);
+  var overall = lv.indexOf("high")>-1?"high":(lv.indexOf("middle")>-1?"middle":(lv.indexOf("low")>-1?"low":"-"));
+  var ovCn={high:"高",middle:"中",low:"低","-":"-"}[overall];
+  var color={high:"#e53e3e",middle:"#d69e2e",low:"#38a169","-":"#a0aec0"}[overall];
+  var h="<p><strong>Overall residual risk / 整体残余风险：</strong> <span style=\"color:"+color+";font-weight:700;\">"+overall.toUpperCase()+" / "+ovCn+"</span></p>";
+  if(!flags.length){ return h+"<p style=\"color:#718096;\">No automated risks flagged. / 未触发自动风险。</p>"; }
+  h+="<table><thead><tr><th>Source / 来源</th><th>Risk / 等级</th><th>Recommendation &amp; tracking deadline / 建议与跟踪期限</th></tr></thead><tbody>";
+  flags.forEach(function(f){
+    var lc={high:"#e53e3e",middle:"#d69e2e",low:"#38a169"}[f.level]||"#718096";
+    h+="<tr><td>"+f.source+"</td><td style=\"color:"+lc+";font-weight:600;text-transform:capitalize;\">"+f.level+"</td><td>"+(f.recommendation||"-")+"</td></tr>";
+  });
+  h+="</tbody></table>";
+  return h;
+})()}
+
+
 <div style="margin-top:40px;padding-top:20px;border-top:2px solid #e2e8f0;color:#a0aec0;font-size:12px;">
   Generated: ${new Date().toLocaleString()} | PIPIA Assessment Tool
 </div>
@@ -2481,6 +2530,36 @@ function evalProcessingRetentionRisks(){
   if(rp && rp.value==='general'){ registerRisk('Retention in privacy policy','middle','DPO recommendation: need to specify the retention period.'); }
   else if(rp && rp.value==='notMentioned'){ registerRisk('Retention in privacy policy','high','DPO recommendation: need to specify the retention period.'); }
 }
+function autoDeadline(months){
+  var base=document.getElementById("assessDate"); var d= (base&&base.value)? new Date(base.value): new Date();
+  if(isNaN(d.getTime())) d=new Date();
+  d.setMonth(d.getMonth()+months);
+  return d.toISOString().slice(0,10);
+}
+function ynVal(name){ var e=document.querySelector("input[name=\""+name+"\"]:checked"); return e? e.value : ""; }
+function evalAutoDpoRisks(){
+  window.pipiaRiskFlags = (window.pipiaRiskFlags||[]).filter(function(r){return r.source.indexOf("Auto-DPO:")!==0;});
+  function reg(srcEN, srcCN, level, recEN, recCN, deadline){
+    registerRisk("Auto-DPO: "+srcEN+" / "+srcCN, level, recEN+" ("+deadline+") | "+recCN+"（"+deadline+"）");
+  }
+  // DPA
+  if(ynVal("yn_q3")==="no"){ reg("DPA not signed","未签署DPA","high","Recommend to sign off the DPA","未签署数据处理协议(DPA)，建议一个月内签署", autoDeadline(1)); }
+  // DSA
+  if(ynVal("yn_q10")==="no"){ reg("DSA not signed","未签署DSA","high","Recommend to sign off the DSA","未签署数据共享协议(DSA)，建议一个月内签署", autoDeadline(1)); }
+  // Opt-out
+  if(ynVal("yn_optout")==="no"){ reg("No opt-out for automated decision","自动决策无Opt-Out","high","Provide opt-out mechanism before go-live","自动决策缺少 Opt-Out/拒绝机制，需在产品/服务上线前提供", "产品/服务上线前 / Before go-live"); }
+  // Data minimization (any of the four min/necessity questions = no)
+  var minQs=["yn_q1","yn_q4","yn_q8","yn_q11"]; var minFail=minQs.some(function(q){return ynVal(q)==="no";});
+  if(minFail){ reg("Data minimization not satisfied","不满足数据最小必要化","middle","Needs business consideration","不满足数据最小必要化，需业务部门评估，建议6个月内整改", autoDeadline(6)); }
+  // Separate consent for sharing
+  if(ynVal("yn_q7")==="no"){ reg("Separate consent for sharing not obtained","共享未取得单独同意","high","Separate consent required before go-live","共享未取得单独同意，需在产品/服务上线前取得", "产品/服务上线前 / Before go-live"); }
+  // Technical insufficient: sensitive PI present AND encryption not implemented
+  var sensTrig=document.querySelector("input[name=\"trigger\"][value=\"sensitive\"]"); var sensOn= sensTrig && sensTrig.checked;
+  if(sensOn && ynVal("yn_sec2")!=="yes"){ reg("Sensitive PI without sufficient technical safeguards","敏感个人信息技术措施不足","high","Technical method not sufficient (e.g. no separate storage / no encryption in transit)","技术措施不足(例如敏感个人信息未单独存储、传输未加密)，建议最长一年内缓解", autoDeadline(12)); }
+  // Data subject rights feasibility
+  if(ynVal("yn_rights")==="no"){ reg("Data subject rights cannot be fulfilled","数据主体权利无法实现","high","Establish/repair rights response before go-live","数据主体权利请求无法实现，需在产品/服务上线前建立/修复响应机制", "产品/服务上线前 / Before go-live"); }
+}
+
 window.moduleRisks = window.moduleRisks || {};
 function updateModuleRisk(moduleNum, level){
   var c = document.getElementById('dpo_m'+moduleNum+'_riskcomment');
@@ -2524,6 +2603,7 @@ function collectModuleDpo(){
 }
 function renderConsolidatedResult(){
   evalProcessingRetentionRisks();
+  evalAutoDpoRisks();
   var el=document.getElementById('pipiaConsolidatedResult'); if(!el) return;
   var flags=window.pipiaRiskFlags||[];
   var mods=collectModuleDpo();
