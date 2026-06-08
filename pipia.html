@@ -2401,6 +2401,18 @@ function buildPolicyHandoff() {
   const triggered = (typeof triggeredModules !== 'undefined') ? Array.from(triggeredModules) : [];
   const has = n => triggered.includes(n);
   const purposes = (typeof selectedPurposes !== 'undefined' && selectedPurposes) ? Array.from(selectedPurposes) : [];
+    const recipients = [];
+    const pushRecipient = (name, iface, type, method) => {
+      const nm = safeVal(name);
+      if (!nm) return;
+      recipients.push({ name: nm, purpose: safeVal(iface), type: type, method: method, measures: '请补充：是否签署DPA/共享协议、加密、去标识化等保护措施', recipientPolicyUrl: '' });
+    };
+    pushRecipient('m2_affEntity', 'm2_affTechInt', 'entrust', '委托处理');
+    pushRecipient('m2_nonAffEntity', 'm2_nonAffTechInt', 'entrust', '委托处理');
+    pushRecipient('m3_affEntity', 'm3_affTechInt', 'share', '数据共享');
+    pushRecipient('m3_nonAffEntity', 'm3_nonAffTechInt', 'share', '数据共享');
+    pushRecipient('m4_affEntities', 'm4_affPurpose', 'crossBorder', '跨境提供');
+    pushRecipient('m4_nonAffEntities', 'm4_nonAffPurpose', 'crossBorder', '跨境提供');
   return {
     schemaVersion: 1,
     timestamp: new Date().toISOString(),
@@ -2413,6 +2425,7 @@ function buildPolicyHandoff() {
     storageLocation: safeVal('storageLocation'),
     retentionPeriod: safeVal('retentionPeriod'),
     rawDataFields: rawFields,
+      recipients: recipients,
     policyCategories: buckets,
     policySensitive: Array.from(sensitiveTriggers).filter(s => s !== '__piplSensitive__'),
     piplFlags: {
