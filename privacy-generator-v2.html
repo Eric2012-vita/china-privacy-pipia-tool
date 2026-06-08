@@ -127,12 +127,14 @@ function importPipia(){
   });
   if(!tb.children.length) addCollectRow();
   var sb=document.querySelector('#cn-share tbody'); sb.innerHTML='';
-  if(h.crossBorder && h.crossBorder.recipientName){
-    addShareRow({recipient:h.crossBorder.recipientName+'（境外，'+(h.crossBorder.country||'')+'）',
-      purpose:h.crossBorder.purpose||'',method:'跨境提供',measures:h.crossBorder.legalPath||''});
-  }
-  if(h.piplFlags && h.piplFlags.sharing){ addShareRow(); }
-  if(!sb.children.length) addShareRow();
+        if(Array.isArray(h.recipients) && h.recipients.length){
+        h.recipients.forEach(function(r){
+          addShareRow({recipient:r.name||'',fields:'',purpose:r.method||r.purpose||'',method:r.method||'',measures:r.measures||'',policy:r.recipientPolicyUrl||''});
+        });
+      } else if(h.crossBorder && h.crossBorder.recipientName){
+        addShareRow({recipient:h.crossBorder.recipientName+'（境外, '+(h.crossBorder.country||'')+'）',fields:'',purpose:h.crossBorder.purpose||'',method:'跨境提供',measures:h.crossBorder.legalPath||'',policy:''});
+      } else if(h.piplFlags && h.piplFlags.sharing){ addShareRow(); }
+      if(!sb.children.length) addShareRow();
   window.__pipl=h.piplFlags||{};
   status.className='import-status ok';
   status.textContent='✓ 已从 PIPIA 导入（'+(h.pipiaRef||'')+'）。共享明细如有第三方/SDK 请手动补录。';
