@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -79,16 +79,13 @@ td input{border:none;padding:4px}
   <label>Sell/share personal information?</label>
   <select id="us-sell"><option value="no">We do NOT sell or share</option>
     <option value="yes">We may sell/share (opt-out provided)</option></select>
-  <label>Children age threshold</label>
-  <select id="us-age"><option>13</option><option>16</option></select>
   <button class="primary" onclick="genUS()">Generate Privacy Policy</button>
 </section>
 
 <div id="output" hidden></div>
-<button class="primary" id="copyBtn" hidden onclick="copyOut()">复制 / Copy</button>
+<button class="primary" id="copyBtn" hidden onclick="copyOut()">Copy</button>
 
-<p class="disclaimer">本工具输出为起始模板，不构成法律意见，发布前请由合格律师审阅。<br>
-This output is a starting template, not legal advice; have qualified counsel review before publishing.</p>
+<p class="disclaimer" id="discl">This output is a starting template, not legal advice; have qualified counsel review before publishing.</p>
 
 <script>
 document.querySelectorAll('.market-pick button').forEach(function(b){
@@ -97,6 +94,9 @@ document.querySelectorAll('.market-pick button').forEach(function(b){
     b.classList.add('active');
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
     document.getElementById('panel-'+b.dataset.market).classList.add('active');
+      var isCN=b.dataset.market==='cn';
+      document.getElementById('copyBtn').textContent=isCN?'复制 / Copy':'Copy';
+      document.getElementById('discl').textContent=isCN?'本工具输出为起始模板，不构成法律意见，发布前请由合格律师审阅。':'This output is a starting template, not legal advice; have qualified counsel review before publishing.';
     document.getElementById('output').hidden=true;
     document.getElementById('copyBtn').hidden=true;
   });
@@ -177,7 +177,7 @@ function genConsentCN(){
 }
 function genEU(){
   var c=id=>document.getElementById(id).value;
-  var t='Privacy Policy (GDPR)\nLast updated: [DATE]\n\n'+
+      var t='Privacy Policy (GDPR / UK GDPR)\nThis policy covers the EU/EEA (GDPR) and the United Kingdom (UK GDPR); where the two differ, the stricter standard applies.\nLast updated: [DATE]\n\n'+
   (c('eu-controller')||'[COMPANY NAME]')+' is the controller responsible for your personal data. '+
   (c('eu-dpo')?('DPO/representative: '+c('eu-dpo')+'.'):'')+'\n\n'+
   '1. Personal data we collect: account and contact details, content you provide, communications, and technical/usage data (incl. cookies).\n\n'+
@@ -202,7 +202,9 @@ function genUS(){
   '3. Disclosure: to service providers, professional advisors, in business transactions, to authorities where required, and with your direction.\n\n'+
   '4. Sale/Share: '+sell+'\n\n'+
   '5. Your rights: to know/access, correct, delete, opt out of sale/share and targeted advertising, and non-discrimination. Submit requests to '+(c('us-contact')||'[CONTACT EMAIL]')+'; we will verify your identity. Authorized agents permitted where applicable.\n\n'+
-  '6. Retention; 7. Children (under '+document.getElementById('us-age').value+'); 8. Security; 9. Changes; 10. Contact: '+(c('us-company')||'[COMPANY NAME]')+'.\n\n'+
+      '6. Retention. \n\n'+
+    '7. Children: Our Services are not directed to children under 13, and we do not knowingly collect personal information from children under 13 (COPPA). If you believe a child under 13 has provided us personal information, please contact us. \n\n'+
+    '8. Security; 9. Changes; 10. Contact: '+(c('us-company')||'[COMPANY NAME]')+'.\n\n'+
   'This template is not legal advice; have counsel review before publishing.';
   show(t);
 }
