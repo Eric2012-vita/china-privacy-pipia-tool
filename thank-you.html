@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment Confirmed | LegalAIPay</title>
+<style>
+:root{--primary:#0f1e3d;--accent:#3182ce;--ok:#198754;--bg:#f7fafc;--border:#dbe3ef;--text:#243044;--muted:#64748b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+.nav{background:rgba(255,255,255,.96);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--primary);font-weight:800;font-size:20px}
+.mark{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;display:grid;place-items:center}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 22px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:40px 36px;max-width:520px;width:100%;box-shadow:0 8px 28px rgba(15,30,61,.07);text-align:center}
+.icon{width:64px;height:64px;border-radius:50%;background:#dcfce7;display:grid;place-items:center;margin:0 auto 20px;font-size:28px}
+h1{font-size:24px;color:var(--primary);margin-bottom:8px}
+.subtitle{color:var(--muted);font-size:15px;margin-bottom:28px}
+.credits-badge{display:inline-flex;align-items:center;gap:8px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;padding:8px 18px;font-size:15px;font-weight:700;color:#1d4ed8;margin-bottom:28px}
+.token-section{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:24px;text-align:left}
+.token-section h3{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:6px}
+.token-section p{font-size:13px;color:var(--muted);margin-bottom:12px}
+.token-display{display:flex;align-items:center;gap:8px}
+.token-code{flex:1;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:monospace;font-size:15px;font-weight:700;color:var(--primary);letter-spacing:1px}
+.copy-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.copy-btn.copied{background:var(--ok)}
+.warn{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:12px 16px;font-size:13px;color:#7c5a00;margin-bottom:24px;text-align:left}
+.actions{display:grid;gap:10px}
+.btn{display:block;width:100%;padding:13px;border-radius:9px;font-size:15px;font-weight:800;text-decoration:none;text-align:center;border:none;cursor:pointer}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.secondary{background:#edf2f7;color:var(--primary)}
+.restore-section{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);text-align:left}
+.restore-section h3{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:6px}
+.restore-section p{font-size:13px;color:var(--muted);margin-bottom:10px}
+.restore-row{display:flex;gap:8px}
+.restore-row input{flex:1;border:1px solid var(--border);border-radius:8px;padding:9px 12px;font-family:monospace;font-size:14px}
+.restore-row button{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer}
+.restore-msg{font-size:13px;margin-top:8px}
+.restore-msg.ok{color:var(--ok)}.restore-msg.err{color:#dc2626}
+footer{background:var(--primary);color:rgba(255,255,255,.6);padding:20px 22px;text-align:center;font-size:13px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="logo" href="/"><span class="mark">L</span><span>LegalAIPay</span></a>
+  </div>
+</nav>
+
+<main>
+  <div class="card" id="card-success" style="display:none">
+    <div class="icon">✓</div>
+    <h1>Payment confirmed!</h1>
+    <p class="subtitle" id="subtitle-text"></p>
+    <div class="credits-badge" id="credits-badge"></div>
+
+    <div class="token-section">
+      <h3>Your recovery token</h3>
+      <p>Save this code. If you clear your browser or switch devices, paste it to restore your export credits instantly.</p>
+      <div class="token-display">
+        <span class="token-code" id="token-display"></span>
+        <button class="copy-btn" id="copy-btn" onclick="copyToken()">Copy</button>
+      </div>
+    </div>
+
+    <div class="warn">
+      ⚠️ <strong>Save your token now.</strong> Credits are stored in this browser. If you clear browser data without your token, credits cannot be recovered.
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" href="/privacy-policy-generator">Go to Privacy Generator →</a>
+      <a class="btn secondary" href="/pricing">Back to pricing</a>
+    </div>
+
+    <div class="restore-section">
+      <h3>Restore credits on this device</h3>
+      <p>Already have a token from a previous purchase? Paste it below.</p>
+      <div class="restore-row">
+        <input type="text" id="restore-input" placeholder="LA-SNGL-xxxxxxxx or LA-BNDL-xxxxxxxx">
+        <button onclick="restoreToken()">Restore</button>
+      </div>
+      <p class="restore-msg" id="restore-msg"></p>
+    </div>
+  </div>
+
+  <div class="card" id="card-error" style="display:none">
+    <div class="icon" style="background:#fee2e2;font-size:24px">✕</div>
+    <h1>Something went wrong</h1>
+    <p class="subtitle">We couldn't confirm your plan. If you completed payment, paste your recovery token below or contact us.</p>
+    <div class="restore-section" style="border-top:none;padding-top:0;margin-top:16px">
+      <div class="restore-row">
+        <input type="text" id="restore-input-err" placeholder="LA-SNGL-xxxxxxxx or LA-BNDL-xxxxxxxx">
+        <button onclick="restoreTokenErr()">Restore</button>
+      </div>
+      <p class="restore-msg" id="restore-msg-err"></p>
+    </div>
+    <div class="actions" style="margin-top:20px">
+      <a class="btn secondary" href="/pricing">Return to pricing</a>
+    </div>
+  </div>
+</main>
+
+<footer>LegalAIPay — compliance tools for EU, US, and China markets.</footer>
+
+<script>
+const EXPIRY_DAYS = 90;
+
+function randomId(len) {
+  const chars = 'abcdefghjkmnpqrstuvwxyz23456789';
+  let s = '';
+  for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
+  return s;
+}
+
+function makeToken(type, credits) {
+  const prefix = type === 'bundle' ? 'LA-BNDL' : 'LA-SNGL';
+  const id = randomId(8);
+  const expires = Date.now() + EXPIRY_DAYS * 86400 * 1000;
+  // encode as base64 so it's self-contained and restorable
+  const payload = btoa(JSON.stringify({ type, credits, expires, id }));
+  return { code: `${prefix}-${id}`, payload };
+}
+
+function saveCredits(type, credits, code, payload) {
+  const data = { type, credits, expires: Date.now() + EXPIRY_DAYS * 86400 * 1000, code, payload };
+  localStorage.setItem('la_credits', JSON.stringify(data));
+}
+
+function decodeToken(code) {
+  // code format: LA-SNGL-xxxxxxxx or LA-BNDL-xxxxxxxx
+  // payload stored separately; try to find in localStorage first
+  const stored = localStorage.getItem('la_credits');
+  if (stored) {
+    try {
+      const d = JSON.parse(stored);
+      if (d.code === code) return d;
+    } catch(e) {}
+  }
+  // try decoding from the raw payload input (base64)
+  try {
+    const d = JSON.parse(atob(code));
+    if (d.type && d.credits && d.expires) return { ...d, code: d.id };
+  } catch(e) {}
+  return null;
+}
+
+function decodePayload(payload) {
+  try { return JSON.parse(atob(payload)); } catch(e) { return null; }
+}
+
+function init() {
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan'); // 'single' or 'bundle'
+
+  if (!plan || (plan !== 'single' && plan !== 'bundle')) {
+    document.getElementById('card-error').style.display = '';
+    return;
+  }
+
+  const isSingle = plan === 'single';
+  const credits = isSingle ? 1 : 5;
+  const { code, payload } = makeToken(plan, credits);
+  saveCredits(plan, credits, code, payload);
+
+  document.getElementById('subtitle-text').textContent =
+    isSingle
+      ? 'Your single export credit is ready. Use it on any document.'
+      : `Your bundle of ${credits} export credits is ready. Use them on any document within ${EXPIRY_DAYS} days.`;
+
+  document.getElementById('credits-badge').textContent =
+    isSingle ? '1 export credit added' : `${credits} export credits added`;
+
+  document.getElementById('token-display').textContent = code;
+  document.getElementById('card-success').style.display = '';
+
+  // also store the payload as a restorable key
+  localStorage.setItem('la_token_payload_' + code, payload);
+}
+
+function copyToken() {
+  const code = document.getElementById('token-display').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function restoreFromCode(code, msgId) {
+  const msg = document.getElementById(msgId);
+  code = code.trim();
+  if (!code) { msg.textContent = 'Please enter a token.'; msg.className = 'restore-msg err'; return; }
+
+  // Try localStorage first
+  const stored = localStorage.getItem('la_credits');
+  if (stored) {
+    try {
+      const d = JSON.parse(stored);
+      if (d.code === code && d.expires > Date.now() && d.credits > 0) {
+        msg.textContent = `✓ Restored — ${d.credits} export credit${d.credits !== 1 ? 's' : ''} remaining (expires ${new Date(d.expires).toLocaleDateString()}).`;
+        msg.className = 'restore-msg ok';
+        return;
+      }
+    } catch(e) {}
+  }
+
+  // Try the stored payload
+  const payload = localStorage.getItem('la_token_payload_' + code);
+  if (payload) {
+    const d = decodePayload(payload);
+    if (d && d.expires > Date.now()) {
+      saveCredits(d.type, d.credits, code, payload);
+      msg.textContent = `✓ Restored — ${d.credits} export credit${d.credits !== 1 ? 's' : ''} remaining.`;
+      msg.className = 'restore-msg ok';
+      return;
+    }
+  }
+
+  msg.textContent = 'Token not recognised or expired. Contact support if you need help.';
+  msg.className = 'restore-msg err';
+}
+
+function restoreToken() {
+  restoreFromCode(document.getElementById('restore-input').value, 'restore-msg');
+}
+function restoreTokenErr() {
+  restoreFromCode(document.getElementById('restore-input-err').value, 'restore-msg-err');
+}
+
+init();
+</script>
+</body>
+</html>
