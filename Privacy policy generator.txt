@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy Generator — LegalAIPay</title>
+<meta name="description" content="Generate a compliant privacy policy for GDPR, UK GDPR, CCPA/CPRA, COPPA, or PIPL — plain-English questions, layered notice output.">
+<style>
+:root {
+  --primary: #0f1e3d;
+  --primary-light: #1a365d;
+  --accent: #3182ce;
+  --accent-light: #63b3ed;
+  --success: #38a169;
+  --warning: #d69e2e;
+  --danger: #e53e3e;
+  --bg: #fafbfc;
+  --card: #ffffff;
+  --border: #e2e8f0;
+  --text: #2d3748;
+  --text-light: #718096;
+  --text-muted: #a0aec0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+.topbar { background: white; border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+.topbar a.brand { color: var(--primary); font-weight: 700; font-size: 18px; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+.topbar .brand-mark { width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary), var(--accent)); border-radius: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.topbar a.back { color: var(--text-light); font-size: 14px; text-decoration: none; }
+.topbar a.back:hover { color: var(--accent); }
+h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
+.subtitle { color: var(--text-light); font-size: 15px; margin-bottom: 28px; }
+
+.jurisdiction-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+@media (max-width: 700px) { .jurisdiction-picker { grid-template-columns: 1fr; } }
+.j-card { background: white; border: 2px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; position: relative; }
+.j-card:hover { border-color: var(--accent-light); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,30,61,0.08); }
+.j-card.selected { border-color: var(--accent); background: #ebf8ff; }
+.j-card .flag { font-size: 28px; margin-bottom: 8px; }
+.j-card h3 { font-size: 16px; color: var(--primary); margin-bottom: 4px; }
+.j-card .laws { font-size: 12px; color: var(--text-light); }
+
+.wizard { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 24px; display: none; }
+.wizard.active { display: block; }
+.step-indicator { display: flex; gap: 8px; margin-bottom: 24px; }
+.step-dot { flex: 1; height: 4px; background: var(--border); border-radius: 2px; }
+.step-dot.active { background: var(--accent); }
+.step-dot.done { background: var(--success); }
+.step-title { font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+.step-hint { font-size: 13px; color: var(--text-light); margin-bottom: 18px; }
+.step { display: none; }
+.step.active { display: block; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.form-label .help { font-weight: 400; color: var(--text-light); font-size: 12px; margin-left: 6px; }
+.form-input, .form-textarea, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: inherit; }
+.form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,0.1); }
+.form-textarea { min-height: 72px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.data-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.data-chip { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: flex-start; gap: 10px; background: white; }
+.data-chip:hover { border-color: var(--accent-light); }
+.data-chip.selected { border-color: var(--accent); background: #ebf8ff; }
+.data-chip.sensitive.selected { border-color: var(--danger); background: #fff5f5; }
+.data-chip input { margin-top: 2px; }
+.data-chip .icon { font-size: 18px; }
+.data-chip .label { font-size: 13px; font-weight: 600; }
+.data-chip .ex { font-size: 11px; color: var(--text-light); display: block; margin-top: 2px; }
+.sens-flag { color: var(--danger); font-size: 11px; font-weight: 700; margin-left: 4px; }
+
+.purpose-row { display: grid; grid-template-columns: 1fr 200px; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.purpose-row .text { font-size: 13px; }
+.purpose-row .text .legal { font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; }
+.purpose-row input[type=checkbox] { width: 18px; height: 18px; }
+
+.warning-box { background: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid var(--warning); padding: 12px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px; color: #78350f; }
+.info-box { background: #ebf8ff; border: 1px solid #bee3f8; border-left: 4px solid var(--accent); padding: 12px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px; color: #1e40af; }
+.success-box { background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid var(--success); padding: 12px 14px; border-radius: 6px; margin: 12px 0; font-size: 13px; color: #166534; }
+
+.btn-row { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+.btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--accent); }
+.btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-success { background: var(--success); color: white; }
+.btn-success:hover { background: #2f855a; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+#output-panel { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: none; }
+#output-panel.active { display: block; }
+.output-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 16px; }
+.output-tab { padding: 10px 16px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-light); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.output-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+#output { background: #f7fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px; max-height: 600px; overflow-y: auto; font-size: 13px; line-height: 1.7; }
+#output h2 { color: var(--primary); font-size: 18px; margin: 18px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+#output h2:first-child { margin-top: 0; }
+#output h3 { color: var(--primary-light); font-size: 14px; margin: 12px 0 6px; }
+#output p { margin: 6px 0; }
+#output ul { margin: 6px 0 6px 20px; }
+#output li { margin: 3px 0; }
+#output table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 12px; }
+#output th, #output td { border: 1px solid var(--border); padding: 6px 8px; text-align: left; }
+#output th { background: #edf2f7; }
+.output-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+.disclaimer { margin-top: 24px; padding: 16px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; font-size: 12px; color: #78350f; }
+.footer-meta { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+
+.pipia-import-box { background: linear-gradient(135deg, #f0fff4, #e6fffa); border: 1px solid #c6f6d5; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+.pipia-import-box h4 { color: #276749; font-size: 14px; margin-bottom: 6px; }
+.pipia-import-box .desc { font-size: 12px; color: #2f855a; margin-bottom: 10px; }
+.pipia-import-box button { background: #38a169; color: white; padding: 8px 14px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/" class="brand"><span class="brand-mark">L</span>LegalAIPay</a>
+  <a href="/" class="back">← Back to Home</a>
+</div>
+
+<div class="container">
+  <h1>Privacy Policy Generator</h1>
+  <p class="subtitle" id="subtitle">Plain-English questions. Statute-grounded output. Choose your market to begin.</p>
+
+  <div class="jurisdiction-picker" id="picker">
+    <div class="j-card" data-j="eu" onclick="selectJ('eu')">
+      <div class="flag">🇪🇺 🇬🇧</div>
+      <h3>EU / UK</h3>
+      <div class="laws">GDPR + UK GDPR</div>
+    </div>
+    <div class="j-card" data-j="us" onclick="selectJ('us')">
+      <div class="flag">🇺🇸</div>
+      <h3>United States</h3>
+      <div class="laws">CCPA / CPRA + COPPA</div>
+    </div>
+    <div class="j-card" data-j="cn" onclick="selectJ('cn')">
+      <div class="flag">🇨🇳</div>
+      <h3>中国 China</h3>
+      <div class="laws">PIPL 个人信息保护法</div>
+    </div>
+  </div>
+
+  <div class="wizard" id="wizard-eu">
+    <div class="step-indicator">
+      <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+    </div>
+    <div class="step active" data-step="1">
+      <div class="step-title">Step 1 of 5 — About your business</div>
+      <div class="step-hint">Basic information that appears in the policy as the data controller.</div>
+      <div class="info-box">This template covers the EU/EEA (GDPR Regulation 2016/679) and the United Kingdom (UK GDPR + Data Protection Act 2018). Where the two differ, we apply the stricter standard.</div>
+      <div class="form-group"><label class="form-label">Company / organisation name</label><input class="form-input" id="eu_name" placeholder="Acme Ltd."></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Registered address</label><input class="form-input" id="eu_addr" placeholder="Street, City, Country"></div>
+        <div class="form-group"><label class="form-label">Contact email for privacy</label><input class="form-input" id="eu_email" placeholder="privacy@yourcompany.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Website URL</label><input class="form-input" id="eu_url" placeholder="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">Have you appointed a DPO? <span class="help">Required if processing is large-scale or systematic.</span></label>
+          <select class="form-select" id="eu_dpo">
+            <option value="no">No</option>
+            <option value="yes">Yes — I'll provide DPO contact</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" id="eu_dpo_box" style="display:none;"><label class="form-label">DPO name and contact</label><input class="form-input" id="eu_dpo_contact" placeholder="Name + email"></div>
+      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+    </div>
+    <div class="step" data-step="2">
+      <div class="step-title">Step 2 of 5 — What data do you collect?</div>
+      <div class="step-hint">Pick everything that applies. Items marked <span class="sens-flag">SENSITIVE</span> are "special category data" under GDPR Article 9 and need extra protection.</div>
+      <div class="data-grid" id="eu_data_grid"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+    </div>
+    <div class="step" data-step="3">
+      <div class="step-title">Step 3 of 5 — Why do you collect it?</div>
+      <div class="step-hint">Pick the reasons that apply. We'll map each to a GDPR Article 6 legal basis automatically.</div>
+      <div id="eu_purposes"></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label">Do you process data of children under 16? <span class="help">Triggers Article 8 parental consent rules.</span></label>
+        <select class="form-select" id="eu_children">
+          <option value="no">No, our service is not directed to children under 16</option>
+          <option value="yes">Yes — we collect data from children under 16</option>
+        </select>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+    </div>
+    <div class="step" data-step="4">
+      <div class="step-title">Step 4 of 5 — Who else sees the data?</div>
+      <div class="step-hint">Common processors. Pick the ones you use — we'll list them as recipients with their default transfer mechanism.</div>
+      <div class="data-grid" id="eu_processors"></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label">Other recipients / processors (optional)</label><textarea class="form-textarea" id="eu_other_proc" placeholder="One per line: e.g., Salesforce, Slack"></textarea></div>
+      <div class="form-group"><label class="form-label">Do you transfer data outside the EU/UK? <span class="help">If you use US-based services (AWS, Google, etc.) → Yes.</span></label>
+        <select class="form-select" id="eu_intl" onchange="document.getElementById('eu_intl_box').style.display=this.value==='yes'?'block':'none'">
+          <option value="no">No, all processing in EU/UK</option>
+          <option value="yes" selected>Yes, some data is transferred outside EU/UK</option>
+        </select>
+      </div>
+      <div id="eu_intl_box" class="form-group"><label class="form-label">Transfer mechanism</label>
+        <select class="form-select" id="eu_intl_mech">
+          <option value="scc">Standard Contractual Clauses (SCCs)</option>
+          <option value="adequacy">Adequacy decision (e.g., EU-US DPF, UK adequacy)</option>
+          <option value="bcr">Binding Corporate Rules</option>
+          <option value="derogation">Article 49 derogation (occasional / consent)</option>
+        </select>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+    </div>
+    <div class="step" data-step="5">
+      <div class="step-title">Step 5 of 5 — Retention & rights contact</div>
+      <div class="step-hint">Last details — then we generate.</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">How long do you keep personal data? <span class="help">In plain language.</span></label>
+          <input class="form-input" id="eu_retain" placeholder="e.g., as long as you have an account, then 2 years">
+        </div>
+        <div class="form-group"><label class="form-label">Email for rights requests</label>
+          <input class="form-input" id="eu_rights_email" placeholder="privacy@yourcompany.com">
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Lead supervisory authority country <span class="help">Where you're primarily established. EU users may complain to their local DPA in any case.</span></label>
+        <select class="form-select" id="eu_lead_dpa">
+          <option value="UK ICO">United Kingdom — ICO</option>
+          <option value="Ireland DPC">Ireland — DPC</option>
+          <option value="France CNIL">France — CNIL</option>
+          <option value="Germany BfDI">Germany — BfDI</option>
+          <option value="Spain AEPD">Spain — AEPD</option>
+          <option value="Netherlands AP">Netherlands — Autoriteit Persoonsgegevens</option>
+          <option value="Italy Garante">Italy — Garante</option>
+          <option value="local DPA">Other / your local DPA</option>
+        </select>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-success" onclick="generate()">Generate Policy →</button></div>
+    </div>
+  </div>
+
+  <div class="wizard" id="wizard-us">
+    <div class="step-indicator">
+      <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+    </div>
+    <div class="step active" data-step="1">
+      <div class="step-title">Step 1 of 5 — About your business</div>
+      <div class="step-hint">This template provides a multi-state US baseline (California CCPA/CPRA as the strictest, with rights commonly required by Virginia VCDPA, Colorado CPA, Connecticut CTDPA, and Utah UCPA). Verify state-specific add-ons before publishing.</div>
+      <div class="info-box"><strong>Children:</strong> This baseline assumes your service is <strong>not directed to children under 13</strong> and you do not knowingly collect their data (COPPA standard). If that's not true, you need a separate COPPA-compliant children's notice and verifiable parental consent.</div>
+      <div class="form-group"><label class="form-label">Business name</label><input class="form-input" id="us_name" placeholder="Acme Inc."></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Mailing address</label><input class="form-input" id="us_addr" placeholder="Street, City, State, ZIP"></div>
+        <div class="form-group"><label class="form-label">Contact email for privacy</label><input class="form-input" id="us_email" placeholder="privacy@yourcompany.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Website URL</label><input class="form-input" id="us_url" placeholder="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">Toll-free phone (CCPA requires for offline interactions) <span class="help">Optional but recommended.</span></label><input class="form-input" id="us_phone" placeholder="+1 800 ..."></div>
+      </div>
+      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+    </div>
+    <div class="step" data-step="2">
+      <div class="step-title">Step 2 of 5 — Personal information you collect</div>
+      <div class="step-hint">CPRA categories. Items marked <span class="sens-flag">SENSITIVE</span> are "Sensitive Personal Information" under § 1798.140(ae) — triggers the "Limit the Use of My Sensitive Personal Information" right.</div>
+      <div class="data-grid" id="us_data_grid"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+    </div>
+    <div class="step" data-step="3">
+      <div class="step-title">Step 3 of 5 — Purposes and disclosure</div>
+      <div class="step-hint">How you use the data and who you share it with.</div>
+      <div id="us_purposes"></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label">Do you sell or share personal information? <span class="help">"Share" includes cross-context behavioral advertising (e.g., Facebook Pixel, Google Ads remarketing).</span></label>
+        <select class="form-select" id="us_sell">
+          <option value="no">No — we do not sell or share PI</option>
+          <option value="yes">Yes — we sell or share PI (must include opt-out link)</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Do you use SPI for purposes beyond the limited business uses? <span class="help">If yes, you must show a "Limit the Use of My Sensitive Personal Information" link.</span></label>
+        <select class="form-select" id="us_spi_use">
+          <option value="no">No — only limited uses (service, security, etc.)</option>
+          <option value="yes">Yes — for broader uses (must include Limit-SPI link)</option>
+        </select>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+    </div>
+    <div class="step" data-step="4">
+      <div class="step-title">Step 4 of 5 — Third parties</div>
+      <div class="step-hint">Service providers and other recipients you'll list.</div>
+      <div class="data-grid" id="us_processors"></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label">Other service providers (optional)</label><textarea class="form-textarea" id="us_other_proc" placeholder="One per line"></textarea></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+    </div>
+    <div class="step" data-step="5">
+      <div class="step-title">Step 5 of 5 — Retention & rights</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Retention period (in plain language)</label><input class="form-input" id="us_retain" placeholder="e.g., as long as your account is active, then 3 years"></div>
+        <div class="form-group"><label class="form-label">Email for rights requests</label><input class="form-input" id="us_rights_email" placeholder="privacy@yourcompany.com"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-success" onclick="generate()">Generate Policy →</button></div>
+    </div>
+  </div>
+
+  <div class="wizard" id="wizard-cn">
+    <div class="step-indicator">
+      <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+    </div>
+    <div class="step active" data-step="1">
+      <div class="step-title">第 1 步 / 5 — 关于贵机构</div>
+      <div class="step-hint">基础信息，将作为"个人信息处理者"出现在政策中。</div>
+      <div class="pipia-import-box">
+        <h4>📥 从 PIPIA 评估导入数据</h4>
+        <div class="desc">如果您已在 PIPIA 工具中完成评估，可一键导入字段、目的、跨境信息。</div>
+        <button onclick="importFromPipia()">从 PIPIA 导入 / Import from PIPIA</button>
+        <input type="file" id="pipia_file" accept=".json" style="display:none;" onchange="importPipiaFile(event)">
+      </div>
+      <div class="info-box">本模板依据《中华人民共和国个人信息保护法》（PIPL，2021年11月1日施行）及GB/T 35273-2020编制。</div>
+      <div class="form-group"><label class="form-label">公司 / 机构全称（个人信息处理者）</label><input class="form-input" id="cn_name" placeholder="某某科技有限公司"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">注册地址</label><input class="form-input" id="cn_addr" placeholder="例如：北京市朝阳区..."></div>
+        <div class="form-group"><label class="form-label">联系邮箱</label><input class="form-input" id="cn_email" placeholder="privacy@yourcompany.com"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">网站 URL</label><input class="form-input" id="cn_url" placeholder="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">是否已指定个人信息保护负责人？<span class="help">PIPL 第52条要求达到一定规模须设置。</span></label>
+          <select class="form-select" id="cn_dpo">
+            <option value="no">尚未指定</option>
+            <option value="yes">已指定</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('cn')">下一步 →</button></div>
+    </div>
+    <div class="step" data-step="2">
+      <div class="step-title">第 2 步 / 5 — 收集哪些个人信息？</div>
+      <div class="step-hint">勾选所有适用项。标有 <span class="sens-flag">敏感</span> 的属于 PIPL 第28条"敏感个人信息"，须单独同意。</div>
+      <div class="data-grid" id="cn_data_grid"></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><button class="btn btn-primary" onclick="nextStep('cn')">下一步 →</button></div>
+    </div>
+    <div class="step" data-step="3">
+      <div class="step-title">第 3 步 / 5 — 处理目的</div>
+      <div class="step-hint">勾选适用的处理目的，本工具将自动映射到 PIPL 第13条的法定依据。</div>
+      <div id="cn_purposes"></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label">是否处理不满14岁未成年人个人信息？<span class="help">PIPL 第31条要求父母或监护人同意。</span></label>
+        <select class="form-select" id="cn_minors">
+          <option value="no">否，本服务不面向不满14岁的未成年人</option>
+          <option value="yes">是 — 须取得监护人同意并制定专门处理规则</option>
+        </select>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><button class="btn btn-primary" onclick="nextStep('cn')">下一步 →</button></div>
+    </div>
+    <div class="step" data-step="4">
+      <div class="step-title">第 4 步 / 5 — 共享、委托、跨境</div>
+      <div class="step-hint">受托方与境外接收方将列入"个人信息接收方清单"。</div>
+      <div class="form-group"><label class="form-label">是否委托第三方处理或与第三方共享个人信息？</label>
+        <select class="form-select" id="cn_share" onchange="document.getElementById('cn_share_box').style.display=this.value==='yes'?'block':'none'">
+          <option value="no">否</option>
+          <option value="yes" selected>是</option>
+        </select>
+      </div>
+      <div id="cn_share_box" class="form-group"><label class="form-label">受托/共享方（一行一个）</label><textarea class="form-textarea" id="cn_share_list" placeholder="例如：阿里云、腾讯云、字节跳动..."></textarea></div>
+      <div class="form-group"><label class="form-label">是否存在跨境数据传输？<span class="help">PIPL 第38-39条要求单独同意 + CAC 合规路径。</span></label>
+        <select class="form-select" id="cn_intl" onchange="document.getElementById('cn_intl_box').style.display=this.value==='yes'?'block':'none'">
+          <option value="no">否，仅在中国境内处理</option>
+          <option value="yes" selected>是</option>
+        </select>
+      </div>
+      <div id="cn_intl_box">
+        <div class="form-group"><label class="form-label">跨境合规路径</label>
+          <select class="form-select" id="cn_intl_mech">
+            <option value="sa">网信办安全评估（CAC Security Assessment）</option>
+            <option value="scc">网信办标准合同（CAC SCC）</option>
+            <option value="cert">个人信息保护认证</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">境外接收方名称、国家/地区、用途</label><textarea class="form-textarea" id="cn_intl_recipient" placeholder="例如：Acme Inc.（美国）— 提供产品技术支持"></textarea></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><button class="btn btn-primary" onclick="nextStep('cn')">下一步 →</button></div>
+    </div>
+    <div class="step" data-step="5">
+      <div class="step-title">第 5 步 / 5 — 保存期限与权利渠道</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">个人信息保存期限</label><input class="form-input" id="cn_retain" placeholder="例如：账户存续期间 + 法定期限届满后删除"></div>
+        <div class="form-group"><label class="form-label">权利行使联系邮箱</label><input class="form-input" id="cn_rights_email" placeholder="privacy@yourcompany.com"></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><button class="btn btn-success" onclick="generate()">生成隐私政策 →</button></div>
+    </div>
+  </div>
+
+  <div id="output-panel">
+    <div class="output-tabs">
+      <div class="output-tab active" data-view="short" onclick="switchView('short')"><span id="lbl-short">At-a-glance (short notice)</span></div>
+      <div class="output-tab" data-view="full" onclick="switchView('full')"><span id="lbl-full">Full privacy policy</span></div>
+      <div class="output-tab" data-view="consent" onclick="switchView('consent')"><span id="lbl-consent">Consent text & cookie banner</span></div>
+    </div>
+    <div id="output"></div>
+    <div class="output-actions">
+      <button class="btn btn-primary" onclick="copyOut()" id="btn-copy">Copy to clipboard</button>
+      <button class="btn btn-secondary" onclick="downloadHTML()" id="btn-download">Download .html</button>
+      <button class="btn btn-secondary" onclick="resetAll()" id="btn-reset">Start over</button>
+    </div>
+    <div class="disclaimer" id="disclaimer-box"></div>
+    <div class="footer-meta">
+      <span id="meta-version">Template v1.0 • Generated <span id="gen-date"></span></span>
+      <span id="meta-jurisdiction"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentJ = null;
+let euData = { fields: [], purposes: [], processors: [] };
+let usData = { fields: [], purposes: [], processors: [] };
+let cnData = { fields: [], purposes: [] };
+let currentView = 'short';
+let outputHTML = { short: '', full: '', consent: '' };
+
+const EU_FIELDS = [
+  { id:'name', icon:'👤', label:'Name', ex:'first, last, display name', sensitive:false },
+  { id:'email', icon:'📧', label:'Email', ex:'email address', sensitive:false },
+  { id:'phone', icon:'📱', label:'Phone', ex:'mobile, landline', sensitive:false },
+  { id:'addr', icon:'🏠', label:'Postal address', ex:'street, city, country', sensitive:false },
+  { id:'account', icon:'🔐', label:'Account credentials', ex:'username, password hash', sensitive:false },
+  { id:'payment', icon:'💳', label:'Payment information', ex:'card last 4, billing address', sensitive:false },
+  { id:'usage', icon:'📊', label:'Usage data', ex:'pages visited, clicks', sensitive:false },
+  { id:'device', icon:'💻', label:'Device info', ex:'IP, browser, OS', sensitive:false },
+  { id:'cookies', icon:'🍪', label:'Cookies & analytics IDs', ex:'GA, advertising IDs', sensitive:false },
+  { id:'location_approx', icon:'📍', label:'Approximate location', ex:'city-level from IP', sensitive:false },
+  { id:'photos', icon:'📷', label:'User-uploaded photos/files', ex:'profile picture, uploads', sensitive:false },
+  { id:'biometric', icon:'👁️', label:'Biometric data', ex:'face/voice ID', sensitive:true },
+  { id:'health', icon:'🩺', label:'Health data', ex:'medical, fitness', sensitive:true },
+  { id:'racial', icon:'🌍', label:'Racial/ethnic origin', ex:'diversity surveys', sensitive:true },
+  { id:'religion', icon:'🕊️', label:'Religious beliefs', ex:'survey, dietary', sensitive:true },
+  { id:'political', icon:'🗳️', label:'Political opinions', ex:'survey', sensitive:true },
+  { id:'union', icon:'🤝', label:'Trade union membership', ex:'HR systems', sensitive:true },
+  { id:'sexual', icon:'⚧', label:'Sexual orientation / sex life', ex:'profile attributes', sensitive:true },
+  { id:'genetic', icon:'🧬', label:'Genetic data', ex:'DNA tests', sensitive:true },
+  { id:'criminal', icon:'⚖️', label:'Criminal convictions', ex:'background checks', sensitive:true }
+];
+
+const US_FIELDS = [
+  { id:'identifier', icon:'👤', label:'Identifiers', ex:'name, email, IP, account ID', sensitive:false },
+  { id:'80e', icon:'📋', label:'Customer records (Cal. Civ. Code §1798.80(e))', ex:'address, phone, financial', sensitive:false },
+  { id:'protected', icon:'🛡️', label:'Protected classifications', ex:'age, gender, marital status (some sensitive)', sensitive:false },
+  { id:'commercial', icon:'🛒', label:'Commercial info', ex:'products purchased', sensitive:false },
+  { id:'biometric', icon:'👁️', label:'Biometric info (identifying)', ex:'face/voice', sensitive:true },
+  { id:'internet', icon:'🌐', label:'Internet / network activity', ex:'browsing history', sensitive:false },
+  { id:'geolocation_precise', icon:'📍', label:'Precise geolocation (<1850 ft radius)', ex:'GPS', sensitive:true },
+  { id:'sensory', icon:'🎙️', label:'Sensory data', ex:'audio, visual', sensitive:false },
+  { id:'professional', icon:'💼', label:'Professional / employment', ex:'work history', sensitive:false },
+  { id:'education', icon:'🎓', label:'Education info (non-FERPA)', ex:'transcripts', sensitive:false },
+  { id:'inference', icon:'🧠', label:'Inferences (profile)', ex:'preferences, predispositions', sensitive:false },
+  { id:'ssn', icon:'🆔', label:'SSN, DL, state ID, passport', ex:'government IDs', sensitive:true },
+  { id:'account_login', icon:'🔐', label:'Account login + password', ex:'credentials', sensitive:true },
+  { id:'financial', icon:'💳', label:'Financial account + access code', ex:'bank account, card', sensitive:true },
+  { id:'race', icon:'🌍', label:'Racial/ethnic origin, religious/philosophical beliefs, union', ex:'diversity data', sensitive:true },
+  { id:'mail_content', icon:'✉️', label:'Contents of mail/email/SMS', ex:'message bodies', sensitive:true },
+  { id:'genetic', icon:'🧬', label:'Genetic data', ex:'DNA', sensitive:true },
+  { id:'health', icon:'🩺', label:'Health data', ex:'medical', sensitive:true },
+  { id:'sex_life', icon:'⚧', label:'Sex life / sexual orientation', ex:'profile', sensitive:true }
+];
+
+const CN_FIELDS = [
+  { id:'name', icon:'👤', label:'姓名', ex:'真实姓名', sensitive:false },
+  { id:'phone', icon:'📱', label:'手机号', ex:'+86 ...', sensitive:false },
+  { id:'email', icon:'📧', label:'电子邮箱', ex:'email', sensitive:false },
+  { id:'addr', icon:'🏠', label:'通讯地址', ex:'省市区', sensitive:false },
+  { id:'device', icon:'💻', label:'设备信息', ex:'IMEI、IP、操作系统', sensitive:false },
+  { id:'usage', icon:'📊', label:'使用记录', ex:'浏览、点击', sensitive:false },
+  { id:'biometric', icon:'👁️', label:'生物识别信息', ex:'人脸、指纹、声纹', sensitive:true },
+  { id:'religion', icon:'🕊️', label:'宗教信仰', ex:'宗教问卷', sensitive:true },
+  { id:'identity', icon:'🆔', label:'特定身份', ex:'职业、身份类别', sensitive:true },
+  { id:'medical', icon:'🩺', label:'医疗健康', ex:'病历、体检', sensitive:true },
+  { id:'financial', icon:'💳', label:'金融账户', ex:'银行卡、支付账号', sensitive:true },
+  { id:'location_track', icon:'📍', label:'行踪轨迹', ex:'GPS定位', sensitive:true },
+  { id:'minor', icon:'🧒', label:'不满14岁未成年人信息', ex:'监护人同意', sensitive:true },
+  { id:'idcard', icon:'📇', label:'身份证号 / 护照号', ex:'GB/T 35273 列举', sensitive:true },
+  { id:'comm_record', icon:'💬', label:'通信记录与内容', ex:'GB/T 35273 列举', sensitive:true },
+  { id:'web_history', icon:'🌐', label:'网页浏览记录', ex:'GB/T 35273 列举', sensitive:true }
+];
+
+const EU_PURPOSES = [
+  { id:'contract', label:"To deliver the product or service the user signed up for", legal:'Art. 6(1)(b) — contract performance' },
+  { id:'legal', label:"To comply with a legal obligation (e.g., tax, KYC)", legal:'Art. 6(1)(c) — legal obligation' },
+  { id:'vital', label:"To protect someone's life or health in an emergency", legal:'Art. 6(1)(d) — vital interests' },
+  { id:'legit_security', label:"To keep our service secure and prevent fraud", legal:'Art. 6(1)(f) — legitimate interests (security)' },
+  { id:'legit_analytics', label:"To understand how people use our service (basic analytics)", legal:'Art. 6(1)(f) — legitimate interests (analytics)' },
+  { id:'consent_marketing', label:"To send marketing emails / push notifications", legal:'Art. 6(1)(a) — consent (with opt-out)' },
+  { id:'consent_cookies', label:"To run non-essential cookies (advertising, third-party analytics)", legal:'Art. 6(1)(a) — consent (cookie banner)' },
+  { id:'consent_profiling', label:"To build a profile for personalized recommendations", legal:'Art. 6(1)(a) — consent (Art. 22 if solely automated)' }
+];
+
+const US_PURPOSES = [
+  { id:'service', label:"To provide the product or service the user signed up for", legal:'Business purpose — performing services (11 CCR § 7027(m))' },
+  { id:'security', label:"To detect and prevent fraud, security incidents, and abuse", legal:'Business purpose — security/integrity' },
+  { id:'compliance', label:"To comply with legal obligations", legal:'Business purpose — legal compliance' },
+  { id:'marketing', label:"To send marketing emails / promote our products", legal:'Commercial purpose — marketing (opt-out for sale/share)' },
+  { id:'advertising', label:"To show targeted ads / personalize content", legal:'Commercial purpose — cross-context behavioral advertising (triggers Share/Sell + opt-out link)' },
+  { id:'analytics', label:"To improve our service through analytics", legal:'Business purpose — service improvement' },
+  { id:'profiling', label:"To create profiles / inferences about preferences", legal:'Inferences — § 1798.140(v)(1)(K)' }
+];
+
+const CN_PURPOSES = [
+  { id:'contract', label:'为订立、履行用户作为一方当事人的合同所必需', legal:'PIPL 第13(2)条' },
+  { id:'legal', label:'履行法定职责或法定义务所必需', legal:'PIPL 第13(3)条' },
+  { id:'emergency', label:'为应对突发公共卫生事件，或紧急情况下保护自然人生命健康和财产安全所必需', legal:'PIPL 第13(4)条' },
+  { id:'hr', label:'人力资源管理（依法制定的劳动规章制度/集体合同）', legal:'PIPL 第13(2)条' },
+  { id:'consent_market', label:'营销推送 / 商业宣传', legal:'PIPL 第13(1)条 — 须同意' },
+  { id:'consent_personalized', label:'个性化推荐 / 自动化决策', legal:'PIPL 第13(1)条 + 第24条' },
+  { id:'security', label:'安全防护、反欺诈、风控', legal:'PIPL 第13(1)条 — 同意（或合理范围内合法权益）' },
+  { id:'analytics', label:'用户行为分析与产品改进', legal:'PIPL 第13(1)条 — 同意' }
+];
+
+const COMMON_PROCESSORS = [
+  { id:'stripe', icon:'💳', label:'Stripe (payments)', country:'US (SCCs)', sensitive:false },
+  { id:'mailchimp', icon:'📧', label:'Mailchimp (email)', country:'US (SCCs)', sensitive:false },
+  { id:'aws', icon:'☁️', label:'AWS (hosting)', country:'US (SCCs)', sensitive:false },
+  { id:'gcp', icon:'☁️', label:'Google Cloud', country:'US (SCCs)', sensitive:false },
+  { id:'azure', icon:'☁️', label:'Microsoft Azure', country:'US (SCCs)', sensitive:false },
+  { id:'ga', icon:'📊', label:'Google Analytics', country:'US (SCCs)', sensitive:false },
+  { id:'meta', icon:'📱', label:'Meta Pixel (Facebook)', country:'US (SCCs)', sensitive:false },
+  { id:'hubspot', icon:'📞', label:'HubSpot (CRM)', country:'US (SCCs)', sensitive:false },
+  { id:'salesforce', icon:'☁️', label:'Salesforce', country:'US (SCCs)', sensitive:false },
+  { id:'intercom', icon:'💬', label:'Intercom (chat)', country:'US (SCCs)', sensitive:false },
+  { id:'zoom', icon:'📹', label:'Zoom (video)', country:'US (SCCs)', sensitive:false },
+  { id:'sendgrid', icon:'📧', label:'SendGrid (email)', country:'US (SCCs)', sensitive:false }
+];
+
+function selectJ(j) {
+  currentJ = j;
+  document.querySelectorAll('.j-card').forEach(c => c.classList.toggle('selected', c.dataset.j === j));
+  document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
+  document.getElementById('wizard-' + j).classList.add('active');
+  if (j === 'eu') {
+    renderChips('eu_data_grid', EU_FIELDS, euData.fields);
+    renderProcessors('eu_processors', euData.processors);
+    renderPurposes('eu_purposes', EU_PURPOSES, euData.purposes, 'eu');
+    document.getElementById('eu_dpo').onchange = function() {
+      document.getElementById('eu_dpo_box').style.display = this.value === 'yes' ? 'block' : 'none';
+    };
+  } else if (j === 'us') {
+    renderChips('us_data_grid', US_FIELDS, usData.fields);
+    renderProcessors('us_processors', usData.processors);
+    renderPurposes('us_purposes', US_PURPOSES, usData.purposes, 'us');
+  } else if (j === 'cn') {
+    renderChips('cn_data_grid', CN_FIELDS, cnData.fields);
+    renderPurposes('cn_purposes', CN_PURPOSES, cnData.purposes, 'cn');
+  }
+  document.getElementById('output-panel').classList.remove('active');
+}
+
+function renderChips(containerId, items, selectedArr) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = items.map(it => `
+    <label class="data-chip ${it.sensitive?'sensitive':''} ${selectedArr.includes(it.id)?'selected':''}">
+      <input type="checkbox" data-id="${it.id}" ${selectedArr.includes(it.id)?'checked':''} onchange="toggleField('${containerId}', '${it.id}')">
+      <div>
+        <span class="icon">${it.icon}</span>
+        <span class="label">${it.label}${it.sensitive?'<span class="sens-flag">SENSITIVE</span>':''}</span>
+        <span class="ex">${it.ex}</span>
+      </div>
+    </label>
+  `).join('');
+}
+
+function toggleField(containerId, id) {
+  let arr;
+  if (containerId.startsWith('eu')) arr = euData.fields;
+  else if (containerId.startsWith('us')) arr = usData.fields;
+  else arr = cnData.fields;
+  const i = arr.indexOf(id);
+  if (i >= 0) arr.splice(i, 1); else arr.push(id);
+  selectJ(currentJ);
+}
+
+function renderProcessors(containerId, selectedArr) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = COMMON_PROCESSORS.map(p => `
+    <label class="data-chip ${selectedArr.includes(p.id)?'selected':''}">
+      <input type="checkbox" data-id="${p.id}" ${selectedArr.includes(p.id)?'checked':''} onchange="toggleProc('${containerId}','${p.id}')">
+      <div>
+        <span class="icon">${p.icon}</span>
+        <span class="label">${p.label}</span>
+        <span class="ex">${p.country}</span>
+      </div>
+    </label>
+  `).join('');
+}
+
+function toggleProc(containerId, id) {
+  const arr = containerId.startsWith('eu') ? euData.processors : usData.processors;
+  const i = arr.indexOf(id);
+  if (i >= 0) arr.splice(i, 1); else arr.push(id);
+  selectJ(currentJ);
+}
+
+function renderPurposes(containerId, list, selectedArr, j) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = list.map(p => `
+    <div class="purpose-row">
+      <div class="text">${p.label}<span class="legal">→ ${p.legal}</span></div>
+      <div><input type="checkbox" data-id="${p.id}" ${selectedArr.includes(p.id)?'checked':''} onchange="togglePurpose('${j}','${p.id}')"></div>
+    </div>
+  `).join('');
+}
+
+function togglePurpose(j, id) {
+  let arr;
+  if (j === 'eu') arr = euData.purposes;
+  else if (j === 'us') arr = usData.purposes;
+  else arr = cnData.purposes;
+  const i = arr.indexOf(id);
+  if (i >= 0) arr.splice(i, 1); else arr.push(id);
+}
+
+function nextStep(j) {
+  const w = document.getElementById('wizard-' + j);
+  const steps = w.querySelectorAll('.step');
+  const dots = w.querySelectorAll('.step-dot');
+  let cur = 0;
+  steps.forEach((s, i) => { if (s.classList.contains('active')) cur = i; });
+  if (cur < steps.length - 1) {
+    steps[cur].classList.remove('active');
+    steps[cur + 1].classList.add('active');
+    dots[cur].classList.remove('active');
+    dots[cur].classList.add('done');
+    dots[cur + 1].classList.add('active');
+  }
+}
+function prevStep(j) {
+  const w = document.getElementById('wizard-' + j);
+  const steps = w.querySelectorAll('.step');
+  const dots = w.querySelectorAll('.step-dot');
+  let cur = 0;
+  steps.forEach((s, i) => { if (s.classList.contains('active')) cur = i; });
+  if (cur > 0) {
+    steps[cur].classList.remove('active');
+    steps[cur - 1].classList.add('active');
+    dots[cur].classList.remove('active');
+    dots[cur - 1].classList.remove('done');
+    dots[cur - 1].classList.add('active');
+  }
+}
+
+function generate() {
+  if (currentJ === 'eu') generateEU();
+  else if (currentJ === 'us') generateUS();
+  else if (currentJ === 'cn') generateCN();
+  document.getElementById('output-panel').classList.add('active');
+  document.getElementById('gen-date').textContent = new Date().toISOString().slice(0,10);
+  switchView('short');
+  applyLangToControls();
+  document.getElementById('output-panel').scrollIntoView({behavior:'smooth'});
+}
+
+function fieldsLabel(j, ids) {
+  const cat = j === 'eu' ? EU_FIELDS : j === 'us' ? US_FIELDS : CN_FIELDS;
+  return ids.map(id => cat.find(f => f.id === id)).filter(Boolean);
+}
+
+function generateEU() {
+  const name = val('eu_name') || '[Your Company]';
+  const addr = val('eu_addr') || '[Your Address]';
+  const email = val('eu_email') || '[privacy@yourcompany.com]';
+  const url = val('eu_url') || '[https://yourcompany.com]';
+  const dpo = val('eu_dpo') === 'yes' ? val('eu_dpo_contact') : null;
+  const fields = fieldsLabel('eu', euData.fields);
+  const sensFields = fields.filter(f => f.sensitive);
+  const purposes = EU_PURPOSES.filter(p => euData.purposes.includes(p.id));
+  const processors = COMMON_PROCESSORS.filter(p => euData.processors.includes(p.id));
+  const others = (val('eu_other_proc') || '').split('\n').filter(Boolean);
+  const intl = val('eu_intl') === 'yes';
+  const intlMech = val('eu_intl_mech');
+  const children = val('eu_children') === 'yes';
+  const retain = val('eu_retain') || '[your retention period]';
+  const rightsEmail = val('eu_rights_email') || email;
+  const leadDPA = val('eu_lead_dpa') || 'your local DPA';
+
+  outputHTML.short = `<h2>Privacy Notice — At-a-glance</h2><p><strong>${esc(name)}</strong> (${esc(addr)}) is the data controller of your personal data.</p><p><strong>What we collect:</strong> ${fields.length ? fields.map(f => esc(f.label.toLowerCase())).join(', ') : '[data categories]'}.${sensFields.length ? ' This includes <strong>special category data</strong> (' + sensFields.map(f=>esc(f.label.toLowerCase())).join(', ') + ') which we process only with your explicit consent or another Article 9 condition.' : ''}</p><p><strong>Why:</strong> ${purposes.length ? purposes.map(p=>esc(p.label.toLowerCase())).join('; ') : '[purposes]'}.</p><p><strong>Who else sees it:</strong> ${processors.length || others.length ? (processors.map(p=>esc(p.label)).concat(others.map(esc))).join(', ') : 'no third parties'}.${intl ? ' Some recipients are <strong>outside the EU/UK</strong>; we use <strong>'+esc(intlMech.toUpperCase())+'</strong> as the safeguard.' : ''}</p><p><strong>How long:</strong> ${esc(retain)}.</p><p><strong>Your rights:</strong> access, rectification, erasure, restriction, portability, objection, withdraw consent, complain to a supervisory authority (lead: ${esc(leadDPA)}).</p><p><strong>Contact:</strong> ${esc(rightsEmail)}.</p>`;
+
+  outputHTML.full = `<h2>Privacy Policy</h2><p><strong>Last updated:</strong> ${new Date().toISOString().slice(0,10)}</p><p>This Privacy Policy explains how ${esc(name)} ("<strong>we</strong>", "<strong>us</strong>") collects and uses your personal data in connection with our website ${esc(url)} and services. This policy applies in the EU/EEA under the General Data Protection Regulation (EU) 2016/679 ("<strong>GDPR</strong>") and in the United Kingdom under the UK GDPR and the Data Protection Act 2018. Where the two differ, we apply the stricter standard.</p><h2>1. Who is the data controller</h2><p>${esc(name)}, registered at ${esc(addr)}. ${dpo ? 'Our Data Protection Officer is ' + esc(dpo) + '.' : 'We have not appointed a statutory Data Protection Officer; for any privacy enquiry contact ' + esc(email) + '.'}</p><h2>2. Personal data we collect</h2><ul>${fields.map(f => `<li><strong>${esc(f.label)}</strong> (e.g., ${esc(f.ex)})${f.sensitive?' — <em>special category data under GDPR Art. 9</em>':''}</li>`).join('')}</ul>${sensFields.length ? '<p><em>Special category data:</em> we process this only where you have given <strong>explicit consent</strong> (Art. 9(2)(a)) or another Art. 9(2) condition applies.</p>' : ''}<h2>3. Why we use your data and our lawful basis</h2><table><thead><tr><th>Purpose</th><th>Lawful basis</th></tr></thead><tbody>${purposes.map(p => `<tr><td>${esc(p.label)}</td><td>${esc(p.legal)}</td></tr>`).join('')}</tbody></table>${children ? '<h2>4. Children under 16</h2><p>Our service is directed in part to users under 16. We obtain consent from the holder of parental responsibility before processing on the basis of consent (Art. 8 GDPR).</p>' : '<h2>4. Children</h2><p>Our service is not directed to children under 16 and we do not knowingly collect their personal data.</p>'}<h2>5. Recipients of your personal data</h2>${(processors.length || others.length) ? `<ul>${processors.map(p => `<li><strong>${esc(p.label)}</strong> — ${esc(p.country)}</li>`).join('')}${others.map(o => `<li>${esc(o)}</li>`).join('')}</ul>` : '<p>We do not share personal data with third parties other than as required by law.</p>'}${intl ? `<h2>6. International transfers</h2><p>Some recipients are outside the EU/UK. We rely on <strong>${esc(intlMech.toUpperCase())}</strong> as the safeguard under Chapter V GDPR.</p>` : '<h2>6. International transfers</h2><p>We do not transfer personal data outside the EU/UK.</p>'}<h2>7. How long we keep your data</h2><p>${esc(retain)}</p><h2>8. Your rights</h2><ul><li><strong>Access</strong> (Art. 15)</li><li><strong>Rectification</strong> (Art. 16)</li><li><strong>Erasure</strong> (Art. 17)</li><li><strong>Restriction</strong> (Art. 18)</li><li><strong>Data portability</strong> (Art. 20)</li><li><strong>Object</strong> (Art. 21)</li><li><strong>Not be subject to solely automated decisions</strong> (Art. 22)</li><li><strong>Withdraw consent</strong> (Art. 7(3))</li></ul><p>To exercise: <a href="mailto:${esc(rightsEmail)}">${esc(rightsEmail)}</a>. We respond within one month (Art. 12(3)).</p><h2>9. Complaints</h2><p>You may complain to a DPA. Lead: <strong>${esc(leadDPA)}</strong>.</p><h2>10. Changes</h2><p>We may update this policy. The "Last updated" date reflects the latest revision.</p><h2>11. Contact</h2><p>${esc(name)}, ${esc(addr)} — ${esc(email)}.</p>`;
+
+  outputHTML.consent = `<h2>Cookie banner copy</h2><div style="background:#f0fff4;padding:14px;border-radius:6px;border:1px solid #c6f6d5;"><p>We use essential cookies to run the site. With your permission, we'd also like to use analytics and marketing cookies.</p><p><strong>[Accept all] [Reject non-essential] [Customise]</strong></p></div><h2>Consent record</h2><ul><li>Timestamp (ISO 8601)</li><li>User identifier</li><li>Categories accepted</li><li>Policy version</li><li>Method (banner, settings, sign-up)</li></ul>${sensFields.length ? `<h2>Explicit consent for special category data</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>I expressly consent to ${esc(name)} processing my ${sensFields.map(f=>esc(f.label.toLowerCase())).join(', ')}. I can withdraw at any time by emailing ${esc(rightsEmail)}.</p><p><strong>☐ I agree</strong></p></div>` : ''}${children ? '<h2>Parental consent (Art. 8)</h2><p>For users under 16, obtain consent from the holder of parental responsibility.</p>' : ''}`;
+}
+
+function generateUS() {
+  const name = val('us_name') || '[Your Business]';
+  const addr = val('us_addr') || '[Your Address]';
+  const email = val('us_email') || '[privacy@yourcompany.com]';
+  const phone = val('us_phone');
+  const fields = fieldsLabel('us', usData.fields);
+  const sensFields = fields.filter(f => f.sensitive);
+  const purposes = US_PURPOSES.filter(p => usData.purposes.includes(p.id));
+  const sells = val('us_sell') === 'yes';
+  const spiBroad = val('us_spi_use') === 'yes';
+  const processors = COMMON_PROCESSORS.filter(p => usData.processors.includes(p.id));
+  const others = (val('us_other_proc') || '').split('\n').filter(Boolean);
+  const retain = val('us_retain') || '[retention period]';
+  const rightsEmail = val('us_rights_email') || email;
+
+  outputHTML.short = `<h2>Privacy Notice — At-a-glance</h2><p><strong>${esc(name)}</strong> (${esc(addr)}) collects and uses your personal information as described below.</p><p><strong>What we collect:</strong> ${fields.length ? fields.map(f=>esc(f.label.toLowerCase())).join(', ') : '[categories]'}.${sensFields.length ? ' Includes <strong>Sensitive Personal Information</strong> (§ 1798.140(ae)).' : ''}</p><p><strong>Why:</strong> ${purposes.map(p=>esc(p.label.toLowerCase())).join('; ') || '[purposes]'}.</p><p><strong>Do we sell or share?</strong> ${sells ? '<strong>Yes</strong>.' : 'No.'}</p><p><strong>Your rights:</strong> know, delete, correct, opt-out, limit sensitive PI, non-discrimination.</p><p><strong>Contact:</strong> ${esc(rightsEmail)}${phone ? ' / ' + esc(phone) : ''}.</p>`;
+
+  outputHTML.full = `<h2>Privacy Policy</h2><p><strong>Effective date:</strong> ${new Date().toISOString().slice(0,10)}</p><p>This Privacy Policy describes how ${esc(name)} ("<strong>we</strong>") collects, uses, and discloses personal information of US consumers, complying with CCPA/CPRA and providing equivalent disclosures for VCDPA, CPA, CTDPA, UCPA.</p><h2>1. Children</h2><p>Our service is <strong>not directed to children under 13</strong> and we do <strong>not knowingly collect</strong> their personal information. If we learn we have, we will delete it. (COPPA — 15 U.S.C. §§ 6501–6506; 16 CFR Part 312).</p><h2>2. Categories of PI we collect</h2><ul>${fields.map(f => `<li><strong>${esc(f.label)}</strong> — e.g., ${esc(f.ex)}${f.sensitive?' <em>(Sensitive PI, § 1798.140(ae))</em>':''}</li>`).join('')}</ul><h2>3. Sources</h2><ul><li>Directly from you</li><li>Automatically from your device</li><li>From service providers</li></ul><h2>4. Purposes</h2><table><thead><tr><th>Purpose</th><th>Type</th></tr></thead><tbody>${purposes.map(p => `<tr><td>${esc(p.label)}</td><td>${esc(p.legal)}</td></tr>`).join('')}</tbody></table><h2>5. Third parties</h2>${(processors.length || others.length) ? `<ul>${processors.map(p=>`<li><strong>${esc(p.label)}</strong> — ${esc(p.country)}</li>`).join('')}${others.map(o=>`<li>${esc(o)}</li>`).join('')}</ul>` : '<p>We do not share with third parties other than as required by law.</p>'}${sells ? '<p><strong>We sell or share PI</strong> (including for cross-context behavioral advertising).</p>' : '<p>We do <strong>not</strong> sell or share PI.</p>'}<h2>6. Retention</h2><p>${esc(retain)}</p><h2>7. Your rights</h2><ul><li><strong>Right to know</strong> (§ 1798.110, 1798.115)</li><li><strong>Right to delete</strong> (§ 1798.105)</li><li><strong>Right to correct</strong> (§ 1798.106)</li><li><strong>Right to opt out of sale/sharing</strong> (§ 1798.120)</li><li><strong>Right to limit Sensitive PI</strong> (§ 1798.121)</li><li><strong>Right to non-discrimination</strong> (§ 1798.125)</li><li><strong>Right to data portability</strong></li><li><strong>Right to appeal</strong> (VA, CO, CT)</li></ul><p>To exercise: <a href="mailto:${esc(rightsEmail)}">${esc(rightsEmail)}</a>${phone?' or '+esc(phone):''}. We respond within 45 days.</p>${sells ? '<h2>8. "Do Not Sell or Share My Personal Information"</h2><p>Click the link in our footer or email <a href="mailto:'+esc(rightsEmail)+'">'+esc(rightsEmail)+'</a>. We honor GPC signals.</p>' : ''}${spiBroad ? '<h2>'+(sells?'9':'8')+'. "Limit the Use of My Sensitive Personal Information"</h2><p>Click the link in our footer to limit use of your SPI to purposes permitted by 11 CCR § 7027(m).</p>' : ''}<h2>${sells && spiBroad ? '10' : (sells||spiBroad ? '9' : '8')}. Notice at collection</h2><p>This policy and any Notice at Collection together satisfy 11 CCR § 7012.</p><h2>${sells && spiBroad ? '11' : (sells||spiBroad ? '10' : '9')}. Contact</h2><p>${esc(name)}, ${esc(addr)} — ${esc(email)}${phone?', '+esc(phone):''}.</p>`;
+
+  outputHTML.consent = `<h2>Notice at Collection</h2><div style="background:#f0fff4;padding:14px;border-radius:6px;border:1px solid #c6f6d5;"><p>${esc(name)} collects: ${fields.map(f=>esc(f.label.toLowerCase())).join(', ')}${sensFields.length ? ', including Sensitive PI' : ''}. We use it to ${purposes.map(p=>esc(p.label.toLowerCase())).join(', ')}. ${sells?'We sell or share PI.':'We do not sell or share PI.'} See our <a href="#">Privacy Policy</a>.</p></div>${sells ? '<h2>"Do Not Sell or Share" link</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p><strong>Do Not Sell or Share My Personal Information</strong></p></div>' : ''}${spiBroad ? '<h2>"Limit the Use of Sensitive PI" link</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p><strong>Limit the Use of My Sensitive Personal Information</strong></p></div>' : ''}<h2>Consent for users 13–15 and under-13</h2><p>For 13–15: <strong>opt-in consent</strong> required (CPRA § 1798.120(c); 11 CCR § 7070). Under 13: <strong>verifiable parental consent</strong> (CPRA § 1798.120(c); 11 CCR § 7071; COPPA 16 CFR § 312.5).</p>`;
+}
+
+function generateCN() {
+  const name = val('cn_name') || '【贵公司全称】';
+  const addr = val('cn_addr') || '【注册地址】';
+  const email = val('cn_email') || '【privacy@yourcompany.com】';
+  const dpoSet = val('cn_dpo') === 'yes';
+  const fields = fieldsLabel('cn', cnData.fields);
+  const sensFields = fields.filter(f => f.sensitive);
+  const purposes = CN_PURPOSES.filter(p => cnData.purposes.includes(p.id));
+  const minors = val('cn_minors') === 'yes';
+  const share = val('cn_share') === 'yes';
+  const shareList = (val('cn_share_list') || '').split('\n').filter(Boolean);
+  const intl = val('cn_intl') === 'yes';
+  const intlMech = val('cn_intl_mech');
+  const intlRecipient = val('cn_intl_recipient');
+  const retain = val('cn_retain') || '【保存期限】';
+  const rightsEmail = val('cn_rights_email') || email;
+  const intlMechLabel = { sa: '网信办安全评估', scc: '网信办标准合同', cert: '个人信息保护认证' }[intlMech] || '【路径】';
+  const separateConsentTriggers = [];
+  if (sensFields.length) separateConsentTriggers.push('处理敏感个人信息（第29条）');
+  if (share) separateConsentTriggers.push('向第三方提供个人信息（第23条）');
+  if (intl) separateConsentTriggers.push('向境外提供个人信息（第39条）');
+
+  outputHTML.short = `<h2>隐私政策摘要</h2><p><strong>${esc(name)}</strong>（${esc(addr)}）作为个人信息处理者，按下述方式处理您的个人信息。</p><p><strong>收集范围：</strong>${fields.map(f=>esc(f.label)).join('、') || '【类别】'}。${sensFields.length ? '其中<strong>敏感个人信息</strong>（'+sensFields.map(f=>esc(f.label)).join('、')+'）将取得单独同意后处理。' : ''}</p><p><strong>使用目的：</strong>${purposes.map(p=>esc(p.label)).join('；') || '【目的】'}。</p><p><strong>对外提供：</strong>${share ? shareList.map(esc).join('、') || '【受托方】' : '不向第三方提供'}。${intl ? '存在跨境传输，合规路径：<strong>'+esc(intlMechLabel)+'</strong>。' : ''}</p><p><strong>您的权利：</strong>知情、决定、查阅、复制、转移、更正补充、删除、撤回同意、解释规则、投诉。</p><p><strong>联系方式：</strong>${esc(rightsEmail)}。</p>`;
+
+  outputHTML.full = `<h2>隐私政策</h2><p><strong>生效日期：</strong>${new Date().toISOString().slice(0,10)}</p><p>${esc(name)}（以下简称"<strong>我们</strong>"）根据《中华人民共和国个人信息保护法》（"<strong>PIPL</strong>"，2021年11月1日施行）及相关法律法规，制定本隐私政策。</p><h2>一、个人信息处理者</h2><p>${esc(name)}，注册地：${esc(addr)}，联系邮箱：${esc(email)}。${dpoSet ? '我们已指定个人信息保护负责人。' : ''}</p><h2>二、我们收集的个人信息（PIPL 第17条）</h2><ul>${fields.map(f => `<li><strong>${esc(f.label)}</strong>（如：${esc(f.ex)}）${f.sensitive ? ' — <em>敏感个人信息（第28条）</em>' : ''}</li>`).join('')}</ul>${sensFields.length ? '<p><em>敏感个人信息说明：</em>上述敏感信息处理须取得您的<strong>单独同意</strong>（第29条）。</p>' : ''}<h2>三、处理目的与法定依据（PIPL 第13条）</h2><table><thead><tr><th>处理目的</th><th>法定依据</th></tr></thead><tbody>${purposes.map(p => `<tr><td>${esc(p.label)}</td><td>${esc(p.legal)}</td></tr>`).join('')}</tbody></table><h2>四、对外提供与共享</h2>${share ? `<ul>${shareList.map(s=>`<li>${esc(s)}</li>`).join('')}</ul><p>共享时我们将取得您的<strong>单独同意</strong>（第23条）。</p>` : '<p>除法律法规另有规定外，我们不会向第三方提供您的个人信息。</p>'}${intl ? `<h2>五、跨境数据传输（PIPL 第38-39条）</h2><p>境外接收方：${esc(intlRecipient || '【待补充】')}。合规路径：<strong>${esc(intlMechLabel)}</strong>。我们将取得您的<strong>单独同意</strong>（第39条）。</p>` : '<h2>五、跨境数据传输</h2><p>我们不向境外提供您的个人信息。</p>'}<h2>六、保存期限</h2><p>${esc(retain)}</p>${minors ? '<h2>七、不满14岁未成年人个人信息（PIPL 第31条）</h2><p>处理须取得监护人同意，并制定专门处理规则。</p>' : '<h2>七、未成年人</h2><p>本服务不面向不满14岁的未成年人。</p>'}<h2>八、您的权利（PIPL 第44-50条）</h2><ul><li>知情、决定权（第44条）</li><li>查阅、复制权（第45条）</li><li>可携权（第45条第3款）</li><li>更正、补充权（第46条）</li><li>删除权（第47条）</li><li>解释规则权（第48条）</li><li>撤回同意权（第15条）</li><li>投诉举报权（第65条）</li></ul><p>行使权利请联系：<a href="mailto:${esc(rightsEmail)}">${esc(rightsEmail)}</a>。</p>${separateConsentTriggers.length ? '<h2>九、单独同意场景汇总</h2><ul>'+separateConsentTriggers.map(t=>`<li>${esc(t)}</li>`).join('')+'</ul>' : ''}<h2>${separateConsentTriggers.length?'十':'九'}、政策变更</h2><p>本政策可能更新，更新后将通过显著方式通知您。</p><h2>${separateConsentTriggers.length?'十一':'十'}、联系我们</h2><p>${esc(name)}，${esc(addr)}，${esc(email)}。</p>`;
+
+  outputHTML.consent = `<h2>同意条款模板</h2><div style="background:#f0fff4;padding:14px;border-radius:6px;border:1px solid #c6f6d5;"><p>我已阅读并同意 <a href="#">《${esc(name)}隐私政策》</a> 及 <a href="#">《用户协议》</a>。</p><p>☐ 我同意</p></div>${sensFields.length ? `<h2>敏感个人信息单独同意（第29条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 需处理您的<strong>${sensFields.map(f=>esc(f.label)).join('、')}</strong>。这属于敏感个人信息，您有权拒绝。该同意可随时撤回。</p><p>☐ 我同意处理上述敏感个人信息</p></div>` : ''}${share ? `<h2>对外提供单独同意（第23条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 将向 ${shareList.map(esc).join('、') || '【接收方】'} 提供您的个人信息。</p><p>☐ 我单独同意上述对外提供</p></div>` : ''}${intl ? `<h2>跨境传输单独同意（第39条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 将向 ${esc(intlRecipient || '【境外接收方】')} 提供个人信息。合规路径：<strong>${esc(intlMechLabel)}</strong>。</p><p>☐ 我单独同意上述跨境传输</p></div>` : ''}${minors ? `<h2>监护人同意（第31条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 已制定《儿童个人信息处理规则》。监护人需提供有效身份证明。</p><p>☐ 我以监护人身份同意</p></div>` : ''}`;
+}
+
+function switchView(view) {
+  currentView = view;
+  document.querySelectorAll('.output-tab').forEach(t => t.classList.toggle('active', t.dataset.view === view));
+  document.getElementById('output').innerHTML = outputHTML[view] || '';
+}
+
+function applyLangToControls() {
+  const isCN = currentJ === 'cn';
+  document.getElementById('lbl-short').textContent = isCN ? '摘要（一页式）' : 'At-a-glance (short notice)';
+  document.getElementById('lbl-full').textContent = isCN ? '完整隐私政策' : 'Full privacy policy';
+  document.getElementById('lbl-consent').textContent = isCN ? '同意条款 / Cookie Banner' : 'Consent text & cookie banner';
+  document.getElementById('btn-copy').textContent = isCN ? '复制到剪贴板' : 'Copy to clipboard';
+  document.getElementById('btn-download').textContent = isCN ? '下载 .html' : 'Download .html';
+  document.getElementById('btn-reset').textContent = isCN ? '重新开始' : 'Start over';
+  const disc = isCN
+    ? '<strong>免责声明：</strong>本工具生成的内容仅供参考，不构成法律意见。请在正式发布前由合格法律专业人员审阅。'
+    : '<strong>Disclaimer:</strong> The output is provided for reference only and does not constitute legal advice. Have it reviewed by qualified counsel before publishing.';
+  document.getElementById('disclaimer-box').innerHTML = disc;
+  const jl = { eu: 'EU/UK — GDPR & UK GDPR', us: 'US — CCPA/CPRA + COPPA', cn: 'PRC — PIPL 个人信息保护法' };
+  document.getElementById('meta-jurisdiction').textContent = jl[currentJ] || '';
+}
+
+function importFromPipia() {
+  const stored = localStorage.getItem('pipia_handoff');
+  if (stored) {
+    try { applyPipiaData(JSON.parse(stored)); alert('已从浏览器存储导入 PIPIA 数据。'); return; } catch(e) {}
+  }
+  document.getElementById('pipia_file').click();
+}
+function importPipiaFile(ev) {
+  const f = ev.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e => {
+    try { applyPipiaData(JSON.parse(e.target.result)); alert('已从 PIPIA JSON 文件导入。'); }
+    catch(err) { alert('文件格式错误：' + err.message); }
+  };
+  r.readAsText(f);
+}
+function applyPipiaData(data) {
+  if (data.projectName) setVal('cn_name', data.projectName);
+  if (data.dataFields && Array.isArray(data.dataFields)) {
+    const mapKeyword = {'姓名':'name','名字':'name','name':'name','手机':'phone','电话':'phone','phone':'phone','邮箱':'email','email':'email','地址':'addr','address':'addr','人脸':'biometric','指纹':'biometric','声纹':'biometric','生物':'biometric','医疗':'medical','健康':'medical','病历':'medical','银行':'financial','支付':'financial','账户':'financial','位置':'location_track','轨迹':'location_track','GPS':'location_track','身份证':'idcard','护照':'idcard','未成年':'minor','14岁':'minor','儿童':'minor','宗教':'religion'};
+    cnData.fields = [];
+    data.dataFields.forEach(df => {
+      const n = (df.name || '').toLowerCase();
+      Object.entries(mapKeyword).forEach(([kw, fid]) => {
+        if (n.includes(kw.toLowerCase()) && !cnData.fields.includes(fid)) cnData.fields.push(fid);
+      });
+    });
+  }
+  if (currentJ === 'cn') selectJ('cn');
+}
+
+function copyOut() {
+  const text = document.getElementById('output').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('btn-copy');
+    const orig = btn.textContent;
+    btn.textContent = currentJ === 'cn' ? '✓ 已复制' : '✓ Copied';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+function downloadHTML() {
+  const title = currentJ === 'cn' ? '隐私政策' : 'Privacy Policy';
+  const html = `<!DOCTYPE html><html lang="${currentJ==='cn'?'zh-CN':'en'}"><head><meta charset="UTF-8"><title>${title}</title><style>body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;max-width:820px;margin:40px auto;padding:0 24px;line-height:1.7;color:#2d3748;}h2{color:#1a365d;border-bottom:1px solid #e2e8f0;padding-bottom:4px;margin-top:24px;}table{width:100%;border-collapse:collapse;}th,td{border:1px solid #e2e8f0;padding:8px;text-align:left;}th{background:#f7fafc;}</style></head><body>${outputHTML.full}</body></html>`;
+  const blob = new Blob([html], {type:'text/html;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (currentJ==='cn' ? 'privacy-policy-cn' : 'privacy-policy-' + currentJ) + '-' + new Date().toISOString().slice(0,10) + '.html';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function resetAll() {
+  currentJ = null;
+  euData = { fields: [], purposes: [], processors: [] };
+  usData = { fields: [], purposes: [], processors: [] };
+  cnData = { fields: [], purposes: [] };
+  document.querySelectorAll('.j-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.wizard').forEach(w => w.classList.remove('active'));
+  document.getElementById('output-panel').classList.remove('active');
+  document.querySelectorAll('input').forEach(i => { if(i.type==='text'||i.type==='email') i.value=''; });
+  document.querySelectorAll('textarea').forEach(t => t.value='');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function val(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+function setVal(id, v) { const el = document.getElementById(id); if (el) el.value = v; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+applyLangToControls();
+</script>
+<script src="la-paywall.js"></script>
+</body>
+</html>
