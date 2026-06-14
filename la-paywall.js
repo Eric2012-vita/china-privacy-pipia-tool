@@ -45,12 +45,14 @@
       + '<p style="color:#64748b;font-size:14px;margin:0 0 22px;line-height:1.6">Download a clean, watermark-free document for <strong>$4.99</strong><br>— or buy a bundle of 5 for <strong>$20</strong>.</p>'
       + '<div style="display:grid;gap:10px">'
       + '<a href="/pricing" style="display:block;background:#0f1e3d;color:#fff;padding:13px;border-radius:9px;text-decoration:none;font-size:15px;font-weight:800">Get export credit →</a>'
-      + '<button onclick="document.getElementById('la-pw-modal').style.display='none'" style="background:#edf2f7;color:#0f1e3d;border:none;padding:13px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600;width:100%">Cancel</button>'
+      + '<button type="button" data-la-pw-close="1" style="background:#edf2f7;color:#0f1e3d;border:none;padding:13px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600;width:100%">Cancel</button>'
       + '</div>'
       + '<p style="color:#94a3b8;font-size:12px;margin:14px 0 0">Have a token? <a href="/thank-you" style="color:#3182ce">Restore credits here</a></p>'
       + '</div>';
     overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.style.display='none'; });
     document.body.appendChild(overlay);
+    var close = overlay.querySelector('[data-la-pw-close]');
+    if (close) close.addEventListener('click', function(){ overlay.style.display='none'; });
   }
 
   var WM_CLASS = 'la-wm-banner';
@@ -115,11 +117,65 @@
     });
   }
 
+  function repairPrivacyPolicyGeneratorScript() {
+    var path = window.location.pathname.toLowerCase();
+    if (path.indexOf('privacy-policy-generator') === -1) return;
+    if (typeof window.selectJ === 'function' || window.__laPrivacyGeneratorRepairDone) return;
+    var source = '';
+    document.querySelectorAll('script:not([src])').forEach(function(script) {
+      var text = script.textContent || '';
+      if (!source && text.indexOf('function selectJ') !== -1 && text.indexOf('outputHTML.full') !== -1) source = text;
+    });
+    if (!source) return;
+    var fixed = source
+      .replace(/map\((\w+) => (<(?:li|tr)[\s\S]*?<\/(?:li|tr)>)\)\.join\(''\)/g, function(_, arg, body) {
+        return 'map(' + arg + ' => `' + body + "`).join('')";
+      })
+      .replace(/map\((\w+)=>(<li[\s\S]*?<\/li>)\)\.join\(''\)/g, function(_, arg, body) {
+        return 'map(' + arg + '=>`' + body + "`).join('')";
+      })
+      .replace(/map\((\w+)=(<li[\s\S]*?<\/li>)\)\.join\(''\)/g, function(_, arg, body) {
+        return 'map(' + arg + '=>`' + body + "`).join('')";
+      });
+    fixed = fixed
+      .replace(/\$\{\(processors\.length \|\| others\.length\) \? <ul>\$\{processors\.map\(p => `<li><strong>\$\{esc\(p\.label\)\}<\/strong> — \$\{esc\(p\.country\)\}<\/li>`\)\.join\(''\)\}\$\{others\.map\(o => `<li>\$\{esc\(o\)\}<\/li>`\)\.join\(''\)\}<\/ul> : '<p>We do not share personal data with third parties other than as required by law\.<\/p>'\}/g,
+        "${(processors.length || others.length) ? '<ul>' + processors.map(p => '<li><strong>' + esc(p.label) + '</strong> — ' + esc(p.country) + '</li>').join('') + others.map(o => '<li>' + esc(o) + '</li>').join('') + '</ul>' : '<p>We do not share personal data with third parties other than as required by law.</p>'}")
+      .replace(/\$\{\(processors\.length \|\| others\.length\) \? <ul>\$\{processors\.map\(p=>`<li><strong>\$\{esc\(p\.label\)\}<\/strong> — \$\{esc\(p\.country\)\}<\/li>`\)\.join\(''\)\}\$\{others\.map\(o=>`<li>\$\{esc\(o\)\}<\/li>`\)\.join\(''\)\}<\/ul> : '<p>We do not share with third parties other than as required by law\.<\/p>'\}/g,
+        "${(processors.length || others.length) ? '<ul>' + processors.map(p => '<li><strong>' + esc(p.label) + '</strong> — ' + esc(p.country) + '</li>').join('') + others.map(o => '<li>' + esc(o) + '</li>').join('') + '</ul>' : '<p>We do not share with third parties other than as required by law.</p>'}")
+      .replace(/\$\{share \? <ul>\$\{shareList\.map\(s=>`<li>\$\{esc\(s\)\}<\/li>`\)\.join\(''\)\}<\/ul><p>共享时我们将取得您的<strong>单独同意<\/strong>（第23条）。<\/p> : '<p>除法律法规另有规定外，我们不会向第三方提供您的个人信息。<\/p>'\}/g,
+        "${share ? '<ul>' + shareList.map(s => '<li>' + esc(s) + '</li>').join('') + '</ul><p>共享时我们将取得您的<strong>单独同意</strong>（第23条）。</p>' : '<p>除法律法规另有规定外，我们不会向第三方提供您的个人信息。</p>'}")
+      .replace(/\$\{intl \? (<h2>[\s\S]*?<\/p>) :/g, function(_, body) {
+        return '${intl ? `' + body + '` :';
+      })
+      .replace(/\? (<h2>[\s\S]*?<\/div>) : ''/g, function(_, body) {
+        return '? `' + body + "` : ''";
+      });
+    try {
+      var repairedScript = document.createElement('script');
+      repairedScript.text = fixed;
+      document.documentElement.appendChild(repairedScript);
+      repairedScript.parentNode.removeChild(repairedScript);
+      window.__laPrivacyGeneratorRepairDone = true;
+      if (typeof window.applyUILang === 'function' && typeof window.detectLang === 'function') window.applyUILang(window.detectLang());
+      document.querySelectorAll('.j-card[data-j]').forEach(function(card) {
+        card.addEventListener('click', function(event) {
+          event.preventDefault();
+          if (typeof window.selectJ === 'function') window.selectJ(card.getAttribute('data-j'));
+        });
+      });
+      if (typeof window.bootstrapMarketSelection === 'function') window.bootstrapMarketSelection();
+      if (typeof window.applyLangToControls === 'function') window.applyLangToControls();
+    } catch (e) {
+      console.warn('LegalAIPay privacy generator repair skipped:', e);
+    }
+  }
+
   function patchPage() {
     var path = window.location.pathname.toLowerCase();
     var host = window.location.hostname.toLowerCase();
 
     if (path.indexOf('privacy-policy-generator') !== -1 || path.indexOf('privacy-generator') !== -1) {
+      repairPrivacyPolicyGeneratorScript();
       patchGlobal('copyOut');
       watchOutput(document.getElementById('output'));
       return;
