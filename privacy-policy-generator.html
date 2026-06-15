@@ -362,7 +362,7 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
         <div class="form-group"><label class="form-label">个人信息保存期限</label><input class="form-input" id="cn_retain" placeholder="例如：账户存续期间 + 法定期限届满后删除"></div>
         <div class="form-group"><label class="form-label">权利行使联系邮箱</label><input class="form-input" id="cn_rights_email" placeholder="privacy@yourcompany.com"></div>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><button class="btn btn-success" onclick="generate()">生成隐私政策 →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><div class="form-group"><label class="form-label">是否对个人信息进行自动化决策（PIPL 第24条）？</label><select class="form-select" id="cn_auto" onchange="document.getElementById('cn_optout_box').style.display=this.value==='yes'?'block':'none'"><option value="no">否</option><option value="yes">是 — 例如用户画像、个性化推荐、算法定价、自动审核</option></select></div><div id="cn_optout_box" class="form-group" style="display:none"><label class="form-label">是否向个人提供拒绝/退出（opt-out）机制？</label><select class="form-select" id="cn_optout"><option value="no">否 — 尚未提供（建议上线前提供）</option><option value="yes">是 — 已提供拒绝/退出机制</option></select></div><button class="btn btn-success" onclick="generate()">生成隐私政策 →</button></div>
     </div>
   </div>
   <div id="output-panel">
@@ -389,7 +389,7 @@ let currentJ = null;
 let euData = { fields: [], purposes: [], processors: [] };
 let usData = { fields: [], purposes: [], processors: [] };
 let cnData = { fields: [], purposes: [] };
-let currentView = 'short';
+let cnFlags = {}; let currentView = 'short';
 let outputHTML = { short: '', full: '', consent: '' };
 const EU_FIELDS = [
   { id:'name', icon:'👤', label:'Name', ex:'first, last, display name', sensitive:false },
@@ -673,13 +673,13 @@ function generateCN() {
   const intlRecipient = val('cn_intl_recipient');
   const retain = val('cn_retain') || '【保存期限】';
   const rightsEmail = val('cn_rights_email') || email;
-  const intlMechLabel = { sa: '网信办安全评估', scc: '网信办标准合同', cert: '个人信息保护认证' }[intlMech] || '【路径】';
+  const intlMechLabel = { sa: '网信办安全评估', scc: '网信办标准合同', cert: '个人信息保护认证' }[intlMech] || '【路径】'; const autoDecision = !!cnFlags.automatedDecision || val('cn_auto') === 'yes'; const autoOptOut = cnFlags.automatedDecisionOptOut === true || val('cn_optout') === 'yes';
   const separateConsentTriggers = [];
   if (sensFields.length) separateConsentTriggers.push('处理敏感个人信息（第29条）');
   if (share) separateConsentTriggers.push('向第三方提供个人信息（第23条）');
-  if (intl) separateConsentTriggers.push('向境外提供个人信息（第39条）');
+  if (intl) separateConsentTriggers.push('向境外提供个人信息（第39条）'); if (autoDecision && !autoOptOut) separateConsentTriggers.push('自动化决策尚未提供拒绝/退出机制（第24条，待完善）');
   outputHTML.short = `<h2>隐私政策摘要</h2><p><strong>${esc(name)}</strong>（${esc(addr)}）作为个人信息处理者，按下述方式处理您的个人信息。</p><p><strong>收集范围：</strong>${fields.map(f=>esc(f.label)).join('、') || '【类别】'}。${sensFields.length ? '其中<strong>敏感个人信息</strong>（'+sensFields.map(f=>esc(f.label)).join('、')+'）将取得单独同意后处理。' : ''}</p><p><strong>使用目的：</strong>${purposes.map(p=>esc(p.label)).join('；') || '【目的】'}。</p><p><strong>对外提供：</strong>${share ? shareList.map(esc).join('、') || '【受托方】' : '不向第三方提供'}。${intl ? '存在跨境传输，合规路径：<strong>'+esc(intlMechLabel)+'</strong>。' : ''}</p><p><strong>您的权利：</strong>知情、决定、查阅、复制、转移、更正补充、删除、撤回同意、解释规则、投诉。</p><p><strong>联系方式：</strong>${esc(rightsEmail)}。</p>`;
-  outputHTML.full = `<h2>隐私政策</h2><p><strong>生效日期：</strong>${new Date().toISOString().slice(0,10)}</p><p>${esc(name)}（以下简称“<strong>我们</strong>”）根据《中华人民共和国个人信息保护法》（“<strong>PIPL</strong>”，2021年11月1日施行）及相关法律法规，制定本隐私政策。</p><h2>一、个人信息处理者</h2><p>${esc(name)}，注册地：${esc(addr)}，联系邮箱：${esc(email)}。${dpoSet ? '我们已指定个人信息保护负责人。' : ''}</p><h2>二、我们收集的个人信息（PIPL 第17条）</h2><ul>${fields.map(f => <li><strong>${esc(f.label)}</strong>（如：${esc(f.ex)}）${f.sensitive ? ' — <em>敏感个人信息（第28条）</em>' : ''}</li>).join('')}</ul>${sensFields.length ? '<p><em>敏感个人信息说明：</em>上述敏感信息处理须取得您的<strong>单独同意</strong>（第29条）。</p>' : ''}<h2>三、处理目的与法定依据（PIPL 第13条）</h2><table><thead><tr><th>处理目的</th><th>法定依据</th></tr></thead><tbody>${purposes.map(p => <tr><td>${esc(p.label)}</td><td>${esc(p.legal)}</td></tr>).join('')}</tbody></table><h2>四、对外提供与共享</h2>${share ? <ul>${shareList.map(s=<li>${esc(s)}</li>).join('')}</ul><p>共享时我们将取得您的<strong>单独同意</strong>（第23条）。</p> : '<p>除法律法规另有规定外，我们不会向第三方提供您的个人信息。</p>'}${intl ? <h2>五、跨境数据传输（PIPL 第38-39条）</h2><p>境外接收方：${esc(intlRecipient || '【待补充】')}。合规路径：<strong>${esc(intlMechLabel)}</strong>。我们将取得您的<strong>单独同意</strong>（第39条）。</p> : '<h2>五、跨境数据传输</h2><p>我们不向境外提供您的个人信息。</p>'}<h2>六、保存期限</h2><p>${esc(retain)}</p>${minors ? '<h2>七、不满14岁未成年人个人信息（PIPL 第31条）</h2><p>处理须取得监护人同意，并制定专门处理规则。</p>' : '<h2>七、未成年人</h2><p>本服务不面向不满14岁的未成年人。</p>'}<h2>八、您的权利（PIPL 第44-50条）</h2><ul><li>知情、决定权（第44条）</li><li>查阅、复制权（第45条）</li><li>可携权（第45条第3款）</li><li>更正、补充权（第46条）</li><li>删除权（第47条）</li><li>解释规则权（第48条）</li><li>撤回同意权（第15条）</li><li>投诉举报权（第65条）</li></ul><p>行使权利请联系：<a href="mailto:${esc(rightsEmail)}">${esc(rightsEmail)}</a>。</p>${separateConsentTriggers.length ? '<h2>九、单独同意场景汇总</h2><ul>'+separateConsentTriggers.map(t=><li>${esc(t)}</li>).join('')+'</ul>' : ''}<h2>${separateConsentTriggers.length?'十':'九'}、政策变更</h2><p>本政策可能更新，更新后将通过显著方式通知您。</p><h2>${separateConsentTriggers.length?'十一':'十'}、联系我们</h2><p>${esc(name)}，${esc(addr)}，${esc(email)}。</p>`;
+  outputHTML.full = `<h2>隐私政策</h2><p><strong>生效日期：</strong>${new Date().toISOString().slice(0,10)}</p><p>${esc(name)}（以下简称“<strong>我们</strong>”）根据《中华人民共和国个人信息保护法》（“<strong>PIPL</strong>”，2021年11月1日施行）及相关法律法规，制定本隐私政策。</p><h2>一、个人信息处理者</h2><p>${esc(name)}，注册地：${esc(addr)}，联系邮箱：${esc(email)}。${dpoSet ? '我们已指定个人信息保护负责人。' : ''}</p><h2>二、我们收集的个人信息（PIPL 第17条）</h2><ul>${fields.map(f => <li><strong>${esc(f.label)}</strong>（如：${esc(f.ex)}）${f.sensitive ? ' — <em>敏感个人信息（第28条）</em>' : ''}</li>).join('')}</ul>${sensFields.length ? '<p><em>敏感个人信息说明：</em>上述敏感信息处理须取得您的<strong>单独同意</strong>（第29条）。</p>' : ''}<h2>三、处理目的与法定依据（PIPL 第13条）</h2><table><thead><tr><th>处理目的</th><th>法定依据</th></tr></thead><tbody>${purposes.map(p => <tr><td>${esc(p.label)}</td><td>${esc(p.legal)}</td></tr>).join('')}</tbody></table><h2>四、对外提供与共享</h2>${share ? <ul>${shareList.map(s=<li>${esc(s)}</li>).join('')}</ul><p>共享时我们将取得您的<strong>单独同意</strong>（第23条）。</p> : '<p>除法律法规另有规定外，我们不会向第三方提供您的个人信息。</p>'}${intl ? <h2>五、跨境数据传输（PIPL 第38-39条）</h2><p>境外接收方：${esc(intlRecipient || '【待补充】')}。合规路径：<strong>${esc(intlMechLabel)}</strong>。我们将取得您的<strong>单独同意</strong>（第39条）。</p> : '<h2>五、跨境数据传输</h2><p>我们不向境外提供您的个人信息。</p>'}<h2>六、保存期限</h2><p>${esc(retain)}</p>${autoDecision ? `<h2>自动化决策与算法（PIPL 第24条）</h2><p>我们可能采用自动化决策方式处理您的个人信息（如用户画像、个性化推荐、算法定价、自动审核等）。我们将保证决策过程的透明度和结果的公平、公正，不会基于自动化决策对您的交易条件实行不合理的差别待遇。${autoOptOut ? '您有权拒绝我们仅通过自动化决策的方式作出对您权益有重大影响的决定，并可通过本政策载明的联系方式要求我们提供说明或选择退出（opt-out）。' : '<strong style="color:#c00;">⚠ 我们目前尚未就自动化决策提供拒绝/退出（opt-out）机制。根据 PIPL 第24条，应在产品/服务上线前提供该机制，否则存在合规风险。</strong>'}对您个人权益有重大影响的自动化决策，您有权要求我们予以说明，并有权拒绝（第24条）。</p>` : ''}${minors ? '<h2>七、不满14岁未成年人个人信息（PIPL 第31条）</h2><p>处理须取得监护人同意，并制定专门处理规则。</p>' : '<h2>七、未成年人</h2><p>本服务不面向不满14岁的未成年人。</p>'}<h2>八、您的权利（PIPL 第44-50条）</h2><ul><li>知情、决定权（第44条）</li><li>查阅、复制权（第45条）</li><li>可携权（第45条第3款）</li><li>更正、补充权（第46条）</li><li>删除权（第47条）</li><li>解释规则权（第48条）</li><li>撤回同意权（第15条）</li><li>投诉举报权（第65条）</li></ul><p>行使权利请联系：<a href="mailto:${esc(rightsEmail)}">${esc(rightsEmail)}</a>。</p>${separateConsentTriggers.length ? '<h2>九、单独同意场景汇总</h2><ul>'+separateConsentTriggers.map(t=><li>${esc(t)}</li>).join('')+'</ul>' : ''}<h2>${separateConsentTriggers.length?'十':'九'}、政策变更</h2><p>本政策可能更新，更新后将通过显著方式通知您。</p><h2>${separateConsentTriggers.length?'十一':'十'}、联系我们</h2><p>${esc(name)}，${esc(addr)}，${esc(email)}。</p>`;
   outputHTML.consent = `<h2>同意条款模板</h2><div style="background:#f0fff4;padding:14px;border-radius:6px;border:1px solid #c6f6d5;"><p>我已阅读并同意 <a href="#">《${esc(name)}隐私政策》</a> 及 <a href="#">《用户协议》</a>。</p><p>☐ 我同意</p></div>${sensFields.length ? <h2>敏感个人信息单独同意（第29条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 需处理您的<strong>${sensFields.map(f=>esc(f.label)).join('、')}</strong>。这属于敏感个人信息，您有权拒绝。该同意可随时撤回。</p><p>☐ 我同意处理上述敏感个人信息</p></div> : ''}${share ? <h2>对外提供单独同意（第23条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 将向 ${shareList.map(esc).join('、') || '【接收方】'} 提供您的个人信息。</p><p>☐ 我单独同意上述对外提供</p></div> : ''}${intl ? <h2>跨境传输单独同意（第39条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 将向 ${esc(intlRecipient || '【境外接收方】')} 提供个人信息。合规路径：<strong>${esc(intlMechLabel)}</strong>。</p><p>☐ 我单独同意上述跨境传输</p></div> : ''}${minors ? <h2>监护人同意（第31条）</h2><div style="background:#fff5f5;padding:14px;border-radius:6px;border:1px solid #feb2b2;"><p>${esc(name)} 已制定《儿童个人信息处理规则》。监护人需提供有效身份证明。</p><p>☐ 我以监护人身份同意</p></div> : ''}`;
 }
 function switchView(view) {
@@ -703,7 +703,7 @@ function applyLangToControls() {
   document.getElementById('meta-jurisdiction').textContent = jl[currentJ] || '';
 }
 function importFromPipia() {
-  const stored = localStorage.getItem('pipia_handoff');
+  const stored = localStorage.getItem('legalaipay.pipiaHandoff') || localStorage.getItem('pipia_handoff');
   if (stored) {
     try { applyPipiaData(JSON.parse(stored)); alert('已从浏览器存储导入 PIPIA 数据。'); return; } catch(e) {}
   }
@@ -720,11 +720,11 @@ function importPipiaFile(ev) {
   r.readAsText(f);
 }
 function applyPipiaData(data) {
-  if (data.projectName) setVal('cn_name', data.projectName);
-  if (data.dataFields && Array.isArray(data.dataFields)) {
+  if (data.projectName) setVal('cn_name', data.projectName); if (data.retentionPeriod) setVal('cn_retain', data.retentionPeriod); cnFlags = data.piplFlags || {}; const _src = (Array.isArray(data.rawDataFields) && data.rawDataFields) || (Array.isArray(data.dataFields) && data.dataFields) || []; if (cnFlags.sharing || cnFlags.entrustedProcessing) setVal('cn_share','yes'); if (cnFlags.crossBorder) setVal('cn_intl','yes'); if (cnFlags.minor) setVal('cn_minors','yes'); if (cnFlags.automatedDecision) setVal('cn_auto','yes'); setVal('cn_optout', cnFlags.automatedDecisionOptOut ? 'yes' : 'no');
+  if (_src.length) {
     const mapKeyword = {'姓名':'name','名字':'name','name':'name','手机':'phone','电话':'phone','phone':'phone','邮箱':'email','email':'email','地址':'addr','address':'addr','人脸':'biometric','指纹':'biometric','声纹':'biometric','生物':'biometric','医疗':'medical','健康':'medical','病历':'medical','银行':'financial','支付':'financial','账户':'financial','位置':'location_track','轨迹':'location_track','GPS':'location_track','身份证':'idcard','护照':'idcard','未成年':'minor','14岁':'minor','儿童':'minor','宗教':'religion'};
     cnData.fields = [];
-    data.dataFields.forEach(df => {
+    _src.forEach(df => {
       const n = (df.name || '').toLowerCase();
       Object.entries(mapKeyword).forEach(([kw, fid]) => {
         if (n.includes(kw.toLowerCase()) && !cnData.fields.includes(fid)) cnData.fields.push(fid);
