@@ -170,11 +170,19 @@
     }
   }
 
+  function patchPrivacyGeneratorHomeLinks() {
+    var home = 'https://www.legalaipay.com/';
+    document.querySelectorAll('.topbar a.brand, .topbar a.back').forEach(function(link) {
+      link.setAttribute('href', home);
+    });
+  }
+
   function patchPage() {
     var path = window.location.pathname.toLowerCase();
     var host = window.location.hostname.toLowerCase();
 
     if (path.indexOf('privacy-policy-generator') !== -1 || path.indexOf('privacy-generator') !== -1) {
+      patchPrivacyGeneratorHomeLinks();
       repairPrivacyPolicyGeneratorScript();
       patchGlobal('copyOut');
       watchOutput(document.getElementById('output'));
