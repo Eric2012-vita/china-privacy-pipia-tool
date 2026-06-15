@@ -2434,8 +2434,9 @@ function buildPolicyHandoff() {
       crossBorder: has(4),
       sharing: has(3),
       entrustedProcessing: has(2),
-      disclosure: has(6),
-      automatedDecision: has(7),
+      automatedDecision: has(6),
+      automatedDecisionOptOut: (document.querySelector('input[name="yn_optout"]:checked') || {}).value === 'yes',
+      dataMerging: has(7),
       minor: has(5)
     },
     crossBorder: {
