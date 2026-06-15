@@ -2432,7 +2432,8 @@ function buildPolicyHandoff() {
     piplFlags: {
       sensitive: sensitiveTriggers.has('__piplSensitive__') || has(1),
       crossBorder: has(4),
-      sharing: has(3) || has(2),
+      sharing: has(3),
+      entrustedProcessing: has(2),
       disclosure: has(6),
       automatedDecision: has(7),
       minor: has(5)
