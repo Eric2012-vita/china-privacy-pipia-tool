@@ -263,7 +263,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <script src="/la-paywall.js"></script>
 </head>
 <body>
-<nav class="lap-nav" style="position:sticky;top:0;z-index:1000;background:#ffffff;border-bottom:1px solid #dbe3ef;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;"><div style="max-width:1100px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;"><a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#243044;font-weight:700;font-size:16px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:#1f6f78;color:#fff;font-weight:800;">L</span><span>LegalAIPay</span></a><div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:14px;"><a href="/#tools" style="text-decoration:none;color:#243044;">Tools</a><a href="/privacy-policy-generator" style="text-decoration:none;color:#243044;">Privacy Generator</a><a href="/contract-review" style="text-decoration:none;color:#243044;">Contract Review</a><a href="/pricing" style="text-decoration:none;color:#243044;">Pricing</a><a href="/" style="text-decoration:none;color:#fff;background:#1f6f78;padding:7px 14px;border-radius:8px;font-weight:600;">Home</a></div></div></nav>
+<nav class="lap-nav" style="position:sticky;top:0;z-index:1000;background:#ffffff;border-bottom:1px solid #dbe3ef;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;"><div style="max-width:1100px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;"><a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#243044;font-weight:700;font-size:16px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:#1f6f78;color:#fff;font-weight:800;">L</span><span>LegalAIPay</span></a><div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:14px;"><a href="/#tools" style="text-decoration:none;color:#243044;">Tools</a><a href="/data-relationship-mapper" style="text-decoration:none;color:#243044;">Role Mapper</a><a href="/privacy-policy-generator" style="text-decoration:none;color:#243044;">Privacy Generator</a><a href="/contract-review" style="text-decoration:none;color:#243044;">Contract Review</a><a href="/pricing" style="text-decoration:none;color:#243044;">Pricing</a><a href="/" style="text-decoration:none;color:#fff;background:#1f6f78;padding:7px 14px;border-radius:8px;font-weight:600;">Home</a></div></div></nav>
 
 
 <div id="privacy-notice" style="background:#eef6ff;border:1px solid #b3d4fc;border-radius:8px;padding:12px 16px;margin:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:#1a365d;">
@@ -296,6 +296,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <div class="header-actions">
     <button onclick="exportJSON()">💾 Save 保存</button>
     <button onclick="loadJSON()">📂 Load 加载</button>
+    <button onclick="importRelationshipMapToPipia()">Import Role Map 导入角色映射</button>
     <button class="btn-gated" onclick="guardedExportReport()">📄 Export Report 导出报告</button>
     <button class="btn-gated" onclick="guardedGeneratePolicy()" style="background:#38a169;color:white;font-weight:600;" title="用 PIPIA 评估结果生成隐私政策">✍️ Generate Privacy Policy 生成隐私政策</button>
     <button onclick="window.print()">🖨 Print 打印</button>
@@ -2463,6 +2464,73 @@ function generatePrivacyPolicy() {
   if (!payload) { alert('无法保存 PIPIA 数据'); return; }
   // Data lives in localStorage only; URL carries just a non-sensitive reference id.
   window.location.href = '/privacy-policy-generator?pipia=1&ref=' + encodeURIComponent(payload.pipiaRef);
+}
+
+function importRelationshipMapToPipia() {
+  const raw = localStorage.getItem('legalaipay.dataRelationshipHandoff');
+  if (!raw) { alert('未找到已保存的角色映射。请先打开 Data Relationship Mapper 并保存结果。'); return; }
+  let data;
+  try { data = JSON.parse(raw); } catch (e) { alert('角色映射数据无法读取。'); return; }
+  const flags = data.flags || {};
+  const role = data.roleFinding || {};
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+  const setTrigger = (value, on) => { const el = document.querySelector('input[name="trigger"][value="' + value + '"]'); if (el) el.checked = !!on; };
+  setVal('projectName', data.projectName || '');
+  setVal('controllerOther', data.companyName || '');
+  setVal('featureDesc', data.serviceDescription || '');
+  setVal('dataQuantity', data.dataSubjects || '');
+  setVal('retentionPeriod', (data.roleFinding && data.roleFinding.doc) || '');
+  setVal('dpoComments', (data.nextSteps || []).join('\n'));
+  const controllerOther = document.getElementById('controllerOther');
+  const otherRadio = document.querySelector('input[name="controller"][value="other"]');
+  if (otherRadio && data.companyName) { otherRadio.checked = true; if (controllerOther) controllerOther.style.display = 'block'; }
+  setTrigger('outsource', role.key === 'processor');
+  setTrigger('sharing', role.key === 'controller' || role.key === 'joint' || (Array.isArray(data.recipients) && data.recipients.length > 0));
+  setTrigger('crossBorder', flags.crossBorder);
+  setTrigger('automated', flags.automatedDecision);
+  setTrigger('sensitive', flags.sensitive || flags.children);
+  setTrigger('newProduct', true);
+  const third = document.querySelector('input[name="thirdParty"][value="thirdPartyYes"]');
+  if (third && (role.key !== 'infrastructure' || (data.recipients || []).length)) third.checked = true;
+  const tpDetails = document.getElementById('thirdPartyDetails');
+  if (tpDetails) tpDetails.style.display = third && third.checked ? 'block' : 'none';
+  const cbYes = document.querySelector('input[name="crossBorderQ"][value="yes"]');
+  const cbNo = document.querySelector('input[name="crossBorderQ"][value="no"]');
+  if (flags.crossBorder && cbYes) cbYes.checked = true;
+  if (!flags.crossBorder && cbNo) cbNo.checked = true;
+  const out = document.querySelector('input[name="outsourceQ"][value="outsource"]');
+  const share = document.querySelector('input[name="outsourceQ"][value="share"]');
+  if (out) out.checked = role.key === 'processor';
+  if (share) share.checked = role.key === 'controller' || role.key === 'joint' || (Array.isArray(data.recipients) && data.recipients.length > 0);
+  const auto = document.querySelector('input[name="specialQ"][value="automated"]');
+  if (auto) auto.checked = !!flags.automatedDecision;
+  const src = [data.dataCategories || '', data.serviceDescription || '', (data.matrix || []).map(r => [r.fields, r.activity, r.purpose].join(' ')).join(' ')].join(' ').toLowerCase();
+  const fieldMap = {
+    'name':'Name 姓名','姓名':'Name 姓名','phone':'Phone Number 电话号码','mobile':'Phone Number 电话号码','电话':'Phone Number 电话号码',
+    'email':'Email 电子邮箱','邮箱':'Email 电子邮箱','address':'Address 地址','地址':'Address 地址',
+    'device':'Device/Network Info 设备网络信息','imei':'Device/Network Info 设备网络信息','oaid':'Device/Network Info 设备网络信息','idfa':'Device/Network Info 设备网络信息','gaid':'Device/Network Info 设备网络信息','ip':'Device/Network Info 设备网络信息',
+    'telemetry':'Online Activity 网络活动','usage':'Online Activity 网络活动','event':'Online Activity 网络活动','session':'Online Activity 网络活动','click':'Online Activity 网络活动','日志':'Online Activity 网络活动',
+    'payment':'Financial Account 金融账户','purchase':'Financial Account 金融账户','financial':'Financial Account 金融账户','支付':'Financial Account 金融账户',
+    'location':'Location Tracking 行踪轨迹','gps':'Location Tracking 行踪轨迹','定位':'Location Tracking 行踪轨迹',
+    'biometric':'Biometric Info 生物识别信息','face':'Biometric Info 生物识别信息','voice':'Biometric Info 生物识别信息','生物':'Biometric Info 生物识别信息',
+    'chat':'Online Activity 网络活动','message':'Online Activity 网络活动','sms':'Online Activity 网络活动','通信':'Online Activity 网络活动',
+    'child':'Minor (Under 14) 未成年人(14岁以下)','teen':'Minor (Under 14) 未成年人(14岁以下)','minor':'Minor (Under 14) 未成年人(14岁以下)','儿童':'Minor (Under 14) 未成年人(14岁以下)'
+  };
+  const fields = new Set();
+  Object.entries(fieldMap).forEach(([kw, value]) => { if (src.includes(kw.toLowerCase())) fields.add(value); });
+  if (!fields.size) { fields.add('Device/Network Info 设备网络信息'); fields.add('Online Activity 网络活动'); }
+  document.querySelectorAll('#fieldPanel input[type=checkbox]').forEach(cb => { cb.checked = fields.has(cb.value); });
+  const purposes = new Set(['Service Delivery 履行合同/提供服务']);
+  if (src.includes('security') || src.includes('fraud') || src.includes('anti-cheat') || src.includes('安全')) purposes.add('Security & Fraud Prevention 安全与反欺诈');
+  if (flags.automatedDecision || src.includes('profil') || src.includes('recommend') || src.includes('画像') || src.includes('推荐')) purposes.add('User Consent 用户同意');
+  if (flags.adsRevenue || src.includes('advertising') || src.includes('marketing') || src.includes('analytics') || src.includes('广告') || src.includes('分析')) purposes.add('Marketing & Analytics 营销与分析');
+  document.querySelectorAll('#purposePanel input[type=checkbox]').forEach(cb => { cb.checked = purposes.has(cb.value); });
+  onPurposeCheckChange();
+  onFieldCheckChange();
+  calculateTriggers();
+  recalcTriggers();
+  updateCompletenessUI();
+  alert('已从角色映射导入 PIPIA 关键字段。请继续核对模块和证据。');
 }
 
 

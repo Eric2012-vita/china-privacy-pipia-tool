@@ -120,6 +120,7 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
     <a href="/" class="logo"><span class="logo-mark">L</span><span>LegalAIPay</span></a>
     <div class="nav-actions">
       <a href="/#tools">Tools</a>
+      <a href="/data-relationship-mapper">Role Mapper</a>
       <a href="/privacy-policy-generator">Privacy Generator</a>
       <a class="primary-link" href="#review">Start Review</a>
     </div>
@@ -280,6 +281,9 @@ const skillSources = [
   "Vendor agreement skill: every issue should have severity, business impact, proposed redline language, fallback, and escalation call.",
   "Liability skill: review cap amount, cap base, indirect damages, carveouts, and whether data breach, IP, confidentiality, and indemnity sit above or below the cap.",
   "DPA-by-reference skill: if a DPA is incorporated by URL or reference, data protection analysis is incomplete until the DPA is reviewed.",
+  "Data relationship skill: classify each processing activity separately as controller, joint controller, processor, entrusted processor, independent recipient, or unresolved before selecting DPA, sharing, or joint-processing terms.",
+  "SDK/API skill: flag own-server collection, baked-in telemetry, cross-client reuse, advertising, model training, anti-cheat networks, and sub-SDK chains as role evidence.",
+  "Video game data skill: separate account, gameplay telemetry, profiling, anti-cheat, chat/UGC, storefront, launcher, and LiveOps processing instead of assigning one role to the entire company.",
   "Privilege/destination skill: separate privileged internal work product from external counterparty comments."
 ];
 const reviewRules = [
@@ -327,6 +331,52 @@ const reviewRules = [
     explanation: "Why this matters: If the data-protection terms live at a web link or are missing, you may be agreeing to obligations you have never actually read.",
     insert: "The parties shall enter into a data processing addendum before any processing of personal data, including terms for security, subprocessors, breach notification, assistance, return/deletion, audit, and cross-border transfers.",
     fallback: "If the DPA is hosted by URL, request the current DPA version and review it separately."
+  },
+  {
+    id: "sdk-role-map-required",
+    area: "Data",
+    severity: "high",
+    title: "SDK/API data role is not clearly classified",
+    detect: /sdk|api|software development kit|embedded code|tracking pixel|tag manager|telemetry|analytics endpoint|device id|advertising id|oaid|imei|idfa|gaid/i,
+    requires: /controller|processor|joint controller|service provider|contractor|entrusted processor|independent controller|personal information processor|subprocessor/i,
+    comment: "The contract references SDK/API or embedded data collection, but the role allocation is not clear. Add a processing-by-processing role map before relying on a DPA.",
+    explanation: "Why this matters: SDK/API integrations often collect data directly on the provider's servers. If the provider has own purposes or reuse rights, a processor DPA alone may be wrong.",
+    insert: "The parties shall document, per processing activity, whether each party acts as controller, joint controller, processor/service provider, entrusted processor, or independent recipient, including the data fields, purpose, retention, recipients, and reuse limits.",
+    fallback: "Run the Data Relationship Mapper and attach the resulting role matrix as an exhibit."
+  },
+  {
+    id: "own-reuse-secondary-use",
+    area: "Data",
+    severity: "high",
+    title: "Vendor own-use or secondary-use rights may undermine processor status",
+    detect: /product improvement|service improvement|benchmark|aggregate insights|model training|train.*model|machine learning|ai training|analytics for.*own|improve.*services|advertising|targeted ads|personalized offers|cross-client|across customers|across titles/i,
+    comment: "The draft may permit vendor reuse for product improvement, analytics, advertising, model training, benchmarking, or cross-client purposes. Confirm whether this creates independent-controller or joint-processing terms.",
+    explanation: "Why this matters: Independent reuse is strong evidence that the recipient is not acting only on documented instructions.",
+    insert: "Processor shall not use covered data for product improvement, benchmarking, model training, advertising, profiling, or cross-client analytics except as expressly authorized in a signed role-specific amendment and supported by required notices, choices, and safeguards.",
+    fallback: "If reuse is commercially required, split the clause into processor processing and independent-controller processing with separate notices and legal basis."
+  },
+  {
+    id: "joint-control-gap",
+    area: "Data",
+    severity: "high",
+    title: "Jointly designed targeting, dashboard, or campaign terms need joint-processing allocation",
+    detect: /jointly determine|co-design|cooperate.*analytics|shared dashboard|joint campaign|audience selection|segmentation|loyalty|revenue share|ad revenue|campaign targeting|personalized recommendation|liveops|dynamic offers/i,
+    comment: "The parties may be jointly determining essential means or purposes. Add allocation terms for notice, consent, rights handling, security, incidents, retention, and user communications.",
+    explanation: "Why this matters: Joint processing cannot be papered over with a simple vendor DPA when both sides shape the purposes or essential means.",
+    insert: "Where the parties jointly determine the purposes or essential means of processing, they shall maintain a written allocation of responsibility for transparency notices, individual rights, consent/opt-out handling, security, incidents, retention, and regulator communications.",
+    fallback: "If one party does not jointly determine the processing, state the facts and limit that party to documented instructions or separate-controller receipt."
+  },
+  {
+    id: "sub-sdk-chain-gap",
+    area: "Data",
+    severity: "medium",
+    title: "Sub-SDK or subprocessor chain is not fully disclosed",
+    detect: /sub-sdk|sub sdk|third-party sdk|third party sdk|subprocessor|subcontractor|downstream provider|partner sdk|plug-in|plugin/i,
+    requires: /list|notice|approval|objection|flow[- ]?down|audit|subprocessor page|change notice/i,
+    comment: "The draft references downstream providers but does not appear to include a complete sub-SDK/subprocessor control process.",
+    explanation: "Why this matters: One primary SDK may silently load analytics, advertising, identity, crash, or attribution providers.",
+    insert: "Provider shall maintain a current sub-SDK/subprocessor list, provide advance notice of material changes, impose equivalent flow-down terms, and remain responsible for downstream processing.",
+    fallback: "Require a current manifest before launch and a technical scan right for high-risk SDKs."
   },
   {
     id: "long-breach-notice",
@@ -514,10 +564,10 @@ function buildMemo(text, issues, comments, score, detection) {
   const critical = issues.filter(i => i.severity === "critical").length;
   const high = issues.filter(i => i.severity === "high").length;
   const medium = issues.filter(i => i.severity === "medium").length;
-  return `CONTRACT REVIEW MEMO\n\nSource: LegalAIPay Contract Review Workspace\nMethod: built-in legal playbook\n\n1. Intake\nConfirmed type: ${type}\nDetected type: ${detection.label} (${detection.confidence})\nYour side: ${position}\nGoverning law target: ${law}\nRisk posture: ${posture}\nBusiness context: ${context}\n\n2. Executive Summary\nPreliminary triage score: ${score}/100\nIssues: ${critical} critical / ${high} high / ${medium} medium\n${score >= 60 ? "This draft should be escalated for attorney review before signature or external redlines are sent." : score >= 25 ? "This draft needs targeted review and business/legal alignment before signature." : "No major flags were detected by the embedded skills engine, but counsel should still verify deal-specific points."}\n\n3. Skills Applied\n${skillSources.map(s => `- ${s}`).join("\n")}\n\n4. Proposed Comments\n${comments.length ? comments.map(c => `${c.id}. [${c.severity.toUpperCase()}] ${c.title}\n   Area: ${c.area}\n   Proposed comment: ${c.comment}\n   Explanation: ${c.explanation}\n   Fallback: ${c.fallback || "Confirm fallback with counsel."}`).join("\n\n") : "No proposed comments triggered by the current skills rules."}\n\n5. Redline Instructions\nUse the Redline-Style Doc tab for proposed insertions/deletions. These are drafting suggestions, not final legal advice. Apply edits surgically and route complex provisions to counsel.\n\n6. Important Limitations\nThis browser tool uses a rules/playbook engine based on the provided Claude legal skills. It does not replace lawyer review. For deeper LLM drafting, copy the LLM Prompt tab into your own ChatGPT or Claude session.`;
+  return `CONTRACT REVIEW MEMO\n\nSource: LegalAIPay Contract Review Workspace\nMethod: built-in legal playbook\n\n1. Intake\nConfirmed type: ${type}\nDetected type: ${detection.label} (${detection.confidence})\nYour side: ${position}\nGoverning law target: ${law}\nRisk posture: ${posture}\nBusiness context: ${context}\nSaved role map: ${relationshipContext()}\n\n2. Executive Summary\nPreliminary triage score: ${score}/100\nIssues: ${critical} critical / ${high} high / ${medium} medium\n${score >= 60 ? "This draft should be escalated for attorney review before signature or external redlines are sent." : score >= 25 ? "This draft needs targeted review and business/legal alignment before signature." : "No major flags were detected by the embedded skills engine, but counsel should still verify deal-specific points."}\n\n3. Skills Applied\n${skillSources.map(s => `- ${s}`).join("\n")}\n\n4. Proposed Comments\n${comments.length ? comments.map(c => `${c.id}. [${c.severity.toUpperCase()}] ${c.title}\n   Area: ${c.area}\n   Proposed comment: ${c.comment}\n   Explanation: ${c.explanation}\n   Fallback: ${c.fallback || "Confirm fallback with counsel."}`).join("\n\n") : "No proposed comments triggered by the current skills rules."}\n\n5. Redline Instructions\nUse the Redline-Style Doc tab for proposed insertions/deletions. These are drafting suggestions, not final legal advice. Apply edits surgically and route complex provisions to counsel.\n\n6. Important Limitations\nThis browser tool uses a rules/playbook engine based on the provided Claude legal skills. It does not replace lawyer review. For deeper LLM drafting, copy the LLM Prompt tab into your own ChatGPT or Claude session.`;
 }
 function buildPrompt(text, issues, comments, detection) {
-  return `You are a contract-review assistant using the following Claude legal skills:\n${skillSources.map(s => `- ${s}`).join("\n")}\n\nReview the contract from this context:\nType: ${document.getElementById("contractType").value}\nDetected type: ${detection.label} (${detection.confidence})\nSide: ${document.getElementById("position").value}\nGoverning law target: ${document.getElementById("law").value}\nRisk posture: ${document.getElementById("riskTolerance").value}\nBusiness context: ${document.getElementById("dealContext").value}\n\nProduce:\n1. Review memo\n2. Proposed comments by section\n3. Surgical redline suggestions\n4. Explanation for each issue\n5. Fallback positions\n6. Items requiring attorney or business owner input\n\nInitial skills-engine findings:\n${comments.map(c => `- ${c.id}: ${c.title} (${c.severity}) - ${c.comment}`).join("\n") || "No initial flags."}\n\nContract text:\n${text}`;
+  return `You are a contract-review assistant using the following Claude legal skills:\n${skillSources.map(s => `- ${s}`).join("\n")}\n\nReview the contract from this context:\nType: ${document.getElementById("contractType").value}\nDetected type: ${detection.label} (${detection.confidence})\nSide: ${document.getElementById("position").value}\nGoverning law target: ${document.getElementById("law").value}\nRisk posture: ${document.getElementById("riskTolerance").value}\nBusiness context: ${document.getElementById("dealContext").value}\nSaved role map: ${relationshipContext()}\n\nProduce:\n1. Review memo\n2. Proposed comments by section\n3. Surgical redline suggestions\n4. Explanation for each issue\n5. Fallback positions\n6. Items requiring attorney or business owner input\n\nInitial skills-engine findings:\n${comments.map(c => `- ${c.id}: ${c.title} (${c.severity}) - ${c.comment}`).join("\n") || "No initial flags."}\n\nContract text:\n${text}`;
 }
 function buildRedlineDoc(text, issues, comments, detection) {
   let working = escapeHtml(text);
@@ -537,6 +587,19 @@ function render() {
   document.getElementById("commentsView").innerHTML = current.comments.length ? `<div class=\"card-list\">${current.comments.map(c => `<article class=\"issue ${c.severity}\"><h3><span class=\"badge ${c.severity}\">${c.severity.toUpperCase()}</span>${escapeHtml(c.id)}. ${escapeHtml(c.title)}</h3><div class=\"issue-meta\">${escapeHtml(c.area)}</div>${c.snippet ? `<p><strong>Text signal:</strong> ${escapeHtml(c.snippet)}</p>` : ""}<p><strong>Proposed comment:</strong> ${escapeHtml(c.comment)}</p><p><strong>Explanation:</strong> ${escapeHtml(c.explanation)}</p><p><strong>Fallback:</strong> ${escapeHtml(c.fallback || "Confirm with counsel.")}</p></article>`).join("")}</div>` : `<div class=\"empty\">No proposed comments triggered by the current skills rules.</div>`;
   document.getElementById("redlineView").innerHTML = current.redlineHtml || `<div class=\"empty\">Run a review to generate redline-style output.</div>`;
   document.getElementById("promptText").textContent = current.prompt || "Run a review to generate the LLM prompt.";
+}
+function relationshipContext() {
+  try {
+    const raw = localStorage.getItem("legalaipay.dataRelationshipHandoff");
+    if (!raw) return "No saved Data Relationship Mapper result.";
+    const p = JSON.parse(raw);
+    const role = p.roleFinding || {};
+    const tools = Array.isArray(p.triggeredTools) ? p.triggeredTools.join(", ") : "";
+    const gaps = Array.isArray(p.evidenceRequests) ? p.evidenceRequests.slice(0, 5).join("; ") : "";
+    return `${p.projectName || "Saved role map"} — ${role.label || "role unresolved"}. ${role.reason || ""} Triggered tools: ${tools || "not specified"}. Evidence gaps: ${gaps || "not specified"}.`;
+  } catch (e) {
+    return "Saved Data Relationship Mapper result could not be read.";
+  }
 }
 function switchTab(tab) {
   document.querySelectorAll(".tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
@@ -641,8 +704,7 @@ render();
   syncMode();
 })();
 
-<script>(function(){function crHasContract(){var ta=document.getElementById('contractText');var fs=document.getElementById('fileStatus');var v=ta?(ta.value||'').trim():'';var def='Upload a file, paste contract text here, or click Load Sample.';if(v&&v!==def&&v.length>20)return true;if(fs&&(fs.textContent||'').trim().length>0)return true;return false;}function crHasResults(){var s=document.getElementById('score');if(!s)return false;var v=(s.textContent||'').trim();return v!==''&&v!=='-';}function crUpdate(){var box=document.getElementById('crSteps');if(!box)return;var hasC=crHasContract();var hasR=crHasResults();var active=hasR?3:(hasC?2:1);var steps=box.querySelectorAll('[data-cr-step]');for(var i=0;i<steps.length;i++){var n=parseInt(steps[i].getAttribute('data-cr-step'),10);steps[i].classList.remove('active','done');if(n<active)steps[i].classList.add('done');else if(n===active)steps[i].classList.add('active');}}function crDefer(){setTimeout(crUpdate,0);}document.addEventListener('input',crDefer,true);document.addEventListener('change',crDefer,true);document.addEventListener('click',crDefer,true);if(document.readyState!=='loading')setTimeout(crUpdate,0);else document.addEventListener('DOMContentLoaded',function(){setTimeout(crUpdate,0);});})();</script>
+(function(){function crHasContract(){var ta=document.getElementById('contractText');var fs=document.getElementById('fileStatus');var v=ta?(ta.value||'').trim():'';var def='Upload a file, paste contract text here, or click Load Sample.';if(v&&v!==def&&v.length>20)return true;if(fs&&(fs.textContent||'').trim().length>0)return true;return false;}function crHasResults(){var s=document.getElementById('score');if(!s)return false;var v=(s.textContent||'').trim();return v!==''&&v!=='-';}function crUpdate(){var box=document.getElementById('crSteps');if(!box)return;var hasC=crHasContract();var hasR=crHasResults();var active=hasR?3:(hasC?2:1);var steps=box.querySelectorAll('[data-cr-step]');for(var i=0;i<steps.length;i++){var n=parseInt(steps[i].getAttribute('data-cr-step'),10);steps[i].classList.remove('active','done');if(n<active)steps[i].classList.add('done');else if(n===active)steps[i].classList.add('active');}}function crDefer(){setTimeout(crUpdate,0);}document.addEventListener('input',crDefer,true);document.addEventListener('change',crDefer,true);document.addEventListener('click',crDefer,true);if(document.readyState!=='loading')setTimeout(crUpdate,0);else document.addEventListener('DOMContentLoaded',function(){setTimeout(crUpdate,0);});})();
 </script>
 </body>
 </html>
-

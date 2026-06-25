@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Relationship Mapper | LegalAIPay</title>
+<meta name="description" content="Map controller, joint-controller, processor, entrusted-processing, sharing, SDK/API, and cross-border data relationships before generating a DPA, PIPIA, privacy policy, or contract review.">
+<link rel="canonical" href="https://legalaipay.com/data-relationship-mapper">
+<style>
+:root{--primary:#0f1e3d;--accent:#2b6cb0;--bg:#f6f8fb;--card:#fff;--border:#dbe3ef;--text:#243044;--muted:#64748b;--soft:#eef4fb;--warn:#b7791f;--danger:#c53030;--success:#2f855a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}a{color:inherit;text-decoration:none}.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border)}.nav-inner{max-width:1180px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:850;color:var(--primary)}.logo img{width:34px;height:34px;border-radius:8px}.nav-links{display:flex;gap:13px;align-items:center;flex-wrap:wrap}.nav-links a{font-size:14px;font-weight:750;color:var(--text)}.nav-links .primary{background:var(--primary);color:#fff;padding:9px 14px;border-radius:8px}.hero{background:linear-gradient(135deg,#0f1e3d,#1d4f86);color:#fff}.hero-inner{max-width:1180px;margin:auto;padding:50px 22px 42px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:28px;align-items:start}.eyebrow{display:inline-block;color:#bee3f8;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:850;margin-bottom:12px}h1{font-size:clamp(34px,5vw,56px);line-height:1.06;margin:0 0 14px;max-width:860px}.hero p{font-size:17px;color:rgba(255,255,255,.86);max-width:760px}.hero-panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.23);border-radius:10px;padding:18px}.hero-panel h2{font-size:18px;margin:0 0 10px}.hero-panel p{font-size:14px;margin:0 0 12px}.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:8px;padding:11px 15px;font:inherit;font-weight:850;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.btn.primary{background:#fff;color:var(--primary)}.btn.dark{background:var(--primary);color:#fff}.btn.soft{background:#edf2f7;color:var(--primary);border:1px solid var(--border)}.btn.warn{background:#fffaf0;color:#6b4a12;border:1px solid #f6d365}.wrap{max-width:1180px;margin:auto;padding:28px 22px 64px;display:grid;grid-template-columns:360px minmax(0,1fr);gap:22px;align-items:start}.panel,.section,.result-card{background:var(--card);border:1px solid var(--border);border-radius:10px}.panel{position:sticky;top:82px;padding:18px}.panel h2,.section h2,.result-card h2{color:var(--primary);margin:0 0 10px}.panel p,.hint{color:var(--muted);font-size:13px}.section{padding:22px;margin-bottom:18px}.form{display:grid;gap:14px}.field label,.legend{display:block;color:var(--primary);font-size:13px;font-weight:850;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 11px;background:#fff;color:var(--text);font:inherit}.field textarea{min-height:82px;resize:vertical}.check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.check{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--border);background:#fbfcfe;border-radius:8px;padding:10px;font-size:13px}.check input{margin-top:3px}.check strong{display:block;color:var(--primary)}.check span{display:block;color:var(--muted);font-size:12px}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--border);border-radius:999px;background:#fff;padding:8px 11px;font-size:13px;cursor:pointer}.chip input{margin-right:6px}.result-card{padding:20px;margin-top:18px}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}.metric{border:1px solid var(--border);border-radius:8px;background:#fbfcfe;padding:12px}.metric strong{display:block;color:var(--primary);font-size:20px}.badge{display:inline-flex;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:850;margin-right:6px}.badge.processor{background:#ebf8ff;color:#2b6cb0}.badge.controller{background:#fef5e7;color:#975a16}.badge.joint{background:#faf5ff;color:#6b46c1}.badge.warning{background:#fff5f5;color:#c53030}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:8px;margin-top:12px}table{border-collapse:collapse;width:100%;min-width:760px;background:#fff}th,td{border-bottom:1px solid var(--border);padding:10px;text-align:left;vertical-align:top}th{background:#f8fafc;color:var(--primary);font-size:12px;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}.list{margin:10px 0 0 18px;padding:0}.list li{margin:6px 0}.notice{border-left:4px solid var(--accent);background:#eef6ff;border-radius:8px;padding:12px 14px;margin:12px 0;color:#1a365d}.warning-box{border-left:4px solid var(--warn);background:#fffaf0;color:#6b4a12;border-radius:8px;padding:12px 14px;margin:12px 0}.danger-box{border-left:4px solid var(--danger);background:#fff5f5;color:#742a2a;border-radius:8px;padding:12px 14px;margin:12px 0}.output{white-space:pre-wrap;word-break:break-word;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px;font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;max-height:360px;overflow:auto}.footer{background:#0f1e3d;color:rgba(255,255,255,.76);padding:28px 22px}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.footer a{color:#fff;font-weight:750;margin-left:12px}@media(max-width:980px){.hero-inner,.wrap{grid-template-columns:1fr}.panel{position:static}.summary{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}.nav-links a:not(.primary){display:none}}@media(max-width:620px){.hero-inner{padding-top:38px}.btn{width:100%}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/legalaipay-logo.png" alt=""><span>LegalAIPay</span></a><div class="nav-links"><a href="/pipia">PIPIA</a><a href="/privacy-policy-generator">Privacy Policy</a><a href="/contract-review">Contract Review</a><a class="primary" href="/dpa-template?relationship=1#generator">Generate DPA</a></div></div></nav>
+<header class="hero"><div class="hero-inner"><div><span class="eyebrow">Role mapping before documents</span><h1>Map who controls the data before choosing the legal tool.</h1><p>Use this browser-only mapper to classify controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border relationships. Save the result, then open the matching DPA, PIPIA, privacy policy, or contract review workflow.</p><div class="btn-row"><a class="btn primary" href="#mapper">Start mapping</a><a class="btn soft" href="#results">See outputs</a></div></div><div class="hero-panel"><h2>Why start here?</h2><p>A processor DPA is useful only when the facts actually support processor status. SDKs, analytics, ad revenue, model training, cross-client reuse, or co-designed dashboards can change the document path.</p><div class="btn-row"><a class="btn primary" href="/dpa-template#generator">DPA</a><a class="btn primary" href="/pipia">PIPIA</a><a class="btn primary" href="/privacy-policy-generator">Privacy</a></div></div></div></header>
+<main class="wrap" id="mapper">
+  <aside class="panel">
+    <h2>Handoff</h2>
+    <p>Run the role gate, then save the handoff. Other LegalAIPay tools can import it from this browser.</p>
+    <div class="btn-row">
+      <button class="btn dark" type="button" id="analyzeBtn">Analyze</button>
+      <button class="btn soft" type="button" id="saveBtn">Save handoff</button>
+      <button class="btn soft" type="button" id="loadBtn">Load saved</button>
+    </div>
+    <p class="hint" id="saveStatus" aria-live="polite"></p>
+    <div class="btn-row">
+      <a class="btn soft" href="/dpa-template?relationship=1#generator">Open DPA</a>
+      <a class="btn soft" href="/pipia">Open PIPIA</a>
+      <a class="btn soft" href="/privacy-policy-generator?relationship=1">Open Privacy</a>
+      <a class="btn soft" href="/contract-review">Open Contract Review</a>
+    </div>
+  </aside>
+  <div>
+    <section class="section">
+      <h2>1. Business Context</h2>
+      <div class="form">
+        <div class="field"><label for="projectName">Project or service name</label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK"></div>
+        <div class="field"><label for="industry">Industry package</label><select id="industry"><option value="general">General privacy/data relationship</option><option value="videoGame">Video game / interactive entertainment</option><option value="sdk">SDK/API or embedded technology</option><option value="adtech">Advertising, analytics, or profiling</option></select></div>
+        <div class="field"><label for="jurisdiction">Jurisdiction lens</label><select id="jurisdiction"><option value="combined">Combined GDPR + China PIPL + US baseline</option><option value="gdpr">EU/UK GDPR</option><option value="pipl">China PIPL</option><option value="us">US state privacy baseline</option></select></div>
+        <div class="field"><label for="companyName">Your organization</label><input id="companyName" placeholder="Controller / business / personal information processor"></div>
+        <div class="field"><label for="counterpartyName">Counterparty / vendor / partner</label><input id="counterpartyName" placeholder="Processor, SDK provider, publisher, platform, or other recipient"></div>
+        <div class="field"><label for="serviceDesc">Service and processing purpose</label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed."></textarea></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. Processing Activities</h2>
+      <p class="hint">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</p>
+      <div class="check-grid" id="activityGrid"></div>
+      <div class="field" style="margin-top:14px;"><label for="customActivity">Other activity</label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program"></div>
+    </section>
+
+    <section class="section">
+      <h2>3. Data and Recipients</h2>
+      <div class="field"><label for="dataCategories">Personal data categories</label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs"></textarea></div>
+      <div class="field"><label for="dataSubjects">Data subjects</label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens"></div>
+      <div class="field"><label for="recipients">Recipients and destinations</label><textarea id="recipients" placeholder="One per line: name - purpose - country/region"></textarea></div>
+      <div class="chips">
+        <label class="chip"><input type="checkbox" id="hasSensitive">Sensitive or regulated data</label>
+        <label class="chip"><input type="checkbox" id="hasChildren">Children or teen users</label>
+        <label class="chip"><input type="checkbox" id="hasCrossBorder">Cross-border transfer or remote access</label>
+        <label class="chip"><input type="checkbox" id="hasAutomated">Automated decisions, profiling, or recommendations</label>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. Role Gate</h2>
+      <div class="check-grid">
+        <label class="check"><input type="checkbox" id="qDecidesPurpose"><span><strong>Counterparty decides purpose or essential means</strong><span>Fields, event schema, retention, recipients, model logic, dashboards, or commercial use.</span></span></label>
+        <label class="check"><input type="checkbox" id="qInstructions"><span><strong>Counterparty acts only on documented instructions</strong><span>Your organization defines fields, purpose, retention, and deletion.</span></span></label>
+        <label class="check"><input type="checkbox" id="qOwnServer"><span><strong>Data goes to counterparty servers by default</strong><span>SDK/API endpoints, cloud dashboards, telemetry collectors, ad/analytics pixels.</span></span></label>
+        <label class="check"><input type="checkbox" id="qOwnReuse"><span><strong>Counterparty can reuse data or outputs</strong><span>Product improvement, cross-client analytics, ads, models, anti-cheat network, benchmarks.</span></span></label>
+        <label class="check"><input type="checkbox" id="qJointDecisions"><span><strong>Parties jointly define KPIs or targeting</strong><span>Co-designed audiences, dashboards, campaigns, segmentation, loyalty, progression, offers.</span></span></label>
+        <label class="check"><input type="checkbox" id="qLocalOnly"><span><strong>Local-only code with no vendor access</strong><span>Library runs on device/server and provider cannot access personal data or outputs.</span></span></label>
+        <label class="check"><input type="checkbox" id="qBakedIn"><span><strong>Collection is baked in or hard to disable</strong><span>Customer cannot materially configure fields, frequency, retention, or recipients.</span></span></label>
+        <label class="check"><input type="checkbox" id="qAdsRevenue"><span><strong>Advertising, personalization, or revenue sharing</strong><span>Monetization or independent commercial benefit from data or derived profiles.</span></span></label>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. Evidence</h2>
+      <div class="field"><label for="contracts">Contracts, policies, or documents reviewed</label><textarea id="contracts" placeholder="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema"></textarea></div>
+      <div class="field"><label for="notes">Known gaps or assumptions</label><textarea id="notes" placeholder="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned"></textarea></div>
+      <div class="btn-row"><button class="btn dark" type="button" id="analyzeBtnBottom">Analyze data relationship</button></div>
+    </section>
+
+    <section class="result-card" id="results">
+      <h2>Result</h2>
+      <div id="resultEmpty" class="notice">Answer the role gate and run the analysis. The output will appear here and can be handed to the other tools.</div>
+      <div id="resultBody" style="display:none;">
+        <div class="summary">
+          <div class="metric"><span>Primary finding</span><strong id="primaryFinding">-</strong></div>
+          <div class="metric"><span>Risk level</span><strong id="riskLevel">-</strong></div>
+          <div class="metric"><span>Triggered tools</span><strong id="toolCount">-</strong></div>
+        </div>
+        <div id="roleNarrative"></div>
+        <div class="table-wrap"><table><thead><tr><th>Activity</th><th>Likely role</th><th>Why</th><th>Document path</th><th>Evidence gaps</th></tr></thead><tbody id="matrixRows"></tbody></table></div>
+        <div class="check-grid" style="margin-top:16px;">
+          <div><h3>Recommended next steps</h3><ul class="list" id="nextSteps"></ul></div>
+          <div><h3>Evidence request list</h3><ul class="list" id="evidenceList"></ul></div>
+        </div>
+        <h3>Saved handoff JSON</h3>
+        <pre class="output" id="handoffJson"></pre>
+      </div>
+    </section>
+  </div>
+</main>
+<footer class="footer"><div class="footer-inner"><div>© 2026 LegalAIPay. Tools provide general information and do not constitute legal advice.</div><div><a href="/disclaimer">Disclaimer</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div></footer>
+<script>
+(function(){
+const storeKey = "legalaipay.dataRelationshipHandoff";
+const baseActivities = [
+  ["account", "Account creation and management", "login, account ID, support, recovery, bans"],
+  ["telemetry", "Gameplay or service telemetry", "session length, device data, events, crashes, performance"],
+  ["profiling", "Behavioral inference or profiling", "churn, spending propensity, recommendations, scoring"],
+  ["ads", "Advertising or attribution", "ad IDs, conversion events, audience segments, revenue share"],
+  ["security", "Fraud, security, or anti-cheat", "abuse signals, device fingerprints, cheating risk"],
+  ["support", "Customer support and communications", "tickets, chat, email, call recordings"]
+];
+const videoGameActivities = [
+  ["platform", "Platform or publisher account", "cross-platform ID, cloud saves, entitlements, parental controls"],
+  ["gameTelemetry", "Gameplay telemetry", "button presses, level completion, matchmaking, crashes, movement"],
+  ["playerProfile", "Player profiling and LiveOps", "skill, churn, vulnerability, dynamic offers, personalization"],
+  ["antiCheat", "Anti-cheat or safety monitoring", "device signals, cheating risk, moderation events"],
+  ["chat", "Voice, chat, UGC, or moderation", "messages, reports, audio snippets, user-generated content"],
+  ["storefront", "Storefront, launcher, or payment", "purchase history, launcher events, wish lists, recommendations"]
+];
+function byId(id){return document.getElementById(id)}
+function val(id){var el=byId(id);return el?(el.value||"").trim():""}
+function checked(id){var el=byId(id);return !!(el&&el.checked)}
+function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]})}
+function setStatus(msg){byId("saveStatus").textContent=msg||""}
+function selectedActivities(){
+  var rows=[...document.querySelectorAll("[data-activity]:checked")].map(i=>i.value);
+  var custom=val("customActivity");
+  if(custom) rows.push(custom);
+  return rows.length?rows:["Core processing activity"];
+}
+function renderActivities(){
+  var list=val("industry")==="videoGame"?videoGameActivities:baseActivities;
+  byId("activityGrid").innerHTML=list.map(function(a,i){
+    return '<label class="check"><input type="checkbox" data-activity value="'+esc(a[1])+'" '+(i<3?'checked':'')+'><span><strong>'+esc(a[1])+'</strong><span>'+esc(a[2])+'</span></span></label>';
+  }).join("");
+}
+function classify(){
+  if(checked("qLocalOnly")) return {key:"infrastructure", label:"Local-only / infrastructure-only", risk:"Low", badge:"processor", reason:"The provider appears to have no personal-data access and does not determine processing.", doc:"Document technical no-access evidence; DPA may be unnecessary if no personal data is processed by the provider."};
+  if(checked("qJointDecisions")) return {key:"joint", label:"Likely joint control / joint processing", risk:"High", badge:"joint", reason:"The parties appear to jointly define KPIs, audiences, dashboards, targeting, segmentation, offers, or other essential means.", doc:"Use joint-controller or joint-processing terms, allocate notices and rights handling, and do not rely on a processor DPA alone."};
+  if(checked("qDecidesPurpose")||checked("qOwnReuse")||checked("qAdsRevenue")||(checked("qOwnServer")&&checked("qBakedIn"))) return {key:"controller", label:"Likely independent controller / separate PI processor", risk:"High", badge:"controller", reason:"The counterparty appears to determine its own purpose or can reuse data or outputs for its own commercial, analytics, model, advertising, or cross-client purposes.", doc:"Use controller-to-controller sharing terms or independent recipient terms; update privacy notice and consent flows where required."};
+  if(checked("qInstructions")&&!checked("qOwnReuse")&&!checked("qDecidesPurpose")) return {key:"processor", label:"Likely processor / entrusted processor", risk:checked("hasSensitive")||checked("hasCrossBorder")?"Medium":"Low", badge:"processor", reason:"The counterparty appears to process only on documented instructions without independent access or reuse.", doc:"Use a DPA / entrusted-processing agreement with instructions, security, subprocessors, assistance, audit, return/deletion, and transfer terms."};
+  return {key:"mixed", label:"Mixed or unresolved role", risk:"Medium", badge:"warning", reason:"The available facts are not enough to choose one role. Treat the contract label as evidence, not as determinative.", doc:"Request technical evidence and contract details before choosing DPA, sharing terms, or joint-processing terms."};
+}
+function toolTriggers(role){
+  var out=["Contract Review"];
+  if(role.key==="processor"||role.key==="mixed") out.push("DPA");
+  if(role.key==="controller"||role.key==="joint"||checked("hasSensitive")||checked("hasCrossBorder")||checked("hasAutomated")) out.push("PIPIA/DPIA");
+  out.push("Privacy Policy");
+  return out;
+}
+function evidence(role){
+  var items=["Data-flow diagram and system architecture","Data dictionary, event schema, and retention schedule","Privacy notice, consent screens, and recipient disclosures","Agreement clauses matching the technical reality"];
+  if(checked("qOwnServer")) items.push("Server endpoints, SDK configuration, dashboard access, and log samples");
+  if(checked("qOwnReuse")) items.push("Product-improvement, model-training, cross-client, advertising, and benchmark reuse policy");
+  if(checked("qBakedIn")) items.push("Default settings, disable controls, and customer configuration evidence");
+  if(checked("hasCrossBorder")) items.push("Transfer countries, remote-access paths, SCC/PIPL route, and supplementary measures");
+  if(checked("hasChildren")) items.push("Age gate, parental consent, children's-data rule, and teen privacy settings");
+  if(role.key==="mixed") items.push("Written confirmation of who decides purpose, fields, retention, recipients, and deletion");
+  return items;
+}
+function nextSteps(role){
+  var steps=[];
+  if(role.key==="processor") steps.push("Generate a DPA or China entrusted-processing clause set before launch.");
+  if(role.key==="controller") steps.push("Prepare controller-to-controller or independent-recipient terms and update user-facing disclosures.");
+  if(role.key==="joint") steps.push("Draft joint-processing allocation terms for notice, rights handling, security, incidents, and responsibility.");
+  if(role.key==="mixed") steps.push("Pause document generation until the missing evidence resolves processor vs independent/joint processing.");
+  if(checked("hasSensitive")) steps.push("Add sensitive-data necessity, safeguards, separate consent, and retention checks.");
+  if(checked("hasCrossBorder")) steps.push("Run transfer review and identify the applicable transfer mechanism.");
+  if(checked("hasAutomated")) steps.push("Add profiling or automated-decision notice, opt-out/explanation controls, and DPIA/PIPIA analysis.");
+  if(checked("hasChildren")) steps.push("Complete children/teen data controls before release.");
+  steps.push("Save this role map and import it into DPA, PIPIA, privacy policy, or contract review.");
+  return steps;
+}
+function buildHandoff(){
+  var role=classify();
+  var activities=selectedActivities();
+  var dataCategories=val("dataCategories");
+  var recipients=val("recipients").split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  var flags={sensitive:checked("hasSensitive"),children:checked("hasChildren"),crossBorder:checked("hasCrossBorder"),automatedDecision:checked("hasAutomated"),ownServer:checked("qOwnServer"),ownReuse:checked("qOwnReuse"),jointDecisions:checked("qJointDecisions"),documentedInstructions:checked("qInstructions"),localOnly:checked("qLocalOnly"),bakedIn:checked("qBakedIn"),adsRevenue:checked("qAdsRevenue")};
+  var tools=toolTriggers(role);
+  return {
+    schemaVersion:1,
+    source:"LegalAIPay Data Relationship Mapper",
+    timestamp:new Date().toISOString(),
+    projectName:val("projectName"),
+    industry:val("industry"),
+    jurisdiction:val("jurisdiction"),
+    companyName:val("companyName"),
+    counterpartyName:val("counterpartyName"),
+    serviceDescription:val("serviceDesc"),
+    dataCategories:dataCategories,
+    dataSubjects:val("dataSubjects"),
+    recipients:recipients,
+    activities:activities,
+    flags:flags,
+    roleFinding:role,
+    matrix:activities.map(function(activity){return {activity:activity,dataSubjects:val("dataSubjects"),fields:dataCategories,purpose:val("serviceDesc"),role:role.label,reason:role.reason,documentPath:role.doc,evidenceGaps:evidence(role).slice(0,4)};}),
+    triggeredTools:tools,
+    nextSteps:nextSteps(role),
+    evidenceRequests:evidence(role),
+    contractsReviewed:val("contracts"),
+    notes:val("notes")
+  };
+}
+function renderResult(payload){
+  var role=payload.roleFinding;
+  byId("resultEmpty").style.display="none";
+  byId("resultBody").style.display="block";
+  byId("primaryFinding").textContent=role.label;
+  byId("riskLevel").textContent=role.risk;
+  byId("toolCount").textContent=payload.triggeredTools.length;
+  var boxClass=role.risk==="High"?"danger-box":role.risk==="Medium"?"warning-box":"notice";
+  byId("roleNarrative").innerHTML='<div class="'+boxClass+'"><span class="badge '+esc(role.badge)+'">'+esc(role.label)+'</span><p>'+esc(role.reason)+'</p><p><strong>Document path:</strong> '+esc(role.doc)+'</p></div>';
+  byId("matrixRows").innerHTML=payload.matrix.map(function(row){
+    return "<tr><td>"+esc(row.activity)+"</td><td>"+esc(row.role)+"</td><td>"+esc(row.reason)+"</td><td>"+esc(row.documentPath)+"</td><td>"+row.evidenceGaps.map(esc).join("<br>")+"</td></tr>";
+  }).join("");
+  byId("nextSteps").innerHTML=payload.nextSteps.map(function(i){return "<li>"+esc(i)+"</li>"}).join("");
+  byId("evidenceList").innerHTML=payload.evidenceRequests.map(function(i){return "<li>"+esc(i)+"</li>"}).join("");
+  byId("handoffJson").textContent=JSON.stringify(payload,null,2);
+}
+function save(payload){
+  var p=payload||buildHandoff();
+  localStorage.setItem(storeKey,JSON.stringify(p));
+  renderResult(p);
+  setStatus("Saved in this browser. Open another LegalAIPay tool to import it.");
+}
+function load(){
+  var raw=localStorage.getItem(storeKey);
+  if(!raw){setStatus("No saved role map found in this browser.");return}
+  try{var p=JSON.parse(raw);renderResult(p);setStatus("Loaded saved role map.");}catch(e){setStatus("Saved role map could not be read.")}
+}
+function analyze(){var p=buildHandoff();renderResult(p);setStatus("Analysis complete. Save the handoff to use it in other tools.");return p}
+byId("industry").addEventListener("change",renderActivities);
+byId("analyzeBtn").onclick=analyze;
+byId("analyzeBtnBottom").onclick=analyze;
+byId("saveBtn").onclick=function(){save(analyze())};
+byId("loadBtn").onclick=load;
+renderActivities();
+document.querySelectorAll('a[href^="/dpa-template"],a[href^="/pipia"],a[href^="/privacy-policy-generator"],a[href^="/contract-review"]').forEach(function(a){a.addEventListener("click",function(){try{save(buildHandoff())}catch(e){}})});
+try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
+})();
+</script>
+</body>
+</html>

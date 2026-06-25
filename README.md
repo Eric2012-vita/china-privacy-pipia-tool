@@ -15,12 +15,23 @@ LegalAIPay is a platform offering AI-powered legal tools for privacy compliance,
 /
 ├── index.html       # Platform landing page (legalaipay.com homepage)
 ├── pipia.html       # PIPIA Assessment Tool
+├── data-relationship-mapper.html # Role and data relationship mapper
 └── README.md        # This file
 ```
 
 ---
 
 ### Available Tools
+
+#### Data Relationship Mapper — `data-relationship-mapper.html` *(Live)*
+Browser-only role-mapping workflow for controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border data relationships.
+
+**Features:**
+- Processing-by-processing role gate
+- Video game and SDK/API industry package
+- Local handoff to DPA, PIPIA, privacy policy, and contract review tools
+- Evidence request list and next-step routing
+- JSON handoff stored only in the user's browser
 
 #### 🛡️ PIPIA Assessment — `pipia.html` *(Live)*
 Personal Information Protection Impact Assessment tool, fully compliant with China's PIPL and GB/T 35273 standards.
