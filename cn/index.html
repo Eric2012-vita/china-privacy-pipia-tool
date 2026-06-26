@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LegalAIPay 中国数据合规工具台</title>
+  <meta name="description" content="LegalAIPay 中文版：用于中国个人信息保护影响评估、隐私政策、数据关系映射、DPA/委托处理条款和合同审查的在线工具台。">
+  <link rel="canonical" href="https://legalaipay.com/cn/">
+  <link rel="alternate" hreflang="en" href="https://legalaipay.com/">
+  <link rel="alternate" hreflang="zh-CN" href="https://legalaipay.com/cn/">
+  <link rel="icon" href="/favicon.ico">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;color:#172033;background:#f7f8fb;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.95);border-bottom:1px solid #dde3ef;backdrop-filter:blur(10px)}
+    .nav-inner{max-width:1180px;margin:0 auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:850;font-size:19px;color:#102033}
+    .brand img{width:34px;height:34px;border-radius:8px}
+    .nav-links{display:flex;align-items:center;gap:16px;font-size:14px;color:#516075}
+    .nav-links a{white-space:nowrap}
+    .nav-links a:hover{color:#0f5132}
+    .nav-links .primary{background:#163b5c;color:white;padding:9px 14px;border-radius:8px;font-weight:750}
+    .workspace{background:#ffffff;border-bottom:1px solid #dfe5ee}
+    .workspace-inner{max-width:1180px;margin:0 auto;padding:42px 22px 32px;display:grid;grid-template-columns:minmax(0,1.1fr) 390px;gap:28px;align-items:start}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;color:#0f5132;background:#e7f4ed;border:1px solid #b9dbc8;padding:6px 10px;border-radius:999px;font-size:13px;font-weight:750}
+    h1{font-size:clamp(34px,5vw,62px);line-height:1.05;margin:18px 0 18px;letter-spacing:0;color:#0d1829}
+    .lead{font-size:18px;color:#4b596b;max-width:740px;margin:0 0 24px}
+    .route{display:grid;gap:12px;max-width:760px}
+    .route-row{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:center;padding:14px 16px;border:1px solid #dbe2ec;border-radius:8px;background:#fbfcfe}
+    .route-num{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#163b5c;color:white;font-weight:800;font-size:13px}
+    .route-title{font-weight:800;color:#1a2433}
+    .route-desc{font-size:13px;color:#667386;margin-top:2px}
+    .route-action{font-size:13px;font-weight:800;color:#0f5132}
+    .panel{background:#f9fbff;border:1px solid #dbe3ef;border-radius:8px;padding:20px}
+    .panel h2{margin:0 0 10px;font-size:20px;color:#102033}
+    .panel p{margin:0 0 16px;color:#5b6879;font-size:14px}
+    select{width:100%;height:48px;border:1px solid #cbd5e1;border-radius:8px;background:white;color:#172033;font-size:15px;padding:0 12px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border-radius:8px;border:1px solid transparent;padding:10px 15px;font-weight:800;cursor:pointer}
+    .button.primary{background:#163b5c;color:white;width:100%;margin-top:12px}
+    .button.secondary{background:white;border-color:#cbd5e1;color:#1f2d3d}
+    .button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .section{padding:42px 22px}
+    .container{max-width:1180px;margin:0 auto}
+    .section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:18px}
+    .section-head h2{margin:0;font-size:28px;color:#111827}
+    .section-head p{margin:0;max-width:600px;color:#617083}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{display:block;background:white;border:1px solid #dde4ee;border-radius:8px;padding:20px;min-height:190px}
+    .card:hover{border-color:#93c5b0;box-shadow:0 10px 28px rgba(20,35,58,.08)}
+    .tag{display:inline-flex;font-size:12px;font-weight:850;color:#8a4a00;background:#fff3d8;border:1px solid #f1d48f;padding:4px 8px;border-radius:999px}
+    .card h3{font-size:20px;line-height:1.28;margin:14px 0 8px;color:#162033}
+    .card p{font-size:14px;color:#5d6878;margin:0}
+    .card .open{display:block;margin-top:16px;color:#0f5132;font-size:13px;font-weight:850}
+    .check-band{background:#102033;color:white}
+    .check-band .section-head h2{color:white}
+    .check-band .section-head p{color:#cbd5e1}
+    .check-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .check-item{border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:13px 14px;background:rgba(255,255,255,.06);font-size:14px;color:#ecf3fb}
+    .note{background:#fff;border-top:1px solid #dfe5ee;padding:24px 22px;color:#657286;font-size:13px}
+    .note-inner{max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    @media(max-width:900px){
+      .workspace-inner{grid-template-columns:1fr;padding-top:30px}
+      .nav-links{gap:10px;font-size:13px;overflow-x:auto}
+      .grid,.check-grid{grid-template-columns:1fr}
+      .section-head{display:block}
+      .section-head p{margin-top:8px}
+      .route-row{grid-template-columns:30px 1fr}
+      .route-action{grid-column:2}
+    }
+    @media(max-width:560px){
+      .nav-inner{padding:12px 16px;align-items:flex-start}
+      .brand span{font-size:17px}
+      .workspace-inner,.section{padding-left:16px;padding-right:16px}
+      h1{font-size:36px}
+      .lead{font-size:16px}
+      .panel{padding:16px}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="/cn/"><img src="/legalaipay-logo.png" alt="LegalAIPay"><span>LegalAIPay 中文</span></a>
+      <div class="nav-links">
+        <a href="#path">工作路径</a>
+        <a href="#tools">工具</a>
+        <a href="#evidence">证据清单</a>
+        <a href="/">English</a>
+        <a class="primary" href="/privacy-policy-generator?jurisdiction=cn">生成隐私政策</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="workspace">
+      <div class="workspace-inner">
+        <div>
+          <span class="eyebrow">中国 PIPL、PIPIA、委托处理与数据共享</span>
+          <h1>中国数据合规工作台</h1>
+          <p class="lead">从数据关系判断开始，把 SDK/API、委托处理、共同处理、共享、跨境、敏感个人信息和自动化决策拆成可执行的文件任务。</p>
+          <div class="route" id="path">
+            <a class="route-row" href="/data-relationship-mapper">
+              <span class="route-num">1</span>
+              <span><span class="route-title">先判断数据角色和流向</span><span class="route-desc">确认谁决定目的和方式、谁只是受托处理、是否存在共享或共同处理。</span></span>
+              <span class="route-action">打开</span>
+            </a>
+            <a class="route-row" href="/pipia">
+              <span class="route-num">2</span>
+              <span><span class="route-title">需要时完成 PIPIA</span><span class="route-desc">覆盖敏感个人信息、未成年人、自动化决策、委托处理、共享和跨境。</span></span>
+              <span class="route-action">打开</span>
+            </a>
+            <a class="route-row" href="/privacy-policy-generator?jurisdiction=cn">
+              <span class="route-num">3</span>
+              <span><span class="route-title">生成中国隐私政策披露</span><span class="route-desc">把收集字段、目的、处理方式、保存期限和第三方披露整理成政策文本。</span></span>
+              <span class="route-action">打开</span>
+            </a>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="快速开始">
+          <h2>我现在要做什么？</h2>
+          <p>选择当前任务，直接进入对应工具。建议先做角色映射，再生成合同或披露文件。</p>
+          <select id="taskSelect">
+            <option value="/cn/">请选择任务</option>
+            <option value="/data-relationship-mapper">判断数据控制者/受托处理者关系</option>
+            <option value="/pipia">制作个人信息保护影响评估 PIPIA</option>
+            <option value="/privacy-policy-generator?jurisdiction=cn">生成中国隐私政策</option>
+            <option value="/dpa-template?relationship=1#generator">生成 DPA / 委托处理条款</option>
+            <option value="/contract-review">审查数据处理合同条款</option>
+            <option value="/us-compliance/">处理美国州隐私法事项</option>
+            <option value="https://gdpr.legalaipay.com/">处理 GDPR / EU / UK 事项</option>
+          </select>
+          <a id="taskGo" class="button primary" href="/cn/">进入工具</a>
+          <div class="button-row">
+            <a class="button secondary" href="/dpa-template#generator">DPA</a>
+            <a class="button secondary" href="/contract-review">合同审查</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="tools">
+      <div class="container">
+        <div class="section-head">
+          <h2>核心工具</h2>
+          <p>每个工具都对应一个实际输出：判断记录、PIPIA、隐私政策、DPA/委托处理条款或合同审查清单。</p>
+        </div>
+        <div class="grid">
+          <a class="card" href="/data-relationship-mapper">
+            <span class="tag">关系判断</span>
+            <h3>数据关系与角色映射</h3>
+            <p>梳理 SDK/API、平台、广告分成、遥测、共享、共同决定目的和跨境访问，形成控制者/受托处理者结论。</p>
+            <span class="open">打开工具</span>
+          </a>
+          <a class="card" href="/pipia">
+            <span class="tag">PIPIA</span>
+            <h3>个人信息保护影响评估</h3>
+            <p>针对敏感个人信息、自动化决策、向第三方提供、委托处理和跨境等场景生成评估结构。</p>
+            <span class="open">打开工具</span>
+          </a>
+          <a class="card" href="/privacy-policy-generator?jurisdiction=cn">
+            <span class="tag">隐私政策</span>
+            <h3>中国隐私政策生成器</h3>
+            <p>按 PIPL 披露个人信息种类、目的、处理方式、保存期限、第三方和用户权利。</p>
+            <span class="open">打开工具</span>
+          </a>
+          <a class="card" href="/dpa-template?relationship=1#generator">
+            <span class="tag">合同</span>
+            <h3>DPA / 委托处理条款</h3>
+            <p>把角色映射结果转为处理目的、处理事项、权限边界、保存期限、安全措施和审计义务。</p>
+            <span class="open">打开工具</span>
+          </a>
+          <a class="card" href="/contract-review">
+            <span class="tag">审查</span>
+            <h3>数据合同审查工作台</h3>
+            <p>检查供应商、SaaS、NDA、商业合作和数据处理协议中的个人信息处理风险。</p>
+            <span class="open">打开工具</span>
+          </a>
+          <a class="card" href="/us-compliance/">
+            <span class="tag">跨境</span>
+            <h3>美国州隐私法分诊</h3>
+            <p>如果中国业务触达美国用户，可继续判断州隐私法、退出机制、供应商和告知要求。</p>
+            <span class="open">打开工具</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section check-band" id="evidence">
+      <div class="container">
+        <div class="section-head">
+          <h2>开始前建议准备</h2>
+          <p>这些材料会直接影响角色判断、PIPIA 结论和合同条款。</p>
+        </div>
+        <div class="check-grid">
+          <div class="check-item">数据流图、接口清单或系统架构说明</div>
+          <div class="check-item">SDK/API 字段、调用频率、日志和服务器保存规则</div>
+          <div class="check-item">第三方、受托方、共同处理方和子处理者名单</div>
+          <div class="check-item">处理目的、商业化场景、广告分成或推荐逻辑说明</div>
+          <div class="check-item">保存期限、删除机制、去标识化或匿名化处理说明</div>
+          <div class="check-item">用户告知、同意、单独同意和退出机制记录</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="note">
+    <div class="note-inner">
+      <span>LegalAIPay 中文工具台仅提供合规工作辅助，不替代律师针对具体事实出具的法律意见。</span>
+      <span><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · <a href="/disclaimer">Disclaimer</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      try{localStorage.setItem('legalaipay.lang','zh')}catch(e){}
+      var select=document.getElementById('taskSelect');
+      var go=document.getElementById('taskGo');
+      if(select&&go){
+        select.addEventListener('change',function(){go.href=select.value||'/cn/'});
+        go.addEventListener('click',function(e){
+          if(!select.value||select.value==='/cn/'){e.preventDefault();location.hash='tools';}
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
