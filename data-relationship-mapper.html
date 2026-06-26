@@ -306,5 +306,58 @@ document.querySelectorAll('a[href^="/dpa-template"],a[href^="/pipia"],a[href^="/
 try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
 })();
 </script>
+  <!-- Controller-vs-notice consistency check -->
+<div id="noticeWarning" role="alert"
+     style="display:none;margin-top:16px;padding:14px 16px;border:1px solid #d97706;
+            background:#fffbeb;border-radius:10px;color:#7c2d12;font-size:.95em;line-height:1.5">
+</div>
+
+<script>
+(function(){
+  function isChecked(id){
+    var el = document.getElementById(id);
+    return !!(el && el.checked);
+  }
+  // Mirror of classify(): is the org most likely a controller?
+  function looksLikeController(){
+    if (isChecked("qLocalOnly")) return false;      // infrastructure-only
+    if (isChecked("qJointDecisions")) return false; // joint control path
+    return isChecked("qDecidesPurpose")
+        || isChecked("qOwnReuse")
+        || isChecked("qAdsRevenue")
+        || (isChecked("qOwnServer") && isChecked("qBakedIn"));
+  }
+
+  function updateNoticeWarning(){
+    var box = document.getElementById("noticeWarning");
+    if (!box) return;
+    if (looksLikeController() && isChecked("qNoOwnNotice")) {
+      box.innerHTML =
+        "<strong>Heads-up: your role and your privacy notice may not match.</strong><br>" +
+        "Your answers point to you acting as an <strong>independent controller / separate " +
+        "personal-information handler</strong>. A controller normally needs its <strong>own</strong> " +
+        "privacy notice and legal basis — relying only on a partner's policy that merely mentions you " +
+        "is usually the posture of a <em>processor</em>, not a controller.<br><br>" +
+        "Likely next steps: publish your own privacy notice and confirm your legal basis. If the data " +
+        "is sensitive (e.g. linking phone numbers to fraud/\"scam\" labels) or crosses borders, also run " +
+        "a PIPIA / DPIA and check sensitive-data and cross-border rules before launch.";
+      box.style.display = "block";
+    } else {
+      box.style.display = "none";
+      box.innerHTML = "";
+    }
+  }
+
+  // Re-check whenever any role-gate input changes, and once on load.
+  var watch = ["qDecidesPurpose","qInstructions","qOwnServer","qOwnReuse",
+               "qJointDecisions","qLocalOnly","qBakedIn","qAdsRevenue","qNoOwnNotice"];
+  watch.forEach(function(id){
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("change", updateNoticeWarning);
+  });
+  document.addEventListener("DOMContentLoaded", updateNoticeWarning);
+  updateNoticeWarning();
+})();
+</script>
 </body>
 </html>
