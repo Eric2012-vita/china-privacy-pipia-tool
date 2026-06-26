@@ -37,8 +37,8 @@
         <div class="field"><label for="projectName">Project or service name</label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK"></div>
         <div class="field"><label for="industry">Industry package</label><select id="industry"><option value="general">General privacy/data relationship</option><option value="videoGame">Video game / interactive entertainment</option><option value="sdk">SDK/API or embedded technology</option><option value="adtech">Advertising, analytics, or profiling</option></select></div>
         <div class="field"><label for="jurisdiction">Jurisdiction lens</label><select id="jurisdiction"><option value="combined">Combined GDPR + China PIPL + US baseline</option><option value="gdpr">EU/UK GDPR</option><option value="pipl">China PIPL</option><option value="us">US state privacy baseline</option></select></div>
-        <div class="field"><label for="companyName">Your organization</label><input id="companyName" placeholder="Controller / business / personal information processor"></div>
-        <div class="field"><label for="counterpartyName">Counterparty / vendor / partner</label><input id="counterpartyName" placeholder="Processor, SDK provider, publisher, platform, or other recipient"></div>
+        <div class="field"><label for="companyName">Your organization</label><input id="companyName" placeholder="Your company's name (e.g. Acme Studios Ltd)"></div>
+        <div class="field"><label for="counterpartyName">Counterparty / vendor / partner</label><input id="counterpartyName" placeholder="The other company and what they provide (e.g. PlayMetrics — analytics SDK)"></div>
         <div class="field"><label for="serviceDesc">Service and processing purpose</label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed."></textarea></div>
       </div>
     </section>
@@ -55,11 +55,36 @@
       <div class="field"><label for="dataCategories">Personal data categories</label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs"></textarea></div>
       <div class="field"><label for="dataSubjects">Data subjects</label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens"></div>
       <div class="field"><label for="recipients">Recipients and destinations</label><textarea id="recipients" placeholder="One per line: name - purpose - country/region"></textarea></div>
-      <div class="chips">
-        <label class="chip"><input type="checkbox" id="hasSensitive">Sensitive or regulated data</label>
-        <label class="chip"><input type="checkbox" id="hasChildren">Children or teen users</label>
-        <label class="chip"><input type="checkbox" id="hasCrossBorder">Cross-border transfer or remote access</label>
-        <label class="chip"><input type="checkbox" id="hasAutomated">Automated decisions, profiling, or recommendations</label>
+      <div class="check-grid">
+
+        <label class="check"><input type="checkbox" id="hasSensitive"><span>
+          <strong>Sensitive or regulated data</strong>
+          <span>Health, biometric, precise location, financial, religion, or sexual orientation data.
+            <em class="hint">Not sure? If losing this data would be especially harmful or embarrassing to a person, check this.</em>
+          </span>
+        </span></label>
+
+        <label class="check"><input type="checkbox" id="hasChildren"><span>
+          <strong>Children or teen users</strong>
+          <span>Anyone under 18 can realistically use the service.
+            <em class="hint">Not sure? If you don't actively prevent minors from signing up, check this.</em>
+          </span>
+        </span></label>
+
+        <label class="check"><input type="checkbox" id="hasCrossBorder"><span>
+          <strong>Cross-border transfer or remote access</strong>
+          <span>Data leaves your country, or someone abroad can access it — including a vendor's support staff logging in from another country.
+            <em class="hint">Not sure? If any company involved operates from a different country, check this.</em>
+          </span>
+        </span></label>
+
+        <label class="check"><input type="checkbox" id="hasAutomated"><span>
+          <strong>Automated decisions, profiling, or recommendations</strong>
+          <span>Software scores, ranks, recommends, or decides about people without a human reviewing each case.
+            <em class="hint">Not sure? If an algorithm sorts or targets users automatically, check this.</em>
+          </span>
+        </span></label>
+
       </div>
     </section>
 
