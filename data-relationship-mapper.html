@@ -63,19 +63,77 @@
       </div>
     </section>
 
-    <section class="section">
-      <h2>4. Role Gate</h2>
-      <div class="check-grid">
-        <label class="check"><input type="checkbox" id="qDecidesPurpose"><span><strong>Counterparty decides purpose or essential means</strong><span>Fields, event schema, retention, recipients, model logic, dashboards, or commercial use.</span></span></label>
-        <label class="check"><input type="checkbox" id="qInstructions"><span><strong>Counterparty acts only on documented instructions</strong><span>Your organization defines fields, purpose, retention, and deletion.</span></span></label>
-        <label class="check"><input type="checkbox" id="qOwnServer"><span><strong>Data goes to counterparty servers by default</strong><span>SDK/API endpoints, cloud dashboards, telemetry collectors, ad/analytics pixels.</span></span></label>
-        <label class="check"><input type="checkbox" id="qOwnReuse"><span><strong>Counterparty can reuse data or outputs</strong><span>Product improvement, cross-client analytics, ads, models, anti-cheat network, benchmarks.</span></span></label>
-        <label class="check"><input type="checkbox" id="qJointDecisions"><span><strong>Parties jointly define KPIs or targeting</strong><span>Co-designed audiences, dashboards, campaigns, segmentation, loyalty, progression, offers.</span></span></label>
-        <label class="check"><input type="checkbox" id="qLocalOnly"><span><strong>Local-only code with no vendor access</strong><span>Library runs on device/server and provider cannot access personal data or outputs.</span></span></label>
-        <label class="check"><input type="checkbox" id="qBakedIn"><span><strong>Collection is baked in or hard to disable</strong><span>Customer cannot materially configure fields, frequency, retention, or recipients.</span></span></label>
-        <label class="check"><input type="checkbox" id="qAdsRevenue"><span><strong>Advertising, personalization, or revenue sharing</strong><span>Monetization or independent commercial benefit from data or derived profiles.</span></span></label>
-      </div>
-    </section>
+<h2>4. Role Gate</h2>
+<p class="muted" style="margin:-4px 0 14px">
+  Answer about <strong>your own company</strong>. Don't worry about legal labels — just describe what actually happens. We'll work out the role for you.
+</p>
+<div class="check-grid">
+
+  <label class="check"><input type="checkbox" id="qDecidesPurpose"><span>
+    <strong>We decide why the data is collected and the key details of how</strong>
+    <span>We set which data, how long it's kept, and who receives it — not someone else.
+      <em class="hint">Not sure? If you alone chose what to collect and could change it tomorrow without anyone's permission, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qInstructions"><span>
+    <strong>We only handle the data on another company's written instructions</strong>
+    <span>We act on someone else's behalf, like a subcontractor, and do nothing more with it.
+      <em class="hint">Not sure? If a client tells you exactly what to do and you can't reuse the data for yourself, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qOwnServer"><span>
+    <strong>The data reaches our servers or systems by default</strong>
+    <span>Through our SDK, API, cloud, telemetry collector, or analytics pixel.
+      <em class="hint">Not sure? If the data lands in infrastructure you control, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qOwnReuse"><span>
+    <strong>We can reuse the data (or anything we derive from it) for our own purposes</strong>
+    <span>Improving our product, building a database, training models, analytics, or ads.
+      <em class="hint">Not sure? If you keep the data, build a library from it, or refine it with algorithms for your own service, check this. This is the most important question.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qJointDecisions"><span>
+    <strong>We and the other company plan the data use together</strong>
+    <span>Co-designed audiences, dashboards, campaigns, targeting, segmentation, or offers.
+      <em class="hint">Not sure? If you sit in the same planning meetings deciding how data is used, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qLocalOnly"><span>
+    <strong>Our code runs locally and we have no access to the data or results</strong>
+    <span>The library runs on the device/server and we genuinely cannot see the personal data or outputs.
+      <em class="hint">Not sure? If everything stays on the customer's device and never reaches you, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qBakedIn"><span>
+    <strong>Data collection is built-in and hard to turn off</strong>
+    <span>The customer can't meaningfully change which fields, how often, how long, or who receives data.
+      <em class="hint">Not sure? If switching it off would break the product, check this.</em>
+    </span>
+  </span></label>
+
+  <label class="check"><input type="checkbox" id="qAdsRevenue"><span>
+    <strong>The data is used for advertising, personalization, or sharing revenue</strong>
+    <span>Independent commercial benefit from the data or the profiles derived from it.
+      <em class="hint">Not sure? If you make money from the data beyond the basic service fee, check this.</em>
+    </span>
+  </span></label>
+
+  <!-- NEW: feeds the controller-vs-notice consistency check in Part 2 -->
+  <label class="check"><input type="checkbox" id="qNoOwnNotice"><span>
+    <strong>We rely on a partner's privacy policy and have no separate notice of our own</strong>
+    <span>e.g. our SDK is only mentioned inside the phone maker's / app's privacy policy.
+      <em class="hint">Not sure? If you've never published your own privacy notice for this data, check this.</em>
+    </span>
+  </span></label>
+
+</div>
 
     <section class="section">
       <h2>5. Evidence</h2>
