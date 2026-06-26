@@ -5,7 +5,6 @@
 /us-state-checker /us-compliance/index.html 200
 /us-state-checker/ /us-compliance/index.html 200
 /privacy-generator-v2 /privacy-policy-generator 200
-/data-relationship /data-relationship-mapper.html 200
-/data-relationship/ /data-relationship-mapper.html 200
-/data-relationship-mapper /data-relationship-mapper.html 200
-/data-relationship-mapper/ /data-relationship-mapper.html 200
+/data-relationship /data-relationship-mapper 301
+/data-relationship/ /data-relationship-mapper 301
+/data-relationship-mapper/ /data-relationship-mapper 301
