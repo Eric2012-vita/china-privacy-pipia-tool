@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" lang-ui="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Data Relationship Mapper | LegalAIPay</title>
@@ -8,187 +7,192 @@
 <link rel="canonical" href="https://legalaipay.com/data-relationship-mapper">
 <style>
 :root{--primary:#0f1e3d;--accent:#2b6cb0;--bg:#f6f8fb;--card:#fff;--border:#dbe3ef;--text:#243044;--muted:#64748b;--soft:#eef4fb;--warn:#b7791f;--danger:#c53030;--success:#2f855a}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}a{color:inherit;text-decoration:none}.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border)}.nav-inner{max-width:1180px;margin:auto;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px}.logo{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:850;color:var(--primary)}.logo img{width:34px;height:34px;border-radius:8px}.nav-links{display:flex;gap:13px;align-items:center;flex-wrap:wrap}.nav-links a{font-size:14px;font-weight:750;color:var(--text)}.nav-links .primary{background:var(--primary);color:#fff;padding:9px 14px;border-radius:8px}.hero{background:linear-gradient(135deg,#0f1e3d,#1d4f86);color:#fff}.hero-inner{max-width:1180px;margin:auto;padding:50px 22px 42px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:28px;align-items:start}.eyebrow{display:inline-block;color:#bee3f8;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:850;margin-bottom:12px}h1{font-size:clamp(34px,5vw,56px);line-height:1.06;margin:0 0 14px;max-width:860px}.hero p{font-size:17px;color:rgba(255,255,255,.86);max-width:760px}.hero-panel{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.23);border-radius:10px;padding:18px}.hero-panel h2{font-size:18px;margin:0 0 10px}.hero-panel p{font-size:14px;margin:0 0 12px}.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:0;border-radius:8px;padding:11px 15px;font:inherit;font-weight:850;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.btn.primary{background:#fff;color:var(--primary)}.btn.dark{background:var(--primary);color:#fff}.btn.soft{background:#edf2f7;color:var(--primary);border:1px solid var(--border)}.btn.warn{background:#fffaf0;color:#6b4a12;border:1px solid #f6d365}.wrap{max-width:1180px;margin:auto;padding:28px 22px 64px;display:grid;grid-template-columns:360px minmax(0,1fr);gap:22px;align-items:start}.panel,.section,.result-card{background:var(--card);border:1px solid var(--border);border-radius:10px}.panel{position:sticky;top:82px;padding:18px}.panel h2,.section h2,.result-card h2{color:var(--primary);margin:0 0 10px}.panel p,.hint{color:var(--muted);font-size:13px}.section{padding:22px;margin-bottom:18px}.form{display:grid;gap:14px}.field label,.legend{display:block;color:var(--primary);font-size:13px;font-weight:850;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px 11px;background:#fff;color:var(--text);font:inherit}.field textarea{min-height:82px;resize:vertical}.check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.check{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--border);background:#fbfcfe;border-radius:8px;padding:10px;font-size:13px}.check input{margin-top:3px}.check strong{display:block;color:var(--primary)}.check span{display:block;color:var(--muted);font-size:12px}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--border);border-radius:999px;background:#fff;padding:8px 11px;font-size:13px;cursor:pointer}.chip input{margin-right:6px}.result-card{padding:20px;margin-top:18px}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0}.metric{border:1px solid var(--border);border-radius:8px;background:#fbfcfe;padding:12px}.metric strong{display:block;color:var(--primary);font-size:20px}.badge{display:inline-flex;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:850;margin-right:6px}.badge.processor{background:#ebf8ff;color:#2b6cb0}.badge.controller{background:#fef5e7;color:#975a16}.badge.joint{background:#faf5ff;color:#6b46c1}.badge.warning{background:#fff5f5;color:#c53030}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:8px;margin-top:12px}table{border-collapse:collapse;width:100%;min-width:760px;background:#fff}th,td{border-bottom:1px solid var(--border);padding:10px;text-align:left;vertical-align:top}th{background:#f8fafc;color:var(--primary);font-size:12px;text-transform:uppercase;letter-spacing:.04em}tr:last-child td{border-bottom:0}.list{margin:10px 0 0 18px;padding:0}.list li{margin:6px 0}.notice{border-left:4px solid var(--accent);background:#eef6ff;border-radius:8px;padding:12px 14px;margin:12px 0;color:#1a365d}.warning-box{border-left:4px solid var(--warn);background:#fffaf0;color:#6b4a12;border-radius:8px;padding:12px 14px;margin:12px 0}.danger-box{border-left:4px solid var(--danger);background:#fff5f5;color:#742a2a;border-radius:8px;padding:12px 14px;margin:12px 0}.output{white-space:pre-wrap;word-break:break-word;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:16px;font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;max-height:360px;overflow:auto}.footer{background:#0f1e3d;color:rgba(255,255,255,.76);padding:28px 22px}.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}.footer a{color:#fff;font-weight:750;margin-left:12px}@media(max-width:980px){.hero-inner,.wrap{grid-template-columns:1fr}.panel{position:static}.summary{grid-template-columns:1fr}.check-grid{grid-template-columns:1fr}.nav-links a:not(.primary){display:none}}@media(max-width:620px){.hero-inner{padding-top:38px}.btn{width:100%}}
+
+html[lang-ui="en"] .cn-only{display:none!important}
+html[lang-ui="zh"] .en-only{display:none!important}
+.nav-links a,.lang-switch{color:var(--text);font-weight:700;font-size:14px;background:none;border:0;cursor:pointer}
+.lang-switch{border:1px solid var(--border);border-radius:8px;padding:8px 11px;background:white}
 </style>
 </head>
 <body>
-<nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/legalaipay-logo.png" alt=""><span>LegalAIPay</span></a><div class="nav-links"><a href="/pipia">PIPIA</a><a href="/privacy-policy-generator">Privacy Policy</a><a href="/contract-review">Contract Review</a><a class="primary" href="/dpa-template?relationship=1#generator">Generate DPA</a></div></div></nav>
-<header class="hero"><div class="hero-inner"><div><span class="eyebrow">Role mapping before documents</span><h1>Map who controls the data before choosing the legal tool.</h1><p>Use this browser-only mapper to classify controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border relationships. Save the result, then open the matching DPA, PIPIA, privacy policy, or contract review workflow.</p><div class="btn-row"><a class="btn primary" href="#mapper">Start mapping</a><a class="btn soft" href="#results">See outputs</a></div></div><div class="hero-panel"><h2>Why start here?</h2><p>A processor DPA is useful only when the facts actually support processor status. SDKs, analytics, ad revenue, model training, cross-client reuse, or co-designed dashboards can change the document path.</p><div class="btn-row"><a class="btn primary" href="/dpa-template#generator">DPA</a><a class="btn primary" href="/pipia">PIPIA</a><a class="btn primary" href="/privacy-policy-generator">Privacy</a></div></div></div></header>
+<nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/legalaipay-logo.png" alt=""><span>LegalAIPay</span></a><div class="nav-links"><a href="/pipia"><span class="en-only">PIPIA</span><span class="cn-only">PIPIA</span></a><a href="/privacy-policy-generator"><span class="en-only">Privacy Policy</span><span class="cn-only">隐私政策</span></a><a href="/contract-review"><span class="en-only">Contract Review</span><span class="cn-only">合同审查</span></a><a class="primary" href="/dpa-template?relationship=1#generator"><span class="en-only">Generate DPA</span><span class="cn-only">生成 DPA</span></a><button id="langToggle" class="lang-switch" type="button">中文</button></div></div></nav>
+<header class="hero"><div class="hero-inner"><div><span class="eyebrow"><span class="en-only">Role mapping before documents</span><span class="cn-only">出具文件前先厘清角色</span></span><h1><span class="en-only">Map who controls the data before choosing the legal tool.</span><span class="cn-only">在选择法律工具之前，先厘清谁在控制数据。</span></h1><p><span class="en-only">Use this browser-only mapper to classify controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border relationships. Save the result, then open the matching DPA, PIPIA, privacy policy, or contract review workflow.</span><span class="cn-only">使用这款纯浏览器端的关系映射工具，对控制者、共同控制者、处理者、受托处理、SDK/API、第三方共享以及跨境关系进行分类。保存结果后，再打开对应的 DPA、PIPIA、隐私政策或合同审查流程。</span></p><div class="btn-row"><a class="btn primary" href="#mapper"><span class="en-only">Start mapping</span><span class="cn-only">开始映射</span></a><a class="btn soft" href="#results"><span class="en-only">See outputs</span><span class="cn-only">查看输出</span></a></div></div><div class="hero-panel"><h2><span class="en-only">Why start here?</span><span class="cn-only">为什么从这里开始？</span></h2><p><span class="en-only">A processor DPA is useful only when the facts actually support processor status. SDKs, analytics, ad revenue, model training, cross-client reuse, or co-designed dashboards can change the document path.</span><span class="cn-only">只有在事实确实支持处理者身份时，处理者 DPA 才有意义。SDK、分析、广告收入、模型训练、跨客户复用或共同设计的看板都可能改变所需文件的路径。</span></p><div class="btn-row"><a class="btn primary" href="/dpa-template#generator"><span class="en-only">DPA</span><span class="cn-only">DPA</span></a><a class="btn primary" href="/pipia"><span class="en-only">PIPIA</span><span class="cn-only">PIPIA</span></a><a class="btn primary" href="/privacy-policy-generator"><span class="en-only">Privacy</span><span class="cn-only">隐私</span></a></div></div></div></header>
 <main class="wrap" id="mapper">
   <aside class="panel">
-    <h2>Handoff</h2>
-    <p>Run the role gate, then save the handoff. Other LegalAIPay tools can import it from this browser.</p>
+    <h2><span class="en-only">Handoff</span><span class="cn-only">交接</span></h2>
+    <p><span class="en-only">Run the role gate, then save the handoff. Other LegalAIPay tools can import it from this browser.</span><span class="cn-only">先完成角色判定，然后保存交接数据。其他 LegalAIPay 工具可从本浏览器导入该数据。</span></p>
     <div class="btn-row">
-      <button class="btn dark" type="button" id="analyzeBtn">Analyze</button>
-      <button class="btn soft" type="button" id="saveBtn">Save handoff</button>
-      <button class="btn soft" type="button" id="loadBtn">Load saved</button>
+      <button class="btn dark" type="button" id="analyzeBtn"><span class="en-only">Analyze</span><span class="cn-only">分析</span></button>
+      <button class="btn soft" type="button" id="saveBtn"><span class="en-only">Save handoff</span><span class="cn-only">保存交接</span></button>
+      <button class="btn soft" type="button" id="loadBtn"><span class="en-only">Load saved</span><span class="cn-only">载入已保存</span></button>
     </div>
     <p class="hint" id="saveStatus" aria-live="polite"></p>
     <div class="btn-row">
-      <a class="btn soft" href="/dpa-template?relationship=1#generator">Open DPA</a>
-      <a class="btn soft" href="/pipia">Open PIPIA</a>
-      <a class="btn soft" href="/privacy-policy-generator?relationship=1">Open Privacy</a>
-      <a class="btn soft" href="/contract-review">Open Contract Review</a>
+      <a class="btn soft" href="/dpa-template?relationship=1#generator"><span class="en-only">Open DPA</span><span class="cn-only">打开 DPA</span></a>
+      <a class="btn soft" href="/pipia"><span class="en-only">Open PIPIA</span><span class="cn-only">打开 PIPIA</span></a>
+      <a class="btn soft" href="/privacy-policy-generator?relationship=1"><span class="en-only">Open Privacy</span><span class="cn-only">打开隐私政策</span></a>
+      <a class="btn soft" href="/contract-review"><span class="en-only">Open Contract Review</span><span class="cn-only">打开合同审查</span></a>
     </div>
   </aside>
   <div>
     <section class="section">
-      <h2>1. Business Context</h2>
+      <h2><span class="en-only">1. Business Context</span><span class="cn-only">一、业务背景</span></h2>
       <div class="form">
-        <div class="field"><label for="projectName">Project or service name</label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK"></div>
-        <div class="field"><label for="industry">Industry package</label><select id="industry"><option value="general">General privacy/data relationship</option><option value="videoGame">Video game / interactive entertainment</option><option value="sdk">SDK/API or embedded technology</option><option value="adtech">Advertising, analytics, or profiling</option></select></div>
-        <div class="field"><label for="jurisdiction">Jurisdiction lens</label><select id="jurisdiction"><option value="combined">Combined GDPR + China PIPL + US baseline</option><option value="gdpr">EU/UK GDPR</option><option value="pipl">China PIPL</option><option value="us">US state privacy baseline</option></select></div>
-        <div class="field"><label for="companyName">Your organization</label><input id="companyName" placeholder="Your company's name (e.g. Acme Studios Ltd)"></div>
-        <div class="field"><label for="counterpartyName">Counterparty / vendor / partner</label><input id="counterpartyName" placeholder="The other company and what they provide (e.g. PlayMetrics — analytics SDK)"></div>
-        <div class="field"><label for="serviceDesc">Service and processing purpose</label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed."></textarea></div>
+        <div class="field"><label for="projectName"><span class="en-only">Project or service name</span><span class="cn-only">项目或服务名称</span></label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK"></div>
+        <div class="field"><label for="industry"><span class="en-only">Industry package</span><span class="cn-only">行业模板</span></label><select id="industry"><option value="general"><span class="en-only">General privacy/data relationship</span><span class="cn-only">通用隐私／数据关系</span></option><option value="videoGame"><span class="en-only">Video game / interactive entertainment</span><span class="cn-only">电子游戏／互动娱乐</span></option><option value="sdk"><span class="en-only">SDK/API or embedded technology</span><span class="cn-only">SDK/API 或嵌入式技术</span></option><option value="adtech"><span class="en-only">Advertising, analytics, or profiling</span><span class="cn-only">广告、分析或用户画像</span></option></select></div>
+        <div class="field"><label for="jurisdiction"><span class="en-only">Jurisdiction lens</span><span class="cn-only">适用法域视角</span></label><select id="jurisdiction"><option value="combined"><span class="en-only">Combined GDPR + China PIPL + US baseline</span><span class="cn-only">GDPR + 中国 PIPL + 美国基线（综合）</span></option><option value="gdpr"><span class="en-only">EU/UK GDPR</span><span class="cn-only">欧盟／英国 GDPR</span></option><option value="pipl"><span class="en-only">China PIPL</span><span class="cn-only">中国 PIPL</span></option><option value="us"><span class="en-only">US state privacy baseline</span><span class="cn-only">美国各州隐私基线</span></option></select></div>
+        <div class="field"><label for="companyName"><span class="en-only">Your organization</span><span class="cn-only">贵机构</span></label><input id="companyName" placeholder="Your company's name (e.g. Acme Studios Ltd)"></div>
+        <div class="field"><label for="counterpartyName"><span class="en-only">Counterparty / vendor / partner</span><span class="cn-only">对方／供应商／合作伙伴</span></label><input id="counterpartyName" placeholder="The other company and what they provide (e.g. PlayMetrics — analytics SDK)"></div>
+        <div class="field"><label for="serviceDesc"><span class="en-only">Service and processing purpose</span><span class="cn-only">服务及处理目的</span></label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed."></textarea></div>
       </div>
     </section>
 
     <section class="section">
-      <h2>2. Processing Activities</h2>
-      <p class="hint">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</p>
+      <h2><span class="en-only">2. Processing Activities</span><span class="cn-only">二、处理活动</span></h2>
+      <p class="hint"><span class="en-only">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</span><span class="cn-only">结果中每项活动占一行。游戏模式从账户、遥测数据和用户画像开始，因为它们通常对应不同的法律关系。</span></p>
       <div class="check-grid" id="activityGrid"></div>
-      <div class="field" style="margin-top:14px;"><label for="customActivity">Other activity</label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program"></div>
+      <div class="field" style="margin-top:14px;"><label for="customActivity"><span class="en-only">Other activity</span><span class="cn-only">其他活动</span></label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program"></div>
     </section>
 
     <section class="section">
-      <h2>3. Data and Recipients</h2>
-      <div class="field"><label for="dataCategories">Personal data categories</label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs"></textarea></div>
-      <div class="field"><label for="dataSubjects">Data subjects</label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens"></div>
-      <div class="field"><label for="recipients">Recipients and destinations</label><textarea id="recipients" placeholder="One per line: name - purpose - country/region"></textarea></div>
+      <h2><span class="en-only">3. Data and Recipients</span><span class="cn-only">三、数据与接收方</span></h2>
+      <div class="field"><label for="dataCategories"><span class="en-only">Personal data categories</span><span class="cn-only">个人数据类别</span></label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs"></textarea></div>
+      <div class="field"><label for="dataSubjects"><span class="en-only">Data subjects</span><span class="cn-only">数据主体</span></label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens"></div>
+      <div class="field"><label for="recipients"><span class="en-only">Recipients and destinations</span><span class="cn-only">接收方与去向</span></label><textarea id="recipients" placeholder="One per line: name - purpose - country/region"></textarea></div>
       <div class="check-grid">
 
         <label class="check"><input type="checkbox" id="hasSensitive"><span>
-          <strong>Sensitive or regulated data</strong>
-          <span>Health, biometric, precise location, financial, religion, or sexual orientation data.
-            <em class="hint">Not sure? If losing this data would be especially harmful or embarrassing to a person, check this.</em>
+          <strong><span class="en-only">Sensitive or regulated data</span><span class="cn-only">敏感或受监管数据</span></strong>
+          <span><span class="en-only">Health, biometric, precise location, financial, religion, or sexual orientation data.</span><span class="cn-only">健康、生物识别、精确位置、财务、宗教或性取向数据。</span>
+            <em class="hint"><span class="en-only">Not sure? If losing this data would be especially harmful or embarrassing to a person, check this.</span><span class="cn-only">不确定？如果此类数据一旦泄露会对个人造成特别严重的伤害或难堪，请勾选此项。</span></em>
           </span>
         </span></label>
 
         <label class="check"><input type="checkbox" id="hasChildren"><span>
-          <strong>Children or teen users</strong>
-          <span>Anyone under 18 can realistically use the service.
-            <em class="hint">Not sure? If you don't actively prevent minors from signing up, check this.</em>
+          <strong><span class="en-only">Children or teen users</span><span class="cn-only">儿童或青少年用户</span></strong>
+          <span><span class="en-only">Anyone under 18 can realistically use the service.</span><span class="cn-only">实际上可能有未满 18 岁的人使用该服务。</span>
+            <em class="hint"><span class="en-only">Not sure? If you don't actively prevent minors from signing up, check this.</span><span class="cn-only">不确定？如果你没有主动阻止未成年人注册，请勾选此项。</span></em>
           </span>
         </span></label>
 
         <label class="check"><input type="checkbox" id="hasCrossBorder"><span>
-          <strong>Cross-border transfer or remote access</strong>
-          <span>Data leaves your country, or someone abroad can access it — including a vendor's support staff logging in from another country.
-            <em class="hint">Not sure? If any company involved operates from a different country, check this.</em>
+          <strong><span class="en-only">Cross-border transfer or remote access</span><span class="cn-only">跨境传输或远程访问</span></strong>
+          <span><span class="en-only">Data leaves your country, or someone abroad can access it — including a vendor's support staff logging in from another country.</span><span class="cn-only">数据离开本国，或境外人员可以访问——包括供应商的支持人员从其他国家登录。</span>
+            <em class="hint"><span class="en-only">Not sure? If any company involved operates from a different country, check this.</span><span class="cn-only">不确定？如果涉及的任何一家公司在其他国家运营，请勾选此项。</span></em>
           </span>
         </span></label>
 
         <label class="check"><input type="checkbox" id="hasAutomated"><span>
-          <strong>Automated decisions, profiling, or recommendations</strong>
-          <span>Software scores, ranks, recommends, or decides about people without a human reviewing each case.
-            <em class="hint">Not sure? If an algorithm sorts or targets users automatically, check this.</em>
+          <strong><span class="en-only">Automated decisions, profiling, or recommendations</span><span class="cn-only">自动化决策、用户画像或推荐</span></strong>
+          <span><span class="en-only">Software scores, ranks, recommends, or decides about people without a human reviewing each case.</span><span class="cn-only">软件在无人逐案审核的情况下对个人进行评分、排序、推荐或决策。</span>
+            <em class="hint"><span class="en-only">Not sure? If an algorithm sorts or targets users automatically, check this.</span><span class="cn-only">不确定？如果某种算法自动对用户进行分类或定向，请勾选此项。</span></em>
           </span>
         </span></label>
 
       </div>
     </section>
 
-<h2>4. Role Gate</h2>
+<h2><span class="en-only">4. Role Gate</span><span class="cn-only">四、角色判定</span></h2>
 <p class="muted" style="margin:-4px 0 14px">
-  Answer about <strong>your own company</strong>. Don't worry about legal labels — just describe what actually happens. We'll work out the role for you.
+  <span class="en-only">Answer about</span><span class="cn-only">请就</span> <strong><span class="en-only">your own company</span><span class="cn-only">贵公司自身</span></strong><span class="en-only">. Don't worry about legal labels — just describe what actually happens. We'll work out the role for you.</span><span class="cn-only">作答。不必纠结法律术语——只需描述实际发生的情况，我们会为你判定角色。</span>
 </p>
 <div class="check-grid">
 
   <label class="check"><input type="checkbox" id="qDecidesPurpose"><span>
-    <strong>We decide why the data is collected and the key details of how</strong>
-    <span>We set which data, how long it's kept, and who receives it — not someone else.
-      <em class="hint">Not sure? If you alone chose what to collect and could change it tomorrow without anyone's permission, check this.</em>
+    <strong><span class="en-only">We decide why the data is collected and the key details of how</span><span class="cn-only">我们决定收集数据的目的以及如何收集的关键细节</span></strong>
+    <span><span class="en-only">We set which data, how long it's kept, and who receives it — not someone else.</span><span class="cn-only">由我们决定收集哪些数据、保存多久、由谁接收——而非他人。</span>
+      <em class="hint"><span class="en-only">Not sure? If you alone chose what to collect and could change it tomorrow without anyone's permission, check this.</span><span class="cn-only">不确定？如果是你独自决定收集什么，并且明天无需任何人许可即可更改，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qInstructions"><span>
-    <strong>We only handle the data on another company's written instructions</strong>
-    <span>We act on someone else's behalf, like a subcontractor, and do nothing more with it.
-      <em class="hint">Not sure? If a client tells you exactly what to do and you can't reuse the data for yourself, check this.</em>
+    <strong><span class="en-only">We only handle the data on another company's written instructions</span><span class="cn-only">我们仅依据另一家公司的书面指示处理数据</span></strong>
+    <span><span class="en-only">We act on someone else's behalf, like a subcontractor, and do nothing more with it.</span><span class="cn-only">我们代表他人行事（如分包商），不对数据做任何额外处理。</span>
+      <em class="hint"><span class="en-only">Not sure? If a client tells you exactly what to do and you can't reuse the data for yourself, check this.</span><span class="cn-only">不确定？如果客户明确告诉你该怎么做，而你不能将数据用于自身用途，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qOwnServer"><span>
-    <strong>The data reaches our servers or systems by default</strong>
-    <span>Through our SDK, API, cloud, telemetry collector, or analytics pixel.
-      <em class="hint">Not sure? If the data lands in infrastructure you control, check this.</em>
+    <strong><span class="en-only">The data reaches our servers or systems by default</span><span class="cn-only">数据默认会进入我们的服务器或系统</span></strong>
+    <span><span class="en-only">Through our SDK, API, cloud, telemetry collector, or analytics pixel.</span><span class="cn-only">通过我们的 SDK、API、云、遥测采集器或分析像素。</span>
+      <em class="hint"><span class="en-only">Not sure? If the data lands in infrastructure you control, check this.</span><span class="cn-only">不确定？如果数据最终落入你所控制的基础设施，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qOwnReuse"><span>
-    <strong>We can reuse the data (or anything we derive from it) for our own purposes</strong>
-    <span>Improving our product, building a database, training models, analytics, or ads.
-      <em class="hint">Not sure? If you keep the data, build a library from it, or refine it with algorithms for your own service, check this. This is the most important question.</em>
+    <strong><span class="en-only">We can reuse the data (or anything we derive from it) for our own purposes</span><span class="cn-only">我们可将数据（或由其衍生的任何内容）用于自身目的</span></strong>
+    <span><span class="en-only">Improving our product, building a database, training models, analytics, or ads.</span><span class="cn-only">用于改进产品、建立数据库、训练模型、数据分析或广告。</span>
+      <em class="hint"><span class="en-only">Not sure? If you keep the data, build a library from it, or refine it with algorithms for your own service, check this. This is the most important question.</span><span class="cn-only">不确定？如果你保留数据、据此建立数据库，或用算法对其进行加工以服务于自身业务，请勾选此项。这是最重要的一题。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qJointDecisions"><span>
-    <strong>We and the other company plan the data use together</strong>
-    <span>Co-designed audiences, dashboards, campaigns, targeting, segmentation, or offers.
-      <em class="hint">Not sure? If you sit in the same planning meetings deciding how data is used, check this.</em>
+    <strong><span class="en-only">We and the other company plan the data use together</span><span class="cn-only">我们与对方公司共同规划数据的使用</span></strong>
+    <span><span class="en-only">Co-designed audiences, dashboards, campaigns, targeting, segmentation, or offers.</span><span class="cn-only">共同设计受众、看板、营销活动、定向、分群或优惠方案。</span>
+      <em class="hint"><span class="en-only">Not sure? If you sit in the same planning meetings deciding how data is used, check this.</span><span class="cn-only">不确定？如果你们在同一个规划会议上共同决定数据如何使用，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qLocalOnly"><span>
-    <strong>Our code runs locally and we have no access to the data or results</strong>
-    <span>The library runs on the device/server and we genuinely cannot see the personal data or outputs.
-      <em class="hint">Not sure? If everything stays on the customer's device and never reaches you, check this.</em>
+    <strong><span class="en-only">Our code runs locally and we have no access to the data or results</span><span class="cn-only">我们的代码在本地运行，我们无法访问数据或结果</span></strong>
+    <span><span class="en-only">The library runs on the device/server and we genuinely cannot see the personal data or outputs.</span><span class="cn-only">该库在设备／服务器上运行，我们确实无法看到个人数据或输出结果。</span>
+      <em class="hint"><span class="en-only">Not sure? If everything stays on the customer's device and never reaches you, check this.</span><span class="cn-only">不确定？如果一切都留在客户的设备上、从不传到你这里，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qBakedIn"><span>
-    <strong>Data collection is built-in and hard to turn off</strong>
-    <span>The customer can't meaningfully change which fields, how often, how long, or who receives data.
-      <em class="hint">Not sure? If switching it off would break the product, check this.</em>
+    <strong><span class="en-only">Data collection is built-in and hard to turn off</span><span class="cn-only">数据收集是内置的且难以关闭</span></strong>
+    <span><span class="en-only">The customer can't meaningfully change which fields, how often, how long, or who receives data.</span><span class="cn-only">客户无法实质性地更改收集哪些字段、频率、时长或由谁接收数据。</span>
+      <em class="hint"><span class="en-only">Not sure? If switching it off would break the product, check this.</span><span class="cn-only">不确定？如果关闭它会导致产品无法正常运作，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <label class="check"><input type="checkbox" id="qAdsRevenue"><span>
-    <strong>The data is used for advertising, personalization, or sharing revenue</strong>
-    <span>Independent commercial benefit from the data or the profiles derived from it.
-      <em class="hint">Not sure? If you make money from the data beyond the basic service fee, check this.</em>
+    <strong><span class="en-only">The data is used for advertising, personalization, or sharing revenue</span><span class="cn-only">数据被用于广告、个性化或分成收入</span></strong>
+    <span><span class="en-only">Independent commercial benefit from the data or the profiles derived from it.</span><span class="cn-only">从数据或由其衍生的画像中获得独立的商业利益。</span>
+      <em class="hint"><span class="en-only">Not sure? If you make money from the data beyond the basic service fee, check this.</span><span class="cn-only">不确定？如果你从数据中获得了基本服务费以外的收益，请勾选此项。</span></em>
     </span>
   </span></label>
 
   <!-- NEW: feeds the controller-vs-notice consistency check in Part 2 -->
   <label class="check"><input type="checkbox" id="qNoOwnNotice"><span>
-    <strong>We rely on a partner's privacy policy and have no separate notice of our own</strong>
-    <span>e.g. our SDK is only mentioned inside the phone maker's / app's privacy policy.
-      <em class="hint">Not sure? If you've never published your own privacy notice for this data, check this.</em>
+    <strong><span class="en-only">We rely on a partner's privacy policy and have no separate notice of our own</span><span class="cn-only">我们依赖合作方的隐私政策，自身没有单独的告知</span></strong>
+    <span><span class="en-only">e.g. our SDK is only mentioned inside the phone maker's / app's privacy policy.</span><span class="cn-only">例如，我们的 SDK 仅在手机厂商／应用的隐私政策中被提及。</span>
+      <em class="hint"><span class="en-only">Not sure? If you've never published your own privacy notice for this data, check this.</span><span class="cn-only">不确定？如果你从未就该数据发布过自己的隐私告知，请勾选此项。</span></em>
     </span>
   </span></label>
 
 </div>
 
     <section class="section">
-      <h2>5. Evidence</h2>
-      <div class="field"><label for="contracts">Contracts, policies, or documents reviewed</label><textarea id="contracts" placeholder="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema"></textarea></div>
-      <div class="field"><label for="notes">Known gaps or assumptions</label><textarea id="notes" placeholder="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned"></textarea></div>
-      <div class="btn-row"><button class="btn dark" type="button" id="analyzeBtnBottom">Analyze data relationship</button></div>
+      <h2><span class="en-only">5. Evidence</span><span class="cn-only">五、证据</span></h2>
+      <div class="field"><label for="contracts"><span class="en-only">Contracts, policies, or documents reviewed</span><span class="cn-only">已审阅的合同、政策或文件</span></label><textarea id="contracts" placeholder="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema"></textarea></div>
+      <div class="field"><label for="notes"><span class="en-only">Known gaps or assumptions</span><span class="cn-only">已知缺口或假设</span></label><textarea id="notes" placeholder="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned"></textarea></div>
+      <div class="btn-row"><button class="btn dark" type="button" id="analyzeBtnBottom"><span class="en-only">Analyze data relationship</span><span class="cn-only">分析数据关系</span></button></div>
     </section>
 
     <section class="result-card" id="results">
-      <h2>Result</h2>
-      <div id="resultEmpty" class="notice">Answer the role gate and run the analysis. The output will appear here and can be handed to the other tools.</div>
+      <h2><span class="en-only">Result</span><span class="cn-only">结果</span></h2>
+      <div id="resultEmpty" class="notice"><span class="en-only">Answer the role gate and run the analysis. The output will appear here and can be handed to the other tools.</span><span class="cn-only">完成角色判定并运行分析。输出结果将显示在此处，并可交接给其他工具。</span></div>
       <div id="resultBody" style="display:none;">
         <div class="summary">
-          <div class="metric"><span>Primary finding</span><strong id="primaryFinding">-</strong></div>
-          <div class="metric"><span>Risk level</span><strong id="riskLevel">-</strong></div>
-          <div class="metric"><span>Triggered tools</span><strong id="toolCount">-</strong></div>
+          <div class="metric"><span><span class="en-only">Primary finding</span><span class="cn-only">主要结论</span></span><strong id="primaryFinding">-</strong></div>
+          <div class="metric"><span><span class="en-only">Risk level</span><span class="cn-only">风险等级</span></span><strong id="riskLevel">-</strong></div>
+          <div class="metric"><span><span class="en-only">Triggered tools</span><span class="cn-only">触发的工具</span></span><strong id="toolCount">-</strong></div>
         </div>
         <div id="roleNarrative"></div>
-        <div class="table-wrap"><table><thead><tr><th>Activity</th><th>Likely role</th><th>Why</th><th>Document path</th><th>Evidence gaps</th></tr></thead><tbody id="matrixRows"></tbody></table></div>
+        <div class="table-wrap"><table><thead><tr><th><span class="en-only">Activity</span><span class="cn-only">活动</span></th><th><span class="en-only">Likely role</span><span class="cn-only">可能的角色</span></th><th><span class="en-only">Why</span><span class="cn-only">原因</span></th><th><span class="en-only">Document path</span><span class="cn-only">文件路径</span></th><th><span class="en-only">Evidence gaps</span><span class="cn-only">证据缺口</span></th></tr></thead><tbody id="matrixRows"></tbody></table></div>
         <div class="check-grid" style="margin-top:16px;">
-          <div><h3>Recommended next steps</h3><ul class="list" id="nextSteps"></ul></div>
-          <div><h3>Evidence request list</h3><ul class="list" id="evidenceList"></ul></div>
+          <div><h3><span class="en-only">Recommended next steps</span><span class="cn-only">建议的后续步骤</span></h3><ul class="list" id="nextSteps"></ul></div>
+          <div><h3><span class="en-only">Evidence request list</span><span class="cn-only">证据请求清单</span></h3><ul class="list" id="evidenceList"></ul></div>
         </div>
-        <h3>Saved handoff JSON</h3>
+        <h3><span class="en-only">Saved handoff JSON</span><span class="cn-only">已保存的交接 JSON</span></h3>
         <pre class="output" id="handoffJson"></pre>
       </div>
     </section>
   </div>
 </main>
-<footer class="footer"><div class="footer-inner"><div>© 2026 LegalAIPay. Tools provide general information and do not constitute legal advice.</div><div><a href="/disclaimer">Disclaimer</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div></div></footer>
+<footer class="footer"><div class="footer-inner"><div><span class="en-only">© 2026 LegalAIPay. Tools provide general information and do not constitute legal advice.</span><span class="cn-only">© 2026 LegalAIPay。本工具提供一般性信息，不构成法律意见。</span></div><div><a href="/disclaimer"><span class="en-only">Disclaimer</span><span class="cn-only">免责声明</span></a><a href="/privacy"><span class="en-only">Privacy</span><span class="cn-only">隐私</span></a><a href="/terms"><span class="en-only">Terms</span><span class="cn-only">条款</span></a></div></div></footer>
 <script>
 (function(){
 const storeKey = "legalaipay.dataRelationshipHandoff";
@@ -332,8 +336,7 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
 })();
 </script>
   <!-- Controller-vs-notice consistency check -->
-<div id="noticeWarning" role="alert"
-     style="display:none;margin-top:16px;padding:14px 16px;border:1px solid #d97706;
+<div id="noticeWarning" role="alert" style="display:none;margin-top:16px;padding:14px 16px;border:1px solid #d97706;
             background:#fffbeb;border-radius:10px;color:#7c2d12;font-size:.95em;line-height:1.5">
 </div>
 
@@ -384,5 +387,28 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
   updateNoticeWarning();
 })();
 </script>
-</body>
-</html>
+
+
+<script>(function(){
+  var KEY='legalaipay.lang';
+  var html=document.documentElement;
+  function apply(lang){
+    var zh=(lang==='zh');
+    html.setAttribute('lang', zh?'zh-CN':'en');
+    html.setAttribute('lang-ui', zh?'zh':'en');
+    var b=document.getElementById('langToggle');
+    if(b) b.textContent= zh?'English':'中文';
+  }
+  var saved='en';
+  try{ var s=window.localStorage.getItem(KEY); if(s) saved=s; }catch(e){}
+  apply(saved);
+  document.addEventListener('click',function(ev){
+    var t=ev.target;
+    if(t && t.id==='langToggle'){
+      var cur=html.getAttribute('lang-ui')==='zh'?'zh':'en';
+      var next=cur==='zh'?'en':'zh';
+      apply(next);
+      try{ window.localStorage.setItem(KEY,next); }catch(e){}
+    }
+  });
+})();</script></body></html>
