@@ -38,12 +38,12 @@ html[lang-ui="zh"] .en-only{display:none!important}
     <section class="section">
       <h2><span class="en-only">1. Business Context</span><span class="cn-only">一、业务背景</span></h2>
       <div class="form">
-        <div class="field"><label for="projectName"><span class="en-only">Project or service name</span><span class="cn-only">项目或服务名称</span></label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK"></div>
-        <div class="field"><label for="industry"><span class="en-only">Industry package</span><span class="cn-only">行业模板</span></label><select id="industry"><option value="general"><span class="en-only">General privacy/data relationship</span><span class="cn-only">通用隐私／数据关系</span></option><option value="videoGame"><span class="en-only">Video game / interactive entertainment</span><span class="cn-only">电子游戏／互动娱乐</span></option><option value="sdk"><span class="en-only">SDK/API or embedded technology</span><span class="cn-only">SDK/API 或嵌入式技术</span></option><option value="adtech"><span class="en-only">Advertising, analytics, or profiling</span><span class="cn-only">广告、分析或用户画像</span></option></select></div>
-        <div class="field"><label for="jurisdiction"><span class="en-only">Jurisdiction lens</span><span class="cn-only">适用法域视角</span></label><select id="jurisdiction"><option value="combined"><span class="en-only">Combined GDPR + China PIPL + US baseline</span><span class="cn-only">GDPR + 中国 PIPL + 美国基线（综合）</span></option><option value="gdpr"><span class="en-only">EU/UK GDPR</span><span class="cn-only">欧盟／英国 GDPR</span></option><option value="pipl"><span class="en-only">China PIPL</span><span class="cn-only">中国 PIPL</span></option><option value="us"><span class="en-only">US state privacy baseline</span><span class="cn-only">美国各州隐私基线</span></option></select></div>
-        <div class="field"><label for="companyName"><span class="en-only">Your organization</span><span class="cn-only">贵机构</span></label><input id="companyName" placeholder="Your company's name (e.g. Acme Studios Ltd)"></div>
-        <div class="field"><label for="counterpartyName"><span class="en-only">Counterparty / vendor / partner</span><span class="cn-only">对方／供应商／合作伙伴</span></label><input id="counterpartyName" placeholder="The other company and what they provide (e.g. PlayMetrics — analytics SDK)"></div>
-        <div class="field"><label for="serviceDesc"><span class="en-only">Service and processing purpose</span><span class="cn-only">服务及处理目的</span></label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed."></textarea></div>
+        <div class="field"><label for="projectName"><span class="en-only">Project or service name</span><span class="cn-only">项目或服务名称</span></label><input id="projectName" placeholder="Example: multiplayer mobile game analytics SDK" data-en-ph="Example: multiplayer mobile game analytics SDK" data-cn-ph="示例：多人手机游戏分析 SDK"></div>
+        <div class="field"><label for="industry"><span class="en-only">Industry package</span><span class="cn-only">行业模板</span></label><select id="industry"><option value="general" data-en="General privacy/data relationship" data-cn="通用隐私／数据关系">General privacy/data relationship</option><option value="videoGame" data-en="Video game / interactive entertainment" data-cn="电子游戏／互动娱乐">Video game / interactive entertainment</option><option value="sdk" data-en="SDK/API or embedded technology" data-cn="SDK/API 或嵌入式技术">SDK/API or embedded technology</option><option value="adtech" data-en="Advertising, analytics, or profiling" data-cn="广告、分析或用户画像">Advertising, analytics, or profiling</option></select></div>
+        <div class="field"><label for="jurisdiction"><span class="en-only">Jurisdiction lens</span><span class="cn-only">适用法域视角</span></label><select id="jurisdiction"><option value="combined" data-en="Combined GDPR + China PIPL + US baseline" data-cn="GDPR + 中国 PIPL + 美国基线（综合）">Combined GDPR + China PIPL + US baseline</option><option value="gdpr" data-en="EU/UK GDPR" data-cn="欧盟／英国 GDPR">EU/UK GDPR</option><option value="pipl" data-en="China PIPL" data-cn="中国 PIPL">China PIPL</option><option value="us" data-en="US state privacy baseline" data-cn="美国各州隐私基线">US state privacy baseline</option></select></div>
+        <div class="field"><label for="companyName"><span class="en-only">Your organization</span><span class="cn-only">贵机构</span></label><input id="companyName" placeholder="Your company's name (e.g. Acme Studios Ltd)" data-en-ph="Your company's name (e.g. Acme Studios Ltd)" data-cn-ph="贵公司名称（例如：Acme Studios Ltd）"></div>
+        <div class="field"><label for="counterpartyName"><span class="en-only">Counterparty / vendor / partner</span><span class="cn-only">对方／供应商／合作伙伴</span></label><input id="counterpartyName" placeholder="The other company and what they provide (e.g. PlayMetrics — analytics SDK)" data-en-ph="The other company and what they provide (e.g. PlayMetrics — analytics SDK)" data-cn-ph="对方公司及其提供的内容（例如：PlayMetrics——分析 SDK）"></div>
+        <div class="field"><label for="serviceDesc"><span class="en-only">Service and processing purpose</span><span class="cn-only">服务及处理目的</span></label><textarea id="serviceDesc" placeholder="Describe what the service does and why personal data is processed." data-en-ph="Describe what the service does and why personal data is processed." data-cn-ph="描述该服务的功能以及处理个人数据的原因。"></textarea></div>
       </div>
     </section>
 
@@ -51,14 +51,14 @@ html[lang-ui="zh"] .en-only{display:none!important}
       <h2><span class="en-only">2. Processing Activities</span><span class="cn-only">二、处理活动</span></h2>
       <p class="hint"><span class="en-only">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</span><span class="cn-only">结果中每项活动占一行。游戏模式从账户、遥测数据和用户画像开始，因为它们通常对应不同的法律关系。</span></p>
       <div class="check-grid" id="activityGrid"></div>
-      <div class="field" style="margin-top:14px;"><label for="customActivity"><span class="en-only">Other activity</span><span class="cn-only">其他活动</span></label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program"></div>
+      <div class="field" style="margin-top:14px;"><label for="customActivity"><span class="en-only">Other activity</span><span class="cn-only">其他活动</span></label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program" data-en-ph="Example: voice chat moderation, cloud saves, loyalty program" data-cn-ph="示例：语音聊天审核、云存档、会员积分计划"></div>
     </section>
 
     <section class="section">
       <h2><span class="en-only">3. Data and Recipients</span><span class="cn-only">三、数据与接收方</span></h2>
-      <div class="field"><label for="dataCategories"><span class="en-only">Personal data categories</span><span class="cn-only">个人数据类别</span></label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs"></textarea></div>
-      <div class="field"><label for="dataSubjects"><span class="en-only">Data subjects</span><span class="cn-only">数据主体</span></label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens"></div>
-      <div class="field"><label for="recipients"><span class="en-only">Recipients and destinations</span><span class="cn-only">接收方与去向</span></label><textarea id="recipients" placeholder="One per line: name - purpose - country/region"></textarea></div>
+      <div class="field"><label for="dataCategories"><span class="en-only">Personal data categories</span><span class="cn-only">个人数据类别</span></label><textarea id="dataCategories" placeholder="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs" data-en-ph="Example: account ID, device ID, IP address, telemetry events, purchase history, chat logs" data-cn-ph="示例：账户 ID、设备 ID、IP 地址、遥测事件、购买记录、聊天记录"></textarea></div>
+      <div class="field"><label for="dataSubjects"><span class="en-only">Data subjects</span><span class="cn-only">数据主体</span></label><input id="dataSubjects" placeholder="Example: players, app users, customers, employees, children or teens" data-en-ph="Example: players, app users, customers, employees, children or teens" data-cn-ph="示例：玩家、应用用户、客户、员工、儿童或青少年"></div>
+      <div class="field"><label for="recipients"><span class="en-only">Recipients and destinations</span><span class="cn-only">接收方与去向</span></label><textarea id="recipients" placeholder="One per line: name - purpose - country/region" data-en-ph="One per line: name - purpose - country/region" data-cn-ph="每行一项：名称 - 目的 - 国家／地区"></textarea></div>
       <div class="check-grid">
 
         <label class="check"><input type="checkbox" id="hasSensitive"><span>
@@ -166,8 +166,8 @@ html[lang-ui="zh"] .en-only{display:none!important}
 
     <section class="section">
       <h2><span class="en-only">5. Evidence</span><span class="cn-only">五、证据</span></h2>
-      <div class="field"><label for="contracts"><span class="en-only">Contracts, policies, or documents reviewed</span><span class="cn-only">已审阅的合同、政策或文件</span></label><textarea id="contracts" placeholder="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema"></textarea></div>
-      <div class="field"><label for="notes"><span class="en-only">Known gaps or assumptions</span><span class="cn-only">已知缺口或假设</span></label><textarea id="notes" placeholder="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned"></textarea></div>
+      <div class="field"><label for="contracts"><span class="en-only">Contracts, policies, or documents reviewed</span><span class="cn-only">已审阅的合同、政策或文件</span></label><textarea id="contracts" placeholder="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema" data-en-ph="Example: MSA, DPA, SDK terms, privacy notice, shared recipient list, telemetry schema" data-cn-ph="示例：MSA、DPA、SDK 条款、隐私告知、共享接收方清单、遥测数据架构"></textarea></div>
+      <div class="field"><label for="notes"><span class="en-only">Known gaps or assumptions</span><span class="cn-only">已知缺口或假设</span></label><textarea id="notes" placeholder="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned" data-en-ph="Example: sub-SDK list missing; retention unknown; privacy notice not yet aligned" data-cn-ph="示例：缺少子 SDK 清单；保存期限未知；隐私告知尚未对齐"></textarea></div>
       <div class="btn-row"><button class="btn dark" type="button" id="analyzeBtnBottom"><span class="en-only">Analyze data relationship</span><span class="cn-only">分析数据关系</span></button></div>
     </section>
 
@@ -398,6 +398,10 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
     html.setAttribute('lang-ui', zh?'zh':'en');
     var b=document.getElementById('langToggle');
     if(b) b.textContent= zh?'English':'中文';
+    var opts=document.querySelectorAll('option[data-en]');
+    for(var i=0;i<opts.length;i++){ var o=opts[i]; var txt= zh ? (o.getAttribute('data-cn')||o.getAttribute('data-en')) : o.getAttribute('data-en'); if(txt!=null) o.textContent=txt; }
+    var phs=document.querySelectorAll('[data-en-ph]');
+    for(var j=0;j<phs.length;j++){ var p=phs[j]; var ph= zh ? (p.getAttribute('data-cn-ph')||p.getAttribute('data-en-ph')) : p.getAttribute('data-en-ph'); if(ph!=null) p.setAttribute('placeholder',ph); }
   }
   var saved='en';
   try{ var s=window.localStorage.getItem(KEY); if(s) saved=s; }catch(e){}
@@ -411,4 +415,5 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
       try{ window.localStorage.setItem(KEY,next); }catch(e){}
     }
   });
-})();</script></body></html>
+})();</script>
+</body></html>
