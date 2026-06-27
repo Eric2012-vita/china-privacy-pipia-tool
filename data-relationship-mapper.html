@@ -16,11 +16,11 @@ html[lang-ui="zh"] .en-only{display:none!important}
 </head>
 <body>
 <nav class="nav"><div class="nav-inner"><a class="logo" href="/"><img src="/legalaipay-logo.png" alt=""><span>LegalAIPay</span></a><div class="nav-links"><a href="/pipia"><span class="en-only">PIPIA</span><span class="cn-only">PIPIA</span></a><a href="/privacy-policy-generator"><span class="en-only">Privacy Policy</span><span class="cn-only">隐私政策</span></a><a href="/contract-review"><span class="en-only">Contract Review</span><span class="cn-only">合同审查</span></a><a class="primary" href="/dpa-template?relationship=1#generator"><span class="en-only">Generate DPA</span><span class="cn-only">生成 DPA</span></a><button id="langToggle" class="lang-switch" type="button">中文</button></div></div></nav>
-<header class="hero"><div class="hero-inner"><div><span class="eyebrow"><span class="en-only">Role mapping before documents</span><span class="cn-only">出具文件前先厘清角色</span></span><h1><span class="en-only">Map who controls the data before choosing the legal tool.</span><span class="cn-only">在选择法律工具之前，先厘清谁在控制数据。</span></h1><p><span class="en-only">Use this browser-only mapper to classify controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border relationships. Save the result, then open the matching DPA, PIPIA, privacy policy, or contract review workflow.</span><span class="cn-only">使用这款纯浏览器端的关系映射工具，对控制者、共同控制者、处理者、受托处理、SDK/API、第三方共享以及跨境关系进行分类。保存结果后，再打开对应的 DPA、PIPIA、隐私政策或合同审查流程。</span></p><div class="btn-row"><a class="btn primary" href="#mapper"><span class="en-only">Start mapping</span><span class="cn-only">开始映射</span></a><a class="btn soft" href="#results"><span class="en-only">See outputs</span><span class="cn-only">查看输出</span></a></div></div><div class="hero-panel"><h2><span class="en-only">Why start here?</span><span class="cn-only">为什么从这里开始？</span></h2><p><span class="en-only">A processor DPA is useful only when the facts actually support processor status. SDKs, analytics, ad revenue, model training, cross-client reuse, or co-designed dashboards can change the document path.</span><span class="cn-only">只有在事实确实支持处理者身份时，处理者 DPA 才有意义。SDK、分析、广告收入、模型训练、跨客户复用或共同设计的看板都可能改变所需文件的路径。</span></p><div class="btn-row"><a class="btn primary" href="/dpa-template#generator"><span class="en-only">DPA</span><span class="cn-only">DPA</span></a><a class="btn primary" href="/pipia"><span class="en-only">PIPIA</span><span class="cn-only">PIPIA</span></a><a class="btn primary" href="/privacy-policy-generator"><span class="en-only">Privacy</span><span class="cn-only">隐私</span></a></div></div></div></header>
+<header class="hero"><div class="hero-inner"><div><span class="eyebrow"><span class="en-only">Role mapping before documents</span><span class="cn-only">先弄清楚角色，再准备文件</span></span><h1><span class="en-only">Map who controls the data before choosing the legal tool.</span><span class="cn-only">在挑选合适的法律工具之前，先弄清楚到底是谁在掌控这些数据。</span></h1><p><span class="en-only">Use this browser-only mapper to classify controller, joint-controller, processor, entrusted-processing, SDK/API, third-party sharing, and cross-border relationships. Save the result, then open the matching DPA, PIPIA, privacy policy, or contract review workflow.</span><span class="cn-only">用这个完全在浏览器里运行的小工具，帮你判断各方属于哪种角色：控制者、共同控制者、处理者、受托处理方、SDK/API 提供方、第三方共享，还是涉及跨境。判断完保存结果，再打开对应的 DPA、PIPIA、隐私政策或合同审查流程。</span></p><div class="btn-row"><a class="btn primary" href="#mapper"><span class="en-only">Start mapping</span><span class="cn-only">开始判断</span></a><a class="btn soft" href="#results"><span class="en-only">See outputs</span><span class="cn-only">查看结果</span></a></div></div><div class="hero-panel"><h2><span class="en-only">Why start here?</span><span class="cn-only">为什么从这里开始？</span></h2><p><span class="en-only">A processor DPA is useful only when the facts actually support processor status. SDKs, analytics, ad revenue, model training, cross-client reuse, or co-designed dashboards can change the document path.</span><span class="cn-only">只有在事实确实支持处理者身份时，处理者 DPA 才有意义。SDK、分析、广告收入、模型训练、跨客户复用或共同设计的看板都可能改变所需文件的路径。</span></p><div class="btn-row"><a class="btn primary" href="/dpa-template#generator"><span class="en-only">DPA</span><span class="cn-only">DPA</span></a><a class="btn primary" href="/pipia"><span class="en-only">PIPIA</span><span class="cn-only">PIPIA</span></a><a class="btn primary" href="/privacy-policy-generator"><span class="en-only">Privacy</span><span class="cn-only">隐私</span></a></div></div></div></header>
 <main class="wrap" id="mapper">
   <aside class="panel">
     <h2><span class="en-only">Handoff</span><span class="cn-only">交接</span></h2>
-    <p><span class="en-only">Run the role gate, then save the handoff. Other LegalAIPay tools can import it from this browser.</span><span class="cn-only">先完成角色判定，然后保存交接数据。其他 LegalAIPay 工具可从本浏览器导入该数据。</span></p>
+    <p><span class="en-only">Run the role gate, then save the handoff. Other LegalAIPay tools can import it from this browser.</span><span class="cn-only">先完成角色判断，再保存这份交接数据。其他 LegalAIPay 工具可以从本浏览器里把它导进去。</span></p>
     <div class="btn-row">
       <button class="btn dark" type="button" id="analyzeBtn"><span class="en-only">Analyze</span><span class="cn-only">分析</span></button>
       <button class="btn soft" type="button" id="saveBtn"><span class="en-only">Save handoff</span><span class="cn-only">保存交接</span></button>
@@ -49,7 +49,7 @@ html[lang-ui="zh"] .en-only{display:none!important}
 
     <section class="section">
       <h2><span class="en-only">2. Processing Activities</span><span class="cn-only">二、处理活动</span></h2>
-      <p class="hint"><span class="en-only">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</span><span class="cn-only">结果中每项活动占一行。游戏模式从账户、遥测数据和用户画像开始，因为它们通常对应不同的法律关系。</span></p>
+      <p class="hint"><span class="en-only">Use one row per activity in the result. Video-game mode starts from account, telemetry, and profiling because those are usually different legal relationships.</span><span class="cn-only">结果里每个处理活动单独占一行。游戏模式会先列出账户、运行数据和用户画像这几项，因为它们通常属于不同的法律关系。</span></p>
       <div class="check-grid" id="activityGrid"></div>
       <div class="field" style="margin-top:14px;"><label for="customActivity"><span class="en-only">Other activity</span><span class="cn-only">其他活动</span></label><input id="customActivity" placeholder="Example: voice chat moderation, cloud saves, loyalty program" data-en-ph="Example: voice chat moderation, cloud saves, loyalty program" data-cn-ph="示例：语音聊天审核、云存档、会员积分计划"></div>
     </section>
@@ -402,6 +402,7 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
     for(var i=0;i<opts.length;i++){ var o=opts[i]; var txt= zh ? (o.getAttribute('data-cn')||o.getAttribute('data-en')) : o.getAttribute('data-en'); if(txt!=null) o.textContent=txt; }
     var phs=document.querySelectorAll('[data-en-ph]');
     for(var j=0;j<phs.length;j++){ var p=phs[j]; var ph= zh ? (p.getAttribute('data-cn-ph')||p.getAttribute('data-en-ph')) : p.getAttribute('data-en-ph'); if(ph!=null) p.setAttribute('placeholder',ph); }
+    if(window.__drmLocalize) try{ window.__drmLocalize(); }catch(e){}
   }
   var saved='en';
   try{ var s=window.localStorage.getItem(KEY); if(s) saved=s; }catch(e){}
@@ -416,4 +417,49 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
     }
   });
 })();</script>
-</body></html>
+
+<script>(function(){
+  var DYN = {"High":"高","Medium":"中","Low":"低","Local-only / infrastructure-only":"仅本地运行／仅提供基础设施","Likely joint control / joint processing":"很可能是共同控制／共同处理","Likely independent controller / separate PI processor":"很可能是独立的控制者／单独的个人信息处理者","Likely processor / entrusted processor":"很可能是处理者／受托处理方","Mixed or unresolved role":"角色不明确，尚无法确定","The provider appears to have no personal-data access and does not determine processing.":"对方似乎接触不到个人数据，也不决定怎么处理这些数据。","The parties appear to jointly define KPIs, audiences, dashboards, targeting, segmentation, offers, or other essential means.":"双方似乎共同决定考核指标、目标人群、数据看板、定向投放、人群分组、优惠方案等关键事项。","The counterparty appears to determine its own purpose or can reuse data or outputs for its own commercial, analytics, model, advertising, or cross-client purposes.":"对方似乎自行决定使用数据的目的，或者可以把数据或结果再用于自己的商业、数据分析、模型训练、广告或跨客户用途。","The counterparty appears to process only on documented instructions without independent access or reuse.":"对方似乎只按你书面交代的要求处理数据，自己不能随意使用，也不会另作他用。","The available facts are not enough to choose one role. Treat the contract label as evidence, not as determinative.":"目前掌握的情况还不足以确定属于哪一种角色。合同上怎么写只能作为参考，不能直接当作定论。","Document path:":"建议的文件：","Document technical no-access evidence; DPA may be unnecessary if no personal data is processed by the provider.":"留存对方无法接触数据的技术证明；如果对方确实不处理任何个人数据，可能就不需要签数据处理协议（DPA）。","Use joint-controller or joint-processing terms, allocate notices and rights handling, and do not rely on a processor DPA alone.":"采用共同控制或共同处理的条款，分清各自负责的告知和用户权利处理事项，不要只靠一份处理者 DPA。","Use controller-to-controller sharing terms or independent recipient terms; update privacy notice and consent flows where required.":"采用控制者之间的数据共享条款或独立接收方条款；必要时更新隐私告知和用户同意流程。","Use a DPA / entrusted-processing agreement with instructions, security, subprocessors, assistance, audit, return/deletion, and transfer terms.":"签一份数据处理协议（DPA）／受托处理协议，写明处理指示、安全措施、再委托方、协助义务、审计、数据归还／删除以及跨境传输等条款。","Request technical evidence and contract details before choosing DPA, sharing terms, or joint-processing terms.":"在决定用 DPA、数据共享条款还是共同处理条款之前，先索取技术证明和合同细节。","Recommended next steps":"建议的后续步骤","Evidence request list":"建议索取的材料清单","Data-flow diagram and system architecture":"数据流向图和系统架构图","Data dictionary, event schema, and retention schedule":"数据字段说明、事件记录格式和数据保存期限表","Privacy notice, consent screens, and recipient disclosures":"隐私告知、同意提示页面，以及向哪些方共享数据的说明","Agreement clauses matching the technical reality":"与实际技术情况相符的合同条款","Server endpoints, SDK configuration, dashboard access, and log samples":"服务器接口地址、SDK 配置、后台访问权限以及日志样本","Product-improvement, model-training, cross-client, advertising, and benchmark reuse policy":"关于把数据再用于产品改进、模型训练、跨客户、广告和对比分析的政策说明","Default settings, disable controls, and customer configuration evidence":"默认设置、关闭开关，以及客户可自行配置的相关证明","Transfer countries, remote-access paths, SCC/PIPL route, and supplementary measures":"数据传往哪些国家、远程访问的途径、走哪种跨境合规方式（如标准合同／PIPL），以及补充保护措施","Age gate, parental consent, children's-data rule, and teen privacy settings":"年龄确认、家长同意、儿童数据规则以及青少年隐私设置","Written confirmation of who decides purpose, fields, retention, recipients, and deletion":"书面确认由谁来决定使用目的、收集哪些字段、保存多久、由谁接收以及如何删除","Generate a DPA or China entrusted-processing clause set before launch.":"上线前先准备好一份 DPA 或符合中国要求的受托处理条款。","Prepare controller-to-controller or independent-recipient terms and update user-facing disclosures.":"准备控制者之间或独立接收方的条款，并更新给用户看的告知说明。","Draft joint-processing allocation terms for notice, rights handling, security, incidents, and responsibility.":"起草共同处理的分工条款，明确告知、用户权利处理、安全、事件应对和责任划分。","Pause document generation until the missing evidence resolves processor vs independent/joint processing.":"先暂停出具文件，等补齐材料、确认到底属于处理者还是独立／共同处理后再继续。","Add sensitive-data necessity, safeguards, separate consent, and retention checks.":"补充对敏感数据的必要性说明、保护措施、单独同意以及保存期限的检查。","Run transfer review and identify the applicable transfer mechanism.":"做一次跨境传输审查，确定应采用哪种跨境合规方式。","Add profiling or automated-decision notice, opt-out/explanation controls, and DPIA/PIPIA analysis.":"补充关于用户画像或自动化决策的告知、可拒绝／可要求说明的选项，并做 DPIA／PIPIA 影响评估。","Complete children/teen data controls before release.":"在发布前完善针对儿童／青少年数据的保护措施。","Save this role map and import it into DPA, PIPIA, privacy policy, or contract review.":"保存这份角色判定结果，并导入到 DPA、PIPIA、隐私政策或合同审查工具中。"};
+  function txEl(el, zh){
+    if(!el) return;
+    if(!el.hasAttribute('data-en-dyn')) el.setAttribute('data-en-dyn', el.textContent);
+    var en = el.getAttribute('data-en-dyn');
+    if(zh){ var t = DYN[en.trim()]; el.textContent = (t!=null? t : en); }
+    else { el.textContent = en; }
+  }
+  function localizeResults(){
+    var zh = document.documentElement.getAttribute('lang-ui')==='zh';
+    txEl(document.getElementById('primaryFinding'), zh);
+    var metrics = document.querySelectorAll('#resultBody .summary .metric');
+    if(metrics[0]) txEl(metrics[0].lastElementChild, zh);
+    if(metrics[1]) txEl(metrics[1].lastElementChild, zh);
+    var box = document.querySelector('#roleNarrative > div');
+    if(box){
+      txEl(box.querySelector('.badge'), zh);
+      var ps = box.querySelectorAll('p');
+      if(ps[0]) txEl(ps[0], zh);
+      if(ps[1]){
+        var strong = ps[1].querySelector('strong');
+        if(strong) txEl(strong, zh);
+        var tn = null, cn = ps[1].childNodes;
+        for(var k=0;k<cn.length;k++){ if(cn[k].nodeType===3 && cn[k].textContent.trim()){ tn=cn[k]; break; } }
+        if(tn){
+          if(!ps[1].getAttribute('data-en-doc')) ps[1].setAttribute('data-en-doc', tn.textContent);
+          var docEn = ps[1].getAttribute('data-en-doc').trim();
+          tn.textContent = zh ? (' '+(DYN[docEn]||docEn)) : (' '+docEn);
+        }
+      }
+    }
+    var lis = document.querySelectorAll('#resultBody .check-grid li');
+    for(var i=0;i<lis.length;i++) txEl(lis[i], zh);
+  }
+  window.__drmLocalize = localizeResults;
+  function hook(){
+    var ab = document.getElementById('analyzeBtn');
+    if(ab) ab.addEventListener('click', function(){ setTimeout(localizeResults, 0); });
+    var lb = document.getElementById('loadBtn');
+    if(lb) lb.addEventListener('click', function(){ setTimeout(localizeResults, 0); });
+    setTimeout(localizeResults, 0);
+  }
+  if(document.readyState!=='loading') hook(); else document.addEventListener('DOMContentLoaded', hook);
+})();</script></body></html>
