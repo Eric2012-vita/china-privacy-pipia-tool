@@ -419,47 +419,60 @@ try{if(new URLSearchParams(location.search).get("load")==="1")load()}catch(e){}
 })();</script>
 
 <script>(function(){
-  var DYN = {"High":"高","Medium":"中","Low":"低","Local-only / infrastructure-only":"仅本地运行／仅提供基础设施","Likely joint control / joint processing":"很可能是共同控制／共同处理","Likely independent controller / separate PI processor":"很可能是独立的控制者／单独的个人信息处理者","Likely processor / entrusted processor":"很可能是处理者／受托处理方","Mixed or unresolved role":"角色不明确，尚无法确定","The provider appears to have no personal-data access and does not determine processing.":"对方似乎接触不到个人数据，也不决定怎么处理这些数据。","The parties appear to jointly define KPIs, audiences, dashboards, targeting, segmentation, offers, or other essential means.":"双方似乎共同决定考核指标、目标人群、数据看板、定向投放、人群分组、优惠方案等关键事项。","The counterparty appears to determine its own purpose or can reuse data or outputs for its own commercial, analytics, model, advertising, or cross-client purposes.":"对方似乎自行决定使用数据的目的，或者可以把数据或结果再用于自己的商业、数据分析、模型训练、广告或跨客户用途。","The counterparty appears to process only on documented instructions without independent access or reuse.":"对方似乎只按你书面交代的要求处理数据，自己不能随意使用，也不会另作他用。","The available facts are not enough to choose one role. Treat the contract label as evidence, not as determinative.":"目前掌握的情况还不足以确定属于哪一种角色。合同上怎么写只能作为参考，不能直接当作定论。","Document path:":"建议的文件：","Document technical no-access evidence; DPA may be unnecessary if no personal data is processed by the provider.":"留存对方无法接触数据的技术证明；如果对方确实不处理任何个人数据，可能就不需要签数据处理协议（DPA）。","Use joint-controller or joint-processing terms, allocate notices and rights handling, and do not rely on a processor DPA alone.":"采用共同控制或共同处理的条款，分清各自负责的告知和用户权利处理事项，不要只靠一份处理者 DPA。","Use controller-to-controller sharing terms or independent recipient terms; update privacy notice and consent flows where required.":"采用控制者之间的数据共享条款或独立接收方条款；必要时更新隐私告知和用户同意流程。","Use a DPA / entrusted-processing agreement with instructions, security, subprocessors, assistance, audit, return/deletion, and transfer terms.":"签一份数据处理协议（DPA）／受托处理协议，写明处理指示、安全措施、再委托方、协助义务、审计、数据归还／删除以及跨境传输等条款。","Request technical evidence and contract details before choosing DPA, sharing terms, or joint-processing terms.":"在决定用 DPA、数据共享条款还是共同处理条款之前，先索取技术证明和合同细节。","Recommended next steps":"建议的后续步骤","Evidence request list":"建议索取的材料清单","Data-flow diagram and system architecture":"数据流向图和系统架构图","Data dictionary, event schema, and retention schedule":"数据字段说明、事件记录格式和数据保存期限表","Privacy notice, consent screens, and recipient disclosures":"隐私告知、同意提示页面，以及向哪些方共享数据的说明","Agreement clauses matching the technical reality":"与实际技术情况相符的合同条款","Server endpoints, SDK configuration, dashboard access, and log samples":"服务器接口地址、SDK 配置、后台访问权限以及日志样本","Product-improvement, model-training, cross-client, advertising, and benchmark reuse policy":"关于把数据再用于产品改进、模型训练、跨客户、广告和对比分析的政策说明","Default settings, disable controls, and customer configuration evidence":"默认设置、关闭开关，以及客户可自行配置的相关证明","Transfer countries, remote-access paths, SCC/PIPL route, and supplementary measures":"数据传往哪些国家、远程访问的途径、走哪种跨境合规方式（如标准合同／PIPL），以及补充保护措施","Age gate, parental consent, children's-data rule, and teen privacy settings":"年龄确认、家长同意、儿童数据规则以及青少年隐私设置","Written confirmation of who decides purpose, fields, retention, recipients, and deletion":"书面确认由谁来决定使用目的、收集哪些字段、保存多久、由谁接收以及如何删除","Generate a DPA or China entrusted-processing clause set before launch.":"上线前先准备好一份 DPA 或符合中国要求的受托处理条款。","Prepare controller-to-controller or independent-recipient terms and update user-facing disclosures.":"准备控制者之间或独立接收方的条款，并更新给用户看的告知说明。","Draft joint-processing allocation terms for notice, rights handling, security, incidents, and responsibility.":"起草共同处理的分工条款，明确告知、用户权利处理、安全、事件应对和责任划分。","Pause document generation until the missing evidence resolves processor vs independent/joint processing.":"先暂停出具文件，等补齐材料、确认到底属于处理者还是独立／共同处理后再继续。","Add sensitive-data necessity, safeguards, separate consent, and retention checks.":"补充对敏感数据的必要性说明、保护措施、单独同意以及保存期限的检查。","Run transfer review and identify the applicable transfer mechanism.":"做一次跨境传输审查，确定应采用哪种跨境合规方式。","Add profiling or automated-decision notice, opt-out/explanation controls, and DPIA/PIPIA analysis.":"补充关于用户画像或自动化决策的告知、可拒绝／可要求说明的选项，并做 DPIA／PIPIA 影响评估。","Complete children/teen data controls before release.":"在发布前完善针对儿童／青少年数据的保护措施。","Save this role map and import it into DPA, PIPIA, privacy policy, or contract review.":"保存这份角色判定结果，并导入到 DPA、PIPIA、隐私政策或合同审查工具中。"};
-  function txEl(el, zh){
+  var DYN = {"High":"高","Medium":"中","Low":"低","Local-only / infrastructure-only":"仅本地运行／仅提供基础设施","Likely joint control / joint processing":"很可能是共同控制／共同处理","Likely independent controller / separate PI processor":"很可能是独立的控制者／单独的个人信息处理者","Likely processor / entrusted processor":"很可能是处理者／受托处理方","Mixed or unresolved role":"角色不明确，尚无法确定","The provider appears to have no personal-data access and does not determine processing.":"对方似乎接触不到个人数据，也不决定怎么处理这些数据。","The parties appear to jointly define KPIs, audiences, dashboards, targeting, segmentation, offers, or other essential means.":"双方似乎共同决定考核指标、目标人群、数据看板、定向投放、人群分组、优惠方案等关键事项。","The counterparty appears to determine its own purpose or can reuse data or outputs for its own commercial, analytics, model, advertising, or cross-client purposes.":"对方似乎自行决定使用数据的目的，或者可以把数据或结果再用于自己的商业、数据分析、模型训练、广告或跨客户用途。","The counterparty appears to process only on documented instructions without independent access or reuse.":"对方似乎只按你书面交代的要求处理数据，自己不能随意使用，也不会另作他用。","The available facts are not enough to choose one role. Treat the contract label as evidence, not as determinative.":"目前掌握的情况还不足以确定属于哪一种角色。合同上怎么写只能作为参考，不能直接当作定论。","Document path:":"建议的文件：","Document technical no-access evidence; DPA may be unnecessary if no personal data is processed by the provider.":"留存对方无法接触数据的技术证明；如果对方确实不处理任何个人数据，可能就不需要签数据处理协议（DPA）。","Use joint-controller or joint-processing terms, allocate notices and rights handling, and do not rely on a processor DPA alone.":"采用共同控制或共同处理的条款，分清各自负责的告知和用户权利处理事项，不要只靠一份处理者 DPA。","Use controller-to-controller sharing terms or independent recipient terms; update privacy notice and consent flows where required.":"采用控制者之间的数据共享条款或独立接收方条款；必要时更新隐私告知和用户同意流程。","Use a DPA / entrusted-processing agreement with instructions, security, subprocessors, assistance, audit, return/deletion, and transfer terms.":"签一份数据处理协议（DPA）／受托处理协议，写明处理指示、安全措施、再委托方、协助义务、审计、数据归还／删除以及跨境传输等条款。","Request technical evidence and contract details before choosing DPA, sharing terms, or joint-processing terms.":"在决定用 DPA、数据共享条款还是共同处理条款之前，先索取技术证明和合同细节。","Recommended next steps":"建议的后续步骤","Evidence request list":"建议索取的材料清单","Data-flow diagram and system architecture":"数据流向图和系统架构图","Data dictionary, event schema, and retention schedule":"数据字段说明、事件记录格式和数据保存期限表","Privacy notice, consent screens, and recipient disclosures":"隐私告知、同意提示页面，以及向哪些方共享数据的说明","Agreement clauses matching the technical reality":"与实际技术情况相符的合同条款","Server endpoints, SDK configuration, dashboard access, and log samples":"服务器接口地址、SDK 配置、后台访问权限以及日志样本","Product-improvement, model-training, cross-client, advertising, and benchmark reuse policy":"关于把数据再用于产品改进、模型训练、跨客户、广告和对比分析的政策说明","Default settings, disable controls, and customer configuration evidence":"默认设置、关闭开关，以及客户可自行配置的相关证明","Transfer countries, remote-access paths, SCC/PIPL route, and supplementary measures":"数据传往哪些国家、远程访问的途径、走哪种跨境合规方式（如标准合同／PIPL），以及补充保护措施","Age gate, parental consent, children's-data rule, and teen privacy settings":"年龄确认、家长同意、儿童数据规则以及青少年隐私设置","Written confirmation of who decides purpose, fields, retention, recipients, and deletion":"书面确认由谁来决定使用目的、收集哪些字段、保存多久、由谁接收以及如何删除","Generate a DPA or China entrusted-processing clause set before launch.":"上线前先准备好一份 DPA 或符合中国要求的受托处理条款。","Prepare controller-to-controller or independent-recipient terms and update user-facing disclosures.":"准备控制者之间或独立接收方的条款，并更新给用户看的告知说明。","Draft joint-processing allocation terms for notice, rights handling, security, incidents, and responsibility.":"起草共同处理的分工条款，明确告知、用户权利处理、安全、事件应对和责任划分。","Pause document generation until the missing evidence resolves processor vs independent/joint processing.":"先暂停出具文件，等补齐材料、确认到底属于处理者还是独立／共同处理后再继续。","Add sensitive-data necessity, safeguards, separate consent, and retention checks.":"补充对敏感数据的必要性说明、保护措施、单独同意以及保存期限的检查。","Run transfer review and identify the applicable transfer mechanism.":"做一次跨境传输审查，确定应采用哪种跨境合规方式。","Add profiling or automated-decision notice, opt-out/explanation controls, and DPIA/PIPIA analysis.":"补充关于用户画像或自动化决策的告知、可拒绝／可要求说明的选项，并做 DPIA／PIPIA 影响评估。","Complete children/teen data controls before release.":"在发布前完善针对儿童／青少年数据的保护措施。","Save this role map and import it into DPA, PIPIA, privacy policy, or contract review.":"保存这份角色判定结果，并导入到 DPA、PIPIA、隐私政策或合同审查工具中。","Account creation and management":"账号注册与管理","Gameplay or service telemetry":"游戏或服务运行数据","Behavioral inference or profiling":"用户行为分析与画像","Advertising or attribution":"广告与效果统计","Fraud, security, or anti-cheat":"防欺诈、安全与反作弊","Customer support and communications":"客户支持与沟通","Platform or publisher account":"平台或发行商账号","Gameplay telemetry":"游戏运行数据","Player profiling and LiveOps":"玩家画像与运营活动","Anti-cheat or safety monitoring":"反作弊与安全监测","Voice, chat, UGC, or moderation":"语音、聊天、用户内容与审核","Storefront, launcher, or payment":"商店、启动器与支付","login, account ID, support, recovery, bans":"登录、账号ID、客服、找回、封禁","session length, device data, events, crashes, performance":"使用时长、设备信息、事件、崩溃、性能","churn, spending propensity, recommendations, scoring":"流失预测、消费倾向、推荐、评分","ad IDs, conversion events, audience segments, revenue share":"广告ID、转化事件、受众分组、收入分成","abuse signals, device fingerprints, cheating risk":"滥用信号、设备指纹、作弊风险","tickets, chat, email, call recordings":"工单、聊天、邮件、通话录音","cross-platform ID, cloud saves, entitlements, parental controls":"跨平台ID、云存档、权益、家长控制","button presses, level completion, matchmaking, crashes, movement":"按键操作、关卡完成、匹配、崩溃、移动","skill, churn, vulnerability, dynamic offers, personalization":"技能水平、流失、脆弱性、动态优惠、个性化","device signals, cheating risk, moderation events":"设备信号、作弊风险、审核事件","messages, reports, audio snippets, user-generated content":"消息、举报、音频片段、用户生成内容","purchase history, launcher events, wish lists, recommendations":"购买记录、启动器事件、心愿单、推荐","Core processing activity":"核心处理活动"};
+  function lang(){ return document.documentElement.getAttribute('lang-ui') === 'zh' ? 'zh' : 'en'; }
+  function tx(s){ if(s==null) return s; var k=String(s).trim(); return DYN[k]!=null?DYN[k]:s; }
+  // Translate a text-bearing leaf element using a cached English original.
+  function txEl(el){
     if(!el) return;
-    if(!el.hasAttribute('data-en-dyn')) el.setAttribute('data-en-dyn', el.textContent);
-    var en = el.getAttribute('data-en-dyn');
-    if(zh){ var t = DYN[en.trim()]; el.textContent = (t!=null? t : en); }
-    else { el.textContent = en; }
+    var raw = el.getAttribute('data-en-dyn');
+    if(raw==null){
+      var cur = el.textContent;
+      // Skip caching placeholder dashes so real values get captured later.
+      if(cur==null || cur.trim()==='' || cur.trim()==='-') return;
+      raw = cur;
+      el.setAttribute('data-en-dyn', raw);
+    }
+    el.textContent = (lang()==='zh') ? tx(raw) : raw;
   }
   function localizeResults(){
-    var zh = document.documentElement.getAttribute('lang-ui')==='zh';
-    txEl(document.getElementById('primaryFinding'), zh);
-    var metrics = document.querySelectorAll('#resultBody .summary .metric');
-    if(metrics[0]) txEl(metrics[0].lastElementChild, zh);
-    if(metrics[1]) txEl(metrics[1].lastElementChild, zh);
-    var box = document.querySelector('#roleNarrative > div');
-    if(box){
-      txEl(box.querySelector('.badge'), zh);
-      var ps = box.querySelectorAll('p');
-      if(ps[0]) txEl(ps[0], zh);
-      if(ps[1]){
-        var strong = ps[1].querySelector('strong');
-        if(strong) txEl(strong, zh);
-        var tn = null, cn = ps[1].childNodes;
-        for(var k=0;k<cn.length;k++){ if(cn[k].nodeType===3 && cn[k].textContent.trim()){ tn=cn[k]; break; } }
-        if(tn){
-          if(!ps[1].getAttribute('data-en-doc')) ps[1].setAttribute('data-en-doc', tn.textContent);
-          var docEn = ps[1].getAttribute('data-en-doc').trim();
-          tn.textContent = zh ? (' '+(DYN[docEn]||docEn)) : (' '+docEn);
-        }
-      }
-    }
-    var lis = document.querySelectorAll('#resultBody .check-grid li');
-    for(var i=0;i<lis.length;i++) txEl(lis[i], zh);
+    // Result summary metrics (Primary finding value, Risk level value, etc.)
+    document.querySelectorAll('#resultBody .summary .metric strong, #resultBody .summary .metric b').forEach(txEl);
+    document.querySelectorAll('#roleNarrative > div .badge').forEach(txEl);
+    document.querySelectorAll('#roleNarrative > div p').forEach(txEl);
+    document.querySelectorAll('#roleNarrative > div strong').forEach(txEl);
+    document.querySelectorAll('#resultBody .check-grid li').forEach(txEl);
+    document.querySelectorAll('#resultBody .summary .metric').forEach(function(m){
+      // metric label text nodes wrapped? translate any strong already handled; translate badge spans
+      m.querySelectorAll('.badge').forEach(txEl);
+    });
   }
-  window.__drmLocalize = localizeResults;
-  function hook(){
-    var ab = document.getElementById('analyzeBtn');
-    if(ab) ab.addEventListener('click', function(){ setTimeout(localizeResults, 0); });
-    var lb = document.getElementById('loadBtn');
-    if(lb) lb.addEventListener('click', function(){ setTimeout(localizeResults, 0); });
-    setTimeout(localizeResults, 0);
+  function localizeActivities(){
+    var grid = document.getElementById('activityGrid');
+    if(!grid) return;
+    grid.querySelectorAll('label.check strong').forEach(txEl);
+    // description span = the span sibling of strong inside inner wrapper
+    grid.querySelectorAll('label.check > span > span').forEach(txEl);
   }
-  if(document.readyState!=='loading') hook(); else document.addEventListener('DOMContentLoaded', hook);
+  function localizeAll(){ localizeResults(); localizeActivities(); }
+  // Re-localize whenever results or activity grid change (handles fresh English re-render).
+  function watch(id){
+    var n = document.getElementById(id);
+    if(!n) return;
+    new MutationObserver(function(){ localizeAll(); }).observe(n, {childList:true, subtree:true});
+  }
+  function init(){
+    watch('resultBody'); watch('roleNarrative'); watch('activityGrid');
+    localizeAll();
+    var lt = document.getElementById('langToggle');
+    if(lt) lt.addEventListener('click', function(){ setTimeout(localizeAll, 0); });
+    ['analyzeBtn','loadBtn'].forEach(function(id){
+      var b = document.getElementById(id);
+      if(b) b.addEventListener('click', function(){ setTimeout(localizeAll, 30); });
+    });
+    var ind = document.getElementById('industry');
+    if(ind) ind.addEventListener('change', function(){ setTimeout(localizeActivities, 30); });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();</script></body></html>
