@@ -12,6 +12,11 @@ html[lang-ui="en"] .cn-only{display:none!important}
 html[lang-ui="zh"] .en-only{display:none!important}
 .nav-links a,.lang-switch{color:var(--text);font-weight:700;font-size:14px;background:none;border:0;cursor:pointer}
 .lang-switch{border:1px solid var(--border);border-radius:8px;padding:8px 11px;background:white}
+.handoff-advanced{margin-top:18px;border-top:1px solid var(--border);padding-top:12px}
+.handoff-advanced>summary{cursor:pointer;font-weight:700;color:var(--muted);font-size:14px;list-style:none}
+.handoff-advanced>summary::-webkit-details-marker{display:none}
+.handoff-advanced>summary::before{content:"\25B8 ";color:var(--muted)}
+.handoff-advanced[open]>summary::before{content:"\25BE "}
 </style>
 </head>
 <body>
@@ -186,8 +191,11 @@ html[lang-ui="zh"] .en-only{display:none!important}
           <div><h3><span class="en-only">Recommended next steps</span><span class="cn-only">建议的后续步骤</span></h3><ul class="list" id="nextSteps"></ul></div>
           <div><h3><span class="en-only">Evidence request list</span><span class="cn-only">证据请求清单</span></h3><ul class="list" id="evidenceList"></ul></div>
         </div>
-        <h3><span class="en-only">Saved handoff JSON</span><span class="cn-only">已保存的交接 JSON</span></h3>
+        <details class="handoff-advanced">
+        <summary><span class="en-only">Advanced: technical data (for importing into other tools)</span><span class="cn-only">高级：技术数据（供其他工具导入）</span></summary>
+        <p class="hint"><span class="en-only">You don't need to read this. Other LegalAIPay tools can import it automatically.</span><span class="cn-only">无需阅读。其他 LegalAIPay 工具可自动读取这份数据。</span></p>
         <pre class="output" id="handoffJson"></pre>
+      </details>
       </div>
     </section>
   </div>
