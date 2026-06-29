@@ -1,6 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!DOCTYPE html>
+<html lang="en" lang-ui="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pricing | LegalAIPay</title>
@@ -69,17 +68,17 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
 @media(max-width:980px){.hero-inner{grid-template-columns:1fr}.pricing-grid{grid-template-columns:1fr 1fr}.faq{grid-template-columns:1fr}.nav-links a:not(.cta-link){display:none}}
 @media(max-width:620px){.pricing-grid{grid-template-columns:1fr}.hero-inner{padding-top:46px}.price{font-size:30px}}
 </style>
-</head>
-<body>
+<style>html[lang-ui="en"] .cn-only{display:none!important}html[lang-ui="zh"] .en-only{display:none!important}.lang-toggle{position:fixed;top:14px;right:16px;z-index:9999;border:1px solid rgba(0,0,0,.18);background:#fff;color:#111;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12);font-family:inherit}.lang-toggle:hover{background:#f3f4f6}</style></head>
+<body><button class="lang-toggle" id="langToggle" type="button"><span class="en-only">中文</span><span class="cn-only">EN</span></button>
 
 <nav class="nav">
   <div class="nav-inner">
     <a class="logo" href="/"><span class="mark">L</span><span>LegalAIPay</span></a>
     <div class="nav-links">
-      <a href="/privacy-policy-generator">Privacy Generator</a>
-      <a href="/us-state-checker">US Checker</a>
-      <a href="https://gdpr.legalaipay.com/">GDPR Kit</a>
-      <a class="cta-link" href="#plans">Get export</a>
+      <a href="/privacy-policy-generator"><span class="en-only">Privacy Generator</span><span class="cn-only">隐私政策生成器</span></a>
+      <a href="/us-state-checker"><span class="en-only">US Checker</span><span class="cn-only">美国合规检查器</span></a>
+      <a href="https://gdpr.legalaipay.com/"><span class="en-only">GDPR Kit</span><span class="cn-only">GDPR 工具包</span></a>
+      <a class="cta-link" href="#plans"><span class="en-only">Get export</span><span class="cn-only">获取导出</span></a>
     </div>
   </div>
 </nav>
@@ -87,22 +86,22 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
 <header class="hero">
   <div class="hero-inner">
     <div>
-      <span class="eyebrow">Simple pay-per-export pricing</span>
-      <h1>Generate free. Pay only when you export.</h1>
-      <p>All tools are free to use and preview. Pay $9 to download a clean, watermark-free document — or buy a bundle of 5 for $29. No account required.</p>
+      <span class="eyebrow"><span class="en-only">Simple pay-per-export pricing</span><span class="cn-only">简单的按次导出定价</span></span>
+      <h1><span class="en-only">Generate free. Pay only when you export.</span><span class="cn-only">免费生成，仅在导出时付费。</span></h1>
+      <p><span class="en-only">All tools are free to use and preview. Pay $9 to download a clean, watermark-free document — or buy a bundle of 5 for $29. No account required.</span><span class="cn-only">所有工具均可免费使用和预览。支付 $9 即可下载干净、无水印的文档——或以 $29 购买 5 次套餐。无需注册账户。</span></p>
       <div class="hero-actions">
-        <a class="btn primary" href="#plans">See plans</a>
-        <a class="btn secondary" href="/privacy-policy-generator">Try the generator free</a>
+        <a class="btn primary" href="#plans"><span class="en-only">See plans</span><span class="cn-only">查看方案</span></a>
+        <a class="btn secondary" href="/privacy-policy-generator"><span class="en-only">Try the generator free</span><span class="cn-only">免费试用生成器</span></a>
       </div>
     </div>
     <aside class="hero-card">
-      <strong>$4.99 / export</strong>
-      <span>One document, clean PDF — no watermark, no subscription.</span>
+      <strong><span class="en-only">$4.99 / export</span><span class="cn-only">$4.99 / 次导出</span></strong>
+      <span><span class="en-only">One document, clean PDF — no watermark, no subscription.</span><span class="cn-only">一份文档，干净的 PDF——无水印，无订阅。</span></span>
       <ul>
-        <li>Generate and preview always free</li>
-        <li>Pay only when you're ready to download</li>
-        <li>Bundle: 5 exports for $20 (save $4.95)</li>
-        <li>Credits stored in your browser — no login</li>
+        <li><span class="en-only">Generate and preview always free</span><span class="cn-only">生成和预览始终免费</span></li>
+        <li><span class="en-only">Pay only when you're ready to download</span><span class="cn-only">仅在您准备下载时付费</span></li>
+        <li><span class="en-only">Bundle: 5 exports for $20 (save $4.95)</span><span class="cn-only">套餐：5 次导出 $20（节省 $4.95）</span></li>
+        <li><span class="en-only">Credits stored in your browser — no login</span><span class="cn-only">额度保存在您的浏览器中——无需登录</span></li>
       </ul>
     </aside>
   </div>
@@ -112,75 +111,73 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
   <section class="section" id="plans">
     <div class="container">
       <div class="section-head">
-        <span class="label">Plans</span>
-        <h2>Use free. Pay to export.</h2>
-        <p>The generator, checker, and GDPR kit are always free. You pay when you want a clean, downloadable document to show customers, vendors, or auditors.</p>
+        <span class="label"><span class="en-only">Plans</span><span class="cn-only">方案</span></span>
+        <h2><span class="en-only">Use free. Pay to export.</span><span class="cn-only">免费使用，付费导出。</span></h2>
+        <p><span class="en-only">The generator, checker, and GDPR kit are always free. You pay when you want a clean, downloadable document to show customers, vendors, or auditors.</span><span class="cn-only">生成器、检查器和 GDPR 工具包始终免费。当您需要一份干净、可下载的文档展示给客户、供应商或审计方时才付费。</span></p>
       </div>
 
       <div class="pricing-grid">
 
         <article class="plan free">
-          <h3>Free</h3>
-          <p class="for">Try the tools. Preview your documents before committing.</p>
+          <h3><span class="en-only">Free</span><span class="cn-only">免费</span></h3>
+          <p class="for"><span class="en-only">Try the tools. Preview your documents before committing.</span><span class="cn-only">试用工具，在付费前先预览您的文档。</span></p>
           <div class="price">$0</div>
-          <p class="note">No account required. Always free.</p>
+          <p class="note"><span class="en-only">No account required. Always free.</span><span class="cn-only">无需账户，始终免费。</span></p>
           <ul>
-            <li>Privacy policy generator (CN / EU / US)</li>
-            <li>US state privacy triage checker</li>
-            <li>GDPR kit preview</li>
-            <li>Watermarked preview PDF</li>
+            <li><span class="en-only">Privacy policy generator (CN / EU / US)</span><span class="cn-only">隐私政策生成器（中国 / 欧盟 / 美国）</span></li>
+            <li><span class="en-only">US state privacy triage checker</span><span class="cn-only">美国各州隐私分流检查器</span></li>
+            <li><span class="en-only">GDPR kit preview</span><span class="cn-only">GDPR 工具包预览</span></li>
+            <li><span class="en-only">Watermarked preview PDF</span><span class="cn-only">带水印的预览 PDF</span></li>
           </ul>
-          <a class="cta" href="/privacy-policy-generator">Open generator</a>
+          <a class="cta" href="/privacy-policy-generator"><span class="en-only">Open generator</span><span class="cn-only">打开生成器</span></a>
         </article>
 
         <article class="plan">
-          <h3>Single Export</h3>
-          <p class="for">One document, ready to publish. Perfect for a first-time compliance file.</p>
+          <h3><span class="en-only">Single Export</span><span class="cn-only">单次导出</span></h3>
+          <p class="for"><span class="en-only">One document, ready to publish. Perfect for a first-time compliance file.</span><span class="cn-only">一份文档，可直接发布。非常适合首次建立合规文件。</span></p>
           <div class="price">$4.99</div>
-          <p class="note">Per document. No subscription.</p>
+          <p class="note"><span class="en-only">Per document. No subscription.</span><span class="cn-only">按文档计费，无订阅。</span></p>
           <ul>
-            <li>Clean PDF export — no watermark</li>
-            <li>Any document: Privacy Policy, DPIA, PIPIA</li>
-            <li>Instant download after payment</li>
-            <li>Credit valid for 90 days</li>
+            <li><span class="en-only">Clean PDF export — no watermark</span><span class="cn-only">干净的 PDF 导出——无水印</span></li>
+            <li><span class="en-only">Any document: Privacy Policy, DPIA, PIPIA</span><span class="cn-only">任意文档：隐私政策、DPIA、PIPIA</span></li>
+            <li><span class="en-only">Instant download after payment</span><span class="cn-only">付款后即时下载</span></li>
+            <li><span class="en-only">Credit valid for 90 days</span><span class="cn-only">额度有效期 90 天</span></li>
           </ul>
-          <a class="cta" id="btn-single"
-            href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=xuyueyuan%40gmail.com&amount=4.99&currency_code=USD&item_name=LegalAIPay+Single+Export&return=https%3A%2F%2Fwww.legalaipay.com%2Fthank-you%3Fplan%3Dsingle&cancel_return=https%3A%2F%2Fwww.legalaipay.com%2Fpricing">
-            Pay $4.99 via PayPal
+          <a class="cta" id="btn-single" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=xuyueyuan%40gmail.com&amp;amount=4.99&amp;currency_code=USD&amp;item_name=LegalAIPay+Single+Export&amp;return=https%3A%2F%2Fwww.legalaipay.com%2Fthank-you%3Fplan%3Dsingle&amp;cancel_return=https%3A%2F%2Fwww.legalaipay.com%2Fpricing">
+            <span class="en-only">Pay $4.99 via PayPal</span><span class="cn-only">通过 PayPal 支付 $4.99</span>
           </a>
         </article>
 
         <article class="plan featured">
-          <span class="ribbon">Best value</span>
-          <h3>Bundle</h3>
-          <p class="for">5 export credits for businesses with multiple compliance documents.</p>
-          <div class="price">$20<small> / 5 exports</small></div>
-          <p class="note">Save $4.95 vs single. Credits stored in your browser.</p>
+          <span class="ribbon"><span class="en-only">Best value</span><span class="cn-only">最超值</span></span>
+          <h3><span class="en-only">Bundle</span><span class="cn-only">套餐</span></h3>
+          <p class="for"><span class="en-only">5 export credits for businesses with multiple compliance documents.</span><span class="cn-only">5 次导出额度，适合需要多份合规文档的企业。</span></p>
+          <div class="price">$20<small> <span class="en-only">/ 5 exports</span><span class="cn-only">/ 5 次导出</span></small></div>
+          <p class="note"><span class="en-only">Save $4.95 vs single. Credits stored in your browser.</span><span class="cn-only">相比单次节省 $4.95。额度保存在您的浏览器中。</span></p>
           <ul>
-            <li>5 export credits — use anytime within 90 days</li>
-            <li>Works across Privacy Policy, DPIA, PIPIA, US reports</li>
-            <li>No login — credits live in your browser</li>
-            <li>Recovery token provided — restore on any device</li>
+            <li><span class="en-only">5 export credits — use anytime within 90 days</span><span class="cn-only">5 次导出额度——90 天内任意使用</span></li>
+            <li><span class="en-only">Works across Privacy Policy, DPIA, PIPIA, US reports</span><span class="cn-only">适用于隐私政策、DPIA、PIPIA、美国报告</span></li>
+            <li><span class="en-only">No login — credits live in your browser</span><span class="cn-only">无需登录——额度保存在您的浏览器中</span></li>
+            <li><span class="en-only">Recovery token provided — restore on any device</span><span class="cn-only">提供恢复令牌——可在任意设备上恢复</span></li>
           </ul>
-          <a class="cta" id="btn-bundle"
-            href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=xuyueyuan%40gmail.com&amount=20.00&currency_code=USD&item_name=LegalAIPay+Bundle+5+Exports&return=https%3A%2F%2Fwww.legalaipay.com%2Fthank-you%3Fplan%3Dbundle&cancel_return=https%3A%2F%2Fwww.legalaipay.com%2Fpricing">
-            Pay $20 via PayPal
+          <a class="cta" id="btn-bundle" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=xuyueyuan%40gmail.com&amp;amount=20.00&amp;currency_code=USD&amp;item_name=LegalAIPay+Bundle+5+Exports&amp;return=https%3A%2F%2Fwww.legalaipay.com%2Fthank-you%3Fplan%3Dbundle&amp;cancel_return=https%3A%2F%2Fwww.legalaipay.com%2Fpricing">
+            <span class="en-only">Pay $20 via PayPal</span><span class="cn-only">通过 PayPal 支付 $20</span>
           </a>
         </article>
 
         <article class="plan soon">
-          <span class="ribbon soon-tag">Coming soon</span>
-          <h3>Subscription</h3>
-          <p class="for">Unlimited exports + automatic updates when privacy laws change.</p>
-          <div class="price">$19<small>/mo</small></div>
-          <p class="note">Launching with account system.</p>
+          <span class="ribbon soon-tag"><span class="en-only">Coming soon</span><span class="cn-only">即将推出</span></span>
+          <h3><span class="en-only">Subscription</span><span class="cn-only">订阅</span></h3>
+          <p class="for"><span class="en-only">Unlimited exports + automatic updates when privacy laws change.</span><span class="cn-only">无限次导出 + 隐私法规变化时自动更新。</span></p>
+          <div class="price">$19<small><span class="en-only">/mo</span><span class="cn-only">/月</span></small></div>
+          <p class="note"><span class="en-only">Launching with account system.</span><span class="cn-only">将随账户系统一同推出。</span></p>
           <ul>
-            <li>Unlimited exports across all tools</li>
-            <li>Email alerts when PIPL / GDPR / CCPA updates</li>
-            <li>Version history and audit trail</li>
-            <li>Priority support</li>
+            <li><span class="en-only">Unlimited exports across all tools</span><span class="cn-only">所有工具无限次导出</span></li>
+            <li><span class="en-only">Email alerts when PIPL / GDPR / CCPA updates</span><span class="cn-only">PIPL / GDPR / CCPA 更新时邮件提醒</span></li>
+            <li><span class="en-only">Version history and audit trail</span><span class="cn-only">版本历史与审计记录</span></li>
+            <li><span class="en-only">Priority support</span><span class="cn-only">优先支持</span></li>
           </ul>
-          <span class="cta">Notify me when live</span>
+          <span class="cta"><span class="en-only">Notify me when live</span><span class="cn-only">上线时通知我</span></span>
         </article>
 
       </div>
@@ -190,27 +187,27 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
   <section class="section" style="background:#fff">
     <div class="container">
       <div class="section-head">
-        <span class="label">How bundles work</span>
-        <h2>No login. Your credits live in your browser.</h2>
-        <p>We use a browser-stored token so you never need an account to use your bundle credits.</p>
+        <span class="label"><span class="en-only">How bundles work</span><span class="cn-only">套餐如何运作</span></span>
+        <h2><span class="en-only">No login. Your credits live in your browser.</span><span class="cn-only">无需登录。您的额度保存在浏览器中。</span></h2>
+        <p><span class="en-only">We use a browser-stored token so you never need an account to use your bundle credits.</span><span class="cn-only">我们使用浏览器存储的令牌，因此您无需账户即可使用套餐额度。</span></p>
       </div>
       <div class="how-box">
         <div class="how-steps">
           <div class="how-step">
-            <p><strong>Pay via PayPal.</strong> Click "Pay $29 via PayPal" above. Complete the payment on PayPal's secure checkout.</p>
+            <p><strong><span class="en-only">Pay via PayPal.</span><span class="cn-only">通过 PayPal 付款。</span></strong> <span class="en-only">Click "Pay $29 via PayPal" above. Complete the payment on PayPal's secure checkout.</span><span class="cn-only">点击上方的“通过 PayPal 支付 $29”。在 PayPal 的安全结账页面完成付款。</span></p>
           </div>
           <div class="how-step">
-            <p><strong>Credits are stored in your browser.</strong> PayPal redirects you back to this site. Your 5 export credits are written to your browser's local storage automatically — no login needed.</p>
+            <p><strong><span class="en-only">Credits are stored in your browser.</span><span class="cn-only">额度保存在您的浏览器中。</span></strong> <span class="en-only">PayPal redirects you back to this site. Your 5 export credits are written to your browser's local storage automatically — no login needed.</span><span class="cn-only">PayPal 会将您重定向回本站。您的 5 次导出额度会自动写入浏览器的本地存储——无需登录。</span></p>
           </div>
           <div class="how-step">
-            <p><strong>Export any document.</strong> Return to the generator or any tool. The export button will show your remaining credits and let you download without paying again.</p>
+            <p><strong><span class="en-only">Export any document.</span><span class="cn-only">导出任意文档。</span></strong> <span class="en-only">Return to the generator or any tool. The export button will show your remaining credits and let you download without paying again.</span><span class="cn-only">返回生成器或任意工具。导出按钮会显示您的剩余额度，让您无需再次付费即可下载。</span></p>
           </div>
           <div class="how-step">
-            <p><strong>Save your recovery token.</strong> After payment, you'll receive a short token code. Save it. If you clear your browser or switch devices, paste the token to restore your credits instantly.</p>
+            <p><strong><span class="en-only">Save your recovery token.</span><span class="cn-only">保存您的恢复令牌。</span></strong> <span class="en-only">After payment, you'll receive a short token code. Save it. If you clear your browser or switch devices, paste the token to restore your credits instantly.</span><span class="cn-only">付款后，您会收到一段简短的令牌代码。请保存它。如果您清除浏览器数据或更换设备，粘贴该令牌即可立即恢复额度。</span></p>
           </div>
         </div>
         <div class="token-box">
-          <strong>Example recovery token:</strong> LA-BNDL-x7k2m9q4 &nbsp;·&nbsp; <span style="color:#64748b">Paste this at the top of any tool page to restore your remaining exports on any device.</span>
+          <strong><span class="en-only">Example recovery token:</span><span class="cn-only">恢复令牌示例：</span></strong> LA-BNDL-x7k2m9q4 &nbsp;·&nbsp; <span style="color:#64748b"><span class="en-only">Paste this at the top of any tool page to restore your remaining exports on any device.</span><span class="cn-only">在任意工具页面顶部粘贴此令牌，即可在任意设备上恢复剩余导出额度。</span></span>
         </div>
       </div>
     </div>
@@ -219,33 +216,33 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
   <section class="section">
     <div class="container">
       <div class="section-head">
-        <span class="label">FAQ</span>
-        <h2>Common questions</h2>
+        <span class="label"><span class="en-only">FAQ</span><span class="cn-only">常见问题</span></span>
+        <h2><span class="en-only">Common questions</span><span class="cn-only">常见问题</span></h2>
       </div>
       <div class="faq">
         <article class="qa">
-          <h3>Do I need an account?</h3>
-          <p>No. The free tools and single export require no account. Bundle credits are stored in your browser and can be restored with a recovery token on any device.</p>
+          <h3><span class="en-only">Do I need an account?</span><span class="cn-only">我需要账户吗？</span></h3>
+          <p><span class="en-only">No. The free tools and single export require no account. Bundle credits are stored in your browser and can be restored with a recovery token on any device.</span><span class="cn-only">不需要。免费工具和单次导出都无需账户。套餐额度保存在您的浏览器中，可凭恢复令牌在任意设备上恢复。</span></p>
         </article>
         <article class="qa">
-          <h3>What if I clear my browser?</h3>
-          <p>Save your recovery token shown on the thank-you page after payment. Paste it into any tool page to instantly restore your remaining bundle credits.</p>
+          <h3><span class="en-only">What if I clear my browser?</span><span class="cn-only">如果我清除了浏览器数据怎么办？</span></h3>
+          <p><span class="en-only">Save your recovery token shown on the thank-you page after payment. Paste it into any tool page to instantly restore your remaining bundle credits.</span><span class="cn-only">请保存付款后在感谢页面显示的恢复令牌。将其粘贴到任意工具页面，即可立即恢复剩余套餐额度。</span></p>
         </article>
         <article class="qa">
-          <h3>Which documents can I export?</h3>
-          <p>Any document generated on legalaipay.com — Privacy Policy (China/EU/US), DPIA, PIPIA report, US state compliance report, and GDPR kit outputs.</p>
+          <h3><span class="en-only">Which documents can I export?</span><span class="cn-only">我可以导出哪些文档？</span></h3>
+          <p><span class="en-only">Any document generated on legalaipay.com — Privacy Policy (China/EU/US), DPIA, PIPIA report, US state compliance report, and GDPR kit outputs.</span><span class="cn-only">在 legalaipay.com 上生成的任意文档——隐私政策（中国/欧盟/美国）、DPIA、PIPIA 报告、美国各州合规报告，以及 GDPR 工具包输出。</span></p>
         </article>
         <article class="qa">
-          <h3>Is this legal advice?</h3>
-          <p>No. The tools create lawyer-reviewable drafts and compliance records. For high-risk processing, filings, or disputes, have qualified counsel review the output before reliance.</p>
+          <h3><span class="en-only">Is this legal advice?</span><span class="cn-only">这构成法律意见吗？</span></h3>
+          <p><span class="en-only">No. The tools create lawyer-reviewable drafts and compliance records. For high-risk processing, filings, or disputes, have qualified counsel review the output before reliance.</span><span class="cn-only">不构成。这些工具生成可供律师审查的草稿和合规记录。对于高风险处理、申报或争议，请在依赖输出前由具备资质的律师审查。</span></p>
         </article>
         <article class="qa">
-          <h3>Why are the tools free to preview?</h3>
-          <p>You invest time filling in your details first — so you can verify the output is correct before paying to export it. No surprises.</p>
+          <h3><span class="en-only">Why are the tools free to preview?</span><span class="cn-only">为什么工具可以免费预览？</span></h3>
+          <p><span class="en-only">You invest time filling in your details first — so you can verify the output is correct before paying to export it. No surprises.</span><span class="cn-only">您先花时间填写自己的信息——这样在付费导出前就能确认输出是否正确，不会有意外。</span></p>
         </article>
         <article class="qa">
-          <h3>What payment methods are accepted?</h3>
-          <p>PayPal, and any card PayPal supports (Visa, Mastercard, Amex). You do not need a PayPal account — PayPal's guest checkout accepts cards directly.</p>
+          <h3><span class="en-only">What payment methods are accepted?</span><span class="cn-only">支持哪些付款方式？</span></h3>
+          <p><span class="en-only">PayPal, and any card PayPal supports (Visa, Mastercard, Amex). You do not need a PayPal account — PayPal's guest checkout accepts cards directly.</span><span class="cn-only">PayPal，以及 PayPal 支持的任意银行卡（Visa、Mastercard、Amex）。您无需 PayPal 账户——PayPal 的访客结账可直接使用银行卡。</span></p>
         </article>
       </div>
     </div>
@@ -253,8 +250,9 @@ h1{font-size:clamp(30px,5vw,52px);line-height:1.06;margin-bottom:16px}
 </main>
 
 <footer class="footer">
-  LegalAIPay provides legal workflow tools and educational compliance support. Outputs require qualified counsel review before reliance. &nbsp;·&nbsp; <a href="/privacy-policy-generator" style="color:rgba(255,255,255,.6)">Privacy Generator</a>
+  LegalAIPay provides legal workflow tools and educational compliance support. Outputs require qualified counsel review before reliance. &nbsp;·&nbsp; <a href="/privacy-policy-generator" style="color:rgba(255,255,255,.6)"><span class="en-only">Privacy Generator</span><span class="cn-only">隐私政策生成器</span></a>
 </footer>
 
-</body>
-</html>
+
+
+<script>(function(){var LK='legalaipay.lang';var html=document.documentElement;function applyOptions(lang){document.querySelectorAll('option[data-en]').forEach(function(o){var v=lang==='zh'?(o.getAttribute('data-cn')||o.getAttribute('data-en')):o.getAttribute('data-en');if(v!=null)o.textContent=v;});}function applyPH(lang){document.querySelectorAll('[data-en-ph]').forEach(function(el){var v=lang==='zh'?(el.getAttribute('data-cn-ph')||el.getAttribute('data-en-ph')):el.getAttribute('data-en-ph');if(v!=null)el.setAttribute('placeholder',v);});}function setLang(lang){html.setAttribute('lang-ui',lang);try{localStorage.setItem(LK,lang);}catch(e){}applyOptions(lang);applyPH(lang);}function init(){var saved='en';try{saved=localStorage.getItem(LK)||'en';}catch(e){}setLang(saved==='zh'?'zh':'en');var b=document.getElementById('langToggle');if(b){b.addEventListener('click',function(){setLang(html.getAttribute('lang-ui')==='zh'?'en':'zh');});}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();</script></body></html>
