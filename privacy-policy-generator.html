@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" lang-ui="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Privacy Policy Generator — LegalAIPay</title>
@@ -105,25 +104,25 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
 .pipia-import-box .desc { font-size: 12px; color: #2f855a; margin-bottom: 10px; }
 .pipia-import-box button { background: #38a169; color: white; padding: 8px 14px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
 </style>
-</head>
-<body>
+<style>html[lang-ui="en"] .cn-only{display:none!important}html[lang-ui="zh"] .en-only{display:none!important}.lang-toggle{position:fixed;top:14px;right:16px;z-index:9999;border:1px solid rgba(0,0,0,.18);background:#fff;color:#111;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12);font-family:inherit}.lang-toggle:hover{background:#f3f4f6}</style></head>
+<body><button class="lang-toggle" id="langToggle" type="button"><span class="en-only">中文</span><span class="cn-only">EN</span></button>
 <div class="topbar">
   <a href="/" class="brand"><span class="brand-mark">L</span>LegalAIPay</a>
-  <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;"><a href="/data-relationship-mapper" class="back">Role Mapper</a><a href="/" class="back">← Back to Home</a></div>
+  <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;"><a href="/data-relationship-mapper" class="back"><span class="en-only">Role Mapper</span><span class="cn-only">角色梳理</span></a><a href="/" class="back"><span class="en-only">← Back to Home</span><span class="cn-only">← 返回首页</span></a></div>
 </div>
 <div class="container">
-  <h1>Privacy Policy Generator</h1>
-  <p class="subtitle" id="subtitle">Plain-English questions. Statute-grounded output. Choose your market to begin.</p>
+  <h1><span class="en-only">Privacy Policy Generator</span><span class="cn-only">隐私政策生成器</span></h1>
+  <p class="subtitle" id="subtitle"><span class="en-only">Plain-English questions. Statute-grounded output. Choose your market to begin.</span><span class="cn-only">用通俗问题作答，生成有法律依据的隐私政策。请先选择适用市场。</span></p>
   <div class="jurisdiction-picker" id="picker">
     <div class="j-card" data-j="eu" onclick="selectJ('eu')">
       <div class="flag">🇪🇺 🇬🇧</div>
-      <h3>EU / UK</h3>
-      <div class="laws">GDPR + UK GDPR</div>
+      <h3><span class="en-only">EU / UK</span><span class="cn-only">欧盟 / 英国</span></h3>
+      <div class="laws"><span class="en-only">GDPR + UK GDPR</span><span class="cn-only">GDPR + 英国 GDPR</span></div>
     </div>
     <div class="j-card" data-j="us" onclick="selectJ('us')">
       <div class="flag">🇺🇸</div>
-      <h3>United States</h3>
-      <div class="laws">CCPA / CPRA + COPPA</div>
+      <h3><span class="en-only">United States</span><span class="cn-only">美国</span></h3>
+      <div class="laws"><span class="en-only">CCPA / CPRA + COPPA</span><span class="cn-only">CCPA / CPRA + COPPA</span></div>
     </div>
     <div class="j-card" data-j="cn" onclick="selectJ('cn')">
       <div class="flag">🇨🇳</div>
@@ -136,89 +135,89 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
       <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
     </div>
     <div class="step active" data-step="1">
-      <div class="step-title">Step 1 of 5 — About your business</div>
-      <div class="step-hint">Basic information that appears in the policy as the data controller.</div>
-      <div class="info-box">This template covers the EU/EEA (GDPR Regulation 2016/679) and the United Kingdom (UK GDPR + Data Protection Act 2018). Where the two differ, we apply the stricter standard.</div>
-      <div class="form-group"><label class="form-label">Company / organisation name</label><input class="form-input" id="eu_name" placeholder="Acme Ltd."></div>
+      <div class="step-title"><span class="en-only">Step 1 of 5 — About your business</span><span class="cn-only">第 1 步 / 共 5 步 — 关于您的企业</span></div>
+      <div class="step-hint"><span class="en-only">Basic information that appears in the policy as the data controller.</span><span class="cn-only">作为数据控制者，将显示在政策中的基本信息。</span></div>
+      <div class="info-box"><span class="en-only">This template covers the EU/EEA (GDPR Regulation 2016/679) and the United Kingdom (UK GDPR + Data Protection Act 2018). Where the two differ, we apply the stricter standard.</span><span class="cn-only">本模板适用于欧盟/欧洲经济区（GDPR 法规 2016/679）以及英国（英国 GDPR + 2018 年数据保护法）。两者不一致时，采用更严标准。</span></div>
+      <div class="form-group"><label class="form-label"><span class="en-only">Company / organisation name</span><span class="cn-only">公司 / 组织名称</span></label><input class="form-input" id="eu_name" placeholder="Acme Ltd." data-en-ph="Acme Ltd." data-cn-ph="某某有限公司"></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Registered address</label><input class="form-input" id="eu_addr" placeholder="Street, City, Country"></div>
-        <div class="form-group"><label class="form-label">Contact email for privacy</label><input class="form-input" id="eu_email" placeholder="privacy@yourcompany.com"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Registered address</span><span class="cn-only">注册地址</span></label><input class="form-input" id="eu_addr" placeholder="Street, City, Country" data-en-ph="Street, City, Country" data-cn-ph="街道、城市、国家"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Contact email for privacy</span><span class="cn-only">隐私事务联系邮箱</span></label><input class="form-input" id="eu_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Website URL</label><input class="form-input" id="eu_url" placeholder="https://yourcompany.com"></div>
-        <div class="form-group"><label class="form-label">Have you appointed a DPO? <span class="help">Required if processing is large-scale or systematic.</span></label>
+        <div class="form-group"><label class="form-label"><span class="en-only">Website URL</span><span class="cn-only">网站网址</span></label><input class="form-input" id="eu_url" placeholder="https://yourcompany.com" data-en-ph="https://yourcompany.com" data-cn-ph="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Have you appointed a DPO?</span><span class="cn-only">是否已任命数据保护官（DPO）？</span> <span class="help"><span class="en-only">Required if processing is large-scale or systematic.</span><span class="cn-only">若处理活动属于大规模或系统性的，则须任命。</span></span></label>
           <select class="form-select" id="eu_dpo">
-            <option value="no">No</option>
-            <option value="yes">Yes — I'll provide DPO contact</option>
+            <option value="no" data-en="No" data-cn="否">No</option>
+            <option value="yes" data-en="Yes — I'll provide DPO contact" data-cn="是 — 我将提供 DPO 联系方式">Yes — I'll provide DPO contact</option>
           </select>
         </div>
       </div>
-      <div class="form-group" id="eu_dpo_box" style="display:none;"><label class="form-label">DPO name and contact</label><input class="form-input" id="eu_dpo_contact" placeholder="Name + email"></div>
-      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+      <div class="form-group" id="eu_dpo_box" style="display:none;"><label class="form-label"><span class="en-only">DPO name and contact</span><span class="cn-only">数据保护官姓名与联系方式</span></label><input class="form-input" id="eu_dpo_contact" placeholder="Name + email" data-en-ph="Name + email" data-cn-ph="姓名 + 邮箱"></div>
+      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('eu')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="2">
-      <div class="step-title">Step 2 of 5 — What data do you collect?</div>
-      <div class="step-hint">Pick everything that applies. Items marked <span class="sens-flag">SENSITIVE</span> are "special category data" under GDPR Article 9 and need extra protection.</div>
+      <div class="step-title"><span class="en-only">Step 2 of 5 — What data do you collect?</span><span class="cn-only">第 2 步 / 共 5 步 — 您收集哪些数据？</span></div>
+      <div class="step-hint"><span class="en-only">Pick everything that applies. Items marked</span><span class="cn-only">请勾选所有适用项。标记为</span> <span class="sens-flag"><span class="en-only">SENSITIVE</span><span class="cn-only">敏感</span></span> <span class="en-only">are "special category data" under GDPR Article 9 and need extra protection.</span><span class="cn-only">的属于 GDPR 第 9 条的“特殊类别数据”，需额外保护。</span></div>
       <div class="data-grid" id="eu_data_grid"></div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('eu')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="3">
-      <div class="step-title">Step 3 of 5 — Why do you collect it?</div>
-      <div class="step-hint">Pick the reasons that apply. We'll map each to a GDPR Article 6 legal basis automatically.</div>
+      <div class="step-title"><span class="en-only">Step 3 of 5 — Why do you collect it?</span><span class="cn-only">第 3 步 / 共 5 步 — 您为什么收集这些数据？</span></div>
+      <div class="step-hint"><span class="en-only">Pick the reasons that apply. We'll map each to a GDPR Article 6 legal basis automatically.</span><span class="cn-only">请勾选适用的理由，本工具将自动为每一项匹配 GDPR 第 6 条的合法依据。</span></div>
       <div id="eu_purposes"></div>
-      <div class="form-group" style="margin-top:14px;"><label class="form-label">Do you process data of children under 16? <span class="help">Triggers Article 8 parental consent rules.</span></label>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label"><span class="en-only">Do you process data of children under 16?</span><span class="cn-only">您是否处理 16 岁以下儿童的数据？</span> <span class="help"><span class="en-only">Triggers Article 8 parental consent rules.</span><span class="cn-only">将触发第 8 条家长同意规则。</span></span></label>
         <select class="form-select" id="eu_children">
-          <option value="no">No, our service is not directed to children under 16</option>
-          <option value="yes">Yes — we collect data from children under 16</option>
+          <option value="no" data-en="No, our service is not directed to children under 16" data-cn="否，本服务不面向 16 岁以下儿童">No, our service is not directed to children under 16</option>
+          <option value="yes" data-en="Yes — we collect data from children under 16" data-cn="是 — 我们收集 16 岁以下儿童的数据">Yes — we collect data from children under 16</option>
         </select>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('eu')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="4">
-      <div class="step-title">Step 4 of 5 — Who else sees the data?</div>
-      <div class="step-hint">Common processors. Pick the ones you use — we'll list them as recipients with their default transfer mechanism.</div>
+      <div class="step-title"><span class="en-only">Step 4 of 5 — Who else sees the data?</span><span class="cn-only">第 4 步 / 共 5 步 — 还有谁会接触到数据？</span></div>
+      <div class="step-hint"><span class="en-only">Common processors. Pick the ones you use — we'll list them as recipients with their default transfer mechanism.</span><span class="cn-only">常见处理者。请勾选您使用的，本工具会将其列为接收方并附默认传输机制。</span></div>
       <div class="data-grid" id="eu_processors"></div>
-      <div class="form-group" style="margin-top:14px;"><label class="form-label">Other recipients / processors (optional)</label><textarea class="form-textarea" id="eu_other_proc" placeholder="One per line: e.g., Salesforce, Slack"></textarea></div>
-      <div class="form-group"><label class="form-label">Do you transfer data outside the EU/UK? <span class="help">If you use US-based services (AWS, Google, etc.) → Yes.</span></label>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label"><span class="en-only">Other recipients / processors (optional)</span><span class="cn-only">其他接收方 / 处理者（选填）</span></label><textarea class="form-textarea" id="eu_other_proc" placeholder="One per line: e.g., Salesforce, Slack" data-en-ph="One per line: e.g., Salesforce, Slack" data-cn-ph="每行一个：如 Salesforce、Slack"></textarea></div>
+      <div class="form-group"><label class="form-label"><span class="en-only">Do you transfer data outside the EU/UK?</span><span class="cn-only">您是否将数据传输至欧盟/英国境外？</span> <span class="help"><span class="en-only">If you use US-based services (AWS, Google, etc.) → Yes.</span><span class="cn-only">若您使用美国服务（AWS、Google 等）→ 选“是”。</span></span></label>
         <select class="form-select" id="eu_intl" onchange="document.getElementById('eu_intl_box').style.display=this.value==='yes'?'block':'none'">
-          <option value="no">No, all processing in EU/UK</option>
-          <option value="yes" selected>Yes, some data is transferred outside EU/UK</option>
+          <option value="no" data-en="No, all processing in EU/UK" data-cn="否，全部在欧盟/英国境内处理">No, all processing in EU/UK</option>
+          <option value="yes" selected="" data-en="Yes, some data is transferred outside EU/UK" data-cn="是，部分数据传输至欧盟/英国境外">Yes, some data is transferred outside EU/UK</option>
         </select>
       </div>
-      <div id="eu_intl_box" class="form-group"><label class="form-label">Transfer mechanism</label>
+      <div id="eu_intl_box" class="form-group"><label class="form-label"><span class="en-only">Transfer mechanism</span><span class="cn-only">传输机制</span></label>
         <select class="form-select" id="eu_intl_mech">
-          <option value="scc">Standard Contractual Clauses (SCCs)</option>
-          <option value="adequacy">Adequacy decision (e.g., EU-US DPF, UK adequacy)</option>
-          <option value="bcr">Binding Corporate Rules</option>
-          <option value="derogation">Article 49 derogation (occasional / consent)</option>
+          <option value="scc" data-en="Standard Contractual Clauses (SCCs)" data-cn="标准合同条款（SCCs）">Standard Contractual Clauses (SCCs)</option>
+          <option value="adequacy" data-en="Adequacy decision (e.g., EU-US DPF, UK adequacy)" data-cn="充分性决定（如 EU-US DPF、英国充分性认定）">Adequacy decision (e.g., EU-US DPF, UK adequacy)</option>
+          <option value="bcr" data-en="Binding Corporate Rules" data-cn="有约束力的公司规则（BCR）">Binding Corporate Rules</option>
+          <option value="derogation" data-en="Article 49 derogation (occasional / consent)" data-cn="第 49 条减损（偶发 / 同意）">Article 49 derogation (occasional / consent)</option>
         </select>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-primary" onclick="nextStep('eu')">Next →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('eu')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="5">
-      <div class="step-title">Step 5 of 5 — Retention & rights contact</div>
-      <div class="step-hint">Last details — then we generate.</div>
+      <div class="step-title"><span class="en-only">Step 5 of 5 — Retention &amp; rights contact</span><span class="cn-only">第 5 步 / 共 5 步 — 保存期限与权利联系方式</span></div>
+      <div class="step-hint"><span class="en-only">Last details — then we generate.</span><span class="cn-only">最后几项信息，随后即可生成。</span></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">How long do you keep personal data? <span class="help">In plain language.</span></label>
-          <input class="form-input" id="eu_retain" placeholder="e.g., as long as you have an account, then 2 years">
+        <div class="form-group"><label class="form-label"><span class="en-only">How long do you keep personal data?</span><span class="cn-only">您将个人数据保存多久？</span> <span class="help"><span class="en-only">In plain language.</span><span class="cn-only">请用通俗语言描述。</span></span></label>
+          <input class="form-input" id="eu_retain" placeholder="e.g., as long as you have an account, then 2 years" data-en-ph="e.g., as long as you have an account, then 2 years" data-cn-ph="如：账户存续期间，注销后再保留 2 年">
         </div>
-        <div class="form-group"><label class="form-label">Email for rights requests</label>
-          <input class="form-input" id="eu_rights_email" placeholder="privacy@yourcompany.com">
+        <div class="form-group"><label class="form-label"><span class="en-only">Email for rights requests</span><span class="cn-only">处理权利请求的邮箱</span></label>
+          <input class="form-input" id="eu_rights_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com">
         </div>
       </div>
-      <div class="form-group"><label class="form-label">Lead supervisory authority country <span class="help">Where you're primarily established. EU users may complain to their local DPA in any case.</span></label>
+      <div class="form-group"><label class="form-label"><span class="en-only">Lead supervisory authority country</span><span class="cn-only">主要监管机构所在国家</span> <span class="help"><span class="en-only">Where you're primarily established. EU users may complain to their local DPA in any case.</span><span class="cn-only">您的主要设立地。欧盟用户在任何情况下都可向其当地数据保护机构投诉。</span></span></label>
         <select class="form-select" id="eu_lead_dpa">
-          <option value="UK ICO">United Kingdom — ICO</option>
-          <option value="Ireland DPC">Ireland — DPC</option>
-          <option value="France CNIL">France — CNIL</option>
-          <option value="Germany BfDI">Germany — BfDI</option>
-          <option value="Spain AEPD">Spain — AEPD</option>
-          <option value="Netherlands AP">Netherlands — Autoriteit Persoonsgegevens</option>
-          <option value="Italy Garante">Italy — Garante</option>
-          <option value="local DPA">Other / your local DPA</option>
+          <option value="UK ICO" data-en="United Kingdom — ICO" data-cn="英国 — ICO">United Kingdom — ICO</option>
+          <option value="Ireland DPC" data-en="Ireland — DPC" data-cn="爱尔兰 — DPC">Ireland — DPC</option>
+          <option value="France CNIL" data-en="France — CNIL" data-cn="法国 — CNIL">France — CNIL</option>
+          <option value="Germany BfDI" data-en="Germany — BfDI" data-cn="德国 — BfDI">Germany — BfDI</option>
+          <option value="Spain AEPD" data-en="Spain — AEPD" data-cn="西班牙 — AEPD">Spain — AEPD</option>
+          <option value="Netherlands AP" data-en="Netherlands — Autoriteit Persoonsgegevens" data-cn="荷兰 — Autoriteit Persoonsgegevens">Netherlands — Autoriteit Persoonsgegevens</option>
+          <option value="Italy Garante" data-en="Italy — Garante" data-cn="意大利 — Garante">Italy — Garante</option>
+          <option value="local DPA" data-en="Other / your local DPA" data-cn="其他 / 您当地的数据保护机构">Other / your local DPA</option>
         </select>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')">← Back</button><button class="btn btn-success" onclick="generate()">Generate Policy →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('eu')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-success" onclick="generate()"><span class="en-only">Generate Policy →</span><span class="cn-only">生成隐私政策 →</span></button></div>
     </div>
   </div>
   <div class="wizard" id="wizard-us">
@@ -226,58 +225,58 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
       <div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
     </div>
     <div class="step active" data-step="1">
-      <div class="step-title">Step 1 of 5 — About your business</div>
-      <div class="step-hint">This template provides a multi-state US baseline (California CCPA/CPRA as the strictest, with rights commonly required by Virginia VCDPA, Colorado CPA, Connecticut CTDPA, and Utah UCPA). Verify state-specific add-ons before publishing.</div>
-      <div class="info-box"><strong>Children:</strong> This baseline assumes your service is <strong>not directed to children under 13</strong> and you do not knowingly collect their data (COPPA standard). If that's not true, you need a separate COPPA-compliant children's notice and verifiable parental consent.</div>
-      <div class="form-group"><label class="form-label">Business name</label><input class="form-input" id="us_name" placeholder="Acme Inc."></div>
+      <div class="step-title"><span class="en-only">Step 1 of 5 — About your business</span><span class="cn-only">第 1 步 / 共 5 步 — 关于您的企业</span></div>
+      <div class="step-hint"><span class="en-only">This template provides a multi-state US baseline (California CCPA/CPRA as the strictest, with rights commonly required by Virginia VCDPA, Colorado CPA, Connecticut CTDPA, and Utah UCPA). Verify state-specific add-ons before publishing.</span><span class="cn-only">本模板提供覆盖多州的美国基线（以加州 CCPA/CPRA 为最严标准，并涵盖弗吉尼亚 VCDPA、科罗拉多 CPA、康涅狄格 CTDPA、犹他 UCPA 常见权利）。发布前请核对各州的特别要求。</span></div>
+      <div class="info-box"><strong><span class="en-only">Children:</span><span class="cn-only">儿童：</span></strong> <span class="en-only">This baseline assumes your service is</span><span class="cn-only">本基线假定您的服务</span> <strong><span class="en-only">not directed to children under 13</span><span class="cn-only">不面向 13 岁以下儿童</span></strong> <span class="en-only">and you do not knowingly collect their data (COPPA standard). If that's not true, you need a separate COPPA-compliant children's notice and verifiable parental consent.</span><span class="cn-only">且不会在知情情况下收集其数据（COPPA 标准）。若并非如此，您需要单独的符合 COPPA 的儿童告知及可验证的家长同意。</span></div>
+      <div class="form-group"><label class="form-label"><span class="en-only">Business name</span><span class="cn-only">企业名称</span></label><input class="form-input" id="us_name" placeholder="Acme Inc." data-en-ph="Acme Inc." data-cn-ph="某某公司"></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Mailing address</label><input class="form-input" id="us_addr" placeholder="Street, City, State, ZIP"></div>
-        <div class="form-group"><label class="form-label">Contact email for privacy</label><input class="form-input" id="us_email" placeholder="privacy@yourcompany.com"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Mailing address</span><span class="cn-only">通讯地址</span></label><input class="form-input" id="us_addr" placeholder="Street, City, State, ZIP" data-en-ph="Street, City, State, ZIP" data-cn-ph="街道、城市、州、邮编"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Contact email for privacy</span><span class="cn-only">隐私事务联系邮箱</span></label><input class="form-input" id="us_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Website URL</label><input class="form-input" id="us_url" placeholder="https://yourcompany.com"></div>
-        <div class="form-group"><label class="form-label">Toll-free phone (CCPA requires for offline interactions) <span class="help">Optional but recommended.</span></label><input class="form-input" id="us_phone" placeholder="+1 800 ..."></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Website URL</span><span class="cn-only">网站网址</span></label><input class="form-input" id="us_url" placeholder="https://yourcompany.com" data-en-ph="https://yourcompany.com" data-cn-ph="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Toll-free phone (CCPA requires for offline interactions)</span><span class="cn-only">免费电话（CCPA 要求线下交互时提供）</span> <span class="help"><span class="en-only">Optional but recommended.</span><span class="cn-only">选填，但建议填写。</span></span></label><input class="form-input" id="us_phone" placeholder="+1 800 ..." data-en-ph="+1 800 ..." data-cn-ph="+1 800 ..."></div>
       </div>
-      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+      <div class="btn-row"><div></div><button class="btn btn-primary" onclick="nextStep('us')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="2">
-      <div class="step-title">Step 2 of 5 — Personal information you collect</div>
-      <div class="step-hint">CPRA categories. Items marked <span class="sens-flag">SENSITIVE</span> are "Sensitive Personal Information" under § 1798.140(ae) — triggers the "Limit the Use of My Sensitive Personal Information" right.</div>
+      <div class="step-title"><span class="en-only">Step 2 of 5 — Personal information you collect</span><span class="cn-only">第 2 步 / 共 5 步 — 您收集的个人信息</span></div>
+      <div class="step-hint"><span class="en-only">CPRA categories. Items marked</span><span class="cn-only">CPRA 类别。标记为</span> <span class="sens-flag"><span class="en-only">SENSITIVE</span><span class="cn-only">敏感</span></span> <span class="en-only">are "Sensitive Personal Information" under § 1798.140(ae) — triggers the "Limit the Use of My Sensitive Personal Information" right.</span><span class="cn-only">的属于 § 1798.140(ae) 的“敏感个人信息”，将触发“限制使用我的敏感个人信息”权利。</span></div>
       <div class="data-grid" id="us_data_grid"></div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('us')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="3">
-      <div class="step-title">Step 3 of 5 — Purposes and disclosure</div>
-      <div class="step-hint">How you use the data and who you share it with.</div>
+      <div class="step-title"><span class="en-only">Step 3 of 5 — Purposes and disclosure</span><span class="cn-only">第 3 步 / 共 5 步 — 处理目的与披露</span></div>
+      <div class="step-hint"><span class="en-only">How you use the data and who you share it with.</span><span class="cn-only">您如何使用数据，以及与谁共享。</span></div>
       <div id="us_purposes"></div>
-      <div class="form-group" style="margin-top:14px;"><label class="form-label">Do you sell or share personal information? <span class="help">"Share" includes cross-context behavioral advertising (e.g., Facebook Pixel, Google Ads remarketing).</span></label>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label"><span class="en-only">Do you sell or share personal information?</span><span class="cn-only">您是否出售或共享个人信息？</span> <span class="help"><span class="en-only">"Share" includes cross-context behavioral advertising (e.g., Facebook Pixel, Google Ads remarketing).</span><span class="cn-only">“共享”包括跨情境行为广告（如 Facebook Pixel、Google Ads 再营销）。</span></span></label>
         <select class="form-select" id="us_sell">
-          <option value="no">No — we do not sell or share PI</option>
-          <option value="yes">Yes — we sell or share PI (must include opt-out link)</option>
+          <option value="no" data-en="No — we do not sell or share PI" data-cn="否 — 我们不出售或共享个人信息">No — we do not sell or share PI</option>
+          <option value="yes" data-en="Yes — we sell or share PI (must include opt-out link)" data-cn="是 — 我们出售或共享个人信息（须含退出链接）">Yes — we sell or share PI (must include opt-out link)</option>
         </select>
       </div>
-      <div class="form-group"><label class="form-label">Do you use SPI for purposes beyond the limited business uses? <span class="help">If yes, you must show a "Limit the Use of My Sensitive Personal Information" link.</span></label>
+      <div class="form-group"><label class="form-label"><span class="en-only">Do you use SPI for purposes beyond the limited business uses?</span><span class="cn-only">您是否将敏感个人信息用于限定业务用途之外的目的？</span> <span class="help"><span class="en-only">If yes, you must show a "Limit the Use of My Sensitive Personal Information" link.</span><span class="cn-only">若选“是”，您必须展示“限制使用我的敏感个人信息”链接。</span></span></label>
         <select class="form-select" id="us_spi_use">
-          <option value="no">No — only limited uses (service, security, etc.)</option>
-          <option value="yes">Yes — for broader uses (must include Limit-SPI link)</option>
+          <option value="no" data-en="No — only limited uses (service, security, etc.)" data-cn="否 — 仅限定用途（服务、安全等）">No — only limited uses (service, security, etc.)</option>
+          <option value="yes" data-en="Yes — for broader uses (must include Limit-SPI link)" data-cn="是 — 用于更广用途（须含限制-SPI 链接）">Yes — for broader uses (must include Limit-SPI link)</option>
         </select>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('us')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="4">
-      <div class="step-title">Step 4 of 5 — Third parties</div>
-      <div class="step-hint">Service providers and other recipients you'll list.</div>
+      <div class="step-title"><span class="en-only">Step 4 of 5 — Third parties</span><span class="cn-only">第 4 步 / 共 5 步 — 第三方</span></div>
+      <div class="step-hint"><span class="en-only">Service providers and other recipients you'll list.</span><span class="cn-only">您将列出的服务提供商及其他接收方。</span></div>
       <div class="data-grid" id="us_processors"></div>
-      <div class="form-group" style="margin-top:14px;"><label class="form-label">Other service providers (optional)</label><textarea class="form-textarea" id="us_other_proc" placeholder="One per line"></textarea></div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-primary" onclick="nextStep('us')">Next →</button></div>
+      <div class="form-group" style="margin-top:14px;"><label class="form-label"><span class="en-only">Other service providers (optional)</span><span class="cn-only">其他服务提供商（选填）</span></label><textarea class="form-textarea" id="us_other_proc" placeholder="One per line" data-en-ph="One per line" data-cn-ph="每行一个"></textarea></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-primary" onclick="nextStep('us')"><span class="en-only">Next →</span><span class="cn-only">下一步 →</span></button></div>
     </div>
     <div class="step" data-step="5">
-      <div class="step-title">Step 5 of 5 — Retention & rights</div>
+      <div class="step-title"><span class="en-only">Step 5 of 5 — Retention &amp; rights</span><span class="cn-only">第 5 步 / 共 5 步 — 保存期限与权利</span></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Retention period (in plain language)</label><input class="form-input" id="us_retain" placeholder="e.g., as long as your account is active, then 3 years"></div>
-        <div class="form-group"><label class="form-label">Email for rights requests</label><input class="form-input" id="us_rights_email" placeholder="privacy@yourcompany.com"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Retention period (in plain language)</span><span class="cn-only">保存期限（请用通俗语言）</span></label><input class="form-input" id="us_retain" placeholder="e.g., as long as your account is active, then 3 years" data-en-ph="e.g., as long as your account is active, then 3 years" data-cn-ph="如：账户有效期间，之后再保留 3 年"></div>
+        <div class="form-group"><label class="form-label"><span class="en-only">Email for rights requests</span><span class="cn-only">处理权利请求的邮箱</span></label><input class="form-input" id="us_rights_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com"></div>
       </div>
-      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')">← Back</button><button class="btn btn-success" onclick="generate()">Generate Policy →</button></div>
+      <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('us')"><span class="en-only">← Back</span><span class="cn-only">← 上一步</span></button><button class="btn btn-success" onclick="generate()"><span class="en-only">Generate Policy →</span><span class="cn-only">生成隐私政策 →</span></button></div>
     </div>
   </div>
   <div class="wizard" id="wizard-cn">
@@ -291,17 +290,17 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
         <h4>📥 从 PIPIA 评估导入数据</h4>
         <div class="desc">如果您已在 PIPIA 工具中完成评估，可一键导入字段、目的、跨境信息。</div>
         <button onclick="importFromPipia()">从 PIPIA 导入 / Import from PIPIA</button>
-        <button onclick="importFromRoleMap()" style="margin-left:8px;">从角色映射导入 / Import role map</button>
+        <button onclick="importFromRoleMap()" style="margin-left:8px;">从角色梳理导入 / Import role map</button>
         <input type="file" id="pipia_file" accept=".json" style="display:none;" onchange="importPipiaFile(event)">
       </div>
       <div class="info-box">本模板依据《中华人民共和国个人信息保护法》（PIPL，2021年11月1日施行）及GB/T 35273-2020编制。</div>
       <div class="form-group"><label class="form-label">公司 / 机构全称（个人信息处理者）</label><input class="form-input" id="cn_name" placeholder="某某科技有限公司"></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">注册地址</label><input class="form-input" id="cn_addr" placeholder="例如：北京市朝阳区..."></div>
-        <div class="form-group"><label class="form-label">联系邮箱</label><input class="form-input" id="cn_email" placeholder="privacy@yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">联系邮箱</label><input class="form-input" id="cn_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com"></div>
       </div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">网站 URL</label><input class="form-input" id="cn_url" placeholder="https://yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">网站 URL</label><input class="form-input" id="cn_url" placeholder="https://yourcompany.com" data-en-ph="https://yourcompany.com" data-cn-ph="https://yourcompany.com"></div>
         <div class="form-group"><label class="form-label">是否已指定个人信息保护负责人？<span class="help">PIPL 第52条要求达到一定规模须设置。</span></label>
           <select class="form-select" id="cn_dpo">
             <option value="no">尚未指定</option>
@@ -319,7 +318,7 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
     </div>
     <div class="step" data-step="3">
       <div class="step-title">第 3 步 / 5 — 处理目的</div>
-      <div class="step-hint">勾选适用的处理目的，本工具将自动映射到 PIPL 第13条的法定依据。</div>
+      <div class="step-hint">勾选适用的处理目的，本工具将自动梳理到 PIPL 第13条的法定依据。</div>
       <div id="cn_purposes"></div>
       <div class="form-group" style="margin-top:14px;"><label class="form-label">是否处理不满14岁未成年人个人信息？<span class="help">PIPL 第31条要求父母或监护人同意。</span></label>
         <select class="form-select" id="cn_minors">
@@ -335,14 +334,14 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
       <div class="form-group"><label class="form-label">是否委托第三方处理或与第三方共享个人信息？</label>
         <select class="form-select" id="cn_share" onchange="document.getElementById('cn_share_box').style.display=this.value==='yes'?'block':'none'">
           <option value="no">否</option>
-          <option value="yes" selected>是</option>
+          <option value="yes" selected="">是</option>
         </select>
       </div>
       <div id="cn_share_box" class="form-group"><label class="form-label">受托/共享方（一行一个）</label><textarea class="form-textarea" id="cn_share_list" placeholder="例如：阿里云、腾讯云、字节跳动..."></textarea></div>
       <div class="form-group"><label class="form-label">是否存在跨境数据传输？<span class="help">PIPL 第38-39条要求单独同意 + CAC 合规路径。</span></label>
         <select class="form-select" id="cn_intl" onchange="document.getElementById('cn_intl_box').style.display=this.value==='yes'?'block':'none'">
           <option value="no">否，仅在中国境内处理</option>
-          <option value="yes" selected>是</option>
+          <option value="yes" selected="">是</option>
         </select>
       </div>
       <div id="cn_intl_box">
@@ -361,26 +360,26 @@ h1 { font-size: 28px; color: var(--primary); margin-bottom: 6px; }
       <div class="step-title">第 5 步 / 5 — 保存期限与权利渠道</div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">个人信息保存期限</label><input class="form-input" id="cn_retain" placeholder="例如：账户存续期间 + 法定期限届满后删除"></div>
-        <div class="form-group"><label class="form-label">权利行使联系邮箱</label><input class="form-input" id="cn_rights_email" placeholder="privacy@yourcompany.com"></div>
+        <div class="form-group"><label class="form-label">权利行使联系邮箱</label><input class="form-input" id="cn_rights_email" placeholder="privacy@yourcompany.com" data-en-ph="privacy@yourcompany.com" data-cn-ph="privacy@yourcompany.com"></div>
       </div>
       <div class="btn-row"><button class="btn btn-secondary" onclick="prevStep('cn')">← 上一步</button><div class="form-group"><label class="form-label">是否对个人信息进行自动化决策（PIPL 第24条）？</label><select class="form-select" id="cn_auto" onchange="document.getElementById('cn_optout_box').style.display=this.value==='yes'?'block':'none'"><option value="no">否</option><option value="yes">是 — 例如用户画像、个性化推荐、算法定价、自动审核</option></select></div><div id="cn_optout_box" class="form-group" style="display:none"><label class="form-label">是否向个人提供拒绝/退出（opt-out）机制？</label><select class="form-select" id="cn_optout"><option value="no">否 — 尚未提供（建议上线前提供）</option><option value="yes">是 — 已提供拒绝/退出机制</option></select></div><button class="btn btn-success" onclick="generate()">生成隐私政策 →</button></div>
     </div>
   </div>
   <div id="output-panel">
     <div class="output-tabs">
-      <div class="output-tab active" data-view="short" onclick="switchView('short')"><span id="lbl-short">At-a-glance (short notice)</span></div>
-      <div class="output-tab" data-view="full" onclick="switchView('full')"><span id="lbl-full">Full privacy policy</span></div>
-      <div class="output-tab" data-view="consent" onclick="switchView('consent')"><span id="lbl-consent">Consent text & cookie banner</span></div>
+      <div class="output-tab active" data-view="short" onclick="switchView('short')"><span id="lbl-short"><span class="en-only">At-a-glance (short notice)</span><span class="cn-only">速览（简版告知）</span></span></div>
+      <div class="output-tab" data-view="full" onclick="switchView('full')"><span id="lbl-full"><span class="en-only">Full privacy policy</span><span class="cn-only">完整隐私政策</span></span></div>
+      <div class="output-tab" data-view="consent" onclick="switchView('consent')"><span id="lbl-consent"><span class="en-only">Consent text &amp; cookie banner</span><span class="cn-only">同意文本与 Cookie 提示条</span></span></div>
     </div>
     <div id="output"></div>
     <div class="output-actions">
-      <button class="btn btn-primary" onclick="copyOut()" id="btn-copy">Copy to clipboard</button>
-      <button class="btn btn-secondary" onclick="downloadHTML()" id="btn-download">Download .html</button>
-      <button class="btn btn-secondary" onclick="resetAll()" id="btn-reset">Start over</button>
+      <button class="btn btn-primary" onclick="copyOut()" id="btn-copy"><span class="en-only">Copy to clipboard</span><span class="cn-only">复制到剪贴板</span></button>
+      <button class="btn btn-secondary" onclick="downloadHTML()" id="btn-download"><span class="en-only">Download .html</span><span class="cn-only">下载 .html</span></button>
+      <button class="btn btn-secondary" onclick="resetAll()" id="btn-reset"><span class="en-only">Start over</span><span class="cn-only">重新开始</span></button>
     </div>
     <div class="disclaimer" id="disclaimer-box"></div>
     <div class="footer-meta">
-      <span id="meta-version">Template v1.0 • Generated <span id="gen-date"></span></span>
+      <span id="meta-version"><span class="en-only">Template v1.0 • Generated</span><span class="cn-only">模板 v1.0 • 生成于</span> <span id="gen-date"></span></span>
       <span id="meta-jurisdiction"></span>
     </div>
   </div>
@@ -754,9 +753,9 @@ function applyPipiaData(data) {
 }
 function importFromRoleMap() {
   const stored = localStorage.getItem('legalaipay.dataRelationshipHandoff');
-  if (!stored) { alert('未找到已保存的角色映射。请先打开 Data Relationship Mapper 并保存结果。'); return; }
-  try { applyRoleMapData(JSON.parse(stored)); alert('已从角色映射导入。'); }
-  catch (err) { alert('角色映射数据无法读取：' + err.message); }
+  if (!stored) { alert('未找到已保存的角色梳理。请先打开 Data Relationship Mapper 并保存结果。'); return; }
+  try { applyRoleMapData(JSON.parse(stored)); alert('已从角色梳理导入。'); }
+  catch (err) { alert('角色梳理数据无法读取：' + err.message); }
 }
 function applyRoleMapData(data) {
   const flags = data.flags || {};
@@ -853,5 +852,35 @@ try {
 } catch (e) {}
 </script>
 <script src="la-paywall.js"></script>
-</body>
-</html>
+
+
+<script>(function(){
+  var LK='legalaipay.lang';
+  var html=document.documentElement;
+  function applyOptions(lang){
+    document.querySelectorAll('option[data-en]').forEach(function(o){
+      var v = lang==='zh' ? (o.getAttribute('data-cn')||o.getAttribute('data-en')) : o.getAttribute('data-en');
+      if(v!=null) o.textContent=v;
+    });
+  }
+  function applyPlaceholders(lang){
+    document.querySelectorAll('[data-en-ph]').forEach(function(el){
+      var v = lang==='zh' ? (el.getAttribute('data-cn-ph')||el.getAttribute('data-en-ph')) : el.getAttribute('data-en-ph');
+      if(v!=null) el.setAttribute('placeholder', v);
+    });
+  }
+  function setLang(lang){
+    html.setAttribute('lang-ui', lang);
+    try{ localStorage.setItem(LK, lang); }catch(e){}
+    applyOptions(lang);
+    applyPlaceholders(lang);
+  }
+  function init(){
+    var saved='en';
+    try{ saved=localStorage.getItem(LK)||'en'; }catch(e){}
+    setLang(saved==='zh'?'zh':'en');
+    var b=document.getElementById('langToggle');
+    if(b){ b.addEventListener('click', function(){ setLang(html.getAttribute('lang-ui')==='zh'?'en':'zh'); }); }
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded', init); } else { init(); }
+})();</script></body></html>
