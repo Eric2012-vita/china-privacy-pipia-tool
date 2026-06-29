@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" lang-ui="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About Us | LegalAIPay</title>
-</head>
-<body>
+<style>html[lang-ui="en"] .cn-only{display:none!important}html[lang-ui="zh"] .en-only{display:none!important}.lang-toggle{position:fixed;top:14px;right:16px;z-index:9999;border:1px solid rgba(0,0,0,.18);background:#fff;color:#111;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12);font-family:inherit}.lang-toggle:hover{background:#f3f4f6}</style></head>
+<body><button class="lang-toggle" id="langToggle" type="button"><span class="en-only">中文</span><span class="cn-only">EN</span></button>
 <main>
-<h1>About Us</h1>
-<p>LegalAIPay was created by a legal professional with over 20 years of experience in privacy, data protection, and cross-border data law. Our founder is admitted to the New York and PRC (China) bars and has built a career primarily as in-house counsel, and is a member of the International Association of Privacy Professionals (IAPP).</p>
-<p>We built LegalAIPay because small and mid-sized businesses face real privacy and data-protection obligations across the US, EU/UK, and China, but rarely have the budget for continuous legal support. Our tools turn that complexity into clear, structured next steps: DPIAs, breach response plans, DPAs, privacy notices, contract reviews, and cross-border transfer checks, so you walk into any compliance conversation already prepared.</p>
-<p>Our tools run entirely in your browser. Your inputs stay on your device, and every workflow mirrors how a real assessment should be documented.</p>
-<h2>A note on scope</h2>
-<p>Our tools provide general information and AI-assisted drafts as a starting point. They are not legal advice, and using them does not create an attorney-client relationship. For decisions affecting contracts, filings, or fundamental rights, we recommend review by qualified counsel.</p>
+<h1><span class="en-only">About Us</span><span class="cn-only">关于我们</span></h1>
+<p><span class="en-only">LegalAIPay was created by a legal professional with over 20 years of experience in privacy, data protection, and cross-border data law. Our founder is admitted to the New York and PRC (China) bars and has built a career primarily as in-house counsel, and is a member of the International Association of Privacy Professionals (IAPP).</span><span class="cn-only">LegalAIPay 由一位在隐私、数据保护和跨境数据法领域拥有 20 多年经验的法律专业人士创建。创始人同时拥有美国纽约州和中国的律师执业资格，主要以企业内部法务的身份积累职业经验，并且是国际隐私专业人士协会（IAPP）的会员。</span></p>
+<p><span class="en-only">We built LegalAIPay because small and mid-sized businesses face real privacy and data-protection obligations across the US, EU/UK, and China, but rarely have the budget for continuous legal support. Our tools turn that complexity into clear, structured next steps: DPIAs, breach response plans, DPAs, privacy notices, contract reviews, and cross-border transfer checks, so you walk into any compliance conversation already prepared.</span><span class="cn-only">我们创建 LegalAIPay，是因为中小企业在美国、欧盟/英国和中国都面临实实在在的隐私与数据保护义务，却很少有预算获得持续的法律支持。我们的工具把这些复杂性转化为清晰、有条理的后续步骤：数据保护影响评估、数据泄露应对方案、数据处理协议、隐私告知、合同审查以及跨境传输核查，让您在任何合规沟通中都已做好准备。</span></p>
+<p><span class="en-only">Our tools run entirely in your browser. Your inputs stay on your device, and every workflow mirrors how a real assessment should be documented.</span><span class="cn-only">我们的工具完全在您的浏览器中运行。您输入的内容只保留在您的设备上，每个流程都按照真实评估应有的记录方式来呈现。</span></p>
+<h2><span class="en-only">A note on scope</span><span class="cn-only">关于适用范围的说明</span></h2>
+<p><span class="en-only">Our tools provide general information and AI-assisted drafts as a starting point. They are not legal advice, and using them does not create an attorney-client relationship. For decisions affecting contracts, filings, or fundamental rights, we recommend review by qualified counsel.</span><span class="cn-only">我们的工具提供一般性信息和 AI 辅助草稿，仅作为起点。它们不构成法律意见，使用它们也不会形成律师-委托人关系。对于涉及合同、申报或基本权利的决定，我们建议由具备资质的律师审查。</span></p>
 </main>
-</body>
-</html>
+
+
+<script>(function(){var LK='legalaipay.lang';var html=document.documentElement;function applyOptions(lang){document.querySelectorAll('option[data-en]').forEach(function(o){var v=lang==='zh'?(o.getAttribute('data-cn')||o.getAttribute('data-en')):o.getAttribute('data-en');if(v!=null)o.textContent=v;});}function applyPH(lang){document.querySelectorAll('[data-en-ph]').forEach(function(el){var v=lang==='zh'?(el.getAttribute('data-cn-ph')||el.getAttribute('data-en-ph')):el.getAttribute('data-en-ph');if(v!=null)el.setAttribute('placeholder',v);});}function setLang(lang){html.setAttribute('lang-ui',lang);try{localStorage.setItem(LK,lang);}catch(e){}applyOptions(lang);applyPH(lang);}function init(){var saved='en';try{saved=localStorage.getItem(LK)||'en';}catch(e){}setLang(saved==='zh'?'zh':'en');var b=document.getElementById('langToggle');if(b){b.addEventListener('click',function(){setLang(html.getAttribute('lang-ui')==='zh'?'en':'zh');});}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();</script></body></html>
