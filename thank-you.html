@@ -1,6 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
+<!DOCTYPE html>
+<html lang="en" lang-ui="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Payment Confirmed | LegalAIPay</title>
@@ -40,8 +39,8 @@ h1{font-size:24px;color:var(--primary);margin-bottom:8px}
 .restore-msg.ok{color:var(--ok)}.restore-msg.err{color:#dc2626}
 footer{background:var(--primary);color:rgba(255,255,255,.6);padding:20px 22px;text-align:center;font-size:13px}
 </style>
-</head>
-<body>
+<style>html[lang-ui="en"] .cn-only{display:none!important}html[lang-ui="zh"] .en-only{display:none!important}.lang-toggle{position:fixed;top:14px;right:16px;z-index:9999;border:1px solid rgba(0,0,0,.18);background:#fff;color:#111;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12);font-family:inherit}.lang-toggle:hover{background:#f3f4f6}</style></head>
+<body><button class="lang-toggle" id="langToggle" type="button"><span class="en-only">中文</span><span class="cn-only">EN</span></button>
 
 <nav class="nav">
   <div class="nav-inner">
@@ -52,34 +51,34 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);padding:20px 22px;te
 <main>
   <div class="card" id="card-success" style="display:none">
     <div class="icon">✓</div>
-    <h1>Payment confirmed!</h1>
+    <h1><span class="en-only">Payment confirmed!</span><span class="cn-only">付款已确认！</span></h1>
     <p class="subtitle" id="subtitle-text"></p>
     <div class="credits-badge" id="credits-badge"></div>
 
     <div class="token-section">
-      <h3>Your recovery token</h3>
-      <p>Save this code. If you clear your browser or switch devices, paste it to restore your export credits instantly.</p>
+      <h3><span class="en-only">Your recovery token</span><span class="cn-only">您的恢复令牌</span></h3>
+      <p><span class="en-only">Save this code. If you clear your browser or switch devices, paste it to restore your export credits instantly.</span><span class="cn-only">请保存此代码。如果您清除浏览器数据或更换设备，粘贴它即可立即恢复您的导出额度。</span></p>
       <div class="token-display">
         <span class="token-code" id="token-display"></span>
-        <button class="copy-btn" id="copy-btn" onclick="copyToken()">Copy</button>
+        <button class="copy-btn" id="copy-btn" onclick="copyToken()"><span class="en-only">Copy</span><span class="cn-only">复制</span></button>
       </div>
     </div>
 
     <div class="warn">
-      ⚠️ <strong>Save your token now.</strong> Credits are stored in this browser. If you clear browser data without your token, credits cannot be recovered.
+      ⚠️ <strong><span class="en-only">Save your token now.</span><span class="cn-only">请立即保存您的令牌。</span></strong> <span class="en-only">Credits are stored in this browser. If you clear browser data without your token, credits cannot be recovered.</span><span class="cn-only">额度保存在此浏览器中。如果您在没有令牌的情况下清除浏览器数据，额度将无法恢复。</span>
     </div>
 
     <div class="actions">
-      <a class="btn primary" href="/privacy-policy-generator">Go to Privacy Generator →</a>
-      <a class="btn secondary" href="/pricing">Back to pricing</a>
+      <a class="btn primary" href="/privacy-policy-generator"><span class="en-only">Go to Privacy Generator →</span><span class="cn-only">前往隐私政策生成器 →</span></a>
+      <a class="btn secondary" href="/pricing"><span class="en-only">Back to pricing</span><span class="cn-only">返回定价页</span></a>
     </div>
 
     <div class="restore-section">
-      <h3>Restore credits on this device</h3>
-      <p>Already have a token from a previous purchase? Paste it below.</p>
+      <h3><span class="en-only">Restore credits on this device</span><span class="cn-only">在此设备上恢复额度</span></h3>
+      <p><span class="en-only">Already have a token from a previous purchase? Paste it below.</span><span class="cn-only">已有此前购买获得的令牌？请在下方粘贴。</span></p>
       <div class="restore-row">
         <input type="text" id="restore-input" placeholder="LA-SNGL-xxxxxxxx or LA-BNDL-xxxxxxxx">
-        <button onclick="restoreToken()">Restore</button>
+        <button onclick="restoreToken()"><span class="en-only">Restore</span><span class="cn-only">恢复</span></button>
       </div>
       <p class="restore-msg" id="restore-msg"></p>
     </div>
@@ -87,22 +86,22 @@ footer{background:var(--primary);color:rgba(255,255,255,.6);padding:20px 22px;te
 
   <div class="card" id="card-error" style="display:none">
     <div class="icon" style="background:#fee2e2;font-size:24px">✕</div>
-    <h1>Something went wrong</h1>
-    <p class="subtitle">We couldn't confirm your plan. If you completed payment, paste your recovery token below or contact us.</p>
+    <h1><span class="en-only">Something went wrong</span><span class="cn-only">出了点问题</span></h1>
+    <p class="subtitle"><span class="en-only">We couldn't confirm your plan. If you completed payment, paste your recovery token below or contact us.</span><span class="cn-only">我们无法确认您的方案。如果您已完成付款，请在下方粘贴您的恢复令牌，或联系我们。</span></p>
     <div class="restore-section" style="border-top:none;padding-top:0;margin-top:16px">
       <div class="restore-row">
         <input type="text" id="restore-input-err" placeholder="LA-SNGL-xxxxxxxx or LA-BNDL-xxxxxxxx">
-        <button onclick="restoreTokenErr()">Restore</button>
+        <button onclick="restoreTokenErr()"><span class="en-only">Restore</span><span class="cn-only">恢复</span></button>
       </div>
       <p class="restore-msg" id="restore-msg-err"></p>
     </div>
     <div class="actions" style="margin-top:20px">
-      <a class="btn secondary" href="/pricing">Return to pricing</a>
+      <a class="btn secondary" href="/pricing"><span class="en-only">Return to pricing</span><span class="cn-only">返回定价页</span></a>
     </div>
   </div>
 </main>
 
-<footer>LegalAIPay — compliance tools for EU, US, and China markets.</footer>
+<footer><span class="en-only">LegalAIPay — compliance tools for EU, US, and China markets.</span><span class="cn-only">LegalAIPay — 面向欧盟、美国和中国市场的合规工具。</span></footer>
 
 <script>
 const EXPIRY_DAYS = 90;
@@ -232,5 +231,6 @@ function restoreTokenErr() {
 
 init();
 </script>
-</body>
-</html>
+
+
+<script>(function(){var LK='legalaipay.lang';var html=document.documentElement;function applyOptions(lang){document.querySelectorAll('option[data-en]').forEach(function(o){var v=lang==='zh'?(o.getAttribute('data-cn')||o.getAttribute('data-en')):o.getAttribute('data-en');if(v!=null)o.textContent=v;});}function applyPH(lang){document.querySelectorAll('[data-en-ph]').forEach(function(el){var v=lang==='zh'?(el.getAttribute('data-cn-ph')||el.getAttribute('data-en-ph')):el.getAttribute('data-en-ph');if(v!=null)el.setAttribute('placeholder',v);});}function setLang(lang){html.setAttribute('lang-ui',lang);try{localStorage.setItem(LK,lang);}catch(e){}applyOptions(lang);applyPH(lang);}function init(){var saved='en';try{saved=localStorage.getItem(LK)||'en';}catch(e){}setLang(saved==='zh'?'zh':'en');var b=document.getElementById('langToggle');if(b){b.addEventListener('click',function(){setLang(html.getAttribute('lang-ui')==='zh'?'en':'zh');});}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();</script></body></html>
