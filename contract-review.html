@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" lang-ui="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contract Review Workspace | LegalAIPay</title>
@@ -113,158 +112,158 @@ ins { color: #22543d; background: #c6f6d5; text-decoration: none; }
     <meta name="twitter:title" content="Contract Review Workspace | LegalAIPay">
     <meta name="twitter:description" content="Upload or paste a contract, run a playbook-based review, and generate proposed comments, explanations, and redline-style review documents.">
   <script src="/la-paywall.js"></script>
-</head>
-<body>
+<style>html[lang-ui="en"] .cn-only{display:none!important}html[lang-ui="zh"] .en-only{display:none!important}.lang-toggle{position:fixed;top:14px;right:16px;z-index:9999;border:1px solid rgba(0,0,0,.18);background:#fff;color:#111;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.12);font-family:inherit}.lang-toggle:hover{background:#f3f4f6}</style></head>
+<body><button class="lang-toggle" id="langToggle" type="button"><span class="en-only">中文</span><span class="cn-only">EN</span></button>
 <nav class="navbar">
   <div class="nav-container">
     <a href="/" class="logo"><span class="logo-mark">L</span><span>LegalAIPay</span></a>
     <div class="nav-actions">
-      <a href="/#tools">Tools</a>
-      <a href="/data-relationship-mapper">Role Mapper</a>
-      <a href="/privacy-policy-generator">Privacy Generator</a>
-      <a class="primary-link" href="#review">Start Review</a>
+      <a href="/#tools"><span class="en-only">Tools</span><span class="cn-only">工具</span></a>
+      <a href="/data-relationship-mapper"><span class="en-only">Role Mapper</span><span class="cn-only">角色梳理</span></a>
+      <a href="/privacy-policy-generator"><span class="en-only">Privacy Generator</span><span class="cn-only">隐私政策生成器</span></a>
+      <a class="primary-link" href="#review"><span class="en-only">Start Review</span><span class="cn-only">开始审查</span></a>
     </div>
   </div>
 </nav>
 <section class="hero">
   <div class="hero-inner">
-    <span class="eyebrow">Contract Review Workspace</span>
-    <h1>Upload a contract. Get comments, explanations, and redline-style output.</h1>
-    <p>Uses a built-in legal playbook to review your contract. For a deeper LLM draft, copy the generated prompt into your own ChatGPT or Claude session — this page never sees your API keys or contract data.</p>
+    <span class="eyebrow"><span class="en-only">Contract Review Workspace</span><span class="cn-only">合同审查工作台</span></span>
+    <h1><span class="en-only">Upload a contract. Get comments, explanations, and redline-style output.</span><span class="cn-only">上传合同，获取批注、解释和修订标记式输出。</span></h1>
+    <p><span class="en-only">Uses a built-in legal playbook to review your contract. For a deeper LLM draft, copy the generated prompt into your own ChatGPT or Claude session — this page never sees your API keys or contract data.</span><span class="cn-only">使用内置法律审查手册审查您的合同。如需更深入的 AI 草稿，请将生成的提示词复制到您自己的 ChatGPT 或 Claude 会话中——本页面绝不会看到您的 API 密钥或合同数据。</span></p>
   </div>
 </section>
 <main class="layout" id="review">
 <aside class="advisory" role="note" aria-label="Legal advisory" style="margin:16px auto;max-width:1100px;padding:12px 16px;background:#fff8e1;border-left:4px solid #d69e2e;border-radius:6px;color:#5a4012;font-size:13px;line-height:1.55;">
-  <strong>&#9888;&#65039; Not legal advice.</strong>
-  This workspace produces a starting draft generated from your inputs and the selected playbook. It is <strong>not legal advice</strong> and may not reflect the latest regulatory guidance. Have qualified counsel review before relying on any output.
-  <span class="cn-only" lang="zh"> &#26412;&#24037;&#20855;&#29983;&#25104;&#30340;&#20869;&#23481;&#20165;&#20026;&#36215;&#33609;&#21442;&#32771;&#65292;&#19981;&#26500;&#25104;&#27861;&#24459;&#24847;&#35265;&#65292;&#20351;&#29992;&#21069;&#35831;&#30001;&#21512;&#26684;&#27861;&#24459;&#39038;&#38382;&#22797;&#26680;&#12290;</span>
+  <strong><span class="en-only">⚠️ Not legal advice.</span><span class="cn-only">⚠️ 非法律意见。</span></strong>
+  <span class="en-only">This workspace produces a starting draft generated from your inputs and the selected playbook. It is</span><span class="cn-only">本工作台依据您的输入和所选审查手册生成初步草稿。它</span> <strong><span class="en-only">not legal advice</span><span class="cn-only">不构成法律意见</span></strong> <span class="en-only">and may not reflect the latest regulatory guidance. Have qualified counsel review before relying on any output.</span><span class="cn-only">且可能未反映最新监管指引。在依赖任何输出前，请由具备资质的律师审查。</span>
+  <span class="cn-only" lang="zh"> 本工具生成的内容仅为起草参考，不构成法律意见，使用前请由合格法律顾问复核。</span>
 </aside>
 <div class="local-data-notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px auto 16px;max-width:1100px;padding:10px 12px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:12.5px;color:#334155;">
   <span>
-    &#128274; Your contract text, settings, and any API key stay in <strong>your browser</strong>. Nothing is sent to LegalAIPay servers.
-    <span class="cn-only" lang="zh">&#21512;&#21516;&#20869;&#23481;&#19982;&#35774;&#32622;&#20165;&#20445;&#23384;&#20110;&#24744;&#30340;&#27983;&#35272;&#22120;&#26412;&#22320;&#65292;&#19981;&#19978;&#20256;&#33267;&#26381;&#21153;&#22120;&#12290;</span>
+    <span class="en-only">🔒 Your contract text, settings, and any API key stay in</span><span class="cn-only">🔒 您的合同文本、设置和任何 API 密钥都保存在</span> <strong><span class="en-only">your browser</span><span class="cn-only">您的浏览器中</span></strong><span class="en-only">. Nothing is sent to LegalAIPay servers.</span><span class="cn-only">。任何内容都不会发送到 LegalAIPay 服务器。</span>
+    <span class="cn-only" lang="zh">合同内容与设置仅保存于您的浏览器本地，不上传至服务器。</span>
   </span>
-  <button type="button" id="clearLocalDataBtn" style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 10px;font-size:12.5px;cursor:pointer;color:#0f172a;">Clear local data / &#28165;&#38500;&#26412;&#22320;&#25968;&#25454;</button>
+  <button type="button" id="clearLocalDataBtn" style="background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:6px 10px;font-size:12.5px;cursor:pointer;color:#0f172a;"><span class="en-only">Clear local data</span><span class="cn-only">清除本地数据</span></button>
 </div>
 <fieldset class="run-mode" style="margin:8px auto 16px;max-width:1100px;padding:10px 12px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;">
-  <legend style="font-size:12.5px;color:#0f172a;padding:0 6px;">Run mode / &#36816;&#34892;&#27169;&#24335;</legend>
+  <legend style="font-size:12.5px;color:#0f172a;padding:0 6px;"><span class="en-only">Run mode / 运行模式</span><span class="cn-only">运行模式</span></legend>
   <label style="display:block;margin:4px 0;font-size:13px;color:#1e293b;">
-    <input type="radio" name="runMode" value="prompt" checked>
-    <strong>Prompt export</strong> &#8212; generate a ready-to-paste prompt; no API call from this page. <em>Recommended.</em>
+    <input type="radio" name="runMode" value="prompt" checked="">
+    <strong><span class="en-only">Prompt export</span><span class="cn-only">提示词导出</span></strong> <span class="en-only">— generate a ready-to-paste prompt; no API call from this page.</span><span class="cn-only">——生成可直接粘贴的提示词；本页面不发起任何 API 调用。</span> <em><span class="en-only">Recommended.</span><span class="cn-only">推荐。</span></em>
   </label>
   <label style="display:block;margin:4px 0;font-size:13px;color:#1e293b;">
     <input type="radio" name="runMode" value="direct">
-    <strong>Direct call (advanced)</strong> &#8212; call the model from your browser using your own API key. Your API key and contract text go directly from your browser to your own AI provider (e.g. OpenAI or Anthropic) — never to LegalAIPay. Your provider may bill you for usage.
+    <strong><span class="en-only">Direct call (advanced)</span><span class="cn-only">直接调用（高级）</span></strong> <span class="en-only">— call the model from your browser using your own API key. Your API key and contract text go directly from your browser to your own AI provider (e.g. OpenAI or Anthropic) — never to LegalAIPay. Your provider may bill you for usage.</span><span class="cn-only">——使用您自己的 API 密钥从浏览器直接调用模型。您的 API 密钥和合同文本将从浏览器直接发送到您自己的 AI 提供商（如 OpenAI 或 Anthropic）——绝不发送给 LegalAIPay。您的提供商可能就用量向您收费。</span>
   </label>
   <label id="directConsentWrap" style="display:none;margin:8px 0 0;padding-left:22px;font-size:12.5px;color:#5a4012;">
-    <input type="checkbox" id="directConsent"> I understand my API key and contract text will be sent to the model vendor from this browser.
+    <input type="checkbox" id="directConsent"> <span class="en-only">I understand my API key and contract text will be sent to the model vendor from this browser.</span><span class="cn-only">我理解我的 API 密钥和合同文本将从此浏览器发送给模型供应商。</span>
   </label>
 </fieldset>
   <section class="panel input-panel">
     <div class="panel-header">
-      <h2>Review setup</h2>
-      <p>Upload a contract or paste text. Then choose the side, risk posture, and output package.</p>
+      <h2><span class="en-only">Review setup</span><span class="cn-only">审查设置</span></h2>
+      <p><span class="en-only">Upload a contract or paste text. Then choose the side, risk posture, and output package.</span><span class="cn-only">上传合同或粘贴文本，然后选择立场、风险取向和输出内容。</span></p>
     </div>
     <div class="form-body">
-        <div class="cr-steps" id="crSteps" aria-label="Review steps"><div class="cr-step" data-cr-step="1"><span class="cr-num">1</span><span class="cr-lbl"><b>Add contract</b><span>Upload or paste</span></span></div><div class="cr-step" data-cr-step="2"><span class="cr-num">2</span><span class="cr-lbl"><b>Configure</b><span>Side, risk, outputs</span></span></div><div class="cr-step" data-cr-step="3"><span class="cr-num">3</span><span class="cr-lbl"><b>Review</b><span>Run and read results</span></span></div></div>
+        <div class="cr-steps" id="crSteps" aria-label="Review steps"><div class="cr-step" data-cr-step="1"><span class="cr-num">1</span><span class="cr-lbl"><b><span class="en-only">Add contract</span><span class="cn-only">添加合同</span></b><span><span class="en-only">Upload or paste</span><span class="cn-only">上传或粘贴</span></span></span></div><div class="cr-step" data-cr-step="2"><span class="cr-num">2</span><span class="cr-lbl"><b><span class="en-only">Configure</span><span class="cn-only">配置</span></b><span><span class="en-only">Side, risk, outputs</span><span class="cn-only">立场、风险、输出</span></span></span></div><div class="cr-step" data-cr-step="3"><span class="cr-num">3</span><span class="cr-lbl"><b><span class="en-only">Review</span><span class="cn-only">审查</span></b><span><span class="en-only">Run and read results</span><span class="cn-only">运行并查看结果</span></span></span></div></div>
       <div class="upload-zone">
-        <label for="contractFile">1. Upload contract file</label>
+        <label for="contractFile"><span class="en-only">1. Upload contract file</span><span class="cn-only">1. 上传合同文件</span></label>
         <input id="contractFile" type="file" accept=".txt,.md,.html,.htm,.csv,.docx,.pdf,.png,.jpg,.jpeg,.webp">
-        <p class="hint">Supported in-browser: text/HTML/Markdown, DOCX, PDF text, and clear PNG/JPG screenshots. Scanned PDFs may need copy/paste or screenshot OCR.</p>
+        <p class="hint"><span class="en-only">Supported in-browser: text/HTML/Markdown, DOCX, PDF text, and clear PNG/JPG screenshots. Scanned PDFs may need copy/paste or screenshot OCR.</span><span class="cn-only">浏览器内支持：文本/HTML/Markdown、DOCX、PDF 文本，以及清晰的 PNG/JPG 截图。扫描版 PDF 可能需要复制粘贴或截图识别。</span></p>
       </div>
       <div id="fileStatus" class="status-box"></div>
       <div class="row2">
         <div class="field">
-          <label for="contractType">Detected / confirmed type</label>
+          <label for="contractType"><span class="en-only">Detected / confirmed type</span><span class="cn-only">识别 / 确认的类型</span></label>
           <select id="contractType">
-            <option value="General commercial agreement">General commercial agreement</option>
-            <option value="NDA">NDA</option>
-            <option value="SaaS agreement">SaaS agreement</option>
-            <option value="DPA">DPA</option>
-            <option value="MSA / services agreement">MSA / services agreement</option>
-            <option value="Vendor terms">Vendor terms</option>
+            <option value="General commercial agreement" data-en="General commercial agreement" data-cn="一般商事协议">General commercial agreement</option>
+            <option value="NDA" data-en="NDA" data-cn="保密协议（NDA）">NDA</option>
+            <option value="SaaS agreement" data-en="SaaS agreement" data-cn="SaaS 协议">SaaS agreement</option>
+            <option value="DPA" data-en="DPA" data-cn="数据处理协议（DPA）">DPA</option>
+            <option value="MSA / services agreement" data-en="MSA / services agreement" data-cn="主服务协议 / 服务协议">MSA / services agreement</option>
+            <option value="Vendor terms" data-en="Vendor terms" data-cn="供应商条款">Vendor terms</option>
           </select>
         </div>
         <div class="field">
-          <label for="position">Your side</label>
+          <label for="position"><span class="en-only">Your side</span><span class="cn-only">您的立场</span></label>
           <select id="position">
-            <option value="Customer / buyer">Customer / buyer</option>
-            <option value="Vendor / supplier">Vendor / supplier</option>
-            <option value="Mutual / neutral">Mutual / neutral</option>
+            <option value="Customer / buyer" data-en="Customer / buyer" data-cn="客户 / 买方">Customer / buyer</option>
+            <option value="Vendor / supplier" data-en="Vendor / supplier" data-cn="供应商 / 卖方">Vendor / supplier</option>
+            <option value="Mutual / neutral" data-en="Mutual / neutral" data-cn="双向 / 中立">Mutual / neutral</option>
           </select>
         </div>
       </div>
       <div class="row2">
         <div class="field">
-          <label for="law">Governing law target</label>
+          <label for="law"><span class="en-only">Governing law target</span><span class="cn-only">适用法律目标</span></label>
           <input id="law" value="New York / California / England / PRC">
         </div>
         <div class="field">
-          <label for="riskTolerance">Risk posture</label>
+          <label for="riskTolerance"><span class="en-only">Risk posture</span><span class="cn-only">风险取向</span></label>
           <select id="riskTolerance">
-            <option value="Balanced">Balanced</option>
-            <option value="Conservative">Conservative</option>
-            <option value="Business-friendly">Business-friendly</option>
+            <option value="Balanced" data-en="Balanced" data-cn="均衡">Balanced</option>
+            <option value="Conservative" data-en="Conservative" data-cn="保守">Conservative</option>
+            <option value="Business-friendly" data-en="Business-friendly" data-cn="利于业务">Business-friendly</option>
           </select>
         </div>
       </div>
       <div class="field">
-        <label for="dealContext">Business context</label>
+        <label for="dealContext"><span class="en-only">Business context</span><span class="cn-only">业务背景</span></label>
         <textarea id="dealContext" class="small-textarea">Inbound contract for legal/commercial review. Please identify material legal risk, business fallback positions, and proposed redlines.</textarea>
       </div>
       <fieldset class="field">
-        <legend>Review focus</legend>
+        <legend><span class="en-only">Review focus</span><span class="cn-only">审查重点</span></legend>
         <div class="checks">
-          <label class="check"><input type="checkbox" data-focus value="Liability" checked> Liability, indemnity, damages cap</label>
-          <label class="check"><input type="checkbox" data-focus value="Data" checked> Privacy, data protection, security</label>
-          <label class="check"><input type="checkbox" data-focus value="IP" checked> IP ownership, license, AI/data use</label>
-          <label class="check"><input type="checkbox" data-focus value="Payment" checked> Fees, payment, taxes, renewal</label>
-          <label class="check"><input type="checkbox" data-focus value="Termination" checked> Term, termination, transition</label>
-          <label class="check"><input type="checkbox" data-focus value="Disputes" checked> Governing law, venue, arbitration</label>
+          <label class="check"><input type="checkbox" data-focus="" value="Liability" checked=""> <span class="en-only">Liability, indemnity, damages cap</span><span class="cn-only">责任、赔偿、损害赔偿上限</span></label>
+          <label class="check"><input type="checkbox" data-focus="" value="Data" checked=""> <span class="en-only">Privacy, data protection, security</span><span class="cn-only">隐私、数据保护、安全</span></label>
+          <label class="check"><input type="checkbox" data-focus="" value="IP" checked=""> <span class="en-only">IP ownership, license, AI/data use</span><span class="cn-only">知识产权归属、许可、AI/数据使用</span></label>
+          <label class="check"><input type="checkbox" data-focus="" value="Payment" checked=""> <span class="en-only">Fees, payment, taxes, renewal</span><span class="cn-only">费用、付款、税费、续约</span></label>
+          <label class="check"><input type="checkbox" data-focus="" value="Termination" checked=""> <span class="en-only">Term, termination, transition</span><span class="cn-only">期限、终止、过渡</span></label>
+          <label class="check"><input type="checkbox" data-focus="" value="Disputes" checked=""> <span class="en-only">Governing law, venue, arbitration</span><span class="cn-only">适用法律、管辖地、仲裁</span></label>
         </div>
       </fieldset>
       <fieldset class="field">
-        <legend>LLM handoff (prompt-only)</legend>
-        <p class="hint" style="margin-top:4px">This page does not call any external LLM. Run the review locally, then open the <strong>LLM Prompt</strong> tab and copy the generated prompt into your own ChatGPT or Claude session for a deeper draft.</p>
+        <legend><span class="en-only">LLM handoff (prompt-only)</span><span class="cn-only">AI 交接（仅提示词）</span></legend>
+        <p class="hint" style="margin-top:4px"><span class="en-only">This page does not call any external LLM. Run the review locally, then open the</span><span class="cn-only">本页面不调用任何外部大模型。请先在本地运行审查，然后打开</span> <strong><span class="en-only">LLM Prompt</span><span class="cn-only">AI 提示词</span></strong> <span class="en-only">tab and copy the generated prompt into your own ChatGPT or Claude session for a deeper draft.</span><span class="cn-only">标签页，将生成的提示词复制到您自己的 ChatGPT 或 Claude 会话中，以获得更深入的草稿。</span></p>
       </fieldset>
       <div class="field">
-        <label for="contractText">Contract text</label>
+        <label for="contractText"><span class="en-only">Contract text</span><span class="cn-only">合同文本</span></label>
         <textarea id="contractText">Upload a file, paste contract text here, or click Load Sample.</textarea>
       </div>
       <div class="actions">
-        <button class="btn-primary" id="reviewBtn">Run Skills Review</button>
-        <button class="btn-secondary" id="sampleBtn">Load Sample</button>
-        <button class="btn-secondary" id="clearBtn">Clear</button>
+        <button class="btn-primary" id="reviewBtn"><span class="en-only">Run Skills Review</span><span class="cn-only">运行审查</span></button>
+        <button class="btn-secondary" id="sampleBtn"><span class="en-only">Load Sample</span><span class="cn-only">载入示例</span></button>
+        <button class="btn-secondary" id="clearBtn"><span class="en-only">Clear</span><span class="cn-only">清空</span></button>
       </div>
     </div>
   </section>
   <section class="panel">
     <div class="metrics">
-      <div class="metric"><strong id="score">-</strong><span>Triage score</span></div>
-      <div class="metric"><strong id="commentCount">0</strong><span>Comments</span></div>
-      <div class="metric"><strong id="redlineCount">0</strong><span>Redlines</span></div>
-      <div class="metric"><strong id="typeMetric">-</strong><span>Detected type</span></div>
+      <div class="metric"><strong id="score">-</strong><span><span class="en-only">Triage score</span><span class="cn-only">分流评分</span></span></div>
+      <div class="metric"><strong id="commentCount">0</strong><span><span class="en-only">Comments</span><span class="cn-only">批注</span></span></div>
+      <div class="metric"><strong id="redlineCount">0</strong><span><span class="en-only">Redlines</span><span class="cn-only">修订标记</span></span></div>
+      <div class="metric"><strong id="typeMetric">-</strong><span><span class="en-only">Detected type</span><span class="cn-only">识别类型</span></span></div>
     </div>
     <div class="tabs">
-      <button class="tab active" data-tab="memo">Review Memo</button>
-      <button class="tab" data-tab="comments">Proposed Comments</button>
-      <button class="tab" data-tab="redline">Redline-Style Doc</button>
-      <button class="tab" data-tab="prompt">LLM Prompt</button>
-      <button class="btn-accent" id="copyBtn">Copy Memo</button>
-      <button class="btn-accent" id="downloadMemoBtn">Download Memo</button>
-      <button class="btn-accent" id="downloadRedlineBtn">Download Redline .doc</button>
+      <button class="tab active" data-tab="memo"><span class="en-only">Review Memo</span><span class="cn-only">审查备忘录</span></button>
+      <button class="tab" data-tab="comments"><span class="en-only">Proposed Comments</span><span class="cn-only">建议批注</span></button>
+      <button class="tab" data-tab="redline"><span class="en-only">Redline-Style Doc</span><span class="cn-only">修订标记文档</span></button>
+      <button class="tab" data-tab="prompt"><span class="en-only">LLM Prompt</span><span class="cn-only">AI 提示词</span></button>
+      <button class="btn-accent" id="copyBtn"><span class="en-only">Copy Memo</span><span class="cn-only">复制备忘录</span></button>
+      <button class="btn-accent" id="downloadMemoBtn"><span class="en-only">Download Memo</span><span class="cn-only">下载备忘录</span></button>
+      <button class="btn-accent" id="downloadRedlineBtn"><span class="en-only">Download Redline .doc</span><span class="cn-only">下载修订标记 .doc</span></button>
     </div>
     <div class="output-body">
-      <div id="memoView"><div class="empty">Run a review to generate the memo.</div></div>
-      <div id="commentsView" class="hidden"><div class="empty">Run a review to generate proposed comments.</div></div>
-      <div id="redlineView" class="hidden"><div class="empty">Run a review to generate redline-style output.</div></div>
+      <div id="memoView"><div class="empty"><span class="en-only">Run a review to generate the memo.</span><span class="cn-only">运行审查以生成备忘录。</span></div></div>
+      <div id="commentsView" class="hidden"><div class="empty"><span class="en-only">Run a review to generate proposed comments.</span><span class="cn-only">运行审查以生成建议批注。</span></div></div>
+      <div id="redlineView" class="hidden"><div class="empty"><span class="en-only">Run a review to generate redline-style output.</span><span class="cn-only">运行审查以生成修订标记式输出。</span></div></div>
       <div id="promptView" class="hidden"><pre id="promptText"></pre></div>
     </div>
   </section>
 
 <p class="output-meta" style="max-width:1100px;margin:24px auto 16px;padding:12px 16px 0;border-top:1px solid #e2e8f0;font-size:12px;color:#64748b;line-height:1.6;">
-  Playbook version: <strong>v2026.05</strong> &middot; Generated on: <span id="reviewGeneratedDate"></span> &middot; Jurisdiction scope: U.S., EU/UK, PRC commercial contracts &middot; <em>Human attorney review required before execution.</em>
-  <br><span class="cn-only" lang="zh">&#27169;&#26495;&#29256;&#26412; v2026.05 &middot; &#29983;&#25104;&#26085;&#26399;&#35265;&#19978; &middot; &#36866;&#29992;&#27861;&#22495;&#65306;&#32654;&#22269;&#12289;&#27431;&#30431;/&#33521;&#22269;&#12289;&#20013;&#22269;&#22823;&#38470;&#21830;&#20107;&#21512;&#21516; &middot; &#36755;&#20986;&#22312;&#31614;&#32626;&#21069;&#39035;&#30001;&#24459;&#24072;&#22797;&#26680;&#12290;</span>
+  <span class="en-only">Playbook version:</span><span class="cn-only">审查手册版本：</span> <strong>v2026.05</strong> <span class="en-only">· Generated on:</span><span class="cn-only">· 生成于：</span> <span id="reviewGeneratedDate"></span> <span class="en-only">· Jurisdiction scope: U.S., EU/UK, PRC commercial contracts ·</span><span class="cn-only">· 适用范围：美国、欧盟/英国、中国商事合同 ·</span> <em><span class="en-only">Human attorney review required before execution.</span><span class="cn-only">签署前须经人工律师审查。</span></em>
+  <br><span class="cn-only" lang="zh">模板版本 v2026.05 · 生成日期见上 · 适用法域：美国、欧盟/英国、中国大陆商事合同 · 输出在签署前须由律师复核。</span>
 </p>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
@@ -706,5 +705,6 @@ render();
 
 (function(){function crHasContract(){var ta=document.getElementById('contractText');var fs=document.getElementById('fileStatus');var v=ta?(ta.value||'').trim():'';var def='Upload a file, paste contract text here, or click Load Sample.';if(v&&v!==def&&v.length>20)return true;if(fs&&(fs.textContent||'').trim().length>0)return true;return false;}function crHasResults(){var s=document.getElementById('score');if(!s)return false;var v=(s.textContent||'').trim();return v!==''&&v!=='-';}function crUpdate(){var box=document.getElementById('crSteps');if(!box)return;var hasC=crHasContract();var hasR=crHasResults();var active=hasR?3:(hasC?2:1);var steps=box.querySelectorAll('[data-cr-step]');for(var i=0;i<steps.length;i++){var n=parseInt(steps[i].getAttribute('data-cr-step'),10);steps[i].classList.remove('active','done');if(n<active)steps[i].classList.add('done');else if(n===active)steps[i].classList.add('active');}}function crDefer(){setTimeout(crUpdate,0);}document.addEventListener('input',crDefer,true);document.addEventListener('change',crDefer,true);document.addEventListener('click',crDefer,true);if(document.readyState!=='loading')setTimeout(crUpdate,0);else document.addEventListener('DOMContentLoaded',function(){setTimeout(crUpdate,0);});})();
 </script>
-</body>
-</html>
+
+
+<script>(function(){var LK='legalaipay.lang';var html=document.documentElement;function applyOptions(lang){document.querySelectorAll('option[data-en]').forEach(function(o){var v=lang==='zh'?(o.getAttribute('data-cn')||o.getAttribute('data-en')):o.getAttribute('data-en');if(v!=null)o.textContent=v;});}function setLang(lang){html.setAttribute('lang-ui',lang);try{localStorage.setItem(LK,lang);}catch(e){}applyOptions(lang);}function init(){var saved='en';try{saved=localStorage.getItem(LK)||'en';}catch(e){}setLang(saved==='zh'?'zh':'en');var b=document.getElementById('langToggle');if(b){b.addEventListener('click',function(){setLang(html.getAttribute('lang-ui')==='zh'?'en':'zh');});}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}})();</script></body></html>
